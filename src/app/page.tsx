@@ -111,13 +111,13 @@ export default function HomePage() {
               <div className="grid-item is-media">
                 <div
                   className="home-case-study-teaser-visual"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                 />
               </div>
               <div className="grid-item">
                 <div
                   className="grid-item-background-color"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                 />
                 <div className="text-color-grey">
                   <div data-wf--box-inner-text--variant="big" className="item-inner">
