@@ -1,0 +1,334 @@
+
+  /* Text in allen Browsern schärfer und besser lesbar machen */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Fluid Design */
+  html { font-size: 1rem; }
+  @media screen and (max-width:1600px) { html { font-size: calc(0.34318555008210183rem + 0.6568144499178982vw); } }
+  @media screen and (max-width:991px) { html { font-size: 1rem; } }
+  @media screen and (max-width:767px) { html { font-size: 1rem; } }
+  /* Crop Line-Height Space */
+  :is([class*="copy-"], h1, h2, h3, h4, h5, h6, p, blockquote, .crop-line-height) {
+    display: flow-root;
+  }
+  :is([class*="copy-"], h1, h2, h3, h4, h5, h6, p, blockquote, .crop-line-height)::before {
+    content: "";
+    display: table;
+    margin-bottom: calc(-0.5lh + 0.37em);
+  }
+  :is([class*="copy-"], h1, h2, h3, h4, h5, h6, p, blockquote, .crop-line-height)::after {
+    content: "";
+    display: table;
+    margin-bottom: calc(-0.5lh + 0.35em);
+  }
+  /* Entfernt den oberen Abstand des letzten Elements in einem beliebigen Rich-Text-Element */
+  .w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+    margin-top: 0 !important;
+  }
+  /* Entfernt den unteren Abstand des letzten Elements in einem beliebigen Rich-Text-Element */
+  .w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child, .w-richtext p:last-child {
+    margin-bottom: 0 !important;
+  }
+  /* Diese Klassen werden nicht überschrieben */
+  .hide, .hide-desktop-only {
+    display: none !important;
+  }
+  @media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    .hide-desktop-only {
+      display: block !important;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape {
+      display: none !important;
+    }
+  }
+  @media screen and (max-width: 479px) {
+    .hide-mobile {
+      display: none !important;
+    }
+  }
+  /* Silbentrennung ab Mobile Landscape erlauben */
+  @media screen and (max-width: 767px) {
+    .hyphens, [hyphens=active]  {
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      hyphens: auto;
+    }
+  }
+  .h2-is-h1-size h2 {
+    font-size: var(--heading--xxl);
+    margin-bottom: var(--spacing--xl);
+  }
+/* Hide full cover links in webflow designer to click elements behind */
+  .wf-design-mode a.cta-link-full-cover {
+    display:none;
+  }
+  /* Webflow Slider Dots Farben anpassen */
+  /*
+  .w-slider-dot {
+  background-color:#d2d2d2!important;
+  }
+  .w-slider-dot.w-active {
+  background-color:#eb7636!important;
+  }
+  */
+
+
+
+  button {
+    all: unset;
+    cursor: pointer;
+  }
+  button:focus {
+    outline: revert;
+  }
+  /* Button and Link Animations */
+  @media (hover: hover) and (pointer: fine) {
+    .button:hover {
+      color:var(--_color---copy-bright);
+    }
+    .button:hover .button-hover-background {
+      opacity:1;
+    }
+    .button:hover .button-form {
+      color:#565656;
+    }
+  }
+ /* CTA Link Hover Styles */
+@media (hover: hover) and (pointer: fine) {
+  .cta-link {
+    padding-left: 0rem;
+  }
+  .cta-link .cta-link-line {
+    opacity: 0;
+    transform: translateX(0.4em);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .cta-link:hover,
+  .cta-link-full-cover:hover ~ .cta-link {
+    padding-left: 1.7rem;
+  }
+  .cta-link:hover .cta-link-line,
+  .cta-link-full-cover:hover ~ .cta-link .cta-link-line {
+    opacity: 1;
+    transform: translateX(0em);
+  }
+}
+
+
+
+  [data-accordion="toggle"]:has([data-accordion="checkbox"]:checked) [data-accordion="content"] {
+    grid-template-rows: 1fr;
+  }
+  .accordion-content-inner {
+    opacity: 0;
+    transform: translate3d(0, 2rem, 0);
+    -webkit-transform: translate3d(0, 2rem, 0);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+    will-change: opacity, transform;
+  }
+  [data-accordion="toggle"]:has([data-accordion="checkbox"]:checked) .accordion-content-inner {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  [data-accordion="toggle"]:has([data-accordion="checkbox"]:checked) .plus-y {
+    opacity: 0;
+  }
+
+
+
+  [data-show-on-hover="wrapper"]:hover [data-show-on-hover="element"] {
+    opacity:1;
+  }
+  [data-hide-on-hover="wrapper"]:hover [data-hide-on-hover="element"] {
+    opacity:0;
+  }
+
+
+
+  /* stop blur lines vw unit growing on desktop */
+  @media (min-width: 1800px) {
+    :root {
+      --_project---blur-full-width: 0.9em;
+      --_project---blur-half-width: 0.55em;
+    }
+    .form.is-thin-line {
+      filter: contrast(140%) blur(1em);
+    }
+  }
+  [data-visual-sound] {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  [data-visual-form] svg {
+    overflow:visible!important;
+  }
+  /* Loading Spinner Player Controls */
+  .spinner {
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
+
+  /* Sticky-Modus */
+  .header.is-sticky {
+    position: fixed;
+    top: 0;
+    right:0;
+    left:0;
+    bottom: auto;
+    opacity:1;
+    transform:translateY(0);
+  }
+  .header {
+    transition: opacity .25s ease, transform .25s ease;
+    will-change: transform, opacity;
+  }
+  .header.is-absolute {
+    position: absolute;
+    top: auto;
+    bottom:0;
+    left: 0;
+    right: 0;
+  }
+
+
+
+  @media (max-width: 100em) {
+    .services-teaser-grid {
+      width: 100% ;
+      margin: 0;
+			max-width:none;
+    }
+  }
+  @media (min-width: 992px) {
+    .teaser-item:hover .teaser-standard-background {
+      opacity:0;
+    }
+    .teaser-item:hover .copy-medium,
+    .teaser-item:hover span,
+    .teaser-item:hover h1,
+    .teaser-item:hover h2,
+    .teaser-item:hover h3,
+    .teaser-item:hover h4,
+    .teaser-item:hover h5,
+    .teaser-item:hover h6,
+    .teaser-item:hover a,
+    .teaser-item:hover strong,
+    .teaser-item:hover em {
+      color: var(--_color---copy-bright) !important;
+    }
+    .teaser-item:hover .cta-link-line {
+      background-color: var(--_color---copy-bright) !important;
+    }
+  }
+
+
+
+    .main-wrapper {
+      opacity: 1 !important;
+    }
+  
+
+
+  /* Basis-Styling für .network-name und .network-image */
+  .network-name {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .network-image {
+    transform: scale(1);
+    transition: transform 0.2s ease;
+  }
+    .network-grid-item-inner:hover .network-name {
+      opacity: 1;
+      transform: translateY(0rem);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .network-grid-item-inner:hover .network-image {
+      transform: scale(1.1);
+      transition: transform 0.2s ease;
+    }
+
+
+
+  @media (hover: hover) and (pointer: fine) {
+    .offices-grid:hover .offices-grid-item {
+      opacity: 0.3;
+    }
+    .offices-grid .offices-grid-item:hover {
+      opacity: 1;
+    }
+  }
+  .offices-grid .w-dyn-item:nth-child(2n) .offices-visual-wrapper {
+    height: 200%;
+    top: -10%;
+    left: 4%;
+    transform: rotate(-87deg);
+  }
+  .offices-grid .w-dyn-item:nth-child(3n) .offices-visual-wrapper {
+    height: 210%;
+    top: -100%;
+    left: -76%;
+    transform: rotateX(-180deg) rotateY(0) rotate(0);
+  }
+
+
+
+  @media (min-width: 992px) {
+    .section-case-studies-teaser:hover .teaser-standard-background {
+      opacity:0;
+    }
+    .section-case-studies-teaser:hover .case-study-teaser-visual {
+    	display:block;
+    }
+  }
+
+
+
+  @keyframes karussell {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - 0rem));
+    }
+  }
+  [data-marquee="horizontal"] {
+    animation: karussell 70s linear infinite;
+  }
+  [data-marquee-horizontal="reverse"] {
+    animation-direction: reverse;
+  }
+
+
+
+  [data-player-file=""]
+  {
+    color:;
+  }
+  [data-player-file=""] .progress-bar-line,
+  [data-player-file=""] [data-player="progress-fill"]
+  {
+    background-color:;
+  }
