@@ -1,0 +1,6 @@
+/*
+  Global styling for this site comes from the migrated Webflow stylesheets
+  (normalize.css, webflow.css, blut-dev.webflow.css, embeds.css), linked in
+  the root layout. Tailwind is intentionally not used here to avoid its
+  preflight reset fighting with Webflow's own CSS.
+*/
