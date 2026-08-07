@@ -51,7 +51,7 @@ export default function CaseStudiesPage() {
                 <section className="section-case-studies-teaser">
                   <div
                     className="case-study-teaser-visual"
-                    style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                    style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                   />
                   <div className="teaser-standard-background is-dark" />
                   <div className="page-teaser-wide-component">

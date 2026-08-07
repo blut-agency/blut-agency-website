@@ -87,7 +87,7 @@ export default async function CaseStudyDetailPage({
           </div>
           <div
             className="project-stage-visual-wrapper"
-            style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+            style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
           />
         </section>
 
@@ -132,7 +132,7 @@ export default async function CaseStudyDetailPage({
               <div className="grid-item">
                 <div
                   className="grid-item-background-color"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                 />
                 <div className="item-inner is-case-study">
                   <div className="item-bottom is-quote">
@@ -303,7 +303,7 @@ export default async function CaseStudyDetailPage({
               <div className="grid-item is-player">
                 <div
                   className="grid-item-background-color"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                 />
                 <div className="text-color-grey">
                   <div className="item-inner is-case-study">
@@ -345,7 +345,7 @@ export default async function CaseStudyDetailPage({
               <div className="grid-item is-player">
                 <div
                   className="grid-item-background-color"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
                 />
                 <div className="text-color-grey">
                   <div className="item-inner is-case-study">
@@ -552,7 +552,7 @@ export default async function CaseStudyDetailPage({
                   <div className="page-teaser-wide-component">
                     <div
                       className="project-stage-visual-wrapper"
-                      style={nextCase.color ? { backgroundColor: nextCase.color.main } : undefined}
+                      style={nextCase.color ? { backgroundImage: `linear-gradient(135deg, ${nextCase.color.main}, ${nextCase.color.secondary})` } : undefined}
                     />
                     <div className="z-index-1">
                       <div
