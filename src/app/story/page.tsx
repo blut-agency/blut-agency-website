@@ -100,7 +100,11 @@ export default function StoryPage() {
               <div className="container-large">
                 <div className="spacer-l-start spacer-l-end">
                   <div className="content-placeholder">
-                    <p>[Placeholder — real photo/video for this spot goes here]</p>
+                    <img
+                      src="/images/placeholder.svg"
+                      alt={`Placeholder — real photo/video for the ${v.client || "spot"} goes here`}
+                      loading="lazy"
+                    />
                   </div>
                   <div
                     data-wf--spacer--variant="md"
@@ -178,7 +182,7 @@ export default function StoryPage() {
                   className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
                 ></div>
                 <div className="content-placeholder">
-                  <p>[Placeholder — closing spot video goes here]</p>
+                  <img src="/images/placeholder.svg" alt="Placeholder — closing spot video goes here" loading="lazy" />
                 </div>
               </div>
             </div>

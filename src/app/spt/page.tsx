@@ -39,11 +39,11 @@ export default function SPTPage() {
         <div className="page-padding">
           <div className="container-large">
             <div className="content-placeholder">
-              <p>
-                [Placeholder — product demo video and the live &quot;Sonic Strategy Score&quot; dashboard visual from the
-                Figma board go here. No real screen recording or score widget exists yet; needs real design + build
-                once the dashboard product is ready to show.]
-              </p>
+              <img
+                src="/images/placeholder.svg"
+                alt="Placeholder — product demo video and the live &quot;Sonic Strategy Score&quot; dashboard visual go here. No real screen recording or score widget exists yet."
+                loading="lazy"
+              />
             </div>
           </div>
         </div>

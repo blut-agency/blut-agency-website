@@ -34,17 +34,39 @@
 
 /*
   Marks content ported from the Figma redesign board that still needs a real
-  asset (photo, video, or interactive widget) before launch. Intentionally
-  plain — the dashed border and label make it unmistakable in review, unlike
-  the site's usual gradient placeholder shapes which could be mistaken for
-  finished design.
+  asset (photo, video, or interactive widget) before launch. Renders at the
+  aspect ratio the real media will use, so the layout reads correctly, but
+  the image itself is unmistakably a placeholder (grey card, "PLACEHOLDER"
+  label) rather than the site's usual gradient shapes, which could be
+  mistaken for finished design.
 */
 .content-placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.content-placeholder img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+  Same intent as .content-placeholder, but for a missing chunk of *copy*
+  rather than missing media — e.g. the Cases page CTA, where the Figma board
+  only has an authoring note, not real body text. Keeps the dashed-box
+  treatment since there's no sensible aspect ratio for a paragraph.
+*/
+.content-placeholder-text {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 12rem;
+  min-height: 8rem;
   padding: 1.5rem;
   border: 1px dashed currentColor;
   border-radius: 0.5rem;

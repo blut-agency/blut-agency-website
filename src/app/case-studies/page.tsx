@@ -347,7 +347,7 @@ export default function CaseStudiesPage() {
                 className="item-inner w-variant-d9f4f337-c70e-b4e9-7a9a-312292f48761"
               >
                 <div className="item-top w-variant-d9f4f337-c70e-b4e9-7a9a-312292f48761">
-                  <div className="content-placeholder">
+                  <div className="content-placeholder-text">
                     <p>
                       [Placeholder — the Figma board only has an authoring note here (&quot;long text explaining that
                       our work is guided by our sonic strategy + tools, leading into a Sonic Performance Tracker
