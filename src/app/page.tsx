@@ -198,18 +198,18 @@ export default function HomePage() {
             <div className="services-teaser-grid">
         <div data-w-id="38db7e86-a24d-d844-b2a6-606d13785841" className="teaser-item">
           <div className="services-teaser-content">
-            <div className="copy-medium">Sonic Strategy</div>
+            <div className="copy-medium">Story</div>
             <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-            <h2 className="heading-style-h2">Your brand needs a unique sonic identity – but which one? </h2>
+            <h2 className="heading-style-h2">What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?</h2>
             <div data-wf--spacer--variant="xl" className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"></div>
             <div className="services-teaser-text-wrapper">
-              <p className="copy-medium">We analyze your brand, its cultural context, the sounds of the market, and the habits of your target audience to define your perfect sonic identity. </p>
+              <p className="copy-medium">From a Samsung spot with Nina Chuba to a secret testing facility in the Alps — go behind the scenes on how we build sound for brands. </p>
             </div>
             <div data-wf--spacer--variant="l" className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"></div>
           </div>
           <div data-wf--cta-link--variant="dark-text" className="cta-link-component w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34">
-            <a aria-hidden="true" aria-label="Read more" href="/services#sonic-strategy" className="cta-link-full-cover w-inline-block"></a>
-            <a aria-label="Read more" href="/services#sonic-strategy" className="cta-link w-inline-block">
+            <a aria-hidden="true" aria-label="Read more" href="/story" className="cta-link-full-cover w-inline-block"></a>
+            <a aria-label="Read more" href="/story" className="cta-link w-inline-block">
               <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"></div>
               <div className="cta-link-text">Read More</div>
             </a>
@@ -242,18 +242,18 @@ export default function HomePage() {
         </div>
         <div data-w-id="9d3cc7e7-ed2b-0615-a0d1-48e0e5e3aaee" className="teaser-item">
           <div className="services-teaser-content">
-            <div className="copy-medium">Content Production </div>
+            <div className="copy-medium">Sonic Performance Tracker</div>
             <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-            <h2 className="heading-style-h2">From strategy to reality - we bring your sonic identity to life. </h2>
+            <h2 className="heading-style-h2">Where is your brand in the sonic branding landscape, and where do you want to be?</h2>
             <div data-wf--spacer--variant="xl" className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"></div>
             <div className="services-teaser-text-wrapper">
-              <p className="copy-medium">We produce music-powered content ready to spark emotion and scale across all brand channels. Your sonic world—made visible, tangible, scrollable. </p>
+              <p className="copy-medium">Our toolkit for defining, building and measuring your sonic identity — from strategy to real, provable impact. </p>
             </div>
             <div data-wf--spacer--variant="l" className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"></div>
           </div>
           <div data-wf--cta-link--variant="dark-text" className="cta-link-component w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34">
-            <a aria-hidden="true" aria-label="Read more" href="/services#content-production" className="cta-link-full-cover w-inline-block"></a>
-            <a aria-label="Read more" href="/services#content-production" className="cta-link w-inline-block">
+            <a aria-hidden="true" aria-label="Read more" href="/spt" className="cta-link-full-cover w-inline-block"></a>
+            <a aria-label="Read more" href="/spt" className="cta-link w-inline-block">
               <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"></div>
               <div className="cta-link-text">Read More</div>
             </a>
@@ -369,18 +369,18 @@ export default function HomePage() {
         </div>
         <div data-w-id="e1d94c78-f6ba-0da1-ebbf-314b4971a83c" className="teaser-item">
           <div className="services-teaser-content">
-            <div className="copy-medium">Performance &amp; Measurement </div>
+            <div className="copy-medium">Cases</div>
             <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-            <h2 className="heading-style-h2">Not just creativity - true impact you can measure.</h2>
+            <h2 className="heading-style-h2">Music production, sound design, and 360° sonic strategy. See us in action.</h2>
             <div data-wf--spacer--variant="xl" className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"></div>
             <div className="services-teaser-text-wrapper">
-              <p className="copy-medium">Our Sonic Strategy Manager turns music’s emotional pull into measurable brand value. So you can feel <em>and</em> prove it. </p>
+              <p className="copy-medium">Words can only say so much. Check out our work and see what we can do. </p>
             </div>
             <div data-wf--spacer--variant="l" className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"></div>
           </div>
           <div data-wf--cta-link--variant="dark-text" className="cta-link-component w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34">
-            <a aria-hidden="true" aria-label="Read more" href="/services#performance" className="cta-link-full-cover w-inline-block"></a>
-            <a aria-label="Read more" href="/services#performance" className="cta-link w-inline-block">
+            <a aria-hidden="true" aria-label="Read more" href="/case-studies" className="cta-link-full-cover w-inline-block"></a>
+            <a aria-label="Read more" href="/case-studies" className="cta-link w-inline-block">
               <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"></div>
               <div className="cta-link-text">Read More</div>
             </a>

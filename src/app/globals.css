@@ -31,3 +31,23 @@
     transition: none;
   }
 }
+
+/*
+  Marks content ported from the Figma redesign board that still needs a real
+  asset (photo, video, or interactive widget) before launch. Intentionally
+  plain — the dashed border and label make it unmistakable in review, unlike
+  the site's usual gradient placeholder shapes which could be mistaken for
+  finished design.
+*/
+.content-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 12rem;
+  padding: 1.5rem;
+  border: 1px dashed currentColor;
+  border-radius: 0.5rem;
+  opacity: 0.6;
+  font-size: 0.875rem;
+}
