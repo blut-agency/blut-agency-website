@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Imprint | blut",
+  title: "Imprint",
 };
 
 export default function ImprintPage() {
@@ -47,11 +47,12 @@ export default function ImprintPage() {
                 </p>
                 <p>‍</p>
                 <h4>Umsatzsteuer-ID</h4>
-                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:  DE301604095</p>
+                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:{"\u00a0\u2028"}DE301604095</p>
                 <p>‍</p>
                 <h4>Redaktionell verantwortlich</h4>
                 <p>
-                  Timo Blunck <br />
+                  Timo Blunck{"\u2028"}
+                  <br />
                   Poolstrasse 42
                   <br />
                   20355 Hamburg
@@ -60,14 +61,15 @@ export default function ImprintPage() {
                 <h4>Konzept &amp; Design</h4>
                 <p>
                   <a href="http://gudbergnerger.com" target="_blank" rel="noopener noreferrer">
-                    GUDBERG NERGER
+                    GUDBERG{"\u00a0"}NERGER
                   </a>
                 </p>
                 <p>‍</p>
                 <h4>EU-Streitschlichtung</h4>
                 <p>
-                  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{" "}
-                  https://ec.europa.eu/consumers/odr/. Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{"\u00a0\u2028"}
+                  https://ec.europa.eu/consumers/odr/.{"\u2028"}
+                  Unsere E-Mail-Adresse finden Sie oben im Impressum.
                 </p>
                 <p>‍</p>
                 <h4>Verbraucherstreitbeilegung/­Universalschlichtungsstelle</h4>

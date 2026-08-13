@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | blut",
+  title: "Privacy Policy",
 };
 
 const RICH_TEXT_HTML = `<h1>Privacy Policy</h1>

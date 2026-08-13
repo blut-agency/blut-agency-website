@@ -244,10 +244,9 @@
 
 
 
-    .main-wrapper {
-      opacity: 1 !important;
-    }
-  
+  /* The Webflow original guarded this with <noscript>; the root layout does
+     that now, so it must not sit here as an always-on rule — it would defeat
+     the page transition. */
 
 
   /* Basis-Styling für .network-name und .network-image */
@@ -323,12 +322,5 @@
 
 
 
-  [data-player-file=""]
-  {
-    color:;
-  }
-  [data-player-file=""] .progress-bar-line,
-  [data-player-file=""] [data-player="progress-fill"]
-  {
-    background-color:;
-  }
+  /* Per-player accent colours are emitted by the case study page itself,
+     scoped to each data-player-file slug (see PlayerAccentStyle). */

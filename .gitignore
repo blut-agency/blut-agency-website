@@ -43,3 +43,6 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
+
+# Claude Code (per-machine permissions, not shared)
+.claude/settings.local.json

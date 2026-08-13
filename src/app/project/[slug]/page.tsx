@@ -4,6 +4,26 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCaseStudies, getCaseStudyBySlug } from "@/lib/content";
+import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
+
+// Morph durations the live project pages use, per case study.
+// The "next case study" teaser at the foot of the page reuses the audio speed.
+const STAGE_SPEED: Record<string, number> = {
+  "hyundai-are-you-in": 10,
+  "devils-advocate-brand-launch": 10,
+  "wdr---re-arranging-perceptions": 10,
+  "volkswagen-bringing-it-all-back-home": 10,
+  "invention-is-instrumental": 17,
+};
+const AUDIO_SPEED: Record<string, number> = {
+  "hyundai-are-you-in": 8,
+  "devils-advocate-brand-launch": 7,
+  "wdr---re-arranging-perceptions": 8,
+  "volkswagen-bringing-it-all-back-home": 7,
+  "invention-is-instrumental": 17,
+};
+const stageSpeed = (slug: string) => STAGE_SPEED[slug] ?? 10;
+const audioSpeed = (slug: string) => AUDIO_SPEED[slug] ?? 8;
 
 const SPINNER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" class="spinner spinner">
   <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" opacity="0.2"></circle>
@@ -28,7 +48,6 @@ function PlayerSpinnerButtons({ size }: { size: "copy-medium" | "heading-style-h
       <div className={`player-loading-spinner ${size}`}>
         <div
           className="player-loading-spinner-inner"
-          style={{ display: "contents" }}
           dangerouslySetInnerHTML={{ __html: SPINNER_SVG }}
         />
       </div>
@@ -54,8 +73,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const cs = getCaseStudyBySlug(slug);
   if (!cs) return {};
+  // Mirrors the live site's description pattern:
+  // "<quote> <name> | Full-Service Music Agency | Strategy & Identity | <track> | Project Case Study"
+  const track = cs.audioPlayer1.title.replace(/\s+/g, " ").trim();
   return {
-    title: `${cs.title} | blut | Case Study`,
+    title: `${cs.title} | blut | Case Study | Music Strategy`,
+    description: `${cs.quote} ${cs.quoteName} | Full-Service Music Agency | Strategy & Identity | ${track} | Project Case Study`,
   };
 }
 
@@ -72,6 +95,22 @@ export default async function CaseStudyDetailPage({
 
   return (
     <>
+      {/*
+        Every player on a case study page is tinted with that case's secondary
+        colour — the play/pause text, the timecodes and the progress bar. All
+        the player slugs on this page start with the case slug, so one prefix
+        selector covers the quote video, both audio players and the videos.
+      */}
+      {cs.color && (
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+[data-player-file^="${cs.slug}"] { color: ${cs.color.secondary}; }
+[data-player-file^="${cs.slug}"] .progress-bar-line,
+[data-player-file^="${cs.slug}"] [data-player="progress-fill"] { background-color: ${cs.color.secondary}; }`,
+          }}
+        />
+      )}
       <Header variant="start-top" />
       <div className="main-wrapper">
         <section className="project-stage-wrapper">
@@ -87,8 +126,15 @@ export default async function CaseStudyDetailPage({
           </div>
           <div
             className="project-stage-visual-wrapper"
-            style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
-          />
+            style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
+          >
+            <CaseStudyVisual
+              slug={cs.slug}
+              variant={visualVariant(cs.useVisual)}
+              speed={stageSpeed(cs.slug)}
+              visualizationJson={cs.visualizationJson}
+            />
+          </div>
         </section>
 
         <section className="section-project-meta">
@@ -132,7 +178,7 @@ export default async function CaseStudyDetailPage({
               <div className="grid-item">
                 <div
                   className="grid-item-background-color"
-                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
+                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
                 />
                 <div className="item-inner is-case-study">
                   <div className="item-bottom is-quote">
@@ -243,7 +289,10 @@ export default async function CaseStudyDetailPage({
         )}
 
         {cs.gifVideoVimeoId && (
-          <section className="section-project-gif-video">
+          <section
+            className="section-project-gif-video"
+            style={cs.color ? { backgroundColor: cs.color.main } : undefined}
+          >
             <div className="page-padding">
               <div className="container-small">
                 <div className="spacer-xl-start spacer-xl-end">
@@ -298,22 +347,33 @@ export default async function CaseStudyDetailPage({
                     }}
                   />
                 </div>
-                <div className="audio-preview-visual-wrapper" />
+                <div
+                  className="audio-preview-visual-wrapper"
+                  style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
+                >
+                  <CaseStudyVisual
+                    slug={cs.slug}
+                    variant={visualVariant(cs.useVisual)}
+                    speed={audioSpeed(cs.slug)}
+                    startOnPlay
+                    auto={false}
+                    playerSlug={`${cs.slug}-audio-1`}
+                  />
+                </div>
               </div>
               <div className="grid-item is-player">
-                <div
-                  className="grid-item-background-color"
-                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
-                />
+                <div className="grid-item-background-color" />
                 <div className="text-color-grey">
                   <div className="item-inner is-case-study">
                     <div className="item-top is-case-study">
-                      <div className="heading-style-h2">{cs.audioPlayer1.title}</div>
+                      <div className="heading-style-h2" style={cs.color ? { color: cs.color.secondary } : undefined}>{cs.audioPlayer1.title}</div>
                       <div
                         data-wf--spacer--variant="l"
                         className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
                       />
-                      <h2 className="copy-medium">{cs.audioPlayer1.subline}</h2>
+                      <h2 className="copy-medium" style={cs.color ? { color: cs.color.secondary } : undefined}>
+                        {cs.audioPlayer1.subline}
+                      </h2>
                     </div>
                     <div className="item-bottom">
                       <div data-player-file={`${cs.slug}-audio-1`} className="audioplayer-controls">
@@ -343,19 +403,18 @@ export default async function CaseStudyDetailPage({
           <section className="section-project-audio-player-2">
             <div className="_2-column-grid">
               <div className="grid-item is-player">
-                <div
-                  className="grid-item-background-color"
-                  style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
-                />
+                <div className="grid-item-background-color" />
                 <div className="text-color-grey">
                   <div className="item-inner is-case-study">
                     <div className="item-top is-case-study">
-                      <div className="heading-style-h2">{cs.audioPlayer2.title}</div>
+                      <div className="heading-style-h2" style={cs.color ? { color: cs.color.secondary } : undefined}>{cs.audioPlayer2.title}</div>
                       <div
                         data-wf--spacer--variant="l"
                         className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
                       />
-                      <h2 className="copy-medium">{cs.audioPlayer2.subline}</h2>
+                      <h2 className="copy-medium" style={cs.color ? { color: cs.color.secondary } : undefined}>
+                        {cs.audioPlayer2.subline}
+                      </h2>
                     </div>
                     <div className="item-bottom">
                       <div data-player-file={`${cs.slug}-audio-2`} className="audioplayer-controls">
@@ -396,7 +455,19 @@ export default async function CaseStudyDetailPage({
                     }}
                   />
                 </div>
-                <div className="audio-preview-visual-wrapper is-player-2" />
+                <div
+                  className="audio-preview-visual-wrapper is-player-2"
+                  style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
+                >
+                  <CaseStudyVisual
+                    slug={cs.slug}
+                    variant={visualVariant(cs.useVisual)}
+                    speed={audioSpeed(cs.slug)}
+                    startOnPlay
+                    auto={false}
+                    playerSlug={`${cs.slug}-audio-2`}
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -497,7 +568,10 @@ export default async function CaseStudyDetailPage({
         )}
 
         {cs.awards.length > 0 && (
-          <section className="section-project-awrads">
+          <section
+            className="section-project-awrads"
+            style={cs.color ? { backgroundColor: cs.color.secondary } : undefined}
+          >
             <div className="page-padding">
               <div className="spacer-xl-start spacer-xl-end">
                 <h2 className="copy-medium">Awarded at</h2>
@@ -549,11 +623,20 @@ export default async function CaseStudyDetailPage({
             <div className="w-dyn-list">
               <div role="list" className="w-dyn-items">
                 <div role="listitem" className="w-dyn-item">
-                  <div className="page-teaser-wide-component">
+                  <div
+                    className="page-teaser-wide-component"
+                    style={nextCase.color ? { backgroundColor: nextCase.color.secondary } : undefined}
+                  >
                     <div
                       className="project-stage-visual-wrapper"
-                      style={nextCase.color ? { backgroundImage: `linear-gradient(135deg, ${nextCase.color.main}, ${nextCase.color.secondary})` } : undefined}
-                    />
+                      style={nextCase.color ? { color: nextCase.color.main } : undefined}
+                    >
+                      <CaseStudyVisual
+                        slug={nextCase.slug}
+                        variant={visualVariant(nextCase.useVisual)}
+                        speed={audioSpeed(nextCase.slug)}
+                      />
+                    </div>
                     <div className="z-index-1">
                       <div
                         data-wf--box-inner-text--variant="is-next-case-study-teaser"
@@ -582,12 +665,12 @@ export default async function CaseStudyDetailPage({
                             <Link
                               aria-hidden="true"
                               aria-label="Read Case"
-                              href={`/case-studies/${nextCase.slug}`}
+                              href={`/project/${nextCase.slug}`}
                               className="cta-link-full-cover w-inline-block"
                             />
                             <Link
                               aria-label="Read Case"
-                              href={`/case-studies/${nextCase.slug}`}
+                              href={`/project/${nextCase.slug}`}
                               className="cta-link w-inline-block"
                             >
                               <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34" />

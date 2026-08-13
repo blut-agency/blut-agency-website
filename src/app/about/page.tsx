@@ -4,7 +4,9 @@ import Footer from "@/components/Footer";
 import { getLocations } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "About | blut",
+  title: "About Us – Meet the Team Behind blut’s Sonic Vision",
+  description:
+    "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
 };
 
 const HERO_VISUAL_START_LARGE = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1240 876" fill="none" data-visual-path="start" class="visual-svg">
@@ -108,7 +110,6 @@ export default function AboutPage() {
                 <div
                   data-visual-sound="base"
                   className="form"
-                  style={{ display: "contents" }}
                   dangerouslySetInnerHTML={{ __html: HERO_VISUAL_START_LARGE }}
                 />
               </div>
@@ -116,14 +117,12 @@ export default function AboutPage() {
                 <div
                   data-visual-sound="high"
                   className="form is-thin-line"
-                  style={{ display: "contents" }}
                   dangerouslySetInnerHTML={{ __html: HERO_VISUAL_START_THIN }}
                 />
               </div>
               <div className="visual-3-size">
                 <div
                   className="form is-end-scene"
-                  style={{ display: "contents" }}
                   dangerouslySetInnerHTML={{ __html: HERO_VISUAL_END }}
                 />
               </div>
@@ -295,7 +294,6 @@ export default function AboutPage() {
                                     <div
                                       data-visual-sound="base"
                                       className="form"
-                                      style={{ display: "contents" }}
                                       dangerouslySetInnerHTML={{ __html: OFFICE_VISUAL_START_LARGE }}
                                     />
                                   </div>
@@ -303,14 +301,12 @@ export default function AboutPage() {
                                     <div
                                       data-visual-sound="mid"
                                       className="form is-thin-line"
-                                      style={{ display: "contents" }}
                                       dangerouslySetInnerHTML={{ __html: OFFICE_VISUAL_START_THIN }}
                                     />
                                   </div>
                                   <div className="visual-2-size">
                                     <div
                                       className="form is-end-scene"
-                                      style={{ display: "contents" }}
                                       dangerouslySetInnerHTML={{ __html: OFFICE_VISUAL_END }}
                                     />
                                   </div>

@@ -43,7 +43,6 @@ export default function Header({ variant = "start-top" }: { variant?: "start-top
           >
             <div
               className="logo-component"
-              style={{ display: "contents" }}
               dangerouslySetInnerHTML={{ __html: LOGO_SVG }}
             />
           </Link>
@@ -62,10 +61,20 @@ export default function Header({ variant = "start-top" }: { variant?: "start-top
               );
             })}
           </nav>
-          <div className="navbar-mobile-toggle w-nav-button">
+          <div
+            className="navbar-mobile-toggle w-nav-button"
+            style={{ userSelect: "text" }}
+            aria-label="menu"
+            role="button"
+            tabIndex={0}
+            aria-controls="w-nav-overlay-0"
+            aria-haspopup="menu"
+            aria-expanded="false"
+          >
             <div className="w-icon-nav-menu" />
           </div>
         </div>
+        <div className="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0" />
       </div>
     </div>
   );

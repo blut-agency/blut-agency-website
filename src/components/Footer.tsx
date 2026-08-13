@@ -13,7 +13,6 @@ export default function Footer() {
       <div className="full-width-logo">
         <div
           className="logo-component"
-          style={{ display: "contents" }}
           dangerouslySetInnerHTML={{ __html: LOGO_SVG }}
         />
       </div>

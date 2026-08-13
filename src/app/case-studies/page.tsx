@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { getCaseStudies } from "@/lib/content";
 
+// Morph durations the live case study index uses, keyed by visual variant.
+const TEASER_SPEED: Record<number, number> = { 1: 8, 2: 10, 3: 10 };
+
 export const metadata: Metadata = {
-  title: "Case Studies | blut",
+  title: "Case Studies | See us in action",
+  description: "Words can only say so much. Check out our work and see what we can do.",
 };
 
 export default function CaseStudiesPage() {
@@ -51,8 +56,15 @@ export default function CaseStudiesPage() {
                 <section className="section-case-studies-teaser">
                   <div
                     className="case-study-teaser-visual"
-                    style={cs.color ? { backgroundImage: `linear-gradient(135deg, ${cs.color.main}, ${cs.color.secondary})` } : undefined}
-                  />
+                    style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
+                  >
+                    <CaseStudyVisual
+                      slug={cs.slug}
+                      variant={visualVariant(cs.useVisual)}
+                      speed={TEASER_SPEED[visualVariant(cs.useVisual)]}
+                      visualizationJson={cs.visualizationJson}
+                    />
+                  </div>
                   <div className="teaser-standard-background is-dark" />
                   <div className="page-teaser-wide-component">
                     <div className="page-padding">
@@ -81,12 +93,12 @@ export default function CaseStudiesPage() {
                             <Link
                               aria-hidden="true"
                               aria-label="Read more"
-                              href={`/case-studies/${cs.slug}`}
+                              href={`/project/${cs.slug}`}
                               className="cta-link-full-cover w-inline-block"
                             />
                             <Link
                               aria-label="Read more"
-                              href={`/case-studies/${cs.slug}`}
+                              href={`/project/${cs.slug}`}
                               className="cta-link w-inline-block"
                             >
                               <div className="cta-link-line" />

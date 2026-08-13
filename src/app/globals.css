@@ -4,3 +4,30 @@
   the root layout. Tailwind is intentionally not used here to avoid its
   preflight reset fighting with Webflow's own CSS.
 */
+
+/*
+  Page transition. The wrapper starts hidden and PageTransition fades it in on
+  arrival, then back out before routing away. Durations match the Webflow site.
+  Users who ask for reduced motion just get the page, no fade.
+*/
+.main-wrapper {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.main-wrapper.is-visible {
+  opacity: 1;
+}
+
+.main-wrapper.is-leaving {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-wrapper,
+  .main-wrapper.is-leaving {
+    opacity: 1;
+    transition: none;
+  }
+}
