@@ -131,7 +131,7 @@ export default function HomePage() {
         </div>
       </div>
     </section>
-    <section className="section-home-services">
+    <section className="section-home-cases">
       <div role="list" className="home-project-teaser-item-list">
         {TEASERS.map((t) => (
           <div role="listitem" className="_2-column-grid" key={t.href}>
