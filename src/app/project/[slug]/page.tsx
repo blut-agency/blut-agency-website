@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCaseStudies, getCaseStudyBySlug } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
+import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
 
 // Morph durations the live project pages use, per case study.
 // The "next case study" teaser at the foot of the page reuses the audio speed.
@@ -25,11 +26,6 @@ const AUDIO_SPEED: Record<string, number> = {
 const stageSpeed = (slug: string) => STAGE_SPEED[slug] ?? 10;
 const audioSpeed = (slug: string) => AUDIO_SPEED[slug] ?? 8;
 
-const SPINNER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24" class="spinner spinner">
-  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" opacity="0.2"></circle>
-  <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none"></path>
-</svg>`;
-
 const BUTTON_FORM = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form">
   <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path"></path>
 </svg>`;
@@ -37,29 +33,6 @@ const BUTTON_FORM = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBo
 const BUTTON_FORM_HIGHLIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form is-thin-line">
   <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path is-highlight"></path>
 </svg>`;
-
-function vimeoSrc(id: string, extra = "api=1&controls=0&loop=1&background=0&dnt=1") {
-  return `https://player.vimeo.com/video/${id}?${extra}`;
-}
-
-function PlayerSpinnerButtons({ size }: { size: "copy-medium" | "heading-style-h2" }) {
-  return (
-    <div className="player-toggle-button">
-      <div className={`player-loading-spinner ${size}`}>
-        <div
-          className="player-loading-spinner-inner"
-          dangerouslySetInnerHTML={{ __html: SPINNER_SVG }}
-        />
-      </div>
-      <button data-player="play-button" className="play-toggle">
-        <div className={`play-toggle-text ${size}`}>Play</div>
-      </button>
-      <button data-player="pause-button" className="play-toggle is-pause-button">
-        <div className={`play-toggle-text ${size}`}>Pause</div>
-      </button>
-    </div>
-  );
-}
 
 export function generateStaticParams() {
   return getCaseStudies().map((cs) => ({ slug: cs.slug }));

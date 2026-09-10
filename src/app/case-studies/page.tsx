@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
+import PageTeaser from "@/components/PageTeaser";
 import { getCaseStudies } from "@/lib/content";
 
 // Morph durations the live case study index uses, keyed by visual variant.
@@ -338,49 +339,21 @@ export default function CaseStudiesPage() {
         </div>
       </div>
     </section>
-        <section className="section-services-cases-teaser">
-          <div className="page-teaser-wide-component">
-            <div className="page-teaser-wide-background-color is-accent-2"></div>
-            <div className="container-large">
-              <div
-                data-wf--box-inner-text--variant="is-next-case-study-teaser"
-                className="item-inner w-variant-d9f4f337-c70e-b4e9-7a9a-312292f48761"
-              >
-                <div className="item-top w-variant-d9f4f337-c70e-b4e9-7a9a-312292f48761">
-                  <div className="content-placeholder-text">
-                    <p>
-                      [Placeholder — the Figma board only has an authoring note here (&quot;long text explaining that
-                      our work is guided by our sonic strategy + tools, leading into a Sonic Performance Tracker
-                      teaser&quot;), not real copy. Needs real body text before launch.]
-                    </p>
-                  </div>
-                  <div
-                    data-wf--spacer--variant="md"
-                    className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
-                  ></div>
-                  <h2 className="heading-style-h1">Like what you see? Get in touch.</h2>
-                </div>
-                <div className="item-bottom">
-                  <div
-                    data-wf--cta-link--variant="dark-text"
-                    className="cta-link-component w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"
-                  >
-                    <a
-                      aria-hidden="true"
-                      aria-label="Get in touch"
-                      href="#footer"
-                      className="cta-link-full-cover w-inline-block"
-                    ></a>
-                    <a aria-label="Get in touch" href="#footer" className="cta-link w-inline-block">
-                      <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"></div>
-                      <div className="cta-link-text">Read more</div>
-                    </a>
-                  </div>
-                </div>
-              </div>
+        {/* Board: dark teaser whose arrow points to About / Contact. Lead-in copy isn't written yet. */}
+        <PageTeaser
+          intro={
+            <div className="content-placeholder-text">
+              <p>
+                [Placeholder — the Figma board only has an authoring note here (&quot;long text explaining that our
+                work is guided by our sonic strategy + tools, leading into a Sonic Performance Tracker teaser&quot;),
+                not real copy. Needs real body text before launch.]
+              </p>
             </div>
-          </div>
-        </section>
+          }
+          heading="Like what you see? Get in touch."
+          href="/about"
+          ariaLabel="Get in touch"
+        />
         <Footer />
       </div>
     </>

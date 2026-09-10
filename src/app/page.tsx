@@ -7,22 +7,29 @@ import { getHomeSound } from "@/lib/content";
 // The three left/right teaser cards below the intro. `_2-column-grid` auto-
 // reverses on every 2nd item (see blut-dev.webflow.css), so this list
 // renders media-left/text-right, text-left/media-right, media-left/text-right.
-const TEASERS: { heading: ReactNode; href: string; label: string }[] = [
+// Photos come from the Figma board's home page mockup.
+const TEASERS: { heading: ReactNode; href: string; label: string; image: string; alt: string }[] = [
   {
     label: "Story",
     heading: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
     href: "/story",
+    image: "/images/home/teaser-story.jpg",
+    alt: "Nina Chuba in the Samsung spot",
   },
   {
     label: "Sonic Performance Tracker",
     heading: "Where is your brand in the sonic branding landscape, and where do you want to be?",
     href: "/spt",
+    image: "/images/home/teaser-spt.jpg",
+    alt: "The Sonic Performance Tracker dashboard on a laptop",
   },
   {
     label: "Cases",
+    image: "/images/home/teaser-cases.jpg",
+    alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
     heading: (
       <>
-        Music production, sound design, and 360º sonic strategy.
+        Music production, sound design, and 360° sonic strategy.
         <br />
         <br />
         See us in action.
@@ -136,12 +143,7 @@ export default function HomePage() {
         {TEASERS.map((t) => (
           <div role="listitem" className="_2-column-grid" key={t.href}>
             <div className="grid-item is-media">
-              <img
-                src="/images/placeholder.svg"
-                alt={`Placeholder — real photo for the ${t.label} teaser goes here`}
-                loading="lazy"
-                className="fit-cover-absolute"
-              />
+              <img src={t.image} alt={t.alt} loading="lazy" className="fit-cover-absolute" />
             </div>
             <div className="grid-item">
               <div className="grid-item-background-color" />

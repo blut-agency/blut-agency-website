@@ -114,7 +114,7 @@
       "title": "Feel the Vibe",
       "position": 3,
       "showOnHomepage": false,
-      "clientListHtml": "<ul><li>Content coming soon</li></ul>",
+      "clientListHtml": "<ul><li>Rockstar Energy</li></ul>",
       "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
       "collaboratorsHtml": "",
       "color": {
@@ -162,7 +162,7 @@
       "title": "All Purpose Sound",
       "position": 4,
       "showOnHomepage": false,
-      "clientListHtml": "<ul><li>Content coming soon</li></ul>",
+      "clientListHtml": "<ul><li>Postbank</li></ul>",
       "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
       "collaboratorsHtml": "",
       "color": {
@@ -210,13 +210,13 @@
       "title": "Reinventing a Classic",
       "position": 5,
       "showOnHomepage": false,
-      "clientListHtml": "<ul><li>Content coming soon</li></ul>",
+      "clientListHtml": "<ul><li>Germont</li></ul>",
       "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
       "collaboratorsHtml": "",
       "color": {
-        "main": "#ee1c1c",
-        "secondary": "#bcd9f2",
-        "slug": "red-sky"
+        "main": "#6183ff",
+        "secondary": "#ee1c1c",
+        "slug": "blue-red"
       },
       "useVisual": [
         true,

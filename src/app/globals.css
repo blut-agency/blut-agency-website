@@ -35,17 +35,14 @@
 /*
   Marks content ported from the Figma redesign board that still needs a real
   asset (photo, video, or interactive widget) before launch. Renders at the
-  aspect ratio the real media will use, so the layout reads correctly, but
-  the image itself is unmistakably a placeholder (grey card, "PLACEHOLDER"
-  label) rather than the site's usual gradient shapes, which could be
-  mistaken for finished design.
+  aspect ratio the real media will use, so the layout reads correctly. Square
+  corners, like every other media block on the site.
 */
 .content-placeholder {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 0.5rem;
 }
 
 .content-placeholder img {
@@ -58,8 +55,7 @@
 /*
   Same intent as .content-placeholder, but for a missing chunk of *copy*
   rather than missing media — e.g. the Cases page CTA, where the Figma board
-  only has an authoring note, not real body text. Keeps the dashed-box
-  treatment since there's no sensible aspect ratio for a paragraph.
+  only has an authoring note, not real body text.
 */
 .content-placeholder-text {
   display: flex;
@@ -69,7 +65,44 @@
   min-height: 8rem;
   padding: 1.5rem;
   border: 1px dashed currentColor;
-  border-radius: 0.5rem;
   opacity: 0.6;
   font-size: 0.875rem;
+}
+
+/*
+  16:9 video slot (MediaFrame). Bright text over the dark scrim that the case
+  study video controls already use; the "coming soon" label never takes clicks.
+  Full width so it also fills the centred media column of the two-column grid.
+*/
+.media-frame {
+  position: relative;
+  width: 100%;
+  color: var(--_color---copy-bright);
+  background-color: var(--_color---background-dark-1);
+}
+
+/*
+  The case study player bar drops below the video on small screens. The
+  "coming soon" label has nothing to control, so it stays over the still.
+*/
+.media-frame .media-frame-status {
+  position: absolute;
+  inset: auto 0% 0%;
+  pointer-events: none;
+}
+
+/*
+  On tablet and below the two-column grid gives media columns a fixed 1.2
+  aspect ratio (sized for the gradient visuals). Video columns keep 16:9.
+*/
+@media screen and (max-width: 991px) {
+  .grid-item.is-media.is-video {
+    aspect-ratio: auto;
+    flex: none;
+  }
+}
+
+/* Dark variant of the wide page teaser, as drawn on the Figma board. */
+.page-teaser-wide-background-color.is-dark {
+  background-color: var(--_color---background-dark-1);
 }
