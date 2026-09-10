@@ -74,7 +74,7 @@ export default function ServicesPage() {
             <div className="container-large">
               <div className="spacer-l-start spacer-l-end">
                 {PILLARS.map((pillar) => (
-                  <div key={pillar.anchor} className="spacer-l-start spacer-l-end">
+                  <div key={pillar.anchor} className="spacer-l-start spacer-l-end z-index-1">
                     <h2 className="copy-medium">{pillar.label}</h2>
                     <div
                       data-wf--spacer--variant="sm"
@@ -92,7 +92,10 @@ export default function ServicesPage() {
                       data-wf--spacer--variant="md"
                       className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
                     ></div>
-                    <div data-wf--cta-link--variant="dark-text" className="cta-link-component">
+                    <div
+                      data-wf--cta-link--variant="dark-text"
+                      className="cta-link-component w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34"
+                    >
                       <Link
                         aria-hidden="true"
                         aria-label="See it on the Sonic Performance Tracker"
@@ -104,7 +107,7 @@ export default function ServicesPage() {
                         href={`/spt#${pillar.anchor}`}
                         className="cta-link w-inline-block"
                       >
-                        <div className="cta-link-line" />
+                        <div className="cta-link-line w-variant-dee7867e-1b44-c2d3-0b3d-782590fc4f34" />
                         <div className="cta-link-text">Learn more</div>
                       </Link>
                     </div>

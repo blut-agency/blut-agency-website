@@ -102,6 +102,22 @@
   }
 }
 
+/*
+  "Read more" hover for panels whose full-cover link can't sit right next to
+  the CTA (the homepage cards span a photo column and a text column).
+  Hovering anywhere on a .cta-panel runs the same animation as embeds.css.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .cta-panel:hover .cta-link {
+    padding-left: 1.7rem;
+  }
+
+  .cta-panel:hover .cta-link .cta-link-line {
+    opacity: 1;
+    transform: translateX(0em);
+  }
+}
+
 /* Dark variant of the wide page teaser, as drawn on the Figma board. */
 .page-teaser-wide-background-color.is-dark {
   background-color: var(--_color---background-dark-1);

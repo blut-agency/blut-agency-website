@@ -141,9 +141,11 @@ export default function HomePage() {
     <section className="section-home-cases">
       <div role="list" className="home-project-teaser-item-list">
         {TEASERS.map((t) => (
-          <div role="listitem" className="_2-column-grid" key={t.href}>
+          <div role="listitem" className="_2-column-grid cta-panel" key={t.href}>
             <div className="grid-item is-media">
               <img src={t.image} alt={t.alt} loading="lazy" className="fit-cover-absolute" />
+              {/* The photo half links too; the visible CTA sits in the text half. */}
+              <Link aria-hidden="true" tabIndex={-1} href={t.href} className="cta-link-full-cover w-inline-block" />
             </div>
             <div className="grid-item">
               <div className="grid-item-background-color" />
