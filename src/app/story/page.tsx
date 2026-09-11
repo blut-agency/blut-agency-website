@@ -91,14 +91,22 @@ function slugify(client: string) {
 
 /** A full-width spot: optional lead-in copy, the video, then the client label. */
 function FullWidthSpot({ spot, copyFirst }: { spot: Spot; copyFirst: boolean }) {
+  // 50/50 like the page intros: client as a large headline left, the story right.
   const copy = (
     <div className="page-padding">
-      <div className="container-medium align-left">
-        <div className="spacer-l-start spacer-l-end">
-          <h2 className="copy-medium">{spot.client}</h2>
-          <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-          <div className="rich-text-custom w-richtext">
-            <p>{spot.text}</p>
+      <div className="container-large">
+        <div className="spacer-xl-start spacer-xl-end">
+          <div className="_2-column-grid">
+            <div className="grid-item">
+              <RevealText className="heading-style-h1" text={spot.client} />
+            </div>
+            <div className="grid-item">
+              <div className="services-item-inner-content">
+                <div className="rich-text-custom w-richtext">
+                  <p>{spot.text}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
