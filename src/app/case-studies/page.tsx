@@ -25,31 +25,24 @@ export default function CaseStudiesPage() {
         <div className="nav-distance" />
         <section className="section-case-studies-intro">
           <div className="page-padding">
-            <div className="container-large align-left">
-              <div className="container-medium align-left">
-                <div
-                  data-wf--spacer--variant="xxl"
-                  className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
-                />
-                <div className="text-component">
+          <div className="container-large">
+            {/* 50/50 like the homepage, About and Services intros: headline left, supporting copy right. */}
+            <div className="spacer-xl-start spacer-xl-end">
+              <div className="_2-column-grid">
+                <div className="grid-item">
                   <RevealText as="h1" className="heading-style-h1" text="See us in action." />
-                  <div className="spacer-slot">
-                    <div
-                      data-wf--spacer--variant="xl"
-                      className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"
-                    />
-                  </div>
-                  <div className="rich-text-custom w-richtext">
-                    <p>Words can only say so much. Check out our work and see what we can do.</p>
+                </div>
+                <div className="grid-item">
+                  <div className="services-item-inner-content">
+                    <div className="rich-text-custom w-richtext">
+                      <p>Words can only say so much. Check out our work and see what we can do.</p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  data-wf--spacer--variant="xxl"
-                  className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
-                />
               </div>
             </div>
           </div>
+        </div>
         </section>
         <div className="w-dyn-list">
           <div role="list" className="w-dyn-items">
