@@ -123,18 +123,23 @@ export default function HomePage() {
     <section className="section-home-intro">
       <div className="intro-section-nav-white-backgorund"></div>
       <div className="page-padding">
-        <div className="container-medium">
-          <div data-wf--spacer--variant="xxl" className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"></div>
-          <div className="text-component">
-            <h2 className="heading-style-h1">Do you even know if your music strategy works?</h2>
-            <div className="spacer-slot">
-              <div data-wf--spacer--variant="xl" className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"></div>
-            </div>
-            <div className="rich-text-custom w-richtext">
-              <p>blut creates unique music strategies - and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience. </p>
+        <div className="container-large">
+          {/* 50/50 like the sections below: large question left, supporting copy right.
+              Top spacing clears the nav bar that overlaps the start of this section. */}
+          <div className="spacer-xl-start spacer-xxl-end">
+            <div className="_2-column-grid">
+              <div className="grid-item">
+                <h2 className="heading-style-h1">Do you even know if your music strategy works?</h2>
+              </div>
+              <div className="grid-item">
+                <div className="services-item-inner-content">
+                  <div className="rich-text-custom w-richtext">
+                    <p>blut creates unique music strategies - and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div data-wf--spacer--variant="xxl" className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"></div>
         </div>
       </div>
     </section>
