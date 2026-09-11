@@ -185,12 +185,15 @@ export default function HomePage() {
         <div className="container-large">
           {/* Same 50/50 treatment as the intro: label and question left, copy and button right. */}
           <div className="spacer-xl-start spacer-xxl-end">
-            <div className="_2-column-grid">
-              <div className="grid-item">
-                <div className="eyebrow-wrapper">
+            {/* Eyebrow sits above the grid so the right-hand copy lines up with the headline. */}
+            <div className="eyebrow-wrapper">
                 <div className="copy-small">About</div>
                 <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
               </div>
+            {/* Extra wrapper keeps the grid a first child, so _2-column-grid:nth-child(2n) doesn't reverse it. */}
+            <div>
+            <div className="_2-column-grid">
+              <div className="grid-item">
                 <h2 className="heading-style-h1">Why do you need blut?</h2>
               </div>
               <div className="grid-item">
@@ -210,6 +213,7 @@ export default function HomePage() {
                 </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
