@@ -159,10 +159,13 @@ export default function StoryPage() {
 
         <GradientBanner form="story-hero" background="var(--_color---accent-color-3)" line="var(--_color---accent-color-1)">
           <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
-          <p className="copy-medium">
-            What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out
-            (it’s blut, of course).
-          </p>
+          <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
+          <div className="container-small">
+            <p className="copy-medium">
+              What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out
+              (it’s blut, of course).
+            </p>
+          </div>
         </GradientBanner>
 
         <FullWidthSpot spot={OPENER} copyFirst={false} />
