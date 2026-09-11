@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import RevealText from "@/components/RevealText";
 
 /**
  * The wide closing teaser at the bottom of the Story, SPT and Cases pages
@@ -17,7 +18,7 @@ export default function PageTeaser({
 }: {
   /** Optional copy above the heading (the Cases page leads with it). */
   intro?: ReactNode;
-  heading: ReactNode;
+  heading: string;
   /** Optional body copy between heading and CTA. */
   text?: ReactNode;
   href: string;
@@ -43,7 +44,7 @@ export default function PageTeaser({
                   ></div>
                 </>
               )}
-              <h2 className="heading-style-h1">{heading}</h2>
+              <RevealText className="heading-style-h1" text={heading} />
               {text && (
                 <>
                   <div

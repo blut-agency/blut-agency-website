@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { getCaseStudies, getCaseStudyBySlug } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
+import RevealText from "@/components/RevealText";
 
 // Morph durations the live project pages use, per case study.
 // The "next case study" teaser at the foot of the page reuses the audio speed.
@@ -95,7 +96,7 @@ export default async function CaseStudyDetailPage({
               data-wf--spacer--variant="sm"
               className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"
             />
-            <h1 className="heading-style-h1">{cs.title}</h1>
+            <RevealText as="h1" className="heading-style-h1" text={cs.title} />
           </div>
           <div
             className="project-stage-visual-wrapper"
@@ -589,7 +590,7 @@ export default async function CaseStudyDetailPage({
             <div className="page-padding">
               <div className="container-large align-left">
                 <div className="spacer-xxl-start spacer-xl-end">
-                  <h2 className="heading-style-h1">Next Case Study:</h2>
+                  <RevealText className="heading-style-h1" text="Next Case Study:" />
                 </div>
               </div>
             </div>
@@ -628,7 +629,7 @@ export default async function CaseStudyDetailPage({
                             data-wf--spacer--variant="md"
                             className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
                           />
-                          <h2 className="heading-style-h1">{nextCase.title}</h2>
+                          <RevealText className="heading-style-h1" text={nextCase.title} />
                         </div>
                         <div className="item-bottom">
                           <div

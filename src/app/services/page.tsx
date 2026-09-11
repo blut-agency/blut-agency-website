@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
   title: "Our Services – Sonic Branding, Music Strategy & Measurement | blut",
@@ -45,7 +46,7 @@ export default function ServicesPage() {
                   className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
                 ></div>
                 <div className="text-component">
-                  <h1 className="heading-style-h1">So, what do we do? </h1>
+                  <RevealText as="h1" className="heading-style-h1" text="So, what do we do?" />
                   <div className="spacer-slot">
                     <div
                       data-wf--spacer--variant="xl"
@@ -138,7 +139,7 @@ export default function ServicesPage() {
                     data-wf--spacer--variant="md"
                     className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
                   ></div>
-                  <h2 className="heading-style-h1">The Sonic Performance Tracker</h2>
+                  <RevealText className="heading-style-h1" text="The Sonic Performance Tracker" />
                 </div>
                 <div className="item-bottom">
                   <div

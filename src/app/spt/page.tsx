@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MediaFrame from "@/components/MediaFrame";
 import PageTeaser from "@/components/PageTeaser";
+import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
   title: "Sonic Performance Tracker – Measure the Impact of Your Sound | blut",
@@ -51,7 +52,7 @@ export default function SPTPage() {
                   {/* Section name, top-left over the gradient. */}
                   <div className="container-large z-index-1 text-color-bright">
                     <div className="page-padding spacer-l-start">
-                      <h2 className="heading-style-h1 hyphens">Performance &amp; Measurement</h2>
+                      <RevealText className="heading-style-h1 hyphens" text="Performance & Measurement" />
                     </div>
                   </div>
                 </div>
@@ -249,7 +250,7 @@ export default function SPTPage() {
                   {/* Section name, top-left over the gradient. */}
                   <div className="container-large z-index-1 text-color-bright">
                     <div className="page-padding spacer-l-start">
-                      <h2 className="heading-style-h1 hyphens">Sonic Strategy</h2>
+                      <RevealText className="heading-style-h1 hyphens" text="Sonic Strategy" />
                     </div>
                   </div>
                 </div>
@@ -366,7 +367,7 @@ export default function SPTPage() {
                   {/* Section name, top-left over the gradient. */}
                   <div className="container-large z-index-1 text-color-bright">
                     <div className="page-padding spacer-l-start">
-                      <h2 className="heading-style-h1 hyphens">Content Production</h2>
+                      <RevealText className="heading-style-h1 hyphens" text="Content Production" />
                     </div>
                   </div>
                 </div>

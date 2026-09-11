@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getLocations } from "@/lib/content";
+import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
   title: "About Us – Meet the Team Behind blut’s Sonic Vision",
@@ -73,7 +74,7 @@ export default function AboutPage() {
                   className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
                 />
                 <div className="text-component">
-                  <h1 className="heading-style-h1">We are blut.</h1>
+                  <RevealText as="h1" className="heading-style-h1" text="We are blut." />
                   <div className="spacer-slot">
                     <div
                       data-wf--spacer--variant="xl"
@@ -133,11 +134,7 @@ export default function AboutPage() {
             <div className="spacer-xxl-start spacer-xxl-end">
               <div className="hero-content-wrapper">
                 <h2 className="copy-small">Mission Statement</h2>
-                <p className="heading-style-h1">
-                  Born out of Creativity. <br />
-                  Rooted in Insight. <br />
-                  Embedded in Music Culture.
-                </p>
+                <RevealText as="p" className="heading-style-h1" text={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]} />
               </div>
             </div>
           </div>

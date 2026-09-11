@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import GradientBanner from "@/components/GradientBanner";
 import MediaFrame from "@/components/MediaFrame";
 import PageTeaser from "@/components/PageTeaser";
+import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
   title: "Story – A 360° Approach to Sonic Storytelling | blut",
@@ -157,7 +158,7 @@ export default function StoryPage() {
         <div className="nav-distance"></div>
 
         <GradientBanner form="story-hero" background="var(--_color---accent-color-3)" line="var(--_color---accent-color-1)">
-          <h1 className="heading-style-h1">A 360° Approach to Sonic Storytelling</h1>
+          <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
           <p className="copy-medium">
             What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out
             (it’s blut, of course).
@@ -168,14 +169,14 @@ export default function StoryPage() {
         <SpotRows spots={ROWS_BEFORE_INTERLUDE} />
 
         <GradientBanner form="story-banner-core" background="#dfe5ac" line="var(--_color---accent-color-1)">
-          <h2 className="heading-style-h1">Sound lives at the core of what we do.</h2>
+          <RevealText className="heading-style-h1" text="Sound lives at the core of what we do." />
         </GradientBanner>
 
         <FullWidthSpot spot={INTERLUDE} copyFirst />
         <SpotRows spots={ROWS_AFTER_INTERLUDE} />
 
         <GradientBanner form="story-banner-connector" background="#9747ff" line="var(--_color---accent-color-2)">
-          <h2 className="heading-style-h1">It’s not background music, it’s a connector</h2>
+          <RevealText className="heading-style-h1" text="It’s not background music, it’s a connector" />
         </GradientBanner>
 
         <FullWidthSpot spot={CLOSER} copyFirst />

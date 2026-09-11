@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,7 +8,7 @@ import RevealText from "@/components/RevealText";
 // reverses on every 2nd item (see blut-dev.webflow.css), so this list
 // renders media-left/text-right, text-left/media-right, media-left/text-right.
 // Photos come from the Figma board's home page mockup.
-const TEASERS: { heading: ReactNode; href: string; label: string; image: string; alt: string }[] = [
+const TEASERS: { heading: string | string[]; href: string; label: string; image: string; alt: string }[] = [
   {
     label: "Story",
     heading: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
@@ -28,14 +27,7 @@ const TEASERS: { heading: ReactNode; href: string; label: string; image: string;
     label: "Cases",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    heading: (
-      <>
-        Music production, sound design, and 360° sonic strategy.
-        <br />
-        <br />
-        See us in action.
-      </>
-    ),
+    heading: ["Music production, sound design, and 360° sonic strategy.", "", "See us in action."],
     href: "/case-studies",
   },
 ];
@@ -158,7 +150,7 @@ export default function HomePage() {
               <div className="text-color-grey">
                 <div data-wf--box-inner-text--variant="big" className="item-inner">
                   <div className="item-top">
-                    <h2 className="heading-style-h1">{t.heading}</h2>
+                    <RevealText className="heading-style-h1" text={t.heading} />
                   </div>
                   <div className="item-bottom">
                     <div data-wf--cta-link--variant="bright-text" className="cta-link-component">

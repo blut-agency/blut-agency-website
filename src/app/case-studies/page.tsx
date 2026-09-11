@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import PageTeaser from "@/components/PageTeaser";
 import { getCaseStudies } from "@/lib/content";
+import RevealText from "@/components/RevealText";
 
 // Morph durations the live case study index uses, keyed by visual variant.
 const TEASER_SPEED: Record<number, number> = { 1: 8, 2: 10, 3: 10 };
@@ -31,7 +32,7 @@ export default function CaseStudiesPage() {
                   className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
                 />
                 <div className="text-component">
-                  <h1 className="heading-style-h1">See us in action.</h1>
+                  <RevealText as="h1" className="heading-style-h1" text="See us in action." />
                   <div className="spacer-slot">
                     <div
                       data-wf--spacer--variant="xl"
@@ -87,7 +88,7 @@ export default function CaseStudiesPage() {
                             data-wf--spacer--variant="md"
                             className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
                           />
-                          <h2 className="heading-style-h1">{cs.title}</h2>
+                          <RevealText className="heading-style-h1" text={cs.title} />
                         </div>
                         <div className="item-bottom w-variant-d7424809-4d85-67af-9c2b-41f37302e9c1">
                           <div data-wf--cta-link--variant="bright-text" className="cta-link-component">
