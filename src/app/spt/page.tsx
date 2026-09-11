@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GradientBanner from "@/components/GradientBanner";
 import MediaFrame from "@/components/MediaFrame";
 import PageTeaser from "@/components/PageTeaser";
 
@@ -21,11 +20,9 @@ export default function SPTPage() {
       Dedicated Tracker page. The Figma board's SPT section opens with the sales
       video; the Sonic Strategy and Content Production details follow further down.
     */}
-    <GradientBanner form="spt-hero" background="#ff6004" line="var(--_color---background-light-2)">
-      <h1 className="heading-style-h1">The Sonic Performance Tracker</h1>
-      <p className="copy-medium">Where is your brand in the sonic branding landscape, and where do you want to be?</p>
-    </GradientBanner>
     <section className="section-project-video-after-quote">
+      {/* No visible header: the page opens straight on the sales video. */}
+      <h1 className="visually-hidden">The Sonic Performance Tracker</h1>
       <MediaFrame id="spt-sales-video" poster="/images/spt/sales-video-poster.jpg" alt="Sonic Performance Tracker sales video" />
     </section>
     <section id="performance" className="section-services">
