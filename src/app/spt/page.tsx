@@ -147,37 +147,7 @@ export default function SPTPage() {
     </section>
     <section id="sonic-strategy">
       <div className="_2-column-grid">
-              <div className="grid-item is-media">
-                <div className="services-visual-slot">
-                  <div className="services-sonic-visual">
-                    <div data-visual-start-on-play="false" data-visual-form="" data-visual-speed="10" data-visual-auto="true" data-visual-player="" className="visual-canvas">
-                      <div data-visual-form-rotate="40%" data-visual-form-width="80%" className="visual-3-size">
-                        <div data-visual-sound="base" className="form"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 876" fill="none" data-visual-path="start" class="visual-svg">
-                            <path d="M986.363 20.0661C853.155 16.9438 750.307 124.811 742.985 254.604C739.806 275.183 732.771 292.328 714.674 302.873C698.845 312.24 680.412 315.967 662.995 322.274C650.419 326.767 638.292 332.339 626.695 338.914C603.189 351.316 585.385 371.434 561.075 380.39C539.258 388.323 517.846 377.093 498.31 365.943C482.101 356.557 464.839 348.094 446.992 342.049C425.237 333.909 399.431 330.812 377.77 326.119C359.125 322.087 342.717 312.788 333.88 295.245C323.255 274.99 319.304 250.441 307.458 230.367C245.297 117.607 72.7474 126.856 30.0416 250.51C6.26774 317.35 25.156 388.597 81.9454 433.233C87.3732 438.374 92.396 443.541 96.5899 448.963C120.177 476.971 108.486 513.635 101.444 546.13C52.7001 802.948 389.23 965.354 559.978 768.833C570.161 759.902 582.188 752.08 593.648 749.058C613.702 743.193 634.933 750.909 654.326 758.288C789.13 814.235 954.918 719.124 973.482 573.514C975.265 562.427 976.835 552.188 980.175 541.836C986.924 519.774 1002.04 506.842 1023.73 498.709C1034.32 494.614 1044.97 491.753 1056.08 488.413C1307.98 411.227 1257.66 19.2061 986.5 20.0661H986.363Z" stroke="currentColor" class="visual-svg-path-large"></path>
-                          </svg>` }} /></div>
-                      </div>
-                      <div data-visual-form-rotate="40%" data-visual-form-width="80%" className="visual-3-size">
-                        <div data-visual-sound="high" className="form is-thin-line"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 876" fill="none" data-visual-path="start" class="visual-svg">
-                            <path d="M986.363 20.0661C853.155 16.9438 750.307 124.811 742.985 254.604C739.806 275.183 732.771 292.328 714.674 302.873C698.845 312.24 680.412 315.967 662.995 322.274C650.419 326.767 638.292 332.339 626.695 338.914C603.189 351.316 585.385 371.434 561.075 380.39C539.258 388.323 517.846 377.093 498.31 365.943C482.101 356.557 464.839 348.094 446.992 342.049C425.237 333.909 399.431 330.812 377.77 326.119C359.125 322.087 342.717 312.788 333.88 295.245C323.255 274.99 319.304 250.441 307.458 230.367C245.297 117.607 72.7474 126.856 30.0416 250.51C6.26774 317.35 25.156 388.597 81.9454 433.233C87.3732 438.374 92.396 443.541 96.5899 448.963C120.177 476.971 108.486 513.635 101.444 546.13C52.7001 802.948 389.23 965.354 559.978 768.833C570.161 759.902 582.188 752.08 593.648 749.058C613.702 743.193 634.933 750.909 654.326 758.288C789.13 814.235 954.918 719.124 973.482 573.514C975.265 562.427 976.835 552.188 980.175 541.836C986.924 519.774 1002.04 506.842 1023.73 498.709C1034.32 494.614 1044.97 491.753 1056.08 488.413C1307.98 411.227 1257.66 19.2061 986.5 20.0661H986.363Z" stroke="currentColor" class="visual-svg-path-thin"></path>
-                          </svg>` }} /></div>
-                      </div>
-                      <div className="visual-3-size">
-                        <div className="form is-end-scene"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 858" fill="none" data-visual-path="end" class="visual-svg">
-                            <path d="M978.671 207.503C964.531 207.49 950.397 208.689 936.469 211.112C914.932 214.376 896.72 223.044 876.212 218.311C851.526 211.269 843.809 178.792 834.129 156.879C743.451 -71.2421 372.886 4.03051 384.304 255.163C384.173 279.197 383.087 304.248 370.201 324.253C354.781 348.344 317.861 374.361 288.313 372.233C274.122 371.43 260.59 365.812 247.315 360.339C180.289 327.561 93.4005 349.404 49.0654 409.167C22.4531 444.468 14.1657 492.116 23.9964 534.912C37.0391 595.302 89.4544 643.396 149.988 653.715C176.33 658.266 205.32 654.807 227.729 670.349C238.463 677.366 248.269 689.405 255.829 701.043C365.528 914.828 707.749 867.412 751.319 628.588C754.117 615.106 755.302 604.397 759.361 592.465C764.223 578.348 772.316 583.633 780.026 591.103C791.206 602.106 801.124 615.306 813.935 627.12C914.487 722.34 1091.21 701.256 1173.63 592.785C1202.59 555.613 1218.35 507.011 1219.68 459.407C1226.76 324.096 1114.68 206.027 978.797 207.503H978.671Z" stroke="currentColor" stroke-width="40" class="visual-svg-path-large"></path>
-                          </svg>` }} /></div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Section name, top-left over the gradient. */}
-                  <div className="container-large z-index-1 text-color-bright">
-                    <div className="page-padding spacer-l-start">
-                      <h2 className="heading-style-h1 hyphens">Sonic Strategy</h2>
-                    </div>
-                  </div>
-                </div>
-                <div className="visual-background-noise"></div>
-              </div>
-              <div className="grid-item">
+              <div className="grid-item is-player">
                 <div className="item-inner is-case-study">
                   <div>
                     <h3 className="heading-style-h2">Your brand needs a Sonic Identity – but which one?</h3>
@@ -254,6 +224,36 @@ export default function SPTPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="grid-item is-media">
+                <div className="services-visual-slot">
+                  <div className="services-sonic-visual">
+                    <div data-visual-start-on-play="false" data-visual-form="" data-visual-speed="10" data-visual-auto="true" data-visual-player="" className="visual-canvas">
+                      <div data-visual-form-rotate="40%" data-visual-form-width="80%" className="visual-3-size">
+                        <div data-visual-sound="base" className="form"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 876" fill="none" data-visual-path="start" class="visual-svg">
+                            <path d="M986.363 20.0661C853.155 16.9438 750.307 124.811 742.985 254.604C739.806 275.183 732.771 292.328 714.674 302.873C698.845 312.24 680.412 315.967 662.995 322.274C650.419 326.767 638.292 332.339 626.695 338.914C603.189 351.316 585.385 371.434 561.075 380.39C539.258 388.323 517.846 377.093 498.31 365.943C482.101 356.557 464.839 348.094 446.992 342.049C425.237 333.909 399.431 330.812 377.77 326.119C359.125 322.087 342.717 312.788 333.88 295.245C323.255 274.99 319.304 250.441 307.458 230.367C245.297 117.607 72.7474 126.856 30.0416 250.51C6.26774 317.35 25.156 388.597 81.9454 433.233C87.3732 438.374 92.396 443.541 96.5899 448.963C120.177 476.971 108.486 513.635 101.444 546.13C52.7001 802.948 389.23 965.354 559.978 768.833C570.161 759.902 582.188 752.08 593.648 749.058C613.702 743.193 634.933 750.909 654.326 758.288C789.13 814.235 954.918 719.124 973.482 573.514C975.265 562.427 976.835 552.188 980.175 541.836C986.924 519.774 1002.04 506.842 1023.73 498.709C1034.32 494.614 1044.97 491.753 1056.08 488.413C1307.98 411.227 1257.66 19.2061 986.5 20.0661H986.363Z" stroke="currentColor" class="visual-svg-path-large"></path>
+                          </svg>` }} /></div>
+                      </div>
+                      <div data-visual-form-rotate="40%" data-visual-form-width="80%" className="visual-3-size">
+                        <div data-visual-sound="high" className="form is-thin-line"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 876" fill="none" data-visual-path="start" class="visual-svg">
+                            <path d="M986.363 20.0661C853.155 16.9438 750.307 124.811 742.985 254.604C739.806 275.183 732.771 292.328 714.674 302.873C698.845 312.24 680.412 315.967 662.995 322.274C650.419 326.767 638.292 332.339 626.695 338.914C603.189 351.316 585.385 371.434 561.075 380.39C539.258 388.323 517.846 377.093 498.31 365.943C482.101 356.557 464.839 348.094 446.992 342.049C425.237 333.909 399.431 330.812 377.77 326.119C359.125 322.087 342.717 312.788 333.88 295.245C323.255 274.99 319.304 250.441 307.458 230.367C245.297 117.607 72.7474 126.856 30.0416 250.51C6.26774 317.35 25.156 388.597 81.9454 433.233C87.3732 438.374 92.396 443.541 96.5899 448.963C120.177 476.971 108.486 513.635 101.444 546.13C52.7001 802.948 389.23 965.354 559.978 768.833C570.161 759.902 582.188 752.08 593.648 749.058C613.702 743.193 634.933 750.909 654.326 758.288C789.13 814.235 954.918 719.124 973.482 573.514C975.265 562.427 976.835 552.188 980.175 541.836C986.924 519.774 1002.04 506.842 1023.73 498.709C1034.32 494.614 1044.97 491.753 1056.08 488.413C1307.98 411.227 1257.66 19.2061 986.5 20.0661H986.363Z" stroke="currentColor" class="visual-svg-path-thin"></path>
+                          </svg>` }} /></div>
+                      </div>
+                      <div className="visual-3-size">
+                        <div className="form is-end-scene"><span className="visual-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 1240 858" fill="none" data-visual-path="end" class="visual-svg">
+                            <path d="M978.671 207.503C964.531 207.49 950.397 208.689 936.469 211.112C914.932 214.376 896.72 223.044 876.212 218.311C851.526 211.269 843.809 178.792 834.129 156.879C743.451 -71.2421 372.886 4.03051 384.304 255.163C384.173 279.197 383.087 304.248 370.201 324.253C354.781 348.344 317.861 374.361 288.313 372.233C274.122 371.43 260.59 365.812 247.315 360.339C180.289 327.561 93.4005 349.404 49.0654 409.167C22.4531 444.468 14.1657 492.116 23.9964 534.912C37.0391 595.302 89.4544 643.396 149.988 653.715C176.33 658.266 205.32 654.807 227.729 670.349C238.463 677.366 248.269 689.405 255.829 701.043C365.528 914.828 707.749 867.412 751.319 628.588C754.117 615.106 755.302 604.397 759.361 592.465C764.223 578.348 772.316 583.633 780.026 591.103C791.206 602.106 801.124 615.306 813.935 627.12C914.487 722.34 1091.21 701.256 1173.63 592.785C1202.59 555.613 1218.35 507.011 1219.68 459.407C1226.76 324.096 1114.68 206.027 978.797 207.503H978.671Z" stroke="currentColor" stroke-width="40" class="visual-svg-path-large"></path>
+                          </svg>` }} /></div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Section name, top-left over the gradient. */}
+                  <div className="container-large z-index-1 text-color-bright">
+                    <div className="page-padding spacer-l-start">
+                      <h2 className="heading-style-h1 hyphens">Sonic Strategy</h2>
+                    </div>
+                  </div>
+                </div>
+                <div className="visual-background-noise"></div>
               </div>
             </div>
     </section>
