@@ -126,7 +126,7 @@ export default function HomePage() {
         <div className="container-large">
           {/* 50/50 like the sections below: large question left, supporting copy right.
               Top spacing clears the nav bar that overlaps the start of this section. */}
-          <div className="spacer-xl-start spacer-xxl-end">
+          <div className="spacer-xl-start spacer-xl-end">
             <div className="_2-column-grid">
               <div className="grid-item">
                 <h2 className="heading-style-h1">Do you even know if your music strategy works?</h2>
@@ -184,7 +184,7 @@ export default function HomePage() {
       <div className="page-padding">
         <div className="container-large">
           {/* Same 50/50 treatment as the intro: label and question left, copy and button right. */}
-          <div className="spacer-xl-start spacer-xxl-end">
+          <div className="spacer-xl-start spacer-xl-end">
             {/* Eyebrow sits above the grid so the right-hand copy lines up with the headline. */}
             <div className="eyebrow-wrapper">
                 <div className="copy-small">About</div>
