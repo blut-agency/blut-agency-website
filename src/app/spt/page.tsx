@@ -137,34 +137,13 @@ export default function SPTPage() {
         </div>
       </div>
     </section>
-    <section className="section-services background-color-light-1">
-      <div className="page-padding">
-        <div className="container-large">
-          <div className="_2-column-grid">
-            <div className="grid-item is-media">
-              <img
-                src="/images/spt/dashboard-zoom-2.jpg"
-                alt="Sonic Strategy Score in the Sonic Performance Tracker dashboard"
-                loading="lazy"
-              />
-            </div>
-            <div className="grid-item">
-              <div className="item-inner no-padding">
-                <div className="services-item-inner-content">
-                  <h3 className="heading-style-h2">Your brand’s cultural pulse, visualized.</h3>
-                  <div className="content-placeholder-text">
-                    <p>
-                      [Placeholder — how the Tracker works: what it measures, where the data comes from and how the
-                      Sonic Strategy Score is calculated. The board only shows an &quot;Example Zoom in on Data GIF&quot;
-                      here, so this needs copy (and the GIF) from the team.]
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    {/* Full-width like the sales video; the board has an animated data zoom planned here. */}
+    <section className="section-project-video-after-quote">
+      <MediaFrame
+        id="spt-dashboard-zoom"
+        poster="/images/spt/dashboard-zoom-2.jpg"
+        alt="Sonic Strategy Score in the Sonic Performance Tracker dashboard"
+      />
     </section>
     <section id="sonic-strategy" className="section-services">
       <div className="services-section-component">
