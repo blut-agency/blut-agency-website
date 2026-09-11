@@ -118,6 +118,15 @@
   }
 }
 
+/*
+  The Webflow export gives .services-visual-slot a column flex-flow and
+  justify-content but never display:flex, so those rules were inert. Turning
+  it on lets the SPT section names sit at the bottom of the gradient panel.
+*/
+.services-visual-slot {
+  display: flex;
+}
+
 /* Keeps a heading for screen readers and search engines without showing it. */
 .visually-hidden {
   position: absolute;
