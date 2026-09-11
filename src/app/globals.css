@@ -116,6 +116,24 @@
     opacity: 1;
     transform: translateX(0em);
   }
+
+  /* Homepage teaser cards: the photo zooms in a little and the black text
+     panel lifts slightly towards the site's second dark tone. */
+  .cta-panel .fit-cover-absolute {
+    transition: transform 0.3s ease;
+  }
+
+  .cta-panel .grid-item-background-color {
+    transition: background-color 0.3s ease;
+  }
+
+  .cta-panel:hover .fit-cover-absolute {
+    transform: scale(1.05);
+  }
+
+  .cta-panel:hover .grid-item-background-color {
+    background-color: color-mix(in srgb, var(--_color---background-dark-2) 50%, var(--_color---background-dark-1));
+  }
 }
 
 /*
