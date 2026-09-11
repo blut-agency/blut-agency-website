@@ -129,7 +129,9 @@ export default function AboutPage() {
               <div className="hero-content-wrapper">
                 <h2 className="copy-small">Mission Statement</h2>
                 <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-                <RevealText as="p" className="heading-style-h1" text={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]} />
+                <div className="container-small">
+                  <RevealText as="p" className="heading-style-h1" text={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]} />
+                </div>
               </div>
             </div>
           </div>

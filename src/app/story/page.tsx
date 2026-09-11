@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GradientBanner from "@/components/GradientBanner";
-import MediaFrame from "@/components/MediaFrame";
+import VideoSpot from "@/components/VideoSpot";
+import VideoPanel from "@/components/VideoPanel";
 import PageTeaser from "@/components/PageTeaser";
 import RevealText from "@/components/RevealText";
 
@@ -85,68 +86,39 @@ const CLOSER: Spot = {
   text: "To sum it all up… we love all things music and all things audio. Here’s one last spot with lots of different styles and sounds in it, because you can combine metal with salsa and trap if you want to.",
 };
 
-function slugify(client: string) {
-  return `story-${client.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
-}
-
-/** A full-width spot: optional lead-in copy, the video, then the client label. */
-function FullWidthSpot({ spot, copyFirst }: { spot: Spot; copyFirst: boolean }) {
-  // 50/50 like the page intros: client as a large headline left, the story right.
-  const copy = (
-    <div className="page-padding">
-      <div className="container-large">
-        <div className="spacer-xl-start spacer-xl-end">
-          <div className="_2-column-grid">
-            <div className="grid-item">
-              <RevealText className="heading-style-h1" text={spot.client} />
-            </div>
-            <div className="grid-item">
-              <div className="services-item-inner-content">
-                <div className="rich-text-custom w-richtext">
-                  <p>{spot.text}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+/** A full-width spot: copy over the still, "Play Video" on hover, video in a lightbox. */
+function FullWidthSpot({ spot }: { spot: Spot }) {
   return (
     <section className="section-story-spot">
-      {copyFirst && copy}
-      <MediaFrame id={slugify(spot.client)} poster={spot.image} alt={`${spot.client} spot`} vimeoId={spot.vimeoId} />
-      {!copyFirst && copy}
+      <VideoSpot client={spot.client} text={spot.text} image={spot.image} vimeoId={spot.vimeoId} />
     </section>
   );
 }
 
 /**
- * Video and copy side by side, 50/50, in the Services page's two-column layout.
- * Sections alternate grey and white like the board's text panels.
+ * Story rows, 50/50 and full width like the SPT sections: the still covers the
+ * media half (hover zoom, "Play Video", lightbox) and the copy sits in the
+ * padded text half. Sections alternate grey and white like the board.
  */
 function SpotRows({ spots }: { spots: Spot[] }) {
   return (
     <>
       {spots.map((spot, i) => (
-        <section
-          className={i % 2 === 0 ? "section-services background-color-light-1" : "section-services"}
-          key={spot.client}
-        >
-          <div className="page-padding">
-            <div className="container-large">
-              <div className="_2-column-grid">
-                <div className="grid-item is-media is-video">
-                  <MediaFrame id={slugify(spot.client)} poster={spot.image} alt={`${spot.client} spot`} vimeoId={spot.vimeoId} />
-                </div>
-                <div className="grid-item">
-                  <div className="item-inner no-padding">
-                    <div className="services-item-inner-content">
-                      <h3 className="heading-style-h2">{spot.client}</h3>
-                      <div className="rich-text-custom w-richtext">
-                        <p>{spot.text}</p>
-                      </div>
-                    </div>
+        <section className={i % 2 === 0 ? "background-color-light-1" : undefined} key={spot.client}>
+          <div className="_2-column-grid">
+            <div className="grid-item is-media">
+              <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
+            </div>
+            <div className="grid-item">
+              <div className="item-inner is-case-study">
+                <div>
+                  <h3 className="heading-style-h2">{spot.client}</h3>
+                  <div
+                    data-wf--spacer--variant="l"
+                    className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
+                  ></div>
+                  <div className="rich-text-custom w-richtext">
+                    <p>{spot.text}</p>
                   </div>
                 </div>
               </div>
@@ -166,7 +138,9 @@ export default function StoryPage() {
         <div className="nav-distance"></div>
 
         <GradientBanner form="story-hero" background="var(--_color---accent-color-3)" line="var(--_color---accent-color-1)">
-          <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
+          <div className="container-small">
+            <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
+          </div>
           <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
           <div className="container-small">
             <p className="copy-medium">
@@ -176,21 +150,25 @@ export default function StoryPage() {
           </div>
         </GradientBanner>
 
-        <FullWidthSpot spot={OPENER} copyFirst={false} />
+        <FullWidthSpot spot={OPENER} />
         <SpotRows spots={ROWS_BEFORE_INTERLUDE} />
 
         <GradientBanner form="story-banner-core" background="#dfe5ac" line="var(--_color---accent-color-1)">
-          <RevealText className="heading-style-h1" text="Sound lives at the core of what we do." />
+          <div className="container-small">
+            <RevealText className="heading-style-h1" text="Sound lives at the core of what we do." />
+          </div>
         </GradientBanner>
 
-        <FullWidthSpot spot={INTERLUDE} copyFirst />
+        <FullWidthSpot spot={INTERLUDE} />
         <SpotRows spots={ROWS_AFTER_INTERLUDE} />
 
         <GradientBanner form="story-banner-connector" background="#9747ff" line="var(--_color---accent-color-2)">
-          <RevealText className="heading-style-h1" text="It’s not background music, it’s a connector" />
+          <div className="container-small">
+            <RevealText className="heading-style-h1" text="It’s not background music, it’s a connector" />
+          </div>
         </GradientBanner>
 
-        <FullWidthSpot spot={CLOSER} copyFirst />
+        <FullWidthSpot spot={CLOSER} />
 
         <PageTeaser
           heading="Want to know more about what else we do?"

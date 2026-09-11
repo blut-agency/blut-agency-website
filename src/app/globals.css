@@ -92,17 +92,6 @@
 }
 
 /*
-  On tablet and below the two-column grid gives media columns a fixed 1.2
-  aspect ratio (sized for the gradient visuals). Video columns keep 16:9.
-*/
-@media screen and (max-width: 991px) {
-  .grid-item.is-media.is-video {
-    aspect-ratio: auto;
-    flex: none;
-  }
-}
-
-/*
   "Read more" hover for panels whose full-cover link can't sit right next to
   the CTA (the homepage cards span a photo column and a text column).
   Hovering anywhere on a .cta-panel runs the same animation as embeds.css.
@@ -193,6 +182,174 @@
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/*
+  Story full-width spots (VideoSpot): headline and copy over the still,
+  bottom-left; hover zooms the still and fades in "Play Video" bottom-right.
+  On touch devices "Play Video" is always shown; on phones the copy drops
+  below the still because a 16:9 still is too short to hold it.
+*/
+.video-spot {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--_color---background-dark-1);
+  color: var(--_color---copy-bright);
+}
+
+.video-spot-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.video-spot-image {
+  transition: transform 0.3s ease;
+}
+
+.video-spot-scrim {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, var(--_color---transparent) 35%, #000000b3);
+  pointer-events: none;
+}
+
+.video-spot-content,
+.video-spot-play {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  padding: var(--spacing--l) var(--container--page-padding);
+}
+
+/* Copy stays within the left half of the still, page padding included. */
+.video-spot-content {
+  left: 0;
+  width: 50%;
+}
+
+.video-spot-play {
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing--xs);
+}
+
+.video-spot-play svg {
+  width: 1em;
+  height: 1em;
+}
+
+.video-spot-button {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.video-spot-button:focus-visible {
+  outline: 2px solid var(--_color---copy-bright);
+  outline-offset: -6px;
+}
+
+/* Story row media (VideoPanel): the still covers its half of the grid. */
+.video-panel {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--_color---background-dark-1);
+  color: var(--_color---copy-bright);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .video-hover .video-spot-play {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Panels have no copy on the still, so their shade only appears with the label. */
+  .video-panel .video-spot-scrim {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .video-hover:hover .video-spot-image,
+  .video-hover:focus-within .video-spot-image {
+    transform: scale(1.05);
+  }
+
+  .video-hover:hover .video-spot-play,
+  .video-hover:focus-within .video-spot-play,
+  .video-panel:hover .video-spot-scrim,
+  .video-panel:focus-within .video-spot-scrim {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .video-spot .video-spot-content,
+  .video-spot .video-spot-play {
+    position: relative;
+    width: auto;
+  }
+
+  .video-spot .video-spot-play {
+    padding-top: 0;
+  }
+}
+
+/* Video lightbox: 16:9 player as large as the viewport allows, close top-right. */
+.video-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing--xl) var(--container--page-padding);
+  background-color: color-mix(in srgb, var(--_color---background-dark-1) 92%, transparent);
+}
+
+.video-lightbox-frame {
+  position: relative;
+  width: min(100%, calc((100svh - 2 * var(--spacing--xl)) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  background-color: var(--_color---background-dark-1);
+}
+
+.video-lightbox-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-lightbox-status {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--spacing--l);
+  color: var(--_color---copy-bright);
+}
+
+.video-lightbox-close {
+  position: fixed;
+  top: var(--spacing--sm);
+  right: var(--container--page-padding);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--_color---copy-bright);
+  cursor: pointer;
+}
+
+.video-lightbox-close svg {
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 /* Dark variant of the wide page teaser, as drawn on the Figma board. */
