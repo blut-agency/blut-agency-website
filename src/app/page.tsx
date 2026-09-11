@@ -3,6 +3,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getHomeSound } from "@/lib/content";
+import RevealText from "@/components/RevealText";
 
 // The three left/right teaser cards below the intro. `_2-column-grid` auto-
 // reverses on every 2nd item (see blut-dev.webflow.css), so this list
@@ -129,7 +130,7 @@ export default function HomePage() {
           <div className="spacer-xl-start spacer-xl-end">
             <div className="_2-column-grid">
               <div className="grid-item">
-                <h2 className="heading-style-h1">Do you even know if your music strategy works?</h2>
+                <RevealText className="heading-style-h1" text="Do you even know if your music strategy works?" />
               </div>
               <div className="grid-item">
                 <div className="services-item-inner-content">
@@ -194,7 +195,7 @@ export default function HomePage() {
             <div>
             <div className="_2-column-grid">
               <div className="grid-item">
-                <h2 className="heading-style-h1">Why do you need blut?</h2>
+                <RevealText className="heading-style-h1" text="Why do you need blut?" />
               </div>
               <div className="grid-item">
                 <div className="services-item-inner-content">
