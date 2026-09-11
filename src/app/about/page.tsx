@@ -68,8 +68,9 @@ export default function AboutPage() {
         <section className="section-services-intro">
           <div className="page-padding">
           <div className="container-large">
-            {/* 50/50 like the homepage intro: headline left, supporting copy right. */}
-            <div className="spacer-xl-start spacer-xl-end">
+            {/* 50/50 like the homepage intro: headline left, supporting copy right.
+                More breathing room than the homepage sections: this is the bigger statement. */}
+            <div className="spacer-xxl-start spacer-xxl-end">
               <div className="_2-column-grid">
                 <div className="grid-item">
                   <RevealText as="h1" className="heading-style-h1" text="We are blut." />
