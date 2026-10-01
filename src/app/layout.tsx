@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
+import MotionLayer from "@/components/MotionLayer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,9 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/css/webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/blut-dev.webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/embeds.css" rel="stylesheet" type="text/css" />
+        <link href="/css/expressive.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
         <PageTransition />
+        <MotionLayer />
         {children}
         <noscript>
           <style>{`.main-wrapper { opacity: 1 !important; }`}</style>
