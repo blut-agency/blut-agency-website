@@ -127,7 +127,7 @@ export default function AboutPage() {
           <div className="page-padding z-index-1">
             <div className="spacer-xxl-start spacer-xxl-end">
               <div className="hero-content-wrapper">
-                <h2 className="copy-small">Mission Statement</h2>
+                <h2 className="copy-small eyebrow">Mission Statement</h2>
                 <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
                 <div className="container-small">
                   <RevealText as="p" className="heading-style-h1" text={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]} />
@@ -141,7 +141,7 @@ export default function AboutPage() {
           <div className="page-padding">
             <div className="container-large">
               <div className="spacer-l-start spacer-l-end">
-                <h2 className="copy-medium">Contact</h2>
+                <h2 className="copy-medium eyebrow">Contact</h2>
                 <div className="network-grid">
                   <div className="network-grid-column">
                     {TEAM.slice(0, 2).map((m) => (
@@ -263,7 +263,7 @@ export default function AboutPage() {
           <div className="page-padding">
             <div className="container-large">
               <div className="spacer-l-start spacer-l-end">
-                <h2 className="copy-medium">Offices</h2>
+                <h2 className="copy-medium eyebrow">Offices</h2>
                 <div
                   data-wf--spacer--variant="l"
                   className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
