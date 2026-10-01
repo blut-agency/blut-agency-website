@@ -461,7 +461,7 @@ export default async function CaseStudyDetailPage({
                     className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
                   />
                   <div className="button-component">
-                    <Link data-visual-speed="15" data-visual-form="button" href="/services" className="button w-inline-block">
+                    <Link data-visual-speed="15" data-visual-form="button" href="/strategy" className="button w-inline-block">
                       <span
                         className="button-form"
                         style={{ display: "contents" }}

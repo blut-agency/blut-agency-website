@@ -356,3 +356,97 @@
 .page-teaser-wide-background-color.is-dark {
   background-color: var(--_color---background-dark-1);
 }
+
+/*
+  Homepage stage as a top banner: the nav sits at the top like on every other
+  page, and the red logo stage is as tall as the other pages' top banners
+  (.section-hero: 75svh, max 60rem) instead of filling the whole screen.
+*/
+.section-home-stage.is-banner {
+  padding-bottom: 0;
+}
+
+.section-home-stage.is-banner .home-stage-wrapper {
+  min-height: 0;
+  height: 75svh;
+  max-height: 60rem;
+}
+
+/*
+  "Click for sound" / "Pause": only one shows at a time. embeds.js reveals the
+  pause button once the sound plays; until then (or if the player never loads)
+  it stays hidden instead of reading "Click for soundPause".
+*/
+.play-toggle.is-pause-button {
+  display: none;
+}
+
+/* Checkerboard rows: media on the right instead of the left (desktop only). */
+@media screen and (min-width: 992px) {
+  ._2-column-grid.is-reversed {
+    flex-flow: row-reverse;
+  }
+}
+
+/* Top banner with its copy right-aligned instead of centred (Work page). */
+.section-hero.is-right-aligned {
+  justify-content: flex-end;
+}
+
+.section-hero.is-right-aligned .hero-content-wrapper {
+  margin-left: auto;
+  text-align: right;
+  align-items: flex-end;
+}
+
+/*
+  Cases index cards: text column on the left (client, campaign, "Read more")
+  over the case's gradient on hover, thumbnail on the right. Stacks on phones
+  and tablets with the photo on top.
+*/
+.section-case-studies-teaser.case-card {
+  display: flex;
+  padding-top: 0;
+  border-top: 2px solid var(--_color---copy-bright);
+}
+
+.case-card-text {
+  position: relative;
+  flex: 0 0 35%;
+  overflow: hidden;
+}
+
+.case-card-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  gap: var(--spacing--l);
+  height: 100%;
+  min-height: clamp(16rem, 24vw, 28rem);
+  padding: var(--spacing--l) var(--container--page-padding);
+}
+
+.case-card-media {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 991px) {
+  /* The Webflow export makes each old full-screen case teaser 100svh tall here. */
+  .section-case-studies-teaser.case-card {
+    flex-flow: column-reverse;
+    min-height: 0;
+  }
+
+  .case-card-media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+  }
+
+  .case-card-inner {
+    min-height: 0;
+  }
+}

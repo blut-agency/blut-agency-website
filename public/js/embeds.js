@@ -76,7 +76,7 @@ function __onReady(fn) {
                 if (spinner) spinner.style.display = 'none';
               });
               if (playText) playText.style.display = 'none';
-              if (pauseBtn) pauseBtn.style.display = '';
+              if (pauseBtn) pauseBtn.style.display = 'block';
             } else {
               player.pause();
               if (playText) playText.style.display = '';
@@ -137,7 +137,7 @@ function __onReady(fn) {
       });
       player.on('play', () => {
         if (playBtn) playBtn.style.display = 'none';
-        if (pauseBtn) pauseBtn.style.display = '';
+        if (pauseBtn) pauseBtn.style.display = 'block';
         if (playText) playText.style.display = 'none';
         if (spinner) spinner.style.display = 'none';
       });

@@ -8,17 +8,18 @@ import PageTeaser from "@/components/PageTeaser";
 import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
-  title: "Story – A 360° Approach to Sonic Storytelling | blut",
+  title: "Work – A 360° Approach to Sonic Storytelling | blut",
   description:
     "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out (it’s blut, of course).",
 };
 
 /**
- * Page structure and copy follow the "Story Page" section of the Figma board
- * (🛝 The Playground → Site). Stills come from the board and act as posters
+ * Page structure and copy follow the "Website v2 → WORK" section of the Figma
+ * board (🛝 The Playground). Stills come from the board and act as posters
  * until the team sends Vimeo links; set `vimeoId` on a spot to make it play.
+ * `placeholder` marks a spot whose copy on the board is still lorem ipsum.
  */
-type Spot = { client: string; text: string; image: string; vimeoId?: string };
+type Spot = { client: string; text: string; image: string; vimeoId?: string; placeholder?: boolean };
 
 const OPENER: Spot = {
   client: "Samsung / Nina Chuba",
@@ -26,23 +27,24 @@ const OPENER: Spot = {
   text: "Some projects call for all-round production, like when we worked with Nina Chuba on this Samsung spot. We took her voice recordings from the film set and created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
 };
 
-// Open question from Timo on the board ("makes us look like bad musicians").
-// Kept in for now; remove this entry if the team decides against it.
+// Board order (Website v2). Haribo isn't on the v2 board; it keeps its spot
+// after Dr. Oetker until the team says otherwise.
 const ROWS_BEFORE_INTERLUDE: Spot[] = [
   {
-    client: "McDonald’s",
-    image: "/images/story/mcdonalds.jpg",
-    text: "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
-  },
-  {
-    client: "Volkswagen",
-    image: "/images/story/volkswagen.jpg",
-    text: "Sometimes the artist is in the spotlight, but for this VW campaign, the talent was hiding in the background. For the launch of the VW e-up! we created this fresh beat and had UK Grime legend Che Lingo work his magic on it. “They never thought we were good enough, now we’re pullin’ up…”",
+    client: "Nivea / Serenia",
+    image: "/images/story/nivea-serenia.jpg",
+    text: "Copy for this spot is still to come – the board only has placeholder text here.",
+    placeholder: true,
   },
   {
     client: "Schwarzkopf",
     image: "/images/story/schwarzkopf.jpg",
     text: "But the talent doesn’t always have to be musical. For the relaunch of the Schwarzkopf brand, we composed a brand song with changing arrangements to suit a variety of celebrities and influencers including Diane Kruger, Collien Fernandes, Sofia Vergara, Ana Ivanović and Alli Neumann to name a few (oh wait, Alli actually is a musician, but you get the drift). Here’s the hero version.",
+  },
+  {
+    client: "Volkswagen",
+    image: "/images/story/volkswagen.jpg",
+    text: "Sometimes the artist is in the spotlight, but for this VW campaign, the talent was hiding in the background. For the launch of the VW e-up! we created this fresh beat and had UK Grime legend Che Lingo work his magic on it. “They never thought we were good enough, now we’re pullin’ up…”",
   },
   {
     client: "Gore-Tex",
@@ -57,16 +59,23 @@ const INTERLUDE: Spot = {
   text: "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
 };
 
+// Open question from Timo on the board ("makes us look like bad musicians").
+// Kept in for now; remove this entry if the team decides against it.
 const ROWS_AFTER_INTERLUDE: Spot[] = [
   {
-    client: "Dr. Oetker",
-    image: "/images/story/dr-oetker.jpg",
-    text: "Phew… need to calm down a little after that one. How about a lovely little heart-warming, nostalgic, acoustic ballad to bring down the pulse and remind us of the sweeter moments in life?",
+    client: "McDonald’s",
+    image: "/images/story/mcdonalds.jpg",
+    text: "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
   },
   {
     client: "Targobank",
     image: "/images/story/targobank.jpg",
     text: "Earlier we remade the Backstreet Boys, now we’re remaking Michael Sembello’s 80s classic, Maniac. From licensing, to recreating those legendary 80s synth sounds to casting a singer who can hit the (very) high notes like it’s the most normal thing in the world, we had it “covered” from start to finish.",
+  },
+  {
+    client: "Dr. Oetker",
+    image: "/images/story/dr-oetker.jpg",
+    text: "Phew… need to calm down a little after that one. How about a lovely little heart-warming, nostalgic, acoustic ballad to bring down the pulse and remind us of the sweeter moments in life?",
   },
   {
     client: "Haribo",
@@ -96,16 +105,17 @@ function FullWidthSpot({ spot }: { spot: Spot }) {
 }
 
 /**
- * Story rows, 50/50 and full width like the SPT sections: the still covers the
- * media half (hover zoom, "Play Video", lightbox) and the copy sits in the
- * padded text half. Sections alternate grey and white like the board.
+ * Work rows, 50/50 and full width like the Strategy sections: the still covers
+ * the media half (hover zoom, "Play Video", lightbox) and the copy sits in the
+ * padded text half. Checkerboard like the board: image right, image left, …
+ * Sections alternate grey and white.
  */
 function SpotRows({ spots }: { spots: Spot[] }) {
   return (
     <>
       {spots.map((spot, i) => (
         <section className={i % 2 === 0 ? "background-color-light-1" : undefined} key={spot.client}>
-          <div className="_2-column-grid">
+          <div className={i % 2 === 0 ? "_2-column-grid is-reversed" : "_2-column-grid"}>
             <div className="grid-item is-media">
               <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
             </div>
@@ -117,9 +127,15 @@ function SpotRows({ spots }: { spots: Spot[] }) {
                     data-wf--spacer--variant="l"
                     className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
                   ></div>
-                  <div className="rich-text-custom w-richtext">
-                    <p>{spot.text}</p>
-                  </div>
+                  {spot.placeholder ? (
+                    <div className="content-placeholder-text">
+                      <p>{spot.text}</p>
+                    </div>
+                  ) : (
+                    <div className="rich-text-custom w-richtext">
+                      <p>{spot.text}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -130,14 +146,20 @@ function SpotRows({ spots }: { spots: Spot[] }) {
   );
 }
 
-export default function StoryPage() {
+export default function WorkPage() {
   return (
     <>
       <Header variant="start-top" />
       <div className="main-wrapper">
         <div className="nav-distance"></div>
 
-        <GradientBanner form="story-hero" background="var(--_color---accent-color-3)" line="var(--_color---accent-color-1)">
+        {/* The only banner on the page, copy right-aligned (board notes). */}
+        <GradientBanner
+          form="story-hero"
+          background="var(--_color---accent-color-3)"
+          line="var(--_color---accent-color-1)"
+          align="right"
+        >
           <div className="container-small">
             <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
           </div>
@@ -153,28 +175,17 @@ export default function StoryPage() {
         <FullWidthSpot spot={OPENER} />
         <SpotRows spots={ROWS_BEFORE_INTERLUDE} />
 
-        <GradientBanner form="story-banner-core" background="#dfe5ac" line="var(--_color---accent-color-1)">
-          <div className="container-small">
-            <RevealText className="heading-style-h1" text="Sound lives at the core of what we do." />
-          </div>
-        </GradientBanner>
-
         <FullWidthSpot spot={INTERLUDE} />
         <SpotRows spots={ROWS_AFTER_INTERLUDE} />
-
-        <GradientBanner form="story-banner-connector" background="#9747ff" line="var(--_color---accent-color-2)">
-          <div className="container-small">
-            <RevealText className="heading-style-h1" text="It’s not background music, it’s a connector" />
-          </div>
-        </GradientBanner>
 
         <FullWidthSpot spot={CLOSER} />
 
         <PageTeaser
-          heading="Want to know more about what else we do?"
-          text="Check out some of our sonic strategy cases or see how we measure your campaign with the Sonic Performance Tracker."
-          href="/spt"
-          ariaLabel="Go to the Sonic Performance Tracker"
+          heading="It’s not just music, it’s everything around it."
+          text="We specialize in assessing brands and creating bespoke sonic strategies."
+          href="/strategy"
+          ctaLabel="Get to know our process"
+          ariaLabel="Get to know our process"
         />
 
         <Footer />

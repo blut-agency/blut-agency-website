@@ -8,18 +8,27 @@ import RevealText from "@/components/RevealText";
 // reverses on every 2nd item (see blut-dev.webflow.css), so this list
 // renders media-left/text-right, text-left/media-right, media-left/text-right.
 // Photos come from the Figma board's home page mockup.
-const TEASERS: { heading: string | string[]; href: string; label: string; image: string; alt: string }[] = [
+const TEASERS: {
+  heading: string | string[];
+  href: string;
+  label: string;
+  cta: string;
+  image: string;
+  alt: string;
+}[] = [
   {
-    label: "Story",
+    label: "Work",
     heading: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    href: "/story",
+    href: "/work",
+    cta: "See us in action",
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
   },
   {
-    label: "Sonic Performance Tracker",
-    heading: "Where is your brand in the sonic branding landscape, and where do you want to be?",
-    href: "/spt",
+    label: "Strategy",
+    heading: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
+    href: "/strategy",
+    cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
   },
@@ -27,8 +36,9 @@ const TEASERS: { heading: string | string[]; href: string; label: string; image:
     label: "Cases",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    heading: ["Music production, sound design, and 360° sonic strategy.", "", "See us in action."],
+    heading: "Music production, sound design, and 360° sonic strategy.",
     href: "/case-studies",
+    cta: "View our case studies",
   },
 ];
 
@@ -37,11 +47,11 @@ export default function HomePage() {
 
   return (
     <>
+<Header variant="start-top" />
 <div className="main-wrapper">
-    <section className="section-home-stage">
-      <div data-sticky-on-scroll="trigger-in" className="navbar-bottom-sticky-trigger-in"></div>
-      <div data-sticky-on-scroll="trigger-out" className="navbar-bottom-sticky-trigger-out"></div>
-      <Header variant="start-bottom" />
+    <div className="nav-distance"></div>
+    {/* Same height as the top banners on the other pages (see globals.css). */}
+    <section className="section-home-stage is-banner">
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
                 <div className="full-width-logo">
@@ -114,7 +124,6 @@ export default function HomePage() {
             </div>
     </section>
     <section className="section-home-intro">
-      <div className="intro-section-nav-white-backgorund"></div>
       <div className="page-padding">
         <div className="container-large">
           {/* 50/50 like the sections below: large question left, supporting copy right.
@@ -156,13 +165,13 @@ export default function HomePage() {
                     <div data-wf--cta-link--variant="bright-text" className="cta-link-component">
                       <Link
                         aria-hidden="true"
-                        aria-label="Read more"
+                        aria-label={t.cta}
                         href={t.href}
                         className="cta-link-full-cover w-inline-block"
                       />
-                      <Link aria-label="Read more" href={t.href} className="cta-link w-inline-block">
+                      <Link aria-label={t.cta} href={t.href} className="cta-link w-inline-block">
                         <div className="cta-link-line" />
-                        <div className="cta-link-text">Read More</div>
+                        <div className="cta-link-text">{t.cta}</div>
                       </Link>
                     </div>
                   </div>
@@ -176,13 +185,8 @@ export default function HomePage() {
     <section className="section-home-about">
       <div className="page-padding">
         <div className="container-large">
-          {/* Same 50/50 treatment as the intro: label and question left, copy and button right. */}
+          {/* Same 50/50 treatment as the intro: question left, copy and button right. */}
           <div className="spacer-xl-start spacer-xl-end">
-            {/* Eyebrow sits above the grid so the right-hand copy lines up with the headline. */}
-            <div className="eyebrow-wrapper">
-                <div className="copy-small">About</div>
-                <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-              </div>
             {/* Extra wrapper keeps the grid a first child, so _2-column-grid:nth-child(2n) doesn't reverse it. */}
             <div>
             <div className="_2-column-grid">
@@ -212,7 +216,7 @@ export default function HomePage() {
         </div>
       </div>
     </section>
-    <Footer />
+    <Footer showLogo={false} />
   </div>
     </>
   );

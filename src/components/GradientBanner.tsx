@@ -11,15 +11,20 @@ export default function GradientBanner({
   form,
   background,
   line,
+  align = "center",
   children,
 }: {
   form: string;
   background: string;
   line: string;
+  align?: "center" | "right";
   children: ReactNode;
 }) {
   return (
-    <section className="section-hero" style={{ backgroundColor: background }}>
+    <section
+      className={align === "right" ? "section-hero is-right-aligned" : "section-hero"}
+      style={{ backgroundColor: background }}
+    >
       <div className="section-hero-media-wrapper" style={{ color: line }}>
         <CaseStudyVisual slug={form} variant={3} speed={10} />
       </div>

@@ -48,6 +48,10 @@ export interface CaseStudy {
   gallery2: string[];
   awards: CaseStudyAward[];
   nextCaseStudySlug: string;
+  /** Cases index card: client line, campaign line and thumbnail photo. */
+  teaserClient: string;
+  teaserCampaign: string;
+  thumbnail: string;
 }
 
 export interface Location {
