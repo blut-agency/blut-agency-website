@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getLocations } from "@/lib/content";
+import RevealText from "@/components/RevealText";
 
 export const metadata: Metadata = {
   title: "About Us – Meet the Team Behind blut’s Sonic Vision",
@@ -66,35 +67,29 @@ export default function AboutPage() {
         <div className="nav-distance" />
         <section className="section-services-intro">
           <div className="page-padding">
-            <div className="container-large">
-              <div className="container-medium align-left">
-                <div
-                  data-wf--spacer--variant="xxl"
-                  className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
-                />
-                <div className="text-component">
-                  <h1 className="heading-style-h1">We are blut.</h1>
-                  <div className="spacer-slot">
-                    <div
-                      data-wf--spacer--variant="xl"
-                      className="spacer-component w-variant-2cf01a4e-9649-6aa7-d409-1feb17978d26"
-                    />
-                  </div>
-                  <div className="rich-text-custom w-richtext">
-                    <p>
+          <div className="container-large">
+            {/* 50/50 like the homepage intro: headline left, supporting copy right.
+                More breathing room than the homepage sections: this is the bigger statement. */}
+            <div className="spacer-xxl-start spacer-xxl-end">
+              <div className="_2-column-grid">
+                <div className="grid-item">
+                  <RevealText as="h1" className="heading-style-h1" text="We are blut." />
+                </div>
+                <div className="grid-item">
+                  <div className="services-item-inner-content">
+                    <div className="rich-text-custom w-richtext">
+                      <p>
                       A next generation creative agency for the modern era. We believe there’s a better way to
                       integrate music into brand communication.{" "}
-                    </p>
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  data-wf--spacer--variant="xxl"
-                  className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
-                />
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         <section className="section-hero">
           <div className="section-hero-media-wrapper">
@@ -133,11 +128,10 @@ export default function AboutPage() {
             <div className="spacer-xxl-start spacer-xxl-end">
               <div className="hero-content-wrapper">
                 <h2 className="copy-small">Mission Statement</h2>
-                <p className="heading-style-h1">
-                  Born out of Creativity. <br />
-                  Rooted in Insight. <br />
-                  Embedded in Music Culture.
-                </p>
+                <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
+                <div className="container-small">
+                  <RevealText as="p" className="heading-style-h1" text={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]} />
+                </div>
               </div>
             </div>
           </div>

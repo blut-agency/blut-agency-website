@@ -51,7 +51,7 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "invention-is-instrumental"
+      "nextCaseStudySlug": "devils-advocate-brand-launch"
     },
     {
       "slug": "devils-advocate-brand-launch",
@@ -106,13 +106,157 @@
         "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/6863da8ecac5e07a50882b0c_Devils-6.webp"
       ],
       "awards": [],
-      "nextCaseStudySlug": "invention-is-instrumental"
+      "nextCaseStudySlug": "feel-the-vibe"
+    },
+    {
+      "slug": "feel-the-vibe",
+      "internalName": "Feel the Vibe (placeholder)",
+      "title": "Feel the Vibe",
+      "position": 3,
+      "showOnHomepage": false,
+      "clientListHtml": "<ul><li>Rockstar Energy</li></ul>",
+      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "collaboratorsHtml": "",
+      "color": {
+        "main": "#02b7fd",
+        "secondary": "#7a3bff",
+        "slug": "blue-violet"
+      },
+      "useVisual": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "visualizationJson": "",
+      "quoteImage": "",
+      "quote": "",
+      "quoteName": "",
+      "videoUnderQuoteVimeoId": "",
+      "introTextHtml": "<h2>Case study coming soon</h2><p>We're still writing this one up — check back soon, or get in touch if you'd like the details now.</p>",
+      "gallery1": [],
+      "textAfterGalleryHtml": "",
+      "gifVideoVimeoId": "",
+      "gifVideoHashtags": "",
+      "audioPlayer1": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "audioPlayer2": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "textAfterAudioPlayerHtml": "",
+      "video1VimeoId": "",
+      "video2VimeoId": "",
+      "video3VimeoId": "",
+      "gallery2": [],
+      "awards": [],
+      "nextCaseStudySlug": "all-purpose-sound"
+    },
+    {
+      "slug": "all-purpose-sound",
+      "internalName": "All Purpose Sound (placeholder)",
+      "title": "All Purpose Sound",
+      "position": 4,
+      "showOnHomepage": false,
+      "clientListHtml": "<ul><li>Postbank</li></ul>",
+      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "collaboratorsHtml": "",
+      "color": {
+        "main": "#3f7fd9",
+        "secondary": "#e9f27a",
+        "slug": "sky-chartreuse"
+      },
+      "useVisual": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "visualizationJson": "",
+      "quoteImage": "",
+      "quote": "",
+      "quoteName": "",
+      "videoUnderQuoteVimeoId": "",
+      "introTextHtml": "<h2>Case study coming soon</h2><p>We're still writing this one up — check back soon, or get in touch if you'd like the details now.</p>",
+      "gallery1": [],
+      "textAfterGalleryHtml": "",
+      "gifVideoVimeoId": "",
+      "gifVideoHashtags": "",
+      "audioPlayer1": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "audioPlayer2": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "textAfterAudioPlayerHtml": "",
+      "video1VimeoId": "",
+      "video2VimeoId": "",
+      "video3VimeoId": "",
+      "gallery2": [],
+      "awards": [],
+      "nextCaseStudySlug": "reinventing-a-classic"
+    },
+    {
+      "slug": "reinventing-a-classic",
+      "internalName": "Reinventing a Classic (placeholder)",
+      "title": "Reinventing a Classic",
+      "position": 5,
+      "showOnHomepage": false,
+      "clientListHtml": "<ul><li>Germont</li></ul>",
+      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "collaboratorsHtml": "",
+      "color": {
+        "main": "#6183ff",
+        "secondary": "#ee1c1c",
+        "slug": "blue-red"
+      },
+      "useVisual": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "visualizationJson": "",
+      "quoteImage": "",
+      "quote": "",
+      "quoteName": "",
+      "videoUnderQuoteVimeoId": "",
+      "introTextHtml": "<h2>Case study coming soon</h2><p>We're still writing this one up — check back soon, or get in touch if you'd like the details now.</p>",
+      "gallery1": [],
+      "textAfterGalleryHtml": "",
+      "gifVideoVimeoId": "",
+      "gifVideoHashtags": "",
+      "audioPlayer1": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "audioPlayer2": {
+        "vimeoId": "",
+        "title": "",
+        "subline": ""
+      },
+      "textAfterAudioPlayerHtml": "",
+      "video1VimeoId": "",
+      "video2VimeoId": "",
+      "video3VimeoId": "",
+      "gallery2": [],
+      "awards": [],
+      "nextCaseStudySlug": "wdr---re-arranging-perceptions"
     },
     {
       "slug": "wdr---re-arranging-perceptions",
       "internalName": "WDR – Re:arranging Perceptions",
       "title": "Re:arranging Perceptions",
-      "position": 3,
+      "position": 6,
       "showOnHomepage": false,
       "clientListHtml": "<ul id=\"\"><li id=\"\">WDR</li><li id=\"\">&nbsp;Re:arranged&nbsp;</li></ul>",
       "whatWeDidHtml": "<ul id=\"\"><li id=\"\">Sonic Strategy</li><li id=\"\">Artist Partnership</li></ul>",
@@ -162,13 +306,13 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "invention-is-instrumental"
+      "nextCaseStudySlug": "volkswagen-bringing-it-all-back-home"
     },
     {
       "slug": "volkswagen-bringing-it-all-back-home",
       "internalName": "Volkswagen – Bringing It All Back Home",
       "title": "Bringing It All Back Home",
-      "position": 4,
+      "position": 7,
       "showOnHomepage": false,
       "clientListHtml": "<ul><li>Volkswagen</li><li>VW Polo x Beats by Dre</li></ul>",
       "whatWeDidHtml": "<ul><li>Content Production</li><li>Artist Partnership</li></ul>",
@@ -239,7 +383,7 @@
       "slug": "invention-is-instrumental",
       "internalName": "Schüco – Invention Is Instrumental Case",
       "title": "Invention Is Instrumental ",
-      "position": 5,
+      "position": 8,
       "showOnHomepage": false,
       "clientListHtml": "<ul><li>Schüco</li><li>Das Schücophon</li></ul>",
       "whatWeDidHtml": "<ul><li>Sonic Branding</li></ul>",
@@ -311,7 +455,7 @@
           "image": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68346696d09d45cf1fe6016d_Corporate%20Design%20Preis.svg"
         }
       ],
-      "nextCaseStudySlug": "volkswagen-bringing-it-all-back-home"
+      "nextCaseStudySlug": "hyundai-are-you-in"
     }
   ],
   "locations": [
@@ -379,6 +523,24 @@
       "slug": "red-pink",
       "main": "#871631",
       "secondary": "#edd4eb"
+    },
+    {
+      "name": "Blue + Violet",
+      "slug": "blue-violet",
+      "main": "#02b7fd",
+      "secondary": "#7a3bff"
+    },
+    {
+      "name": "Sky + Chartreuse",
+      "slug": "sky-chartreuse",
+      "main": "#3f7fd9",
+      "secondary": "#e9f27a"
+    },
+    {
+      "name": "Red + Sky",
+      "slug": "red-sky",
+      "main": "#ee1c1c",
+      "secondary": "#bcd9f2"
     }
   ],
   "awards": [

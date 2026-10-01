@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import RevealText from "@/components/RevealText";
 
 export default function NotFound() {
   return (
@@ -14,7 +15,7 @@ export default function NotFound() {
             className="icon-1x1-large"
           />
           <div className="spacer-sm-start" />
-          <h2 className="heading-style-h1">404 page not found</h2>
+          <RevealText className="heading-style-h1" text="404 page not found" />
           <div className="spacer-md-start spacer-md-end">
             <p className="copy-medium">The page appears to have been moved or deleted.</p>
           </div>
