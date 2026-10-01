@@ -105,33 +105,44 @@ function FullWidthSpot({ spot }: { spot: Spot }) {
 }
 
 /**
- * Work spots as a card grid (still on top, client and copy below), so several
- * spots show per screen like a portfolio index. The still keeps its hover
- * zoom, "Play Video" and lightbox.
+ * Work rows, 50/50 and full width like the Strategy sections: the still covers
+ * the media half (hover zoom, "Play Video", lightbox) and the copy sits in the
+ * padded text half. Checkerboard like the board: image right, image left, …
+ * Sections alternate grey and white.
  */
 function SpotRows({ spots }: { spots: Spot[] }) {
   return (
-    <section className="fx-work-section">
-      <div className="fx-work-grid">
-        {spots.map((spot) => (
-          <article className="fx-work-card" key={spot.client}>
-            <div className="fx-work-media">
+    <>
+      {spots.map((spot, i) => (
+        <section className={i % 2 === 0 ? "background-color-light-1" : undefined} key={spot.client}>
+          <div className={i % 2 === 0 ? "_2-column-grid is-reversed" : "_2-column-grid"}>
+            <div className="grid-item is-media">
               <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
             </div>
-            <h3 className="heading-style-h3">{spot.client}</h3>
-            {spot.placeholder ? (
-              <div className="content-placeholder-text">
-                <p>{spot.text}</p>
+            <div className="grid-item">
+              <div className="item-inner is-case-study">
+                <div>
+                  <h3 className="heading-style-h2">{spot.client}</h3>
+                  <div
+                    data-wf--spacer--variant="l"
+                    className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
+                  ></div>
+                  {spot.placeholder ? (
+                    <div className="content-placeholder-text">
+                      <p>{spot.text}</p>
+                    </div>
+                  ) : (
+                    <div className="rich-text-custom w-richtext">
+                      <p>{spot.text}</p>
+                    </div>
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="rich-text-custom w-richtext">
-                <p>{spot.text}</p>
-              </div>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
+            </div>
+          </div>
+        </section>
+      ))}
+    </>
   );
 }
 

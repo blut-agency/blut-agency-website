@@ -29,8 +29,9 @@
   --fx-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --fx-duration: 0.8s;
   --fx-measure: 36rem;
-  /* Standard content block height for the remaining two-column rows. */
-  --fx-block: clamp(20rem, 14rem + 12vw, 28rem);
+  /* Standard height for the image-and-text rows: big imagery, but the next
+     section still shows below it. */
+  --fx-block: clamp(24rem, 38vw, 40rem);
 }
 
 .heading-style-h1 {
@@ -246,67 +247,20 @@
   line-height: 1.45;
 }
 
-/* Teasers: three cards side by side (photo, label, headline, link) instead of
-   three full-width rows, so Work, Strategy and Cases show on one screen. */
-.home-project-teaser-item-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--fx-gap);
-  width: min(var(--fx-max), 100% - 2 * var(--container--page-padding));
-  margin-inline: auto;
-  padding-bottom: var(--spacing--xxl);
-}
-
-.home-project-teaser-item-list > .cta-panel,
-.home-project-teaser-item-list > .cta-panel:nth-child(2n) {
-  flex-flow: column;
-  position: relative;
-}
-
-.cta-panel .grid-item.is-media {
-  flex: none;
-  aspect-ratio: 4 / 3;
-  width: 100%;
-}
-
-.cta-panel .grid-item:not(.is-media) {
-  flex: 1;
-  display: flex;
-}
-
+/* Teaser panels: full-width photo and black panel pairs, as before, but one
+   standard block tall with the headline a step down so the photo leads. */
 .cta-panel .item-inner {
-  min-height: 0;
-  aspect-ratio: auto;
-  padding: var(--spacing--md) 0 0;
+  min-height: var(--fx-block);
+  padding: clamp(1.5rem, 1rem + 2vw, 3rem);
 }
 
 .cta-panel .item-top {
-  padding-bottom: var(--spacing--md);
+  padding-bottom: var(--spacing--l);
 }
 
 .cta-panel .heading-style-h1 {
-  font-size: var(--heading--l);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-/* Cards sit on the page background, not black panels. */
-.cta-panel .grid-item-background-color {
-  display: none;
-}
-
-.cta-panel .text-color-grey {
-  color: var(--_color---copy-dark);
-  display: flex;
-  width: 100%;
-}
-
-.cta-panel [data-wf--cta-link--variant="bright-text"] .cta-link-line {
-  background-color: var(--_color---copy-dark);
-}
-
-.cta-panel .cta-link {
-  color: var(--_color---copy-dark);
+  font-size: var(--heading--xl);
+  line-height: 1.1;
 }
 
 /* ---------- Work: rows ---------- */
@@ -322,7 +276,7 @@
 
 /* Banners: about half the screen, so the content below is already visible. */
 .section-hero {
-  height: clamp(22rem, 50svh, 30rem);
+  height: clamp(24rem, 58svh, 36rem);
   max-height: none;
 }
 
@@ -333,19 +287,13 @@
 /* Full-width film stills: 16:9, but never taller than ~70% of the screen. */
 .video-spot-media {
   aspect-ratio: auto;
-  height: min(56.25vw, 58svh);
+  height: min(56.25vw, 72svh);
 }
 
-/* Strategy film: an embedded 16:9 player within the page width instead of a
-   full-bleed wall, sized so it fits on screen without cropping. */
-.section-project-video-after-quote {
-  padding: var(--spacing--xl) var(--container--page-padding);
-  background-color: var(--_color---white);
-}
-
+/* Strategy film: full width, cropped to about two thirds of the screen. */
 .section-project-video-after-quote .media-frame {
-  width: min(100%, var(--fx-max), calc(64svh * 16 / 9));
-  margin-inline: auto;
+  max-height: 66svh;
+  overflow: hidden;
 }
 
 /* Content never stretches past a comfortable reading width on big screens. */
@@ -368,113 +316,7 @@
   margin-top: var(--spacing--sm);
 }
 
-/* Work: spots as a three-column index of cards. */
-.fx-work-section {
-  padding: var(--spacing--xl) var(--container--page-padding);
-}
-
-/* Twelve-column track: four spots sit in one row of four; five spots sit as two
-   featured cards over a row of three, so no row is left with an orphan. */
-.fx-work-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--spacing--xl) var(--fx-gap);
-  max-width: var(--fx-max);
-  margin-inline: auto;
-}
-
-.fx-work-card {
-  grid-column: span 4;
-}
-
-.fx-work-grid:has(> :nth-child(4):last-child) > .fx-work-card {
-  grid-column: span 3;
-}
-
-.fx-work-grid:has(> :nth-child(5):last-child) > .fx-work-card:nth-child(-n + 2) {
-  grid-column: span 6;
-}
-
-.fx-work-media {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  margin-bottom: var(--spacing--sm);
-}
-
-.fx-work-card .heading-style-h3 {
-  font-size: var(--heading--l);
-  margin-bottom: 0.6rem;
-}
-
-.fx-work-card .rich-text-custom p {
-  font-size: 0.9375rem;
-  line-height: 1.5;
-  margin-bottom: 0;
-}
-
-.fx-work-card .content-placeholder-text {
-  min-height: 0;
-  justify-content: flex-start;
-  text-align: left;
-}
-
-/* Cases: two cards per row, photo on top and client and campaign below. */
-.section-case-studies-teaser.case-card {
-  border-top: 0;
-  background-color: transparent;
-  color: var(--_color---copy-dark);
-}
-
-[role="list"]:has(> .case-card) {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--spacing--xl) var(--fx-gap);
-  width: min(var(--fx-max), 100% - 2 * var(--container--page-padding));
-  margin-inline: auto;
-  padding-block: var(--spacing--xl);
-}
-
-[role="list"] > .case-card {
-  flex-flow: column-reverse;
-  min-height: 0;
-  position: relative;
-}
-
-[role="list"] > .case-card .case-card-media {
-  flex: none;
-  aspect-ratio: 16 / 10;
-}
-
-[role="list"] > .case-card .case-card-text {
-  flex: none;
-}
-
-[role="list"] > .case-card .case-card-inner {
-  min-height: 0;
-  padding: var(--spacing--sm) 0 0;
-  gap: var(--spacing--sm);
-  color: var(--_color---copy-dark);
-}
-
-[role="list"] > .case-card .heading-style-h2 {
-  font-size: var(--heading--l);
-  line-height: 1.2;
-}
-
-[role="list"] > .case-card .teaser-standard-background,
-[role="list"] > .case-card .case-study-teaser-visual {
-  display: none;
-}
-
-[role="list"] > .case-card .cta-link {
-  color: var(--_color---copy-dark);
-}
-
-[role="list"] > .case-card .cta-link-line {
-  background-color: var(--_color---copy-dark);
-}
-
-/* Two-column rows (Strategy) take one standard block, not 43rem. */
+/* Two-column rows (Work, Strategy) take one standard block, not 43rem. */
 @media screen and (min-width: 992px) {
   .item-inner {
     min-height: var(--fx-block);
@@ -516,22 +358,18 @@
 
   .section-hero {
     height: auto;
-    min-height: clamp(18rem, 45svh, 24rem);
+    min-height: clamp(20rem, 50svh, 28rem);
   }
 
-  .home-project-teaser-item-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .fx-work-grid > .fx-work-card,
-  .fx-work-grid:has(> :nth-child(4):last-child) > .fx-work-card,
-  .fx-work-grid:has(> :nth-child(5):last-child) > .fx-work-card:nth-child(-n + 2) {
-    grid-column: span 6;
-  }
-
+  /* Webflow fixes the text panel to the photo's 1.2 aspect ratio, which the
+     headlines can overflow. Let it grow with its copy instead. */
   .cta-panel .item-inner {
-    padding: var(--spacing--md) 0 0;
+    aspect-ratio: auto;
+    min-height: 0;
+    padding-block: var(--spacing--xl);
   }
+
+
 }
 
 /* ---------- Phones ---------- */
@@ -545,16 +383,7 @@
     padding-bottom: var(--spacing--l);
   }
 
-  .home-project-teaser-item-list,
-  [role="list"]:has(> .case-card) {
-    grid-template-columns: minmax(0, 1fr);
-  }
 
-  .fx-work-grid > .fx-work-card,
-  .fx-work-grid:has(> :nth-child(4):last-child) > .fx-work-card,
-  .fx-work-grid:has(> :nth-child(5):last-child) > .fx-work-card:nth-child(-n + 2) {
-    grid-column: 1 / -1;
-  }
 
   /* The logo is small on a phone, so the stage doesn't need most of the screen. */
   .section-home-stage.is-banner .home-stage-wrapper {
@@ -564,9 +393,4 @@
   .navbar-link::after {
     bottom: 8px;
   }
-}
-
-/* About offices: landscape tiles rather than squares. */
-.offices-media-wrapper {
-  aspect-ratio: 4 / 3;
 }
