@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="beforeInteractive"
         />
         <Script id="gsap-register" strategy="beforeInteractive">
-          {`gsap.registerPlugin(MorphSVGPlugin);`}
+          {`if (window.gsap && window.MorphSVGPlugin) gsap.registerPlugin(MorphSVGPlugin);`}
         </Script>
         <Script src="https://player.vimeo.com/api/player.js" strategy="beforeInteractive" />
         <Script src="/js/embeds.js" strategy="afterInteractive" />

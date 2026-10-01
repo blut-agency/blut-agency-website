@@ -279,86 +279,12 @@ function __onReady(fn) {
 })();
 
 
-gsap.registerPlugin(MorphSVGPlugin);
+if (typeof gsap !== "undefined" && typeof MorphSVGPlugin !== "undefined") gsap.registerPlugin(MorphSVGPlugin);
 
 
-  // Funktion für die Fade-In-Animation
-  function fadeInMainWrapper() {
-    const mainWrapper = document.querySelector(".main-wrapper");
-    if (!mainWrapper) return;
-    if (typeof gsap !== "undefined") {
-      // Setze opacity auf 0 (falls nicht bereits durch CSS gesetzt)
-      gsap.set(mainWrapper, { opacity: 0 });
-      // Führe GSAP Fade-In-Animation aus
-      gsap.fromTo(
-        mainWrapper,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            mainWrapper.classList.add("is-visible"); // Sicherstellen, dass die Klasse bleibt
-          }
-        }
-      );
-    } else {
-      // Fallback: Setze is-visible direkt, wenn GSAP nicht verfügbar ist
-      mainWrapper.classList.add("is-visible");
-    }
-  }
-  // Beim Laden der Seite
-  window.addEventListener("pageshow", (event) => {
-    // Führe Fade-In aus, wenn nicht aus dem bfcache geladen
-    if (!event.persisted) {
-      fadeInMainWrapper();
-    } else {
-      // Für bfcache: Stelle sicher, dass die Seite sichtbar ist
-      const mainWrapper = document.querySelector(".main-wrapper");
-      if (mainWrapper && typeof gsap !== "undefined") {
-        gsap.set(mainWrapper, { opacity: 1 });
-        mainWrapper.classList.add("is-visible");
-      } else if (mainWrapper) {
-        mainWrapper.classList.add("is-visible");
-      }
-    }
-  });
-  // Click-Handler für Links
-  __onReady(() => {
-    const links = document.querySelectorAll("a");
-    links.forEach(link => {
-      const href = link.getAttribute("href");
-      const isTransitionLink = link.hasAttribute("data-page-transition") && link.getAttribute("data-page-transition") === "link";
-      const noTransition = link.hasAttribute("data-no-transition") && link.getAttribute("data-no-transition") === "true";
-      if (
-        href &&
-        !noTransition &&
-        !link.classList.contains("no-transition") &&
-        !href.startsWith("#") &&
-        href !== window.location.pathname &&
-        (isTransitionLink || href.startsWith("/") || new URL(href, window.location.origin).hostname === window.location.hostname)
-      ) {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (typeof gsap !== "undefined") {
-            gsap.to(".main-wrapper", {
-              opacity: 0,
-              duration: 0.5,
-              onComplete: () => {
-                window.location.href = href;
-              }
-            });
-          } else {
-            window.location.href = href; // Fallback ohne GSAP
-          }
-        });
-      }
-    });
-  });
-  // Popstate-Event für Zurück-Button
-  window.addEventListener("popstate", () => {
-    fadeInMainWrapper();
-  });
+  // The page fade-in/out lives in globals.css and src/components/PageTransition.tsx.
+  // The Webflow version faded .main-wrapper with inline GSAP opacity here too,
+  // which could override the CSS and leave the page blank, so it was removed.
 
 
 
