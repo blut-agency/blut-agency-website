@@ -2,27 +2,33 @@
   Expressive layer. Loaded after the Webflow CSS and embeds.css, so it only
   restyles layout, type and motion; page structure and copy are unchanged.
 
-  Effects that hide something first (reveals, cursor) only apply once
-  MotionLayer has added .fx-on / .fx-cursor to <html>, so without JavaScript or
-  with reduced motion everything shows as normal.
+  Motion is one system: a single easing and duration, and only opacity and a
+  short rise, so nothing competes with the headline letter reveal. Reveals
+  only apply once MotionLayer has added .fx-on to <html>, so without
+  JavaScript or with reduced motion everything shows as normal.
+
+  Sizing aims for several things per screen: banners and blocks are capped
+  well below the viewport height so the next section always peeks in.
 */
 
-/* ---------- Type: one fluid scale, display sizes go big ---------- */
+/* ---------- Type: one fluid scale, capped so headlines don't fill the screen ---------- */
 :root {
-  --heading--xxl: clamp(2.75rem, 1.4rem + 4.6vw, 7rem);
-  --heading--xl: clamp(2.125rem, 1.35rem + 2.7vw, 4.25rem);
+  --heading--xxl: clamp(2.5rem, 1.6rem + 2.8vw, 4.75rem);
+  --heading--xl: clamp(1.875rem, 1.4rem + 1.5vw, 3rem);
   --heading--l: clamp(1.5rem, 1.15rem + 1.1vw, 2.375rem);
   --heading--m: clamp(1.1875rem, 1.05rem + 0.45vw, 1.5rem);
   --heading--s: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
   --text-size--tiny: 0.9rem;
-  --fx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --fx-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --fx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fx-duration: 0.8s;
   --fx-measure: 36rem;
+  /* Standard content block height: a two-column row, a teaser, a banner. */
+  --fx-block: clamp(22rem, 16rem + 14vw, 32rem);
 }
 
 .heading-style-h1 {
-  letter-spacing: -0.035em;
-  line-height: 0.95;
+  letter-spacing: -0.03em;
+  line-height: 1;
   text-wrap: balance;
 }
 
@@ -101,7 +107,7 @@
 
 .reveal-text.is-armed.is-revealed .reveal-letter {
   transform: none;
-  transition: transform 0.9s var(--fx-ease-out);
+  transition: transform 0.9s var(--fx-ease);
 }
 
 /* ---------- Nav: frosted, tucks away on scroll down ---------- */
@@ -113,7 +119,7 @@
 
 .header {
   transition:
-    transform 0.5s var(--fx-ease-out),
+    transform 0.5s var(--fx-ease),
     opacity 0.25s ease;
 }
 
@@ -140,7 +146,7 @@
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.45s var(--fx-ease-out);
+  transition: transform 0.45s var(--fx-ease);
 }
 
 .navbar-link:hover::after,
@@ -170,50 +176,50 @@
   gap: 0.6em;
   min-height: 44px;
   padding-left: 2.6rem;
-  transition: padding 0.5s var(--fx-ease-out);
+  transition: padding 0.5s var(--fx-ease);
 }
 
 .cta-link-line {
   width: 2rem;
   opacity: 1;
   transform: none;
-  transition: width 0.5s var(--fx-ease-out);
+  transition: width 0.5s var(--fx-ease);
 }
 
 .cta-link-text::after {
   content: "→";
   display: inline-block;
   margin-left: 0.5em;
-  transition: transform 0.5s var(--fx-ease-out);
+  transition: transform 0.5s var(--fx-ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .cta-link:hover,
   .cta-panel:hover .cta-link {
-    padding-left: 4rem;
+    padding-left: 3.1rem;
   }
 
   .cta-link:hover .cta-link-line,
   .cta-panel:hover .cta-link .cta-link-line {
-    width: 3.4rem;
+    width: 2.5rem;
     opacity: 1;
     transform: none;
   }
 
   .cta-link:hover .cta-link-text::after,
   .cta-panel:hover .cta-link-text::after {
-    transform: translateX(0.35em);
+    transform: translateX(0.2em);
   }
 }
 
 /* ---------- Home ---------- */
 
-/* Intro and "Why blut": the question gets more room than the answer, and the
-   answer sits on the question's baseline. */
+/* Intro and "Why blut": the question gets more room than the answer, and
+   both start on the same line. */
 .section-home-intro ._2-column-grid,
 .section-home-about ._2-column-grid {
   gap: var(--spacing--xl);
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .section-home-intro .grid-item:first-child,
@@ -223,8 +229,8 @@
 
 .section-home-intro .spacer-xl-start,
 .section-home-about .spacer-xl-start {
-  padding-top: clamp(5rem, 4rem + 6vw, 11rem);
-  padding-bottom: clamp(5rem, 4rem + 6vw, 11rem);
+  padding-top: clamp(4rem, 3rem + 4vw, 7.5rem);
+  padding-bottom: clamp(4rem, 3rem + 4vw, 7.5rem);
 }
 
 .section-home-intro .rich-text-custom p,
@@ -233,19 +239,19 @@
   line-height: 1.45;
 }
 
-/* Teaser panels: taller, with the photo drifting as it scrolls past. */
+/* Teaser panels: one standard block tall, headline one step down so the
+   photo and the copy read as a pair rather than a wall of type. */
 .cta-panel .item-inner {
-  min-height: clamp(34rem, 30rem + 12vw, 50rem);
-  padding: clamp(1.5rem, 1rem + 2vw, 3.5rem);
+  min-height: var(--fx-block);
+  padding: clamp(1.5rem, 1rem + 2vw, 3rem);
 }
 
 .cta-panel .item-top {
-  padding-bottom: var(--spacing--xl);
+  padding-bottom: var(--spacing--l);
 }
 
-/* Big footer logo: scales up from its baseline as the footer arrives. */
-.footer .full-width-logo {
-  transform-origin: 50% 100%;
+.cta-panel .heading-style-h1 {
+  font-size: var(--heading--xl);
 }
 
 /* ---------- Work: rows ---------- */
@@ -257,127 +263,55 @@
   font-size: var(--heading--xl);
 }
 
-/* ---------- Media: scroll-linked drift (progressive enhancement) ---------- */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .grid-item.is-media > img.fit-cover-absolute,
-    .video-panel > .video-spot-image,
-    .video-spot-media > .video-spot-image,
-    .case-card-media > img {
-      scale: 1.14;
-      animation: fx-drift linear both;
-      animation-timeline: view();
-    }
+/* ---------- Sizing: nothing fills the whole screen ---------- */
 
-    @keyframes fx-drift {
-      from {
-        translate: 0 -6%;
-      }
-      to {
-        translate: 0 6%;
-      }
-    }
+/* Banners: about half the screen, so the content below is already visible. */
+.section-hero {
+  height: clamp(24rem, 55svh, 34rem);
+  max-height: none;
+}
 
-    /* Home stage: the giant logo sinks and the gradient lags behind as you scroll away. */
-    .section-home-stage .full-width-logo {
-      animation: fx-stage-logo linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
+.section-home-stage.is-banner .home-stage-wrapper {
+  height: clamp(26rem, 68svh, 44rem);
+}
 
-    .section-home-stage .home-stage-visual-wrapper {
-      animation: fx-stage-visual linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
+/* Full-width film stills: 16:9, but never taller than ~70% of the screen. */
+.video-spot-media {
+  aspect-ratio: auto;
+  height: min(56.25vw, 70svh);
+}
 
-    @keyframes fx-stage-logo {
-      to {
-        translate: 0 22vh;
-        scale: 0.92;
-        opacity: 0.4;
-      }
-    }
+.section-project-video-after-quote .media-frame {
+  max-height: 70svh;
+  overflow: hidden;
+}
 
-    @keyframes fx-stage-visual {
-      to {
-        translate: 0 12vh;
-        scale: 1.08;
-      }
-    }
-
-    .footer .full-width-logo {
-      animation: fx-footer-logo linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 45%;
-    }
-
-    @keyframes fx-footer-logo {
-      from {
-        translate: 0 18%;
-        scale: 0.86;
-        opacity: 0.2;
-      }
-      to {
-        translate: 0 0;
-        scale: 1;
-        opacity: 1;
-      }
-    }
+/* Two-column rows (Work, Strategy) take one standard block, not 43rem. */
+@media screen and (min-width: 992px) {
+  .item-inner {
+    min-height: var(--fx-block);
   }
 }
 
 /* ---------- Scroll reveals (armed by MotionLayer) ---------- */
-.fx-on .fx-media {
-  clip-path: inset(100% 0 0 0);
-  transition: clip-path 1.2s var(--fx-ease-in-out);
-}
-
-.fx-on .fx-media.is-in {
-  clip-path: inset(0 0 0 0);
+/* Media fades in; copy fades in with a short rise, a beat later. */
+.fx-on .fx-media,
+.fx-on .fx-copy {
+  opacity: 0;
+  transition:
+    opacity var(--fx-duration) var(--fx-ease),
+    translate var(--fx-duration) var(--fx-ease);
 }
 
 .fx-on .fx-copy {
-  opacity: 0;
-  translate: 0 1.5rem;
-  transition:
-    opacity 0.9s var(--fx-ease-out),
-    translate 0.9s var(--fx-ease-out);
-  transition-delay: 0.1s;
+  translate: 0 0.75rem;
+  transition-delay: 0.12s;
 }
 
+.fx-on .fx-media.is-in,
 .fx-on .fx-copy.is-in {
   opacity: 1;
   translate: 0 0;
-}
-
-/* ---------- Cursor label ---------- */
-.fx-cursor-label {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2000;
-  pointer-events: none;
-  display: none;
-  width: 5.5rem;
-  height: 5.5rem;
-  margin: -2.75rem 0 0 -2.75rem;
-  border-radius: 50%;
-  background: var(--_color---accent-color-3);
-  color: var(--_color---copy-bright);
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  letter-spacing: 0.02em;
-}
-
-.fx-cursor .fx-cursor-label {
-  display: flex;
-}
-
-/* The cursor label replaces the corner "Play Video" hint on pointer devices. */
-.fx-cursor .video-spot-play {
-  opacity: 0 !important;
 }
 
 /* ---------- Tablets and phones: columns stack ---------- */
@@ -399,6 +333,11 @@
     min-height: 0;
     padding-block: var(--spacing--xl);
   }
+
+  .section-hero {
+    height: auto;
+    min-height: clamp(20rem, 50svh, 28rem);
+  }
 }
 
 /* ---------- Phones ---------- */
@@ -410,6 +349,15 @@
 
   .cta-panel .item-top {
     padding-bottom: var(--spacing--l);
+  }
+
+  .cta-panel .item-inner {
+    padding-block: var(--spacing--l);
+  }
+
+  /* The logo is small on a phone, so the stage doesn't need most of the screen. */
+  .section-home-stage.is-banner .home-stage-wrapper {
+    height: clamp(20rem, 50svh, 28rem);
   }
 
   .navbar-link::after {

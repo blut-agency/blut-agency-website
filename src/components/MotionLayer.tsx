@@ -1,25 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
-import { animate, motion, useMotionValue, useSpring } from "motion/react";
 import "lenis/dist/lenis.css";
 
 /**
  * Site-wide motion, layered on top of the pages without touching their markup:
  *
  * - Smooth (inertia) scrolling via Lenis.
- * - Scroll reveals: media wipes up, copy fades up, as each block enters view.
+ * - Scroll reveals: media fades in, copy fades up, as each block enters view.
  * - The nav slides away while scrolling down and comes back on scroll up.
- * - Buttons and CTA links lean towards the pointer ("magnetic").
- * - A cursor label ("Play" / "View") follows the pointer over media.
  *
  * Every effect is opt-out by default: nothing is hidden until this runs, so
  * without JavaScript the page simply shows, and reduced motion skips it all.
  * Pages are full document loads (see PageTransition), so this runs once per page.
  */
 
-// Blocks that wipe in (clip from the bottom) and blocks that fade up.
+// Blocks that fade in (media) and blocks that fade up (copy).
 const MEDIA_SELECTOR = [
   ".grid-item.is-media",
   ".video-spot-media",
@@ -37,7 +34,6 @@ const COPY_SELECTOR = [
   ".accordion-component",
   ".fx-index",
 ].join(",");
-const MAGNETIC_SELECTOR = ".button, .cta-link, .navbar-link";
 
 export default function MotionLayer() {
   useEffect(() => {
@@ -52,8 +48,8 @@ export default function MotionLayer() {
     cleanups.push(() => lenis.destroy());
 
     // Scroll reveals. Elements nested inside another target reveal with it.
-    // A fully clipped element never counts as intersecting, so each one is
-    // watched through its parent box instead.
+    // Each one is watched through its parent box, so a block that starts
+    // hidden still reveals as soon as its section scrolls into view.
     const revealOf = new Map<Element, HTMLElement[]>();
     const observer = new IntersectionObserver(
       (entries) => {
@@ -94,86 +90,11 @@ export default function MotionLayer() {
     window.addEventListener("scroll", onScroll, { passive: true });
     cleanups.push(() => window.removeEventListener("scroll", onScroll));
 
-    // Magnetic buttons, pointer devices only.
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      document.querySelectorAll<HTMLElement>(MAGNETIC_SELECTOR).forEach((el) => {
-        const strength = el.classList.contains("button") ? 0.3 : 0.15;
-        const move = (e: PointerEvent) => {
-          const r = el.getBoundingClientRect();
-          animate(
-            el,
-            { x: (e.clientX - r.left - r.width / 2) * strength, y: (e.clientY - r.top - r.height / 2) * strength },
-            { type: "spring", stiffness: 300, damping: 20, mass: 0.5 },
-          );
-        };
-        const leave = () => animate(el, { x: 0, y: 0 }, { type: "spring", stiffness: 200, damping: 15 });
-        el.addEventListener("pointermove", move);
-        el.addEventListener("pointerleave", leave);
-        cleanups.push(() => {
-          el.removeEventListener("pointermove", move);
-          el.removeEventListener("pointerleave", leave);
-        });
-      });
-    }
-
     return () => {
       cleanups.forEach((fn) => fn());
       root.classList.remove("fx-on");
     };
   }, []);
 
-  return <CursorLabel />;
-}
-
-/** "Play" over video stills, "View" over linked media; follows the pointer with a spring. */
-function CursorLabel() {
-  const [label, setLabel] = useState<string | null>(null);
-  // Keeps the last text while the label scales out.
-  const [text, setText] = useState("");
-
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  const springX = useSpring(x, { stiffness: 500, damping: 40, mass: 0.4 });
-  const springY = useSpring(y, { stiffness: 500, damping: 40, mass: 0.4 });
-
-  useEffect(() => {
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduced) return;
-    document.documentElement.classList.add("fx-cursor");
-
-    const onMove = (e: PointerEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
-      const target = e.target instanceof Element ? e.target : null;
-      const show = (next: string) => {
-        setLabel(next);
-        setText(next);
-      };
-      if (target?.closest(".video-hover")) show("Play");
-      else if (target?.closest(".cta-panel .is-media, .case-card-media, .case-card .cta-link-full-cover, .cta-panel > .grid-item.is-media"))
-        show("View");
-      else setLabel(null);
-    };
-    const onLeave = () => setLabel(null);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("pointerleave", onLeave);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerleave", onLeave);
-      document.documentElement.classList.remove("fx-cursor");
-    };
-  }, [x, y]);
-
-  return (
-    <motion.div
-      className="fx-cursor-label"
-      aria-hidden="true"
-      style={{ x: springX, y: springY }}
-      animate={{ scale: label ? 1 : 0, opacity: label ? 1 : 0 }}
-      transition={{ type: "spring", stiffness: 400, damping: 28 }}
-    >
-      <span>{text}</span>
-    </motion.div>
-  );
+  return null;
 }
