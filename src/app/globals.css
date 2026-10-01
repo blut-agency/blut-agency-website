@@ -6,20 +6,26 @@
 */
 
 /*
-  Page transition. The wrapper starts hidden and PageTransition fades it in on
-  arrival, then back out before routing away. Durations match the Webflow site.
-  Users who ask for reduced motion just get the page, no fade.
+  Page transition. The wrapper fades in with a pure CSS animation, so content
+  shows even if JavaScript is slow or fails. PageTransition only adds
+  is-leaving to fade back out before routing away. Durations match the Webflow
+  site. Users who ask for reduced motion just get the page, no fade.
 */
-.main-wrapper {
-  opacity: 0;
-  transition: opacity 0.3s ease-in;
+@keyframes main-wrapper-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.main-wrapper.is-visible {
-  opacity: 1;
+.main-wrapper {
+  animation: main-wrapper-in 0.3s ease-in both;
 }
 
 .main-wrapper.is-leaving {
+  animation: none;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
@@ -27,6 +33,7 @@
 @media (prefers-reduced-motion: reduce) {
   .main-wrapper,
   .main-wrapper.is-leaving {
+    animation: none;
     opacity: 1;
     transition: none;
   }

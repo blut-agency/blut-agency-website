@@ -7,8 +7,9 @@ import { usePathname } from "next/navigation";
  * Crossfade between pages, matching the Webflow site: the wrapper fades in over
  * 0.3s on arrival and out over 0.5s before leaving.
  *
- * `.main-wrapper` starts at `opacity: 0` (see globals.css), so the fade-in is
- * just adding `.is-visible` once the new page has mounted.
+ * The fade-in is a CSS animation on `.main-wrapper` (see globals.css), so the
+ * page shows even if this script never runs. This component only handles the
+ * fade-out.
  *
  * Like the Webflow original, every internal link is a full document load:
  * public/js/embeds.js wires up the sound players and the moving gradient
@@ -21,14 +22,9 @@ const FADE_OUT_MS = 500;
 export default function PageTransition() {
   const pathname = usePathname();
 
-  // Fade the new page in — runs again on every route change.
+  // Clear a leftover fade-out on every route change.
   useEffect(() => {
-    const wrapper = document.querySelector(".main-wrapper");
-    if (!wrapper) return;
-    wrapper.classList.remove("is-leaving");
-    // Next frame, so the browser sees opacity:0 first and actually transitions.
-    const id = requestAnimationFrame(() => wrapper.classList.add("is-visible"));
-    return () => cancelAnimationFrame(id);
+    document.querySelector(".main-wrapper")?.classList.remove("is-leaving");
   }, [pathname]);
 
   // Back/forward can restore a page from the browser cache mid fade-out; show it again.
@@ -37,7 +33,6 @@ export default function PageTransition() {
       if (!event.persisted) return;
       const wrapper = document.querySelector(".main-wrapper");
       wrapper?.classList.remove("is-leaving");
-      wrapper?.classList.add("is-visible");
     }
     window.addEventListener("pageshow", onPageShow);
     return () => window.removeEventListener("pageshow", onPageShow);
