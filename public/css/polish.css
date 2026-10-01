@@ -1,0 +1,273 @@
+/*
+  Polish pass: type hierarchy, legibility and motion.
+
+  Loaded after the Webflow stylesheets, so these rules win at equal
+  specificity. Everything here is a refinement of the existing system
+  (same font, colours and components), not a new design:
+
+  1. One fluid type scale with clear steps between levels, so a banner title,
+     a section heading, a card heading and body copy no longer share sizes.
+  2. Body copy that is readable: darker grey on light backgrounds (the old
+     #a3a3a3 on white was ~2.5:1 contrast), a comfortable size, line length
+     and line height.
+  3. Tighter, bolder headlines with balanced line breaks.
+  4. Smoother interactions: one easing curve for hovers, visible keyboard
+     focus, smooth in-page scrolling, crisper font rendering.
+*/
+
+:root {
+  /* Display: top banners. Section: page and section headings. */
+  --polish--display: clamp(2.75rem, 1.6rem + 4.2vw, 6rem);
+  --polish--section: clamp(2.25rem, 1.4rem + 2.6vw, 4rem);
+  --polish--subsection: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  --polish--minor: clamp(1.375rem, 1.1rem + 0.8vw, 2rem);
+  --polish--body: clamp(1.0625rem, 0.95rem + 0.35vw, 1.3125rem);
+  --polish--label: clamp(0.875rem, 0.82rem + 0.15vw, 1rem);
+  --polish--copy-muted: #5c5c5c;
+  --polish--ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Rendering and motion ---------- */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::selection {
+  background-color: var(--_color---accent-color-3);
+  color: var(--_color---copy-bright);
+}
+
+/* Keyboard focus that is visible on light and dark sections alike. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: 3px;
+}
+
+/* ---------- Headings ---------- */
+
+.heading-style-h1,
+.heading-style-h2,
+.heading-style-h3,
+.rich-text-custom h2,
+.rich-text-custom h3 {
+  text-wrap: balance;
+}
+
+.heading-style-h1 {
+  font-size: var(--polish--section);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+/* Top banners and case study stages carry the page title: the biggest step. */
+.section-hero .heading-style-h1,
+.project-stage-wrapper .heading-style-h1 {
+  font-size: var(--polish--display);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.heading-style-h2 {
+  font-size: var(--polish--subsection);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.heading-style-h3,
+.rich-text-custom h3 {
+  font-size: var(--polish--minor);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Rich-text section headings on case study pages read as section titles. */
+.h2-is-h1-size h2 {
+  font-size: var(--polish--section);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: var(--spacing--l);
+}
+
+/* ---------- Body copy ---------- */
+
+.copy-medium,
+.rich-text-custom p {
+  font-size: var(--polish--body);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* Darker grey on light backgrounds; dark sections keep the light grey. */
+.rich-text-custom p {
+  color: var(--polish--copy-muted);
+  max-width: 62ch;
+}
+
+.text-color-bright .rich-text-custom p,
+.footer .rich-text-custom p {
+  color: var(--_color---copy-grey);
+}
+
+.copy-small,
+.meta-list {
+  font-size: var(--polish--label);
+  line-height: 1.45;
+}
+
+/* Banner intro copy: a touch larger than body, and kept to a readable width. */
+.section-hero .copy-medium {
+  font-size: clamp(1.125rem, 1rem + 0.45vw, 1.5rem);
+  line-height: 1.45;
+  max-width: 40ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-hero.is-right-aligned .copy-medium {
+  margin-right: 0;
+}
+
+/* ---------- Navigation ---------- */
+
+.header {
+  border-bottom: 1px solid color-mix(in srgb, var(--_color---copy-dark) 8%, transparent);
+}
+
+.navbar-link {
+  position: relative;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+/* Underline that grows in on hover and marks the current page. */
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.2em;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--polish--ease);
+}
+
+.navbar-link:hover::after,
+.navbar-link.w--current::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Calls to action ---------- */
+
+.cta-link {
+  font-size: clamp(1rem, 0.94rem + 0.25vw, 1.25rem);
+  transition: padding 0.35s var(--polish--ease);
+}
+
+.cta-link-line {
+  transition:
+    opacity 0.35s var(--polish--ease),
+    transform 0.35s var(--polish--ease);
+}
+
+.button {
+  padding: 1.05rem 1.6rem;
+}
+
+.button-text {
+  font-size: clamp(1rem, 0.94rem + 0.25vw, 1.2rem);
+}
+
+/* ---------- Media and hover smoothness ---------- */
+
+.cta-panel .fit-cover-absolute,
+.video-hover .video-spot-image {
+  transition: transform 0.7s var(--polish--ease);
+}
+
+.cta-panel .grid-item-background-color {
+  transition: background-color 0.5s var(--polish--ease);
+}
+
+.accordion-toggle {
+  transition: opacity 0.25s var(--polish--ease);
+}
+
+.accordion-toggle:hover {
+  opacity: 0.65;
+}
+
+/* ---------- Spacing rhythm ---------- */
+
+/* The text halves of the 50/50 rows get generous, consistent padding. */
+.item-inner.is-case-study {
+  padding: clamp(2rem, 1rem + 3vw, 4.5rem) var(--container--page-padding);
+}
+
+@media screen and (max-width: 767px) {
+  .item-inner.is-case-study {
+    padding-top: var(--spacing--l);
+    padding-bottom: var(--spacing--xl);
+  }
+}
+
+/* ---------- Case study meta ---------- */
+
+/* "What we did" / "Collaborators" read as labels, their values as copy. */
+.project-meta-list-item > div:first-child {
+  font-size: var(--polish--label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.project-meta-list .text-color-grey {
+  color: var(--polish--copy-muted);
+}
+
+/* ---------- Labels ---------- */
+
+/*
+  Small uppercase labels above sections ("Mission Statement", "Offices") and
+  the client line above case titles: a clear step below the headings, so
+  label → heading → copy reads in that order.
+*/
+.eyebrow,
+.copy-medium.eyebrow,
+.project-stage-content-wrapper .meta-list,
+.copy-small .meta-list {
+  font-size: var(--polish--label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Phones ---------- */
+
+/*
+  75svh banners leave a phone screen mostly empty colour. Shorter banners on
+  phones get people to the content sooner; the homepage stage keeps matching
+  the other banners' height.
+*/
+@media screen and (max-width: 767px) {
+  .section-hero {
+    height: auto;
+    min-height: 60svh;
+  }
+
+  .section-home-stage.is-banner .home-stage-wrapper {
+    height: 60svh;
+  }
+}

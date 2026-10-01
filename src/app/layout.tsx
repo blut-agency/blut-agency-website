@@ -22,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/css/webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/blut-dev.webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/embeds.css" rel="stylesheet" type="text/css" />
+        <link href="/css/polish.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
         <PageTransition />
