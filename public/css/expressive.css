@@ -1,0 +1,418 @@
+/*
+  Expressive layer. Loaded after the Webflow CSS and embeds.css, so it only
+  restyles layout, type and motion; page structure and copy are unchanged.
+
+  Effects that hide something first (reveals, cursor) only apply once
+  MotionLayer has added .fx-on / .fx-cursor to <html>, so without JavaScript or
+  with reduced motion everything shows as normal.
+*/
+
+/* ---------- Type: one fluid scale, display sizes go big ---------- */
+:root {
+  --heading--xxl: clamp(2.75rem, 1.4rem + 4.6vw, 7rem);
+  --heading--xl: clamp(2.125rem, 1.35rem + 2.7vw, 4.25rem);
+  --heading--l: clamp(1.5rem, 1.15rem + 1.1vw, 2.375rem);
+  --heading--m: clamp(1.1875rem, 1.05rem + 0.45vw, 1.5rem);
+  --heading--s: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --text-size--tiny: 0.9rem;
+  --fx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --fx-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --fx-measure: 36rem;
+}
+
+.heading-style-h1 {
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.heading-style-h2 {
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.heading-style-h3 {
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* Body copy: comfortable size, line height and line length. The Webflow grey
+   (#a3a3a3) was below readable contrast on white, so copy now takes a softened
+   version of its section's own text colour: dark grey on light, light on dark. */
+.rich-text-custom p {
+  color: color-mix(in srgb, currentColor 74%, transparent);
+}
+
+.rich-text-custom p,
+.copy-medium {
+  font-size: var(--heading--s);
+  line-height: 1.55;
+  max-width: var(--fx-measure);
+  text-wrap: pretty;
+}
+
+.video-spot-content .copy-medium,
+.hero-content-wrapper .copy-medium {
+  font-size: var(--heading--m);
+  line-height: 1.4;
+}
+
+.hero-content-wrapper .copy-medium {
+  margin-inline: auto;
+}
+
+.section-hero.is-right-aligned .hero-content-wrapper .copy-medium {
+  margin-inline: auto 0;
+}
+
+/* Small uppercase labels: the numbered teaser index on Home. */
+.fx-index {
+  display: flex;
+  gap: 0.75em;
+  align-items: baseline;
+  margin: 0 0 var(--spacing--md);
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--_color---copy-grey);
+}
+
+.fx-index span {
+  color: var(--_color---accent-color-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Headline reveal: letters rise out of a mask ---------- */
+.reveal-word {
+  overflow: clip;
+  overflow-clip-margin: 0.05em;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  vertical-align: bottom;
+}
+
+.reveal-text.is-armed .reveal-letter {
+  opacity: 1;
+  transform: translateY(110%) rotate(6deg);
+  transform-origin: 0 100%;
+}
+
+.reveal-text.is-armed.is-revealed .reveal-letter {
+  transform: none;
+  transition: transform 0.9s var(--fx-ease-out);
+}
+
+/* ---------- Nav: frosted, tucks away on scroll down ---------- */
+.navbar {
+  background-color: color-mix(in srgb, var(--_color---white) 82%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+}
+
+.header {
+  transition:
+    transform 0.5s var(--fx-ease-out),
+    opacity 0.25s ease;
+}
+
+.header.is-tucked {
+  transform: translateY(-100%);
+}
+
+/* Bigger tap targets and an underline that draws in. */
+.navbar-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.15rem;
+}
+
+.navbar-link::after {
+  content: "";
+  position: absolute;
+  left: 0.15rem;
+  right: 0.15rem;
+  bottom: 10px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--fx-ease-out);
+}
+
+.navbar-link:hover::after,
+.navbar-link.w--current::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- Focus: visible for keyboards, never for mouse clicks ---------- */
+:where(a, button, [role="button"], input, summary, label):focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: 3px;
+}
+
+.video-spot-button:focus-visible,
+.cta-link-full-cover:focus-visible {
+  outline-offset: -6px;
+}
+
+::selection {
+  background: var(--_color---accent-color-3);
+  color: var(--_color---copy-bright);
+}
+
+/* ---------- CTA links: a line that stretches, an arrow that slides ---------- */
+.cta-link {
+  gap: 0.6em;
+  min-height: 44px;
+  padding-left: 2.6rem;
+  transition: padding 0.5s var(--fx-ease-out);
+}
+
+.cta-link-line {
+  width: 2rem;
+  opacity: 1;
+  transform: none;
+  transition: width 0.5s var(--fx-ease-out);
+}
+
+.cta-link-text::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.5em;
+  transition: transform 0.5s var(--fx-ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cta-link:hover,
+  .cta-panel:hover .cta-link {
+    padding-left: 4rem;
+  }
+
+  .cta-link:hover .cta-link-line,
+  .cta-panel:hover .cta-link .cta-link-line {
+    width: 3.4rem;
+    opacity: 1;
+    transform: none;
+  }
+
+  .cta-link:hover .cta-link-text::after,
+  .cta-panel:hover .cta-link-text::after {
+    transform: translateX(0.35em);
+  }
+}
+
+/* ---------- Home ---------- */
+
+/* Intro and "Why blut": the question gets more room than the answer, and the
+   answer sits on the question's baseline. */
+.section-home-intro ._2-column-grid,
+.section-home-about ._2-column-grid {
+  gap: var(--spacing--xl);
+  align-items: flex-end;
+}
+
+.section-home-intro .grid-item:first-child,
+.section-home-about .grid-item:first-child {
+  flex: 1.5;
+}
+
+.section-home-intro .spacer-xl-start,
+.section-home-about .spacer-xl-start {
+  padding-top: clamp(5rem, 4rem + 6vw, 11rem);
+  padding-bottom: clamp(5rem, 4rem + 6vw, 11rem);
+}
+
+.section-home-intro .rich-text-custom p,
+.section-home-about .rich-text-custom p {
+  font-size: var(--heading--m);
+  line-height: 1.45;
+}
+
+/* Teaser panels: taller, with the photo drifting as it scrolls past. */
+.cta-panel .item-inner {
+  min-height: clamp(34rem, 30rem + 12vw, 50rem);
+  padding: clamp(1.5rem, 1rem + 2vw, 3.5rem);
+}
+
+.cta-panel .item-top {
+  padding-bottom: var(--spacing--xl);
+}
+
+/* Big footer logo: scales up from its baseline as the footer arrives. */
+.footer .full-width-logo {
+  transform-origin: 50% 100%;
+}
+
+/* ---------- Work: rows ---------- */
+.item-inner.is-case-study {
+  padding: clamp(1.5rem, 1rem + 2.5vw, 4rem);
+}
+
+.item-inner.is-case-study .heading-style-h2 {
+  font-size: var(--heading--xl);
+}
+
+/* ---------- Media: scroll-linked drift (progressive enhancement) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .grid-item.is-media > img.fit-cover-absolute,
+    .video-panel > .video-spot-image,
+    .video-spot-media > .video-spot-image,
+    .case-card-media > img {
+      scale: 1.14;
+      animation: fx-drift linear both;
+      animation-timeline: view();
+    }
+
+    @keyframes fx-drift {
+      from {
+        translate: 0 -6%;
+      }
+      to {
+        translate: 0 6%;
+      }
+    }
+
+    /* Home stage: the giant logo sinks and the gradient lags behind as you scroll away. */
+    .section-home-stage .full-width-logo {
+      animation: fx-stage-logo linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    .section-home-stage .home-stage-visual-wrapper {
+      animation: fx-stage-visual linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    @keyframes fx-stage-logo {
+      to {
+        translate: 0 22vh;
+        scale: 0.92;
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes fx-stage-visual {
+      to {
+        translate: 0 12vh;
+        scale: 1.08;
+      }
+    }
+
+    .footer .full-width-logo {
+      animation: fx-footer-logo linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+
+    @keyframes fx-footer-logo {
+      from {
+        translate: 0 18%;
+        scale: 0.86;
+        opacity: 0.2;
+      }
+      to {
+        translate: 0 0;
+        scale: 1;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* ---------- Scroll reveals (armed by MotionLayer) ---------- */
+.fx-on .fx-media {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.2s var(--fx-ease-in-out);
+}
+
+.fx-on .fx-media.is-in {
+  clip-path: inset(0 0 0 0);
+}
+
+.fx-on .fx-copy {
+  opacity: 0;
+  translate: 0 1.5rem;
+  transition:
+    opacity 0.9s var(--fx-ease-out),
+    translate 0.9s var(--fx-ease-out);
+  transition-delay: 0.1s;
+}
+
+.fx-on .fx-copy.is-in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---------- Cursor label ---------- */
+.fx-cursor-label {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  pointer-events: none;
+  display: none;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: -2.75rem 0 0 -2.75rem;
+  border-radius: 50%;
+  background: var(--_color---accent-color-3);
+  color: var(--_color---copy-bright);
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.fx-cursor .fx-cursor-label {
+  display: flex;
+}
+
+/* The cursor label replaces the corner "Play Video" hint on pointer devices. */
+.fx-cursor .video-spot-play {
+  opacity: 0 !important;
+}
+
+/* ---------- Tablets and phones: columns stack ---------- */
+@media screen and (max-width: 991px) {
+  .section-home-intro ._2-column-grid,
+  .section-home-about ._2-column-grid {
+    align-items: stretch;
+  }
+
+  .section-home-intro .grid-item:first-child,
+  .section-home-about .grid-item:first-child {
+    flex: none;
+  }
+
+  /* Webflow fixes the text panel to the photo's 1.2 aspect ratio, which the
+     bigger headlines overflow. Let it grow with its copy instead. */
+  .cta-panel .item-inner {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding-block: var(--spacing--xl);
+  }
+}
+
+/* ---------- Phones ---------- */
+@media screen and (max-width: 767px) {
+  .section-home-intro ._2-column-grid,
+  .section-home-about ._2-column-grid {
+    gap: var(--spacing--md);
+  }
+
+  .cta-panel .item-top {
+    padding-bottom: var(--spacing--l);
+  }
+
+  .navbar-link::after {
+    bottom: 8px;
+  }
+}

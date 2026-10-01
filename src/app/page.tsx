@@ -147,7 +147,7 @@ export default function HomePage() {
     </section>
     <section className="section-home-cases">
       <div role="list" className="home-project-teaser-item-list">
-        {TEASERS.map((t) => (
+        {TEASERS.map((t, i) => (
           <div role="listitem" className="_2-column-grid cta-panel" key={t.href}>
             <div className="grid-item is-media">
               <img src={t.image} alt={t.alt} loading="lazy" className="fit-cover-absolute" />
@@ -159,6 +159,9 @@ export default function HomePage() {
               <div className="text-color-grey">
                 <div data-wf--box-inner-text--variant="big" className="item-inner">
                   <div className="item-top">
+                    <p className="fx-index">
+                      <span>{String(i + 1).padStart(2, "0")}</span> {t.label}
+                    </p>
                     <RevealText className="heading-style-h1" text={t.heading} />
                   </div>
                   <div className="item-bottom">
