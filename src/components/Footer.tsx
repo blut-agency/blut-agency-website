@@ -7,15 +7,18 @@ const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="
   <path d="M56.0874 14.6651C55.1502 15.9633 53.9686 16.6732 52.4202 16.6732C50.8719 16.6732 49.8532 15.7402 49.8532 14.0972V8.70164H56.0874V5.63876H49.8532V1.39941L45.3915 2.10935V5.63876H44.0876L43.5986 8.70164H45.3915L45.4118 14.8883C45.4118 18.0526 47.6325 19.9998 51.3404 19.9998C53.8871 19.9998 56.0263 19.0262 57.3913 17.2209L56.0874 14.6651Z" fill="currentColor"></path>
 </svg>`;
 
-export default function Footer() {
+/** `showLogo={false}` drops the full-width logo (the homepage already opens with it). */
+export default function Footer({ showLogo = true }: { showLogo?: boolean }) {
   return (
     <footer id="footer" className="footer">
-      <div className="full-width-logo">
-        <div
-          className="logo-component"
-          dangerouslySetInnerHTML={{ __html: LOGO_SVG }}
-        />
-      </div>
+      {showLogo && (
+        <div className="full-width-logo">
+          <div
+            className="logo-component"
+            dangerouslySetInnerHTML={{ __html: LOGO_SVG }}
+          />
+        </div>
+      )}
       <div className="footer-end">
         <div id="w-node-_269c117c-5c99-7784-033f-52d502a3f3e5-44670462" className="footer-address">
           <div className="footer-link-list w-richtext">

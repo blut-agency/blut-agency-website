@@ -51,7 +51,10 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "devils-advocate-brand-launch"
+      "nextCaseStudySlug": "devils-advocate-brand-launch",
+      "teaserClient": "Hyundai Insterstudios",
+      "teaserCampaign": "Inster EV Launch",
+      "thumbnail": "/images/home/teaser-cases.jpg"
     },
     {
       "slug": "devils-advocate-brand-launch",
@@ -106,7 +109,10 @@
         "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/6863da8ecac5e07a50882b0c_Devils-6.webp"
       ],
       "awards": [],
-      "nextCaseStudySlug": "feel-the-vibe"
+      "nextCaseStudySlug": "feel-the-vibe",
+      "teaserClient": "Devil’s Advocate",
+      "teaserCampaign": "Brand Launch",
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e7946dbb7efe126e47bf0_devils_advocate01.webp"
     },
     {
       "slug": "feel-the-vibe",
@@ -154,7 +160,10 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "all-purpose-sound"
+      "nextCaseStudySlug": "all-purpose-sound",
+      "teaserClient": "Rockstar Energy",
+      "teaserCampaign": "SSIO Sound Experience",
+      "thumbnail": "/images/cases/rockstar.jpg"
     },
     {
       "slug": "all-purpose-sound",
@@ -202,7 +211,10 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "reinventing-a-classic"
+      "nextCaseStudySlug": "reinventing-a-classic",
+      "teaserClient": "Postbank",
+      "teaserCampaign": "All Purpose Sound",
+      "thumbnail": "/images/cases/postbank.jpg"
     },
     {
       "slug": "reinventing-a-classic",
@@ -250,7 +262,10 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "wdr---re-arranging-perceptions"
+      "nextCaseStudySlug": "wdr---re-arranging-perceptions",
+      "teaserClient": "Germont",
+      "teaserCampaign": "Reinventing a Classic",
+      "thumbnail": "/images/cases/germont.jpg"
     },
     {
       "slug": "wdr---re-arranging-perceptions",
@@ -306,7 +321,10 @@
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
-      "nextCaseStudySlug": "volkswagen-bringing-it-all-back-home"
+      "nextCaseStudySlug": "volkswagen-bringing-it-all-back-home",
+      "teaserClient": "WDR",
+      "teaserCampaign": "Re:arranged",
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e659c2cc06d34f495fef3_WDR_Funkhaus_Orchester6.webp"
     },
     {
       "slug": "volkswagen-bringing-it-all-back-home",
@@ -377,7 +395,10 @@
           "image": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685aa7ea3e0630f754fe7ce2_werbefilmpreis-logo.png"
         }
       ],
-      "nextCaseStudySlug": "invention-is-instrumental"
+      "nextCaseStudySlug": "invention-is-instrumental",
+      "teaserClient": "Volkswagen",
+      "teaserCampaign": "VW Polo x Beats by Dre",
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68402c64abd06279af081021_1.webp"
     },
     {
       "slug": "invention-is-instrumental",
@@ -455,7 +476,10 @@
           "image": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68346696d09d45cf1fe6016d_Corporate%20Design%20Preis.svg"
         }
       ],
-      "nextCaseStudySlug": "hyundai-are-you-in"
+      "nextCaseStudySlug": "hyundai-are-you-in",
+      "teaserClient": "Schüco",
+      "teaserCampaign": "Das Schücophon",
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68346509fa40ff318350bc05_1.webp"
     }
   ],
   "locations": [

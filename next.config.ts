@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         destination: "/project/:slug",
         permanent: true,
       },
+      // The Strategy page took over from the old Services page.
+      {
+        source: "/services",
+        destination: "/strategy",
+        permanent: true,
+      },
     ];
   },
 };
