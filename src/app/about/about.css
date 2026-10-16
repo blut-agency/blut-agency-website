@@ -1,0 +1,273 @@
+/*
+  About page (/about) in the grid-landing system.
+  Team grid built from Nic's Figma "Team" (9GWn7JIeYMkfMYeLSkFiUS, node 142:1113).
+
+  Reuses grid.css: .gl-page tokens, .gl-col / .gl-row / .gl-spacer, .gl-cta,
+  the shared .gl-banner, .gl-band and .gl-footer. Everything here is scoped
+  to .ab-page.
+
+  Sections:
+    1. Page tokens
+    2. Banner, spacers
+    3. Mission statement row
+    4. Team grid
+    5. Offices
+    6. Contact row
+    7. Tablet / phone
+*/
+
+/* ---------- 1. Page tokens ---------- */
+.gl-page.ab-page {
+  --ab-spacer-h: 4rem; /* 64px, as the Work, Strategy and Cases spacers */
+  --ab-pad: var(--fx-gap, 28px);
+  --ab-cols: 8;
+}
+
+.ab-page .ab-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 2. Banner, spacers ---------- */
+.ab-page .ab-banner .section-hero {
+  color: var(--_color---copy-bright);
+}
+
+.ab-page .ab-spacer .gl-col {
+  height: var(--ab-spacer-h);
+}
+
+/* ---------- 3. Mission statement row ---------- */
+.ab-page .ab-mission-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing--md, 1.5rem);
+  padding: var(--gl-spacer) var(--ab-pad);
+  text-align: center;
+}
+
+.ab-page .ab-mission .fx-label,
+.ab-page .ab-offices .fx-label {
+  margin: 0;
+  font-weight: 400;
+}
+
+.ab-page .ab-mission .heading-style-h1 {
+  margin: 0;
+  max-width: 56.25rem; /* 900px, as the Work statement */
+}
+
+/* ---------- 4. Team grid (Figma 142:1113) ----------
+   8 squares across the column, 1px hairlines between them (the grid's
+   background shows through the 1px gaps), centre panel 4 x 2 squares. */
+.ab-page .ab-team-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ab-cols), minmax(0, 1fr));
+  gap: 1px;
+  background: var(--gl-line);
+}
+
+.ab-page .ab-cell,
+.ab-page .ab-face {
+  aspect-ratio: 1;
+  min-width: 0;
+  background: var(--_color---white);
+}
+
+.ab-page .ab-face {
+  grid-row: var(--ab-r);
+  grid-column: var(--ab-c);
+  position: relative;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.ab-page .ab-face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.ab-page .ab-face:focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: -2px;
+}
+
+.ab-page .ab-team-center {
+  grid-row: 2 / span 2;
+  grid-column: 3 / span 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 10px;
+  background: var(--_color---white);
+  color: var(--_color---copy-dark);
+  text-align: center;
+}
+
+.ab-page .ab-team-name {
+  margin: 0;
+  font-size: var(--heading--xxl); /* Figma 96px; capped at the site's 60 max */
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+/* Keep the full line boxes (the site crops line-height off every p), so name
+   and role stack with the spacing drawn in the Figma. */
+.ab-page .ab-team-center p {
+  display: block;
+}
+
+.ab-page .ab-team-center p::before,
+.ab-page .ab-team-center p::after {
+  content: none;
+}
+
+.ab-page .ab-team-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ab-page .ab-team-name a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+.ab-page .ab-team-role {
+  margin: 0;
+  font-size: var(--heading--m); /* Body/Large, 20px */
+  line-height: 1.35;
+}
+
+/* ---------- 5. Offices ---------- */
+.ab-page .ab-offices-head {
+  padding: var(--spacing--sm, 1rem) var(--ab-pad);
+  border-bottom: 1px solid var(--gl-line-dark);
+}
+
+.ab-page .ab-offices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ab-page .ab-office {
+  min-width: 0;
+}
+
+.ab-page .ab-office + .ab-office {
+  border-left: 1px solid var(--gl-line-dark);
+}
+
+/* The old square visual, cut to the 4:3 drawn in the Figma kit's Offices row. */
+.ab-page .ab-office-media {
+  aspect-ratio: 4 / 3;
+  padding: 0;
+}
+
+.ab-page .ab-office-copy {
+  padding: var(--spacing--sm, 1rem) var(--ab-pad) calc(var(--ab-pad) * 1.5);
+}
+
+.ab-page .ab-office-title {
+  margin: 0 0 var(--spacing--sm, 1rem);
+  font-size: var(--heading--xl);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.ab-page .ab-office-address,
+.ab-page .ab-office-address p {
+  margin: 0;
+  font-size: var(--text-size--small);
+  line-height: 1.45;
+  color: var(--_color---copy-bright);
+}
+
+.ab-page .ab-office-address a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ab-page .ab-office-address a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- 6. Contact row ---------- */
+.ab-page .ab-contact-inner {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing--l, 2.5rem) var(--ab-pad);
+}
+
+/* ---------- 7. Tablets and phones ---------- */
+@media screen and (max-width: 991px) {
+  .ab-page .ab-team-role {
+    font-size: var(--heading--s);
+  }
+
+  .ab-page .ab-team-name {
+    font-size: var(--heading--xl);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* 5 squares across; the name panel takes rows 2-3 across the full width. */
+  .gl-page.ab-page {
+    --ab-cols: 5;
+  }
+
+  .ab-page .ab-face {
+    grid-row: var(--ab-mr);
+    grid-column: var(--ab-mc);
+  }
+
+  /* Rows 2-3 hold no squares here, so the panel itself keeps them square. */
+  .ab-page .ab-team-center {
+    grid-column: 1 / -1;
+    aspect-ratio: 5 / 2;
+  }
+
+  .ab-page .ab-cell:nth-of-type(n + 6) {
+    display: none;
+  }
+
+  .ab-page .ab-team-name {
+    font-size: var(--heading--l);
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .ab-page .ab-offices-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-page .ab-office + .ab-office {
+    border-left: 0;
+    border-top: 1px solid var(--gl-line-dark);
+  }
+
+  .ab-page .ab-contact-inner {
+    justify-content: flex-start;
+  }
+}
