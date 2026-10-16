@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/css/blut-dev.webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/embeds.css" rel="stylesheet" type="text/css" />
         <link href="/css/expressive.css" rel="stylesheet" type="text/css" />
+        <link href="/css/grid.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
         <PageTransition />
