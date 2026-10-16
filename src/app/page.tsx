@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import GridFooter from "@/components/GridFooter";
+import LogoBand from "@/components/LogoBand";
 import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
 
@@ -42,16 +43,27 @@ const TEASERS: {
   },
 ];
 
+/** "— Label" text link, used instead of buttons on the grid layout. */
+function CtaLink({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="cta-link-component gl-cta">
+      <Link aria-label={label} href={href} className="cta-link w-inline-block">
+        <div className="cta-link-line" />
+        <div className="cta-link-text">{label}</div>
+      </Link>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const homeSound = getHomeSound();
 
   return (
     <>
-<Header variant="start-top" />
-<div className="main-wrapper">
-    <div className="nav-distance"></div>
-    {/* Same height as the top banners on the other pages (see globals.css). */}
-    <section className="section-home-stage is-banner">
+<div className="main-wrapper gl-page">
+    {/* Landing: the red logo stage and the nav together fill the first screen;
+        the nav then sticks to the top (see grid.css). */}
+    <section className="section-home-stage gl-stage">
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
                 <div className="full-width-logo">
@@ -123,103 +135,68 @@ export default function HomePage() {
               <div className="visual-background-noise"></div>
             </div>
     </section>
-    <section className="section-home-intro">
-      <div className="page-padding">
-        <div className="container-large">
-          {/* 50/50 like the sections below: large question left, supporting copy right.
-              Top spacing clears the nav bar that overlaps the start of this section. */}
-          <div className="spacer-xl-start spacer-xl-end">
-            <div className="_2-column-grid">
-              <div className="grid-item">
-                <RevealText className="heading-style-h1" text="Do you even know if your music strategy works?" />
-              </div>
-              <div className="grid-item">
-                <div className="services-item-inner-content">
-                  <div className="rich-text-custom w-richtext">
-                    <p>blut creates unique music strategies - and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <Header variant="start-top" />
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+
+    {/* Intro: question left, answer right, a grid line between them. */}
+    <section className="gl-row">
+      <div className="gl-col gl-split">
+        <div className="gl-cell">
+          <RevealText className="heading-style-h1" text="Do you even know if your music strategy works?" />
+        </div>
+        <div className="gl-cell gl-copy">
+          <div className="rich-text-custom w-richtext">
+            <p>blut creates unique music strategies - and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
           </div>
+          <CtaLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
-    <section className="section-home-cases">
-      <div role="list" className="home-project-teaser-item-list">
-        {TEASERS.map((t, i) => (
-          <div role="listitem" className="_2-column-grid cta-panel" key={t.href}>
-            <div className="grid-item is-media">
-              <img src={t.image} alt={t.alt} loading="lazy" className="fit-cover-absolute" />
-              {/* The photo half links too; the visible CTA sits in the text half. */}
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+    <LogoBand theme="lime" />
+
+    {/* Teasers: photo and black panel pairs, alternating sides. */}
+    <section className="gl-teasers">
+      {TEASERS.map((t, i) => (
+        <div className={`gl-row is-dark${i % 2 ? " is-flipped" : ""}`} key={t.href}>
+          <div className="gl-col gl-split gl-teaser cta-panel">
+            <div className="gl-teaser-media grid-item is-media">
+              <img src={t.image} alt={t.alt} loading="lazy" />
               <Link aria-hidden="true" tabIndex={-1} href={t.href} className="cta-link-full-cover w-inline-block" />
             </div>
-            <div className="grid-item">
-              <div className="grid-item-background-color" />
-              <div className="text-color-grey">
-                <div data-wf--box-inner-text--variant="big" className="item-inner">
-                  <div className="item-top">
-                    <p className="fx-index">
-                      <span>{String(i + 1).padStart(2, "0")}</span> {t.label}
-                    </p>
-                    <RevealText className="heading-style-h1" text={t.heading} />
-                  </div>
-                  <div className="item-bottom">
-                    <div data-wf--cta-link--variant="bright-text" className="cta-link-component">
-                      <Link
-                        aria-hidden="true"
-                        aria-label={t.cta}
-                        href={t.href}
-                        className="cta-link-full-cover w-inline-block"
-                      />
-                      <Link aria-label={t.cta} href={t.href} className="cta-link w-inline-block">
-                        <div className="cta-link-line" />
-                        <div className="cta-link-text">{t.cta}</div>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+            <div className="gl-cell gl-teaser-copy">
+              <div className="gl-teaser-top">
+                <RevealText className="heading-style-h1" text={t.heading} />
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-    <section className="section-home-about">
-      <div className="page-padding">
-        <div className="container-large">
-          {/* Same 50/50 treatment as the intro: question left, copy and button right. */}
-          <div className="spacer-xl-start spacer-xl-end">
-            {/* Extra wrapper keeps the grid a first child, so _2-column-grid:nth-child(2n) doesn't reverse it. */}
-            <div>
-            <div className="_2-column-grid">
-              <div className="grid-item">
-                <RevealText className="heading-style-h1" text="Why do you need blut?" />
-              </div>
-              <div className="grid-item">
-                <div className="services-item-inner-content">
-                  <div className="rich-text-custom w-richtext">
-                <p>We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll <em>know</em> you’ve made the right call. </p>
-              </div>
-                  <div className="button-component">
-                  <Link data-visual-speed="15" data-visual-form="button" href="/about" className="button w-inline-block"><span className="button-form" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form">
-                      <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path"></path>
-                    </svg>` }} /><span className="button-form is-thin-line" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form is-thin-line">
-                      <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path is-highlight"></path>
-                    </svg>` }} />
-                    <div className="button-hover-background"></div>
-                    <div className="button-text crop-line-height">Get to know us</div>
-                  </Link>
-                </div>
-                </div>
-              </div>
-            </div>
+              <CtaLink href={t.href} label={t.cta} />
             </div>
           </div>
         </div>
+      ))}
+    </section>
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+
+    {/* Why blut: a third for the question, two thirds for the answer. */}
+    <section className="gl-row">
+      <div className="gl-col gl-split is-third">
+        <div className="gl-cell">
+          <RevealText className="heading-style-h1" text="Why do you need blut?" />
+        </div>
+        <div className="gl-cell gl-copy">
+          <div className="rich-text-custom w-richtext">
+            <p>We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll <em>know</em> you’ve made the right call.</p>
+          </div>
+          <CtaLink href="/about" label="Get to know us" />
+        </div>
       </div>
     </section>
-    <Footer showLogo={false} />
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+    <LogoBand theme="sky" reverse />
+    <GridFooter />
   </div>
     </>
   );
