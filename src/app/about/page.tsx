@@ -173,8 +173,9 @@ export default function AboutPage() {
       {/* Mission: a dark statement row, like the closing row on Cases. */}
       <section className="gl-row is-dark ab-mission" aria-labelledby="mission-label">
         <div className="gl-col ab-mission-inner">
-          <h2 id="mission-label" className="fx-label">
-            Mission Statement
+          {/* No visible label: the statement reads on its own; the heading stays for screen readers. */}
+          <h2 id="mission-label" className="ab-sr-only">
+            Mission statement
           </h2>
           <RevealText
             as="p"
@@ -197,11 +198,10 @@ export default function AboutPage() {
 
       {/* Offices: one row, a cell per city, hairlines between them. */}
       <section className="gl-row is-dark ab-offices" aria-labelledby="offices-label">
-        <div className="gl-col ab-offices-head">
-          <h2 id="offices-label" className="fx-label">
-            Offices
-          </h2>
-        </div>
+        {/* No visible label: each cell is titled by its city; the heading stays for screen readers. */}
+        <h2 id="offices-label" className="ab-sr-only">
+          Offices
+        </h2>
         <div role="list" className="gl-col ab-offices-grid">
           {locations.map((office) => (
             <OfficeCell key={office.slug} office={office} />

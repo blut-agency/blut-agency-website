@@ -184,10 +184,10 @@
 }
 
 :is(.cs-page, .cs-rows) .cs-case-client {
+  /* Plain body line (no caps, no tracking): the client, then the title. */
   margin: 0 0 var(--spacing--xs);
-  font-size: var(--cs-pill-font-size); /* 13px label, same size as the pills */
-  letter-spacing: 0.04em;
-  line-height: 1;
+  font-size: var(--heading--s);
+  line-height: 1.4;
 }
 
 :is(.cs-page, .cs-rows) .cs-case-title {

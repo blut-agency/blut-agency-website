@@ -54,12 +54,6 @@
   text-align: center;
 }
 
-.ab-page .ab-mission .fx-label,
-.ab-page .ab-offices .fx-label {
-  margin: 0;
-  font-weight: 400;
-}
-
 .ab-page .ab-mission .heading-style-h1 {
   margin: 0;
   max-width: 56.25rem; /* 900px, as the Work statement */
@@ -161,11 +155,6 @@
 }
 
 /* ---------- 5. Offices ---------- */
-.ab-page .ab-offices-head {
-  padding: var(--spacing--sm, 1rem) var(--ab-pad);
-  border-bottom: 1px solid var(--gl-line-dark);
-}
-
 .ab-page .ab-offices-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
