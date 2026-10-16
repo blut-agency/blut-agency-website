@@ -1,198 +1,194 @@
 /*
-  Work page (/work) in the grid-landing system.
-  Built from Nic's Figma frame "Work" (9GWn7JIeYMkfMYeLSkFiUS, node 45:1406).
+  Work page (/work) as a story in chapters.
+  Built from Nic's Figma frame "Work (story)" (9GWn7JIeYMkfMYeLSkFiUS, node 157:276).
 
   Reuses grid.css: .gl-page tokens, .gl-col / .gl-row / .gl-spacer / .gl-split /
-  .gl-cell, the shared .gl-banner (640px, texture, centred copy), .gl-band and
-  .gl-footer. Everything here is scoped to .wk-page, because Next keeps page
+  .gl-cell, .gl-row.is-dark, the shared .gl-banner (640, centred), .gl-band and
+  .gl-footer. Everything here is scoped to .ws-page, because Next keeps page
   stylesheets loaded after navigating away.
 
   Sections:
     1. Page tokens
-    2. Banner + statement banner
-    3. Spacers
-    4. Wide spots (black, 16:9 still across the column)
-    5. Spot rows (third media | two-thirds copy, alternating)
+    2. Spacers
+    3. Chapter head: headline | intro (50/50), black or white
+    4. Video cards (2-up, or one wide)
+    5. Close row
     6. Tablet / phone
 */
 
-/* ---------- 1. Page tokens ---------- */
-.gl-page.wk-page {
-  --wk-spacer-h: 4rem; /* Section Divider between rows: 64px */
-  --wk-spacer-tall-h: 8rem; /* Section Divider around the bands: 128px */
-  --wk-row-h: clamp(22.5rem, 33.4vw, 480px); /* spot row: 480 at 1440 */
-  --wk-statement-h: 675px; /* Statement Banner, as drawn */
-  --wk-pad: var(--fx-gap, 28px);
+/* ---------- 1. Page tokens (px where the Figma fixes px: the root type is fluid) ---------- */
+.gl-page.ws-page {
+  --ws-spacer-h: clamp(48px, 6.667vw, 96px); /* spacer rows: 96 at 1440 */
+  --ws-pad: clamp(20px, 2.083vw, 30px); /* cell padding: 30 at 1440 */
+  --ws-head-pad-top: clamp(40px, 5vw, 72px); /* headline + intro start 72 down */
+  --ws-head-pad-bottom: clamp(48px, 5.833vw, 84px);
+  /* Chapter headline: up to 112. It never grows past what fits the longest
+     word of any chapter ("adventurous," is 5.93em wide in PP Agrandir) in its
+     cell, so all chapters share one size that scales with the cell
+     (container units) instead of breaking mid-word: ~90px at 1440. */
+  --ws-headline-max: 112px;
+  --ws-headline-fit: 16.6cqi;
+  --ws-intro: clamp(18px, 14.4px + 0.667vw, 24px); /* 24 at 1440 */
+  --ws-card-title: clamp(20px, 1.667vw, 24px);
+  --ws-card-text: 16px;
+  --ws-wide-text-max: 760px; /* text under the wide videos, as drawn */
 }
 
-/* ---------- 2. Banners ---------- */
-.wk-page .wk-banner .section-hero,
-.wk-page .wk-statement .section-hero {
-  color: var(--_color---copy-bright);
+/* ---------- 2. Spacers ---------- */
+.ws-page .ws-spacer .gl-col {
+  height: var(--ws-spacer-h);
 }
 
-.gl-page.wk-page .wk-statement .section-hero {
-  height: var(--wk-statement-h);
+/* ---------- 3. Chapter head ---------- */
+.ws-page .ws-head-cell {
+  container-type: inline-size;
+  min-width: 0;
+  padding: var(--ws-head-pad-top) var(--ws-pad) var(--ws-head-pad-bottom);
 }
 
-.wk-page .wk-statement .heading-style-h1 {
-  max-width: 56.25rem; /* 900px, as drawn */
-  margin-inline: auto;
-}
-
-.wk-page .wk-statement .gl-cta {
-  display: flex;
-  justify-content: center;
-}
-
-/* ---------- 3. Spacers ---------- */
-.wk-page .wk-spacer .gl-col {
-  height: var(--wk-spacer-h);
-}
-
-.wk-page .wk-spacer.is-tall .gl-col {
-  height: var(--wk-spacer-tall-h);
-}
-
-/* Bands: the one under the opener sits on white, the purple one leads into black. */
-.wk-page .gl-band.is-purple {
-  border-bottom-color: var(--gl-line-dark);
-}
-
-/* ---------- 4. Wide spots ---------- */
-.wk-page .wk-wide {
-  background: var(--_color---copy-dark);
-  color: var(--_color---copy-bright);
-  border-bottom: 1px solid var(--gl-line-dark);
-}
-
-.wk-page .wk-wide .gl-col {
-  border-color: var(--gl-line-dark);
-}
-
-/* Spacer v02 on black: side lines plus a centre line, 128px. */
-.wk-page .wk-wide-spacer {
-  border-bottom: 1px solid var(--gl-line-dark);
-}
-
-.wk-page .wk-wide-spacer .gl-col {
-  height: var(--wk-spacer-tall-h);
-}
-
-.wk-page .wk-wide-spacer .gl-col::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 50%;
-  border-left: 1px solid var(--gl-line-dark);
-}
-
-.wk-page .wk-wide-media-row {
-  border-bottom: 1px solid var(--gl-line-dark);
-}
-
-.wk-page .wk-wide-media {
-  aspect-ratio: 16 / 9; /* 1280 × 720 at full width */
-  overflow: hidden;
-}
-
-.wk-page .wk-wide-copy > * + * {
-  border-left-color: var(--gl-line-dark);
-}
-
-.wk-page .wk-wide-copy .gl-cell {
-  padding: var(--wk-pad);
-}
-
-.wk-page .wk-wide-copy .heading-style-h1 {
+.gl-page.ws-page .ws-headline {
   margin: 0;
+  font-family: var(--font-family--pp-agrandir);
+  font-weight: 400;
+  font-size: min(var(--ws-headline-max), var(--ws-headline-fit));
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: inherit;
 }
 
-.wk-page .wk-wide-text {
+.ws-page .ws-intro {
   margin: 0;
-  color: var(--_color---copy-grey);
-  font-size: var(--heading--m);
-  line-height: 1.35;
+  max-width: 580px;
+  font-size: var(--ws-intro);
+  line-height: 1.4;
+  color: inherit;
 }
 
-/* ---------- 5. Spot rows: media third + copy two thirds ---------- */
-.wk-page .wk-spot-grid {
+/* ---------- 4. Video cards ---------- */
+.ws-page .ws-cards {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  min-height: var(--wk-row-h);
+  grid-template-columns: 1fr 1fr;
 }
 
-.wk-page .wk-spot-media {
-  position: relative;
-  overflow: hidden;
-  border-right: 1px solid var(--gl-line);
-  min-height: 0;
+.ws-page .ws-cards.is-wide {
+  grid-template-columns: 1fr;
 }
 
-.wk-page .wk-spot.is-flipped .wk-spot-grid {
-  grid-template-columns: 2fr 1fr;
+.ws-page .ws-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--ws-pad) var(--ws-pad) calc(var(--ws-pad) * 1.5);
 }
 
-.wk-page .wk-spot.is-flipped .wk-spot-media {
-  order: 2;
-  border-right: 0;
+.ws-page .ws-card + .ws-card {
   border-left: 1px solid var(--gl-line);
 }
 
-.wk-page .wk-spot-copy {
+.ws-page .ws-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.ws-page .ws-card-meta {
   display: flex;
   flex-direction: column;
-  gap: var(--wk-pad);
-  padding: var(--wk-pad);
-  min-width: 0;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 22px;
 }
 
-.wk-page .wk-spot-title {
+.ws-page .is-wide .ws-card-meta {
+  max-width: var(--ws-wide-text-max);
+}
+
+.ws-page .ws-card-title,
+.ws-page .ws-card-text {
   margin: 0;
-  font-size: var(--heading--xl); /* 40px max */
-  letter-spacing: -0.025em;
-  line-height: 1;
 }
 
-.wk-page .wk-spot-text {
+/* embeds.css crops the line-height off every p/h*; the card and intro text
+   keep Figma's full line boxes, so the gaps read as drawn. */
+.ws-page :is(.ws-card-title, .ws-card-text, .ws-intro) {
+  display: block;
+}
+
+.ws-page :is(.ws-card-title, .ws-card-text, .ws-intro)::before,
+.ws-page :is(.ws-card-title, .ws-card-text, .ws-intro)::after {
+  content: none;
+}
+
+.ws-page .ws-card-title {
+  font-size: var(--ws-card-title);
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.ws-page .ws-card-text {
+  font-size: var(--ws-card-text);
+  line-height: 1.55;
+  color: #5c5c5c;
+}
+
+/* "—— Play video": same look as the "— Label" links. */
+.ws-page .ws-card-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
   margin: 0;
-  max-width: 48rem;
-  color: #424242;
-  font-size: var(--heading--m);
-  line-height: 1.35;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ws-card-text);
+  line-height: 1.55;
+  cursor: pointer;
 }
 
-/* ---------- 6. Tablets and phones: rows stack, still first (like Home) ---------- */
+.ws-page .ws-card-play-line {
+  width: 30px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.ws-page .ws-card-play:hover .ws-card-play-line {
+  width: 42px;
+}
+
+/* ---------- 5. Close row ---------- */
+.ws-page .ws-close-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ---------- 6. Tablets and phones: 50/50 rows stack (grid.css), cards stack ---------- */
 @media screen and (max-width: 991px) {
-  .wk-page .wk-wide-copy > * + * {
-    border-top-color: var(--gl-line-dark);
-  }
-
-  .wk-page .wk-spot-grid,
-  .wk-page .wk-spot.is-flipped .wk-spot-grid {
+  .ws-page .ws-cards {
     grid-template-columns: 1fr;
-    min-height: 0;
   }
 
-  .wk-page .wk-spot-media,
-  .wk-page .wk-spot.is-flipped .wk-spot-media {
-    order: -1;
-    aspect-ratio: 16 / 9;
-    border: 0;
-    border-bottom: 1px solid var(--gl-line);
+  .ws-page .ws-card + .ws-card {
+    border-left: 0;
+    border-top: 1px solid var(--gl-line);
   }
 
-  .wk-page .wk-wide-spacer .gl-col,
-  .wk-page .wk-spacer.is-tall .gl-col {
-    height: var(--wk-spacer-h);
+  /* Stacked: the intro follows the headline, so it doesn't need the big top gap. */
+  .ws-page .ws-head-cell + .ws-head-cell {
+    padding-top: var(--ws-pad);
+  }
+
+  .ws-page .ws-head-cell:first-child {
+    padding-bottom: var(--ws-pad);
   }
 }
 
-@media screen and (max-width: 767px) {
-  .gl-page.wk-page {
-    --wk-statement-h: auto;
-  }
-
-  .wk-page .wk-statement .section-hero {
-    min-height: 28rem;
+@media (prefers-reduced-motion: reduce) {
+  .ws-page .ws-card-play-line {
+    transition: none;
   }
 }

@@ -8,7 +8,18 @@ import VideoLightbox from "@/components/VideoLightbox";
  * it and fades in "Play Video" bottom-right (same styles as VideoSpot); a click
  * opens the video lightbox.
  */
-export default function VideoPanel({ title, image, vimeoId }: { title: string; image: string; vimeoId?: string }) {
+export default function VideoPanel({
+  title,
+  image,
+  vimeoId,
+  videoUrl,
+}: {
+  title: string;
+  image: string;
+  vimeoId?: string;
+  /** Direct video file, used when there is no Vimeo ID. */
+  videoUrl?: string;
+}) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const close = useCallback(() => {
@@ -33,7 +44,7 @@ export default function VideoPanel({ title, image, vimeoId }: { title: string; i
         aria-label={`Play video: ${title}`}
         onClick={() => setOpen(true)}
       />
-      <VideoLightbox open={open} onClose={close} title={`${title} spot`} vimeoId={vimeoId} poster={image} />
+      <VideoLightbox open={open} onClose={close} title={`${title} spot`} vimeoId={vimeoId} videoUrl={videoUrl} poster={image} />
     </div>
   );
 }

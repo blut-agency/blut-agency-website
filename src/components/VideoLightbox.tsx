@@ -17,12 +17,15 @@ export default function VideoLightbox({
   onClose,
   title,
   vimeoId,
+  videoUrl,
   poster,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   vimeoId?: string;
+  /** Direct video file (mp4), used when there is no Vimeo ID. */
+  videoUrl?: string;
   poster: string;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -61,6 +64,8 @@ export default function VideoLightbox({
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
           />
+        ) : videoUrl ? (
+          <video src={videoUrl} poster={poster} title={title} controls autoPlay playsInline />
         ) : (
           <>
             <img src={poster} alt="" className="fit-cover-absolute" />
