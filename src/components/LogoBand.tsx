@@ -28,8 +28,11 @@ export default function LogoBand({
   theme = "lime",
   reverse = false,
 }: {
-  /** lime: yellow-green with a dark blob, black logos. sky: pale lime with a blue blob, white logos. */
-  theme?: "lime" | "sky";
+  /**
+   * lime: yellow-green with a dark blob, black logos. sky: pale lime with a blue blob, white logos.
+   * orange: orange with a pale grey blob, white logos (Cases page, as drawn in Figma).
+   */
+  theme?: "lime" | "sky" | "orange";
   reverse?: boolean;
 }) {
   const run = Array.from({ length: PER_RUN }, (_, i) => <Logo key={i} />);

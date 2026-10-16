@@ -192,6 +192,12 @@
   color: var(--_color---white);
 }
 
+/* Orange band (Cases page): the Devil's Advocate orange with a pale grey blob. */
+.gl-band.is-orange {
+  background: #ff6004;
+  color: var(--_color---white);
+}
+
 /* A soft blob drifting across the band, like the case-study textures. */
 .gl-band-texture {
   position: absolute;
@@ -209,6 +215,10 @@
   background:
     radial-gradient(closest-side, var(--_color---accent-color-1), transparent) 15% 50% / 22rem 100% no-repeat,
     radial-gradient(closest-side, var(--_color---accent-color-1), transparent) 85% 50% / 16rem 100% no-repeat;
+}
+
+.gl-band.is-orange .gl-band-texture {
+  background: radial-gradient(closest-side, #e2e2e2, transparent) 45% 50% / 20rem 100% no-repeat;
 }
 
 @keyframes gl-drift {

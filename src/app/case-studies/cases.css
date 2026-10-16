@@ -1,0 +1,285 @@
+/*
+  Cases page (/case-studies) in the grid-landing system.
+  Built from Nic's Figma frame "Cases" (9GWn7JIeYMkfMYeLSkFiUS, node 137:501).
+
+  Reuses grid.css: .gl-page tokens (--gl-max 1280, --gl-margin, --gl-line,
+  --gl-line-dark, --gl-pad), .gl-col / .gl-row / .gl-spacer, .gl-row.is-dark,
+  .gl-band and .gl-footer. Everything here is scoped to .cs-page, because
+  Next keeps page stylesheets loaded after navigating away.
+
+  Sections:
+    1. Page tokens (banner, rows, spacer)
+    2. Pills: tags + filter. All of their look is in the --cs-pill-* tokens,
+       so the design can be tuned in one place.
+    3. Banner, spacer, filter row, case rows, CTA
+    4. Tablet / phone
+*/
+
+/* ---------- 1. Page tokens ---------- */
+.gl-page.cs-page {
+  --cs-banner-h: 640px; /* as drawn; px so it stays 640 when the root type scales */
+  --cs-row-h: 20rem; /* case row and CTA row: 320px */
+  --cs-spacer-h: 4rem; /* Spacer v02: 64px */
+  --cs-panel-pad-y: var(--spacing--l); /* 40px */
+  --cs-panel-pad-x: var(--fx-gap); /* 28px */
+
+  /* ---------- 2. Pill tokens (Nic: tweak here) ---------- */
+  --cs-pill-height: 30px;
+  --cs-pill-pad-x: 14px;
+  --cs-pill-radius: 999rem; /* fully rounded */
+  --cs-pill-border: 1px solid currentColor;
+  --cs-pill-font-size: clamp(12px, 0.8125rem, 13px); /* 13px as the client label, never below 12 */
+  --cs-pill-tracking: 0.02em;
+  --cs-pill-gap: 8px;
+  /* Tags on the case panels: outline only, with a faint tint of the text colour. */
+  --cs-tag-fill: color-mix(in srgb, currentColor 8%, transparent);
+  /* Filter pills on black: outline; hover tints; active is filled white. */
+  --cs-filter-fill: transparent;
+  --cs-filter-hover-fill: color-mix(in srgb, currentColor 14%, transparent);
+  --cs-filter-active-bg: var(--_color---copy-bright);
+  --cs-filter-active-fg: var(--_color---copy-dark);
+
+  background: var(--_color---copy-dark);
+}
+
+/* ---------- 2. Pills ---------- */
+.cs-page .cs-pill {
+  display: inline-flex;
+  align-items: center;
+  height: var(--cs-pill-height);
+  padding: 0 var(--cs-pill-pad-x);
+  margin: 0;
+  border: var(--cs-pill-border);
+  border-radius: var(--cs-pill-radius);
+  font-family: var(--font-family--pp-agrandir);
+  font-size: var(--cs-pill-font-size);
+  letter-spacing: var(--cs-pill-tracking);
+  line-height: 1;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.cs-page .cs-pill--tag {
+  background: var(--cs-tag-fill);
+}
+
+.cs-page .cs-pill--filter {
+  /* 44px tap target around a 30px pill */
+  position: relative;
+  background: var(--cs-filter-fill);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.cs-page .cs-pill--filter::before {
+  content: "";
+  position: absolute;
+  inset: -7px -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cs-page .cs-pill--filter:hover {
+    background: var(--cs-filter-hover-fill);
+  }
+}
+
+.cs-page .cs-pill--filter[aria-pressed="true"] {
+  background: var(--cs-filter-active-bg);
+  color: var(--cs-filter-active-fg);
+  border-color: var(--cs-filter-active-bg);
+}
+
+.cs-page .cs-pill--filter:focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: 3px;
+}
+
+.cs-page .cs-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cs-pill-gap);
+  margin: var(--spacing--sm, 1rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- 3. Banner: 640px, moving texture, centred copy ---------- */
+.cs-page .cs-banner .section-hero {
+  height: var(--cs-banner-h);
+  min-height: 0;
+  max-height: none;
+  color: var(--_color---copy-dark);
+}
+
+/* Texture fills the whole banner, so its noise layer doesn't show as an
+   inset box (the shared wrapper is capped at 86rem and starts 5% down). */
+.cs-page .cs-banner .section-hero-media-wrapper {
+  inset: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+.cs-page .cs-banner .hero-content-wrapper {
+  max-width: min(60rem, var(--gl-max));
+  margin-inline: auto;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing--md, 1.5rem);
+}
+
+.cs-page .cs-banner .heading-style-h1 {
+  font-size: var(--heading--xxl);
+  line-height: 1.05;
+}
+
+.cs-page .cs-banner .copy-medium {
+  max-width: 40rem; /* 640px, as drawn */
+  font-size: var(--heading--l);
+  line-height: 1.35;
+  margin-inline: auto;
+}
+
+/* ---------- Dark spacer rows (Spacer v02: side lines + centre line) ---------- */
+.cs-page .gl-spacer.is-dark {
+  background: var(--_color---copy-dark);
+  border-bottom-color: var(--gl-line-dark);
+}
+
+.cs-page .gl-spacer.is-dark .gl-col {
+  height: var(--cs-spacer-h);
+  border-color: var(--gl-line-dark);
+}
+
+.cs-page .cs-spacer .gl-col::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 50%;
+  border-left: 1px solid var(--gl-line-dark);
+}
+
+/* Bands sit on black here, so their bottom rule takes the dark line. */
+.cs-page .gl-band {
+  border-bottom-color: var(--gl-line-dark);
+}
+
+/* ---------- Filter row ---------- */
+.cs-page .cs-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cs-pill-gap);
+  padding: 1rem var(--cs-panel-pad-x);
+  color: var(--_color---copy-bright);
+}
+
+/* ---------- Case rows: gradient panel (1/3) + photo (2/3) ---------- */
+.cs-page .cs-case[hidden] {
+  display: none;
+}
+
+.cs-page .cs-case-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  min-height: var(--cs-row-h);
+}
+
+.cs-page .cs-case-copy {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing--l);
+  padding: var(--cs-panel-pad-y) var(--cs-panel-pad-x);
+  min-width: 0;
+}
+
+/* The texture is always on here (the old index only showed it on hover). */
+.cs-page .cs-case-visual {
+  display: block;
+}
+
+.cs-page .cs-case-top,
+.cs-page .cs-case-copy .gl-cta {
+  position: relative;
+  z-index: 1;
+}
+
+.cs-page .cs-case-client {
+  margin: 0 0 var(--spacing--xs);
+  font-size: var(--cs-pill-font-size); /* 13px label, same size as the pills */
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.cs-page .cs-case-title {
+  margin: 0;
+  font-size: var(--heading--xl); /* 40px max */
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.cs-page .cs-case-media {
+  position: relative;
+  overflow: hidden;
+  border-left: 1px solid var(--gl-line-dark);
+  min-height: 0;
+}
+
+/* Stacking: texture (0) < client/title/tags (1) < full-row link (2, from the
+   Webflow CSS) < visible "Read more" (3). */
+.cs-page .cs-case-copy .gl-cta {
+  z-index: 3;
+}
+
+/* ---------- "Sounds good?" row ---------- */
+.cs-page .cs-cta-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing--l);
+  min-height: var(--cs-row-h);
+  padding: var(--cs-panel-pad-y) var(--cs-panel-pad-x);
+}
+
+.cs-page .cs-cta .heading-style-h1 {
+  margin: 0;
+}
+
+/* ---------- 4. Tablets and phones: the row stacks, photo first (like Home) ---------- */
+@media screen and (max-width: 991px) {
+  .cs-page .cs-case-grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .cs-page .cs-case-media {
+    order: -1;
+    aspect-ratio: 16 / 9;
+    border-left: 0;
+    border-bottom: 1px solid var(--gl-line-dark);
+  }
+
+  .cs-page .cs-case-copy {
+    min-height: 16rem;
+  }
+
+  .cs-page .cs-cta-inner {
+    min-height: 16rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gl-page.cs-page {
+    --cs-banner-h: auto;
+  }
+
+  .cs-page .cs-banner .section-hero {
+    min-height: 28rem;
+  }
+}
