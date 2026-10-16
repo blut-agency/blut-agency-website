@@ -1,0 +1,132 @@
+/*
+  Home (/) in the grid layout: Figma 9GWn7JIeYMkfMYeLSkFiUS, node 130:276.
+
+  Builds on grid.css (.gl-page tokens, .gl-col / .gl-row / .gl-spacer,
+  .gl-teaser, bands, footer). The Selected cases rows come from the Cases page
+  (CaseRowItem + cases.css, under a .cs-rows wrapper).
+
+  Everything here is scoped to .hm-page, because Next keeps page stylesheets
+  loaded after navigating away.
+*/
+
+.gl-page.hm-page {
+  --hm-stage-h: 600px; /* px: stays 600 when the fluid root type scales */
+  --hm-client-h: 140px;
+  --hm-case-row-h: 400px;
+}
+
+/* ---------- Stage: fixed 600px instead of filling the first screen ---------- */
+.gl-page.hm-page .gl-stage .home-stage-wrapper {
+  min-height: 0;
+  height: var(--hm-stage-h);
+}
+
+/* "Click for sound": the label never wraps. (The "Pause" button is already
+   hidden until the sound plays, by globals.css + embeds.js.) */
+.hm-page .gl-stage .play-toggle-text {
+  white-space: nowrap;
+}
+
+/* ---------- Teasers: heading, sub-line, captioned photo ---------- */
+.hm-page .hm-teaser-media {
+  margin: 0;
+}
+
+.hm-page .gl-teaser .hm-teaser-heading {
+  text-wrap: balance;
+}
+
+.hm-page .hm-teaser-sub {
+  margin: var(--spacing--md, 1.5rem) 0 0;
+  max-width: 30em;
+  font-size: var(--heading--m);
+  line-height: 1.35;
+  color: rgb(255 255 255 / 0.72);
+}
+
+/* Caption on the photo: bottom-left, on a soft dark fade so it reads on any image. */
+.hm-page .hm-caption {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  margin: 0;
+  padding: 3rem var(--gl-pad) 1rem;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.65), transparent);
+  color: var(--_color---copy-bright, #fff);
+  font-size: 13px;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+/* ---------- Section header rows (Selected cases / Selected clients) ---------- */
+.hm-page .hm-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing--sm, 1rem) var(--spacing--l, 2.5rem);
+}
+
+.hm-page .hm-label {
+  margin: 0;
+  font-size: calc(var(--heading--l) * 1.25);
+  line-height: 1.1;
+  font-weight: 400;
+}
+
+/* ---------- Selected cases: Cases rows, a little taller as drawn ---------- */
+.gl-page.hm-page .cs-rows {
+  --cs-row-h: var(--hm-case-row-h);
+}
+
+/* ---------- Selected clients: 6 × 2 hairline grid of equal cells ---------- */
+.hm-page .hm-client-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  background: var(--gl-line); /* the 1px gaps draw the hairlines */
+}
+
+.hm-page .hm-client {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--hm-client-h);
+  padding: 0.75rem;
+  background: var(--_color---white);
+  text-align: center;
+  font-size: max(16px, var(--heading--m));
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* ---------- Tablets and phones ---------- */
+@media screen and (max-width: 991px) {
+  .hm-page .hm-teaser-sub {
+    font-size: var(--heading--s);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gl-page.hm-page {
+    --hm-client-h: 88px;
+  }
+
+  /* Long words ("post-production.") must fit a phone-width cell. */
+  .hm-page .gl-teaser .hm-teaser-heading {
+    font-size: min(var(--heading--xxl), 7vw);
+  }
+
+  /* 3 columns × 4 rows */
+  .hm-page .hm-client-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hm-page .hm-client {
+    font-size: 14px;
+    padding: 0.5rem;
+  }
+}

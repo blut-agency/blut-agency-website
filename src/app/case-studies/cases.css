@@ -4,7 +4,8 @@
 
   Reuses grid.css: .gl-page tokens (--gl-max 1280, --gl-margin, --gl-line,
   --gl-line-dark, --gl-pad), .gl-col / .gl-row / .gl-spacer, .gl-row.is-dark,
-  .gl-band and .gl-footer. Everything here is scoped to .cs-page, because
+  .gl-band and .gl-footer. Everything here is scoped to .cs-page (or the
+  .cs-rows wrapper Home uses for its "Selected cases"), because
   Next keeps page stylesheets loaded after navigating away.
 
   Sections:
@@ -15,8 +16,11 @@
     4. Tablet / phone
 */
 
-/* ---------- 1. Page tokens ---------- */
-.gl-page.cs-page {
+/* ---------- 1. Page tokens ----------
+   .cs-rows: the same case rows and pills embedded on another grid page
+   (Home's "Selected cases"); it takes these tokens but not the page colour. */
+.gl-page.cs-page,
+.gl-page .cs-rows {
   --cs-row-h: 20rem; /* case row and CTA row: 320px */
   --cs-spacer-h: 4rem; /* Spacer v02: 64px */
   --cs-panel-pad-y: var(--spacing--l); /* 40px */
@@ -37,12 +41,14 @@
   --cs-filter-hover-fill: color-mix(in srgb, currentColor 14%, transparent);
   --cs-filter-active-bg: var(--_color---copy-bright);
   --cs-filter-active-fg: var(--_color---copy-dark);
+}
 
+.gl-page.cs-page {
   background: var(--_color---copy-dark);
 }
 
 /* ---------- 2. Pills ---------- */
-.cs-page .cs-pill {
+:is(.cs-page, .cs-rows) .cs-pill {
   display: inline-flex;
   align-items: center;
   height: var(--cs-pill-height);
@@ -58,11 +64,11 @@
   color: inherit;
 }
 
-.cs-page .cs-pill--tag {
+:is(.cs-page, .cs-rows) .cs-pill--tag {
   background: var(--cs-tag-fill);
 }
 
-.cs-page .cs-pill--filter {
+:is(.cs-page, .cs-rows) .cs-pill--filter {
   /* 44px tap target around a 30px pill */
   position: relative;
   background: var(--cs-filter-fill);
@@ -72,7 +78,7 @@
     color 0.2s ease;
 }
 
-.cs-page .cs-pill--filter::before {
+:is(.cs-page, .cs-rows) .cs-pill--filter::before {
   content: "";
   position: absolute;
   inset: -7px -2px;
@@ -84,18 +90,18 @@
   }
 }
 
-.cs-page .cs-pill--filter[aria-pressed="true"] {
+:is(.cs-page, .cs-rows) .cs-pill--filter[aria-pressed="true"] {
   background: var(--cs-filter-active-bg);
   color: var(--cs-filter-active-fg);
   border-color: var(--cs-filter-active-bg);
 }
 
-.cs-page .cs-pill--filter:focus-visible {
+:is(.cs-page, .cs-rows) .cs-pill--filter:focus-visible {
   outline: 2px solid var(--_color---accent-color-1);
   outline-offset: 3px;
 }
 
-.cs-page .cs-tags {
+:is(.cs-page, .cs-rows) .cs-tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--cs-pill-gap);
@@ -145,17 +151,17 @@
 }
 
 /* ---------- Case rows: gradient panel (1/3) + photo (2/3) ---------- */
-.cs-page .cs-case[hidden] {
+:is(.cs-page, .cs-rows) .cs-case[hidden] {
   display: none;
 }
 
-.cs-page .cs-case-grid {
+:is(.cs-page, .cs-rows) .cs-case-grid {
   display: grid;
   grid-template-columns: 1fr 2fr;
   min-height: var(--cs-row-h);
 }
 
-.cs-page .cs-case-copy {
+:is(.cs-page, .cs-rows) .cs-case-copy {
   position: relative;
   overflow: hidden;
   display: flex;
@@ -167,24 +173,24 @@
 }
 
 /* The texture is always on here (the old index only showed it on hover). */
-.cs-page .cs-case-visual {
+:is(.cs-page, .cs-rows) .cs-case-visual {
   display: block;
 }
 
-.cs-page .cs-case-top,
-.cs-page .cs-case-copy .gl-cta {
+:is(.cs-page, .cs-rows) .cs-case-top,
+:is(.cs-page, .cs-rows) .cs-case-copy .gl-cta {
   position: relative;
   z-index: 1;
 }
 
-.cs-page .cs-case-client {
+:is(.cs-page, .cs-rows) .cs-case-client {
   margin: 0 0 var(--spacing--xs);
   font-size: var(--cs-pill-font-size); /* 13px label, same size as the pills */
   letter-spacing: 0.04em;
   line-height: 1;
 }
 
-.cs-page .cs-case-title {
+:is(.cs-page, .cs-rows) .cs-case-title {
   margin: 0;
   font-size: var(--heading--xl); /* 40px max */
   letter-spacing: -0.025em;
@@ -192,7 +198,15 @@
   text-wrap: balance;
 }
 
-.cs-page .cs-case-media {
+/* Optional result line (Home's "Selected cases"); the Cases list has none. */
+:is(.cs-page, .cs-rows) .cs-case-result {
+  margin: var(--spacing--sm, 1rem) 0 0;
+  font-size: var(--heading--s);
+  line-height: 1.4;
+  max-width: 28em;
+}
+
+:is(.cs-page, .cs-rows) .cs-case-media {
   position: relative;
   overflow: hidden;
   border-left: 1px solid var(--gl-line-dark);
@@ -201,7 +215,7 @@
 
 /* Stacking: texture (0) < client/title/tags (1) < full-row link (2, from the
    Webflow CSS) < visible "Read more" (3). */
-.cs-page .cs-case-copy .gl-cta {
+:is(.cs-page, .cs-rows) .cs-case-copy .gl-cta {
   z-index: 3;
 }
 
@@ -222,19 +236,19 @@
 
 /* ---------- 4. Tablets and phones: the row stacks, photo first (like Home) ---------- */
 @media screen and (max-width: 991px) {
-  .cs-page .cs-case-grid {
+  :is(.cs-page, .cs-rows) .cs-case-grid {
     grid-template-columns: 1fr;
     min-height: 0;
   }
 
-  .cs-page .cs-case-media {
+  :is(.cs-page, .cs-rows) .cs-case-media {
     order: -1;
     aspect-ratio: 16 / 9;
     border-left: 0;
     border-bottom: 1px solid var(--gl-line-dark);
   }
 
-  .cs-page .cs-case-copy {
+  :is(.cs-page, .cs-rows) .cs-case-copy {
     min-height: 16rem;
   }
 

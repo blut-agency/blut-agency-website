@@ -1,25 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useSyncExternalStore } from "react";
-import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { DISCIPLINES, disciplineSlug, type Discipline } from "./disciplines";
+import CaseRowItem from "./CaseRowItem";
+import type { CaseRow } from "./caseRows";
 
-export type CaseRow = {
-  slug: string;
-  client: string;
-  campaign: string;
-  thumbnail: string;
-  panel: string;
-  line: string;
-  text: "#000" | "#fff";
-  useVisual: boolean[];
-  visualizationJson: string;
-  disciplines: Discipline[];
-};
-
-// Morph durations the case index has always used, keyed by visual variant.
-const SPEED: Record<number, number> = { 1: 8, 2: 10, 3: 10 };
+export type { CaseRow };
 
 /*
   The active filter lives in the URL (?discipline=content-production), so other
@@ -49,18 +35,6 @@ function setFilter(d: Discipline | null) {
   else url.searchParams.delete(PARAM);
   window.history.replaceState(window.history.state, "", url);
   listeners.forEach((cb) => cb());
-}
-
-/** "— Read more" link, same markup as Home's grid CTAs. */
-function ReadMore({ href, label }: { href: string; label: string }) {
-  return (
-    <div className="cta-link-component gl-cta">
-      <Link aria-label={label} href={href} className="cta-link w-inline-block">
-        <div className="cta-link-line" />
-        <div className="cta-link-text">Read more</div>
-      </Link>
-    </div>
-  );
 }
 
 export default function CaseList({ cases }: { cases: CaseRow[] }) {
@@ -94,44 +68,7 @@ export default function CaseList({ cases }: { cases: CaseRow[] }) {
           textures that embeds.js attached on load keep running. */}
       <div className="cs-cases" role="list">
         {cases.map((c) => (
-          <article
-            role="listitem"
-            className="gl-row is-dark cs-case cta-panel"
-            key={c.slug}
-            hidden={!!active && !c.disciplines.includes(active)}
-          >
-            <div className="gl-col cs-case-grid">
-              <div className="cs-case-copy" style={{ backgroundColor: c.panel, color: c.text }}>
-                <div className="case-study-teaser-visual cs-case-visual" style={{ color: c.line }} aria-hidden="true">
-                  <CaseStudyVisual
-                    slug={`cases-${c.slug}`}
-                    variant={visualVariant(c.useVisual)}
-                    speed={SPEED[visualVariant(c.useVisual)]}
-                    visualizationJson={c.visualizationJson}
-                  />
-                </div>
-                <div className="cs-case-top">
-                  <p className="cs-case-client">{c.client}</p>
-                  <h2 className="cs-case-title">{c.campaign}</h2>
-                  {c.disciplines.length > 0 && (
-                    <ul className="cs-tags" aria-label="What we did">
-                      {c.disciplines.map((d) => (
-                        <li key={d} className="cs-pill cs-pill--tag">
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <ReadMore href={`/project/${c.slug}`} label={`Read more: ${c.client}, ${c.campaign}`} />
-              </div>
-              <div className="cs-case-media">
-                <img src={c.thumbnail} alt="" loading="lazy" className="fit-cover-absolute" />
-              </div>
-              {/* The whole row links to the case; the visible CTA is in the panel. */}
-              <Link aria-hidden="true" tabIndex={-1} href={`/project/${c.slug}`} className="cta-link-full-cover w-inline-block" />
-            </div>
-          </article>
+          <CaseRowItem key={c.slug} c={c} hidden={!!active && !c.disciplines.includes(active)} />
         ))}
       </div>
     </>

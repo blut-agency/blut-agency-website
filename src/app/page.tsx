@@ -2,46 +2,113 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import GridFooter from "@/components/GridFooter";
 import LogoBand from "@/components/LogoBand";
-import { getHomeSound } from "@/lib/content";
+import { getCaseStudyBySlug, getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
+import CaseRowItem from "./case-studies/CaseRowItem";
+import { toCaseRow, type CaseRow } from "./case-studies/caseRows";
+import "./case-studies/cases.css";
+import "./home.css";
 
-// The three left/right teaser cards below the intro. `_2-column-grid` auto-
-// reverses on every 2nd item (see blut-dev.webflow.css), so this list
-// renders media-left/text-right, text-left/media-right, media-left/text-right.
-// Photos come from the Figma board's home page mockup.
+/*
+  Home content as agreed with Nic (blut-handoff/home-decisions.md) and drawn
+  in Figma 9GWn7JIeYMkfMYeLSkFiUS, node 130:276. Page-only styles: ./home.css
+  (scoped to .hm-page); the Selected cases rows reuse the Cases row and its
+  pills (./case-studies/cases.css, via the .cs-rows wrapper).
+*/
+
+// The four dark teasers below the lime band. Odd rows (Tab 2, Tab 4) are
+// flipped, so the photo sits on the right. Each tab: plain heading, sub-line,
+// CTA, and a captioned client photo.
 const TEASERS: {
-  heading: string | string[];
+  heading: string;
+  sub: string;
   href: string;
-  label: string;
   cta: string;
   image: string;
   alt: string;
+  caption: string;
 }[] = [
   {
-    label: "Work",
-    heading: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
+    heading: "Music production and sound design.",
+    sub: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
     href: "/work",
     cta: "See us in action",
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
+    caption: "Samsung × Nina Chuba",
   },
   {
-    label: "Strategy",
-    heading: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
+    heading: "Music strategy and measurement.",
+    sub: "Find out what your sound is really saying.",
     href: "/strategy",
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
+    caption: "Sonic Sweetspot — blut’s brand analysis tool",
   },
   {
-    label: "Cases",
-    image: "/images/home/teaser-cases.jpg",
-    alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    heading: "Music production, sound design, and 360° sonic strategy.",
+    heading: "Where strategy and music production come together.",
+    sub: "Over 400,000 streams in the first week.",
     href: "/case-studies",
     cta: "View our case studies",
+    image: "/images/home/teaser-cases.jpg",
+    alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
+    caption: "Hyundai × sogumm × DJ Seinfeld — “Are You In?”",
+  },
+  // Phase 2 placeholder: Elliot's film page will replace this link later.
+  // Sub-line from the Hyundai case ("Of course we documented the whole thing
+  // in a four-part content series which built anticipation amongst the fans.").
+  {
+    heading: "Film and post-production.",
+    sub: "We documented the whole thing in a four-part content series.",
+    href: "/case-studies?discipline=content-production",
+    cta: "See our film work",
+    image: "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68402c64d9f5374df8048875_5.webp",
+    alt: "Musicians in a car body on the Volkswagen assembly line",
+    caption: "Volkswagen × Beats by Dre — “Homecoming”",
   },
 ];
+
+// Curated, not by date. Hyundai is left out because it is Tab 3's photo.
+// Titles and result lines as agreed; client, thumbnail, tags and colours come
+// from the case data.
+const SELECTED_CASES: { slug: string; title: string; result: string }[] = [
+  {
+    slug: "wdr---re-arranging-perceptions",
+    title: "Re:arranged",
+    result: "Top 2% of WDR’s most watched online content.",
+  },
+  {
+    slug: "invention-is-instrumental",
+    title: "Invention Is Instrumental",
+    result: "One of the most awarded Sonic Branding projects of the year.",
+  },
+  {
+    slug: "volkswagen-bringing-it-all-back-home",
+    title: "Bringing It All Back Home",
+    result: "Won multiple international awards for its music concept.",
+  },
+];
+
+// Selected clients: edit this list freely (names now, logos later). Desktop
+// shows it as 6 columns × 2 rows, phones as 3 columns × 4 rows.
+const CLIENTS = [
+  "Samsung",
+  "McDonald’s",
+  "Volkswagen",
+  "Adidas",
+  "Haribo",
+  "Hyundai",
+  "Dr. Oetker",
+  "Schwarzkopf",
+  "Gore-Tex",
+  "Rockstar Energy",
+  "WDR",
+  "Schüco",
+];
+
+// TODO: contact address for "Get in touch" is still TBD (Nic).
+const CONTACT_MAILTO = "mailto:contact@blut.agency";
 
 /** "— Label" text link, used instead of buttons on the grid layout. */
 function CtaLink({ href, label }: { href: string; label: string }) {
@@ -57,12 +124,16 @@ function CtaLink({ href, label }: { href: string; label: string }) {
 
 export default function HomePage() {
   const homeSound = getHomeSound();
+  const selectedCases: CaseRow[] = SELECTED_CASES.flatMap(({ slug, title, result }) => {
+    const cs = getCaseStudyBySlug(slug);
+    return cs ? [{ ...toCaseRow(cs), campaign: title, result }] : [];
+  });
 
   return (
     <>
-<div className="main-wrapper gl-page">
-    {/* Landing: the red logo stage and the nav together fill the first screen;
-        the nav then sticks to the top (see grid.css). */}
+<div className="main-wrapper gl-page hm-page">
+    {/* Landing: the red logo stage (600px, see home.css), then the nav, which
+        sticks to the top (see grid.css). */}
     <section className="section-home-stage gl-stage">
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
@@ -147,7 +218,7 @@ export default function HomePage() {
         </div>
         <div className="gl-cell gl-copy">
           <div className="rich-text-custom w-richtext">
-            <p>blut creates unique music strategies - and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
+            <p>blut creates unique music strategies - and makes their impact measurable.</p>
           </div>
           <CtaLink href="/about" label="Get to know us" />
         </div>
@@ -162,19 +233,56 @@ export default function HomePage() {
       {TEASERS.map((t, i) => (
         <div className={`gl-row is-dark${i % 2 ? " is-flipped" : ""}`} key={t.href}>
           <div className="gl-col gl-split gl-teaser cta-panel">
-            <div className="gl-teaser-media grid-item is-media">
+            <figure className="gl-teaser-media grid-item is-media hm-teaser-media">
               <img src={t.image} alt={t.alt} loading="lazy" />
+              <figcaption className="hm-caption">{t.caption}</figcaption>
               <Link aria-hidden="true" tabIndex={-1} href={t.href} className="cta-link-full-cover w-inline-block" />
-            </div>
+            </figure>
             <div className="gl-cell gl-teaser-copy">
               <div className="gl-teaser-top">
-                <RevealText className="heading-style-h1" text={t.heading} />
+                <RevealText className="heading-style-h1 hm-teaser-heading" text={t.heading} />
+                <p className="hm-teaser-sub">{t.sub}</p>
               </div>
               <CtaLink href={t.href} label={t.cta} />
             </div>
           </div>
         </div>
       ))}
+    </section>
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+
+    {/* Selected cases: a curated list in the Cases-page row style. */}
+    <section className="hm-cases" aria-labelledby="hm-cases-title">
+      <div className="gl-row">
+        <div className="gl-col gl-cell hm-head">
+          <h2 id="hm-cases-title" className="hm-label">Selected cases</h2>
+          <CtaLink href="/case-studies" label="View all case studies" />
+        </div>
+      </div>
+      <div className="cs-rows" role="list">
+        {selectedCases.map((c) => (
+          <CaseRowItem key={c.slug} c={c} titleAs="h3" visualPrefix="home" />
+        ))}
+      </div>
+    </section>
+
+    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
+
+    {/* Selected clients: names in a hairline grid (logos later). */}
+    <section className="hm-clients" aria-labelledby="hm-clients-title">
+      <div className="gl-row">
+        <div className="gl-col gl-cell hm-head">
+          <h2 id="hm-clients-title" className="hm-label">Selected clients</h2>
+        </div>
+      </div>
+      <div className="gl-row">
+        <ul role="list" className="gl-col hm-client-grid">
+          {CLIENTS.map((name) => (
+            <li key={name} className="hm-client">{name}</li>
+          ))}
+        </ul>
+      </div>
     </section>
 
     <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
@@ -189,7 +297,7 @@ export default function HomePage() {
           <div className="rich-text-custom w-richtext">
             <p>We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll <em>know</em> you’ve made the right call.</p>
           </div>
-          <CtaLink href="/about" label="Get to know us" />
+          <CtaLink href={CONTACT_MAILTO} label="Get in touch" />
         </div>
       </div>
     </section>

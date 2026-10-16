@@ -7,7 +7,7 @@ import GradientBanner from "@/components/GradientBanner";
 import RevealText from "@/components/RevealText";
 import { getCaseStudies } from "@/lib/content";
 import CaseList, { type CaseRow } from "./CaseList";
-import { disciplinesFrom, readableOn } from "./disciplines";
+import { toCaseRow } from "./caseRows";
 import "./cases.css";
 
 export const metadata: Metadata = {
@@ -41,18 +41,7 @@ export default function CaseStudiesPage() {
   const cases: CaseRow[] = getCaseStudies()
     .filter((cs) => !HIDDEN_CASES.has(cs.slug))
     .sort((a, b) => a.position - b.position)
-    .map((cs) => ({
-      slug: cs.slug,
-      client: cs.teaserClient,
-      campaign: cs.teaserCampaign,
-      thumbnail: cs.thumbnail,
-      panel: cs.color?.secondary ?? "#000",
-      line: cs.color?.main ?? "#fff",
-      text: readableOn(cs.color?.secondary ?? "#000"),
-      useVisual: cs.useVisual,
-      visualizationJson: cs.visualizationJson,
-      disciplines: disciplinesFrom(cs.whatWeDidHtml),
-    }));
+    .map(toCaseRow);
 
   return (
     <div className="main-wrapper gl-page cs-page">
