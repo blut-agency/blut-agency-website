@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import GridFooter from "@/components/GridFooter";
+import LogoBand from "@/components/LogoBand";
 import GradientBanner from "@/components/GradientBanner";
-import VideoSpot from "@/components/VideoSpot";
 import VideoPanel from "@/components/VideoPanel";
-import PageTeaser from "@/components/PageTeaser";
 import RevealText from "@/components/RevealText";
+import "./work.css";
 
 export const metadata: Metadata = {
   title: "Work – A 360° Approach to Sonic Storytelling | blut",
@@ -14,27 +15,25 @@ export const metadata: Metadata = {
 };
 
 /**
- * Page structure and copy follow the "Website v2 → WORK" section of the Figma
- * board (🛝 The Playground). Stills come from the board and act as posters
- * until the team sends Vimeo links; set `vimeoId` on a spot to make it play.
- * `placeholder` marks a spot whose copy on the board is still lorem ipsum.
+ * Stills act as posters until the team sends Vimeo links; set `vimeoId` on a
+ * spot to make it play in the lightbox. `hidden` keeps a spot in the data but
+ * off the page (Nivea / Serenia: its copy is still placeholder).
  */
-type Spot = { client: string; text: string; image: string; vimeoId?: string; placeholder?: boolean };
+type Spot = { client: string; text: string; image: string; vimeoId?: string; hidden?: boolean };
 
-const OPENER: Spot = {
-  client: "Samsung / Nina Chuba",
-  image: "/images/story/samsung-nina-chuba.jpg",
-  text: "Some projects call for all-round production, like when we worked with Nina Chuba on this Samsung spot. We took her voice recordings from the film set and created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
-};
-
-// Board order (Website v2). Haribo isn't on the v2 board; it keeps its spot
-// after Dr. Oetker until the team says otherwise.
-const ROWS_BEFORE_INTERLUDE: Spot[] = [
+// Current order of the Work page. The first and last spots are the wide rows;
+// everything in between alternates media left / right.
+const SPOTS: Spot[] = [
+  {
+    client: "Samsung / Nina Chuba",
+    image: "/images/story/samsung-nina-chuba.jpg",
+    text: "Some projects call for all-round production, like when we worked with Nina Chuba on this Samsung spot. We took her voice recordings from the film set and created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
+  },
   {
     client: "Nivea / Serenia",
     image: "/images/story/nivea-serenia.jpg",
     text: "Copy for this spot is still to come – the board only has placeholder text here.",
-    placeholder: true,
+    hidden: true,
   },
   {
     client: "Schwarzkopf",
@@ -51,17 +50,11 @@ const ROWS_BEFORE_INTERLUDE: Spot[] = [
     image: "/images/story/gore-tex.jpg",
     text: "A song doesn’t always have to be the main focus though. For this Gore-Tex campaign we went into their secret testing facility in the Bavarian Alps and recorded all of their weird and wonderful all-weather testing machines, turning them into this epic adventure in sound design.",
   },
-];
-
-const INTERLUDE: Spot = {
-  client: "Crazy Wolf",
-  image: "/images/story/crazy-wolf.jpg",
-  text: "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
-};
-
-// Open question from Timo on the board ("makes us look like bad musicians").
-// Kept in for now; remove this entry if the team decides against it.
-const ROWS_AFTER_INTERLUDE: Spot[] = [
+  {
+    client: "Crazy Wolf",
+    image: "/images/story/crazy-wolf.jpg",
+    text: "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
+  },
   {
     client: "McDonald’s",
     image: "/images/story/mcdonalds.jpg",
@@ -87,109 +80,128 @@ const ROWS_AFTER_INTERLUDE: Spot[] = [
     image: "/images/story/adidas-originals.jpg",
     text: "We do like to get more artistic too from time to time, like in this cinematic Adidas Superstar spot featuring rapper Jugo Ürdens and shot on 16mm. The music sounds like a film score from yesteryear and we felt nostalgic recording brass, woodwinds and grand piano for it, before creating the sound design and final mix.",
   },
+  {
+    client: "Hardmade",
+    image: "/images/story/hardmade.jpg",
+    text: "To sum it all up… we love all things music and all things audio. Here’s one last spot with lots of different styles and sounds in it, because you can combine metal with salsa and trap if you want to.",
+  },
 ];
 
-const CLOSER: Spot = {
-  client: "Hardmade",
-  image: "/images/story/hardmade.jpg",
-  text: "To sum it all up… we love all things music and all things audio. Here’s one last spot with lots of different styles and sounds in it, because you can combine metal with salsa and trap if you want to.",
-};
-
-/** A full-width spot: copy over the still, "Play Video" on hover, video in a lightbox. */
-function FullWidthSpot({ spot }: { spot: Spot }) {
+/** Light spacer row (Figma "Section Divider", no middle line): 64px, or 128px when tall. */
+function Spacer({ tall = false }: { tall?: boolean }) {
   return (
-    <section className="section-story-spot">
-      <VideoSpot client={spot.client} text={spot.text} image={spot.image} vimeoId={spot.vimeoId} />
+    <div className={`gl-spacer wk-spacer${tall ? " is-tall" : ""}`} aria-hidden="true">
+      <div className="gl-col" />
+    </div>
+  );
+}
+
+/**
+ * Wide spot (Figma "Feature Row", full): black row with a split spacer, the
+ * 16:9 still across the 1280 column, then client name | copy below it.
+ */
+function WideSpot({ spot }: { spot: Spot }) {
+  return (
+    <section className="wk-wide">
+      <div className="wk-wide-spacer" aria-hidden="true">
+        <div className="gl-col" />
+      </div>
+      <div className="wk-wide-media-row">
+        <div className="gl-col wk-wide-media">
+          <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
+        </div>
+      </div>
+      <div className="gl-col gl-split wk-wide-copy">
+        <div className="gl-cell">
+          <RevealText as="h2" className="heading-style-h1" text={spot.client} />
+        </div>
+        <div className="gl-cell">
+          <p className="wk-wide-text">{spot.text}</p>
+        </div>
+      </div>
     </section>
   );
 }
 
 /**
- * Work rows, 50/50 and full width like the Strategy sections: the still covers
- * the media half (hover zoom, "Play Video", lightbox) and the copy sits in the
- * padded text half. Checkerboard like the board: image right, image left, …
- * Sections alternate grey and white.
+ * Spot row (Figma "Feature Row", thirds): the still takes a third (same play
+ * behaviour as before: hover label, lightbox), client and copy take two.
  */
-function SpotRows({ spots }: { spots: Spot[] }) {
+function SpotRow({ spot, flipped }: { spot: Spot; flipped: boolean }) {
   return (
-    <>
-      {spots.map((spot, i) => (
-        <section className={i % 2 === 0 ? "background-color-light-1" : undefined} key={spot.client}>
-          <div className={i % 2 === 0 ? "_2-column-grid is-reversed" : "_2-column-grid"}>
-            <div className="grid-item is-media">
-              <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
-            </div>
-            <div className="grid-item">
-              <div className="item-inner is-case-study">
-                <div>
-                  <h3 className="heading-style-h2">{spot.client}</h3>
-                  <div
-                    data-wf--spacer--variant="l"
-                    className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                  ></div>
-                  {spot.placeholder ? (
-                    <div className="content-placeholder-text">
-                      <p>{spot.text}</p>
-                    </div>
-                  ) : (
-                    <div className="rich-text-custom w-richtext">
-                      <p>{spot.text}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      ))}
-    </>
+    <section className={`gl-row wk-spot${flipped ? " is-flipped" : ""}`}>
+      <div className="gl-col wk-spot-grid">
+        <div className="wk-spot-media">
+          <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
+        </div>
+        <div className="wk-spot-copy">
+          <h2 className="wk-spot-title">{spot.client}</h2>
+          <p className="wk-spot-text">{spot.text}</p>
+        </div>
+      </div>
+    </section>
   );
 }
 
+/*
+  Work page in the grid-landing layout (Figma "Work", 45:1406): banner, nav,
+  wide opener, sky band, alternating third rows, purple band, wide closer,
+  statement banner, footer. Styles: ./work.css, everything scoped to .wk-page.
+*/
 export default function WorkPage() {
-  return (
-    <>
-      <Header variant="start-top" />
-      <div className="main-wrapper">
-        <div className="nav-distance"></div>
+  const shown = SPOTS.filter((s) => !s.hidden);
+  const opener = shown[0];
+  const closer = shown[shown.length - 1];
+  const rows = shown.slice(1, -1);
 
-        {/* The only banner on the page, copy right-aligned (board notes). */}
+  return (
+    <div className="main-wrapper gl-page wk-page">
+      <div className="gl-banner wk-banner">
+        <GradientBanner form="work-hero" background="#ff6004" line="#e2e2e2">
+          <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
+          <p className="copy-medium">
+            What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s
+            blut, of course.
+          </p>
+        </GradientBanner>
+      </div>
+      <Header variant="start-top" />
+
+      <WideSpot spot={opener} />
+      <LogoBand theme="sky" />
+      <Spacer tall />
+
+      {rows.map((spot, i) => (
+        <div key={spot.client}>
+          {i > 0 && <Spacer />}
+          {/* As drawn: media left first, then right, and so on. */}
+          <SpotRow spot={spot} flipped={i % 2 === 1} />
+        </div>
+      ))}
+
+      <Spacer tall />
+      <LogoBand theme="purple" reverse />
+      <WideSpot spot={closer} />
+
+      {/* Figma's Statement Banner, carrying the existing closing-row copy. */}
+      <div className="gl-banner wk-statement">
         <GradientBanner
-          form="story-hero"
+          form="work-statement"
           background="var(--_color---accent-color-3)"
           line="var(--_color---accent-color-1)"
-          align="right"
         >
-          <div className="container-small">
-            <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
-          </div>
-          <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-          <div className="container-small">
-            <p className="copy-medium">
-              What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out
-              (it’s blut, of course).
-            </p>
+          <RevealText as="h2" className="heading-style-h1" text="It’s not just music, it’s everything around it." />
+          <p className="copy-medium">We specialize in assessing brands and creating bespoke sonic strategies.</p>
+          <div className="cta-link-component gl-cta">
+            <Link aria-label="Get to know our process" href="/strategy" className="cta-link w-inline-block">
+              <div className="cta-link-line" />
+              <div className="cta-link-text">Get to know our process</div>
+            </Link>
           </div>
         </GradientBanner>
-
-        <FullWidthSpot spot={OPENER} />
-        <SpotRows spots={ROWS_BEFORE_INTERLUDE} />
-
-        <FullWidthSpot spot={INTERLUDE} />
-        <SpotRows spots={ROWS_AFTER_INTERLUDE} />
-
-        <FullWidthSpot spot={CLOSER} />
-
-        <PageTeaser
-          heading="It’s not just music, it’s everything around it."
-          text="We specialize in assessing brands and creating bespoke sonic strategies."
-          href="/strategy"
-          ctaLabel="Get to know our process"
-          ariaLabel="Get to know our process"
-        />
-
-        <Footer />
       </div>
-    </>
+
+      <GridFooter />
+    </div>
   );
 }

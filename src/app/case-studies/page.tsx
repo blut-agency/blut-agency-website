@@ -56,7 +56,7 @@ export default function CaseStudiesPage() {
 
   return (
     <div className="main-wrapper gl-page cs-page">
-      <div className="cs-banner">
+      <div className="cs-banner gl-banner">
         <GradientBanner form="cases-hero" background="#dfe5ac" line="var(--_color---accent-color-1)">
           <RevealText as="h1" className="heading-style-h1" text="Case Studies" />
           <p className="copy-medium">

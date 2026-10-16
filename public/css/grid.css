@@ -20,6 +20,9 @@
   --gl-spacer: clamp(3rem, 1.5rem + 5vw, 8rem);
   --gl-block: clamp(22rem, 44.5vw, 40rem);
   --gl-band: clamp(3.25rem, 2.5rem + 2vw, 5rem);
+  /* Top banner on the inner pages (Cases, Work, Strategy): one shared height.
+     px, so it stays 640 when the fluid root type scales. */
+  --gl-banner-h: 640px;
   background: var(--_color---white);
 }
 
@@ -198,6 +201,12 @@
   color: var(--_color---white);
 }
 
+/* Purple band (Work page, as drawn in Figma 45:1406): purple with a dark grey blob. */
+.gl-band.is-purple {
+  background: #9747ff;
+  color: var(--_color---white);
+}
+
 /* A soft blob drifting across the band, like the case-study textures. */
 .gl-band-texture {
   position: absolute;
@@ -219,6 +228,10 @@
 
 .gl-band.is-orange .gl-band-texture {
   background: radial-gradient(closest-side, #e2e2e2, transparent) 45% 50% / 20rem 100% no-repeat;
+}
+
+.gl-band.is-purple .gl-band-texture {
+  background: radial-gradient(closest-side, #505050, transparent) 30% 50% / 22rem 100% no-repeat;
 }
 
 @keyframes gl-drift {
@@ -293,6 +306,54 @@
 
 .gl-footer a:hover {
   text-decoration: underline;
+}
+
+/* ---------- Inner-page top banner (wrap a GradientBanner in .gl-banner) ----------
+   Shared by Cases, Work and Strategy: --gl-banner-h tall, the moving texture
+   fills the whole banner, copy always centred (never right-aligned). */
+.gl-page .gl-banner .section-hero {
+  height: var(--gl-banner-h);
+  min-height: 0;
+  max-height: none;
+}
+
+/* Texture fills the whole banner, so its noise layer doesn't show as an
+   inset box (the shared wrapper is capped at 86rem and starts 5% down). */
+.gl-page .gl-banner .section-hero-media-wrapper {
+  inset: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+.gl-page .gl-banner .hero-content-wrapper {
+  max-width: min(60rem, var(--gl-max));
+  margin-inline: auto;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing--md, 1.5rem);
+}
+
+.gl-page .gl-banner .heading-style-h1 {
+  font-size: var(--heading--xxl);
+  line-height: 1.05;
+}
+
+.gl-page .gl-banner .copy-medium {
+  max-width: 40rem; /* 640px, as drawn */
+  font-size: var(--heading--l);
+  line-height: 1.35;
+  margin-inline: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .gl-page {
+    --gl-banner-h: auto;
+  }
+
+  .gl-page .gl-banner .section-hero {
+    min-height: 28rem;
+  }
 }
 
 /* ---------- Tablets and phones: columns stack ---------- */

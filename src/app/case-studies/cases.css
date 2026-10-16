@@ -17,7 +17,6 @@
 
 /* ---------- 1. Page tokens ---------- */
 .gl-page.cs-page {
-  --cs-banner-h: 640px; /* as drawn; px so it stays 640 when the root type scales */
   --cs-row-h: 20rem; /* case row and CTA row: 320px */
   --cs-spacer-h: 4rem; /* Spacer v02: 64px */
   --cs-panel-pad-y: var(--spacing--l); /* 40px */
@@ -105,41 +104,11 @@
   list-style: none;
 }
 
-/* ---------- 3. Banner: 640px, moving texture, centred copy ---------- */
+/* ---------- 3. Banner ----------
+   Height, texture fill and centred copy come from the shared .gl-banner rules
+   in grid.css (--gl-banner-h, 640px). Only the dark text is Cases-specific. */
 .cs-page .cs-banner .section-hero {
-  height: var(--cs-banner-h);
-  min-height: 0;
-  max-height: none;
   color: var(--_color---copy-dark);
-}
-
-/* Texture fills the whole banner, so its noise layer doesn't show as an
-   inset box (the shared wrapper is capped at 86rem and starts 5% down). */
-.cs-page .cs-banner .section-hero-media-wrapper {
-  inset: 0;
-  max-width: none;
-  width: 100%;
-  margin: 0;
-}
-
-.cs-page .cs-banner .hero-content-wrapper {
-  max-width: min(60rem, var(--gl-max));
-  margin-inline: auto;
-  align-items: center;
-  text-align: center;
-  gap: var(--spacing--md, 1.5rem);
-}
-
-.cs-page .cs-banner .heading-style-h1 {
-  font-size: var(--heading--xxl);
-  line-height: 1.05;
-}
-
-.cs-page .cs-banner .copy-medium {
-  max-width: 40rem; /* 640px, as drawn */
-  font-size: var(--heading--l);
-  line-height: 1.35;
-  margin-inline: auto;
 }
 
 /* ---------- Dark spacer rows (Spacer v02: side lines + centre line) ---------- */
@@ -271,15 +240,5 @@
 
   .cs-page .cs-cta-inner {
     min-height: 16rem;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .gl-page.cs-page {
-    --cs-banner-h: auto;
-  }
-
-  .cs-page .cs-banner .section-hero {
-    min-height: 28rem;
   }
 }

@@ -1,0 +1,198 @@
+/*
+  Work page (/work) in the grid-landing system.
+  Built from Nic's Figma frame "Work" (9GWn7JIeYMkfMYeLSkFiUS, node 45:1406).
+
+  Reuses grid.css: .gl-page tokens, .gl-col / .gl-row / .gl-spacer / .gl-split /
+  .gl-cell, the shared .gl-banner (640px, texture, centred copy), .gl-band and
+  .gl-footer. Everything here is scoped to .wk-page, because Next keeps page
+  stylesheets loaded after navigating away.
+
+  Sections:
+    1. Page tokens
+    2. Banner + statement banner
+    3. Spacers
+    4. Wide spots (black, 16:9 still across the column)
+    5. Spot rows (third media | two-thirds copy, alternating)
+    6. Tablet / phone
+*/
+
+/* ---------- 1. Page tokens ---------- */
+.gl-page.wk-page {
+  --wk-spacer-h: 4rem; /* Section Divider between rows: 64px */
+  --wk-spacer-tall-h: 8rem; /* Section Divider around the bands: 128px */
+  --wk-row-h: clamp(22.5rem, 33.4vw, 480px); /* spot row: 480 at 1440 */
+  --wk-statement-h: 675px; /* Statement Banner, as drawn */
+  --wk-pad: var(--fx-gap, 28px);
+}
+
+/* ---------- 2. Banners ---------- */
+.wk-page .wk-banner .section-hero,
+.wk-page .wk-statement .section-hero {
+  color: var(--_color---copy-bright);
+}
+
+.gl-page.wk-page .wk-statement .section-hero {
+  height: var(--wk-statement-h);
+}
+
+.wk-page .wk-statement .heading-style-h1 {
+  max-width: 56.25rem; /* 900px, as drawn */
+  margin-inline: auto;
+}
+
+.wk-page .wk-statement .gl-cta {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- 3. Spacers ---------- */
+.wk-page .wk-spacer .gl-col {
+  height: var(--wk-spacer-h);
+}
+
+.wk-page .wk-spacer.is-tall .gl-col {
+  height: var(--wk-spacer-tall-h);
+}
+
+/* Bands: the one under the opener sits on white, the purple one leads into black. */
+.wk-page .gl-band.is-purple {
+  border-bottom-color: var(--gl-line-dark);
+}
+
+/* ---------- 4. Wide spots ---------- */
+.wk-page .wk-wide {
+  background: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
+  border-bottom: 1px solid var(--gl-line-dark);
+}
+
+.wk-page .wk-wide .gl-col {
+  border-color: var(--gl-line-dark);
+}
+
+/* Spacer v02 on black: side lines plus a centre line, 128px. */
+.wk-page .wk-wide-spacer {
+  border-bottom: 1px solid var(--gl-line-dark);
+}
+
+.wk-page .wk-wide-spacer .gl-col {
+  height: var(--wk-spacer-tall-h);
+}
+
+.wk-page .wk-wide-spacer .gl-col::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 50%;
+  border-left: 1px solid var(--gl-line-dark);
+}
+
+.wk-page .wk-wide-media-row {
+  border-bottom: 1px solid var(--gl-line-dark);
+}
+
+.wk-page .wk-wide-media {
+  aspect-ratio: 16 / 9; /* 1280 × 720 at full width */
+  overflow: hidden;
+}
+
+.wk-page .wk-wide-copy > * + * {
+  border-left-color: var(--gl-line-dark);
+}
+
+.wk-page .wk-wide-copy .gl-cell {
+  padding: var(--wk-pad);
+}
+
+.wk-page .wk-wide-copy .heading-style-h1 {
+  margin: 0;
+}
+
+.wk-page .wk-wide-text {
+  margin: 0;
+  color: var(--_color---copy-grey);
+  font-size: var(--heading--m);
+  line-height: 1.35;
+}
+
+/* ---------- 5. Spot rows: media third + copy two thirds ---------- */
+.wk-page .wk-spot-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  min-height: var(--wk-row-h);
+}
+
+.wk-page .wk-spot-media {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--gl-line);
+  min-height: 0;
+}
+
+.wk-page .wk-spot.is-flipped .wk-spot-grid {
+  grid-template-columns: 2fr 1fr;
+}
+
+.wk-page .wk-spot.is-flipped .wk-spot-media {
+  order: 2;
+  border-right: 0;
+  border-left: 1px solid var(--gl-line);
+}
+
+.wk-page .wk-spot-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wk-pad);
+  padding: var(--wk-pad);
+  min-width: 0;
+}
+
+.wk-page .wk-spot-title {
+  margin: 0;
+  font-size: var(--heading--xl); /* 40px max */
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.wk-page .wk-spot-text {
+  margin: 0;
+  max-width: 48rem;
+  color: #424242;
+  font-size: var(--heading--m);
+  line-height: 1.35;
+}
+
+/* ---------- 6. Tablets and phones: rows stack, still first (like Home) ---------- */
+@media screen and (max-width: 991px) {
+  .wk-page .wk-wide-copy > * + * {
+    border-top-color: var(--gl-line-dark);
+  }
+
+  .wk-page .wk-spot-grid,
+  .wk-page .wk-spot.is-flipped .wk-spot-grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .wk-page .wk-spot-media,
+  .wk-page .wk-spot.is-flipped .wk-spot-media {
+    order: -1;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-bottom: 1px solid var(--gl-line);
+  }
+
+  .wk-page .wk-wide-spacer .gl-col,
+  .wk-page .wk-spacer.is-tall .gl-col {
+    height: var(--wk-spacer-h);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gl-page.wk-page {
+    --wk-statement-h: auto;
+  }
+
+  .wk-page .wk-statement .section-hero {
+    min-height: 28rem;
+  }
+}

@@ -31,8 +31,9 @@ export default function LogoBand({
   /**
    * lime: yellow-green with a dark blob, black logos. sky: pale lime with a blue blob, white logos.
    * orange: orange with a pale grey blob, white logos (Cases page, as drawn in Figma).
+   * purple: purple with a dark grey blob, white logos (Work page, as drawn in Figma).
    */
-  theme?: "lime" | "sky" | "orange";
+  theme?: "lime" | "sky" | "orange" | "purple";
   reverse?: boolean;
 }) {
   const run = Array.from({ length: PER_RUN }, (_, i) => <Logo key={i} />);

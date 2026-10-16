@@ -1,0 +1,193 @@
+/*
+  Strategy page (/strategy) in the grid-landing system.
+  FAQ blocks built from Nic's Figma "FAQ Block" (9GWn7JIeYMkfMYeLSkFiUS,
+  node 140:1021); they alternate copy-left / copy-right down the page.
+
+  Reuses grid.css: .gl-page tokens, .gl-col / .gl-row / .gl-spacer / .gl-split /
+  .gl-cell / .gl-copy / .gl-cta, the shared .gl-banner, .gl-band, .gl-footer.
+  Everything here is scoped to .st-page.
+
+  Sections:
+    1. Page tokens
+    2. Banner, spacers, video row
+    3. FAQ blocks (copy + accordion | textured header)
+    4. Contact row, closing row
+    5. Tablet / phone
+*/
+
+/* ---------- 1. Page tokens ---------- */
+.gl-page.st-page {
+  --st-spacer-h: 4rem; /* 64px, as the Work and Cases spacers */
+  --st-pad: var(--fx-gap, 28px);
+  --st-head-pad-y: var(--spacing--l); /* 40px */
+  --st-head-min-h: 22rem;
+}
+
+/* ---------- 2. Banner, spacers, video ---------- */
+.st-page .st-banner .section-hero {
+  color: var(--_color---copy-bright);
+}
+
+.st-page .st-spacer .gl-col {
+  height: var(--st-spacer-h);
+}
+
+.st-page .st-video .media-frame {
+  display: block;
+}
+
+/* ---------- 3. FAQ blocks ---------- */
+.st-page .st-faq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.st-page .st-faq-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--gl-line);
+}
+
+.st-page .st-faq.is-flipped .st-faq-copy {
+  order: 2;
+  border-right: 0;
+  border-left: 1px solid var(--gl-line);
+}
+
+.st-page .st-faq-intro {
+  margin: 0;
+  padding: var(--spacing--xs) var(--st-pad) calc(var(--spacing--xs) * 2);
+  font-size: var(--heading--m);
+  line-height: 1.35;
+}
+
+/* Accordion (FAQ Item v02): hairline above each item, title + "+/–" after it. */
+.st-page .st-acc-item {
+  border-top: 1px solid var(--gl-line);
+}
+
+.st-page .st-acc-heading {
+  margin: 0;
+  font-size: var(--heading--m);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.st-page .st-acc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: var(--spacing--xs) var(--st-pad);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.st-page .st-acc-toggle:focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: -4px;
+}
+
+.st-page .st-acc-icon {
+  flex: none;
+  min-width: 0.75em;
+}
+
+.st-page .st-acc-panel {
+  padding: 0 var(--st-pad) calc(var(--spacing--xs) * 1.5);
+}
+
+.st-page .st-acc-panel[hidden] {
+  display: none;
+}
+
+.st-page .st-acc-panel p {
+  margin: 0;
+  max-width: 34rem;
+  color: #424242;
+  font-size: var(--text-size--tiny);
+  line-height: 1.45;
+}
+
+.st-page .st-faq-cta {
+  margin-top: auto;
+  padding: var(--spacing--sm) var(--st-pad);
+  border-top: 1px solid var(--gl-line);
+}
+
+/* Textured header cell: section name top, question bottom, white on the texture. */
+.st-page .st-faq-head {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing--l);
+  min-height: var(--st-head-min-h);
+  padding: var(--st-head-pad-y) var(--st-pad);
+  color: var(--_color---copy-bright);
+  min-width: 0;
+}
+
+.st-page .st-faq-visual {
+  display: block;
+}
+
+.st-page .st-faq-label,
+.st-page .st-faq-question {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-weight: 400;
+}
+
+.st-page .st-faq-label {
+  font-size: var(--heading--xxl); /* 60px max */
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.st-page .st-faq-question {
+  font-size: var(--heading--xl); /* 40px max */
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+/* ---------- 4. Contact row, closing row ---------- */
+.st-page .st-contact-inner {
+  padding: var(--spacing--xs) var(--st-pad);
+}
+
+.st-page .st-closing .gl-cell {
+  padding: var(--st-pad);
+}
+
+.st-page .st-closing .heading-style-h1 {
+  margin: 0;
+}
+
+/* ---------- 5. Tablets and phones: blocks stack, textured header first ---------- */
+@media screen and (max-width: 991px) {
+  .st-page .st-faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .st-page .st-faq-copy,
+  .st-page .st-faq.is-flipped .st-faq-copy {
+    order: 2;
+    border: 0;
+    border-top: 1px solid var(--gl-line);
+  }
+
+  .st-page .st-faq-head {
+    min-height: 16rem;
+  }
+}
