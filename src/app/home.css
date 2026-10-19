@@ -1,132 +1,474 @@
 /*
-  Home (/) in the grid layout: Figma 9GWn7JIeYMkfMYeLSkFiUS, node 130:276.
+  Home page styles.
 
-  Builds on grid.css (.gl-page tokens, .gl-col / .gl-row / .gl-spacer,
-  .gl-teaser, bands, footer). The Selected cases rows come from the Cases page
-  (CaseRowItem + cases.css, under a .cs-rows wrapper).
+  The stage (logo + sound) and the nav still come from the shared CSS. Every
+  section below them uses only the .hp-* classes here, built on a few rules:
 
-  Everything here is scoped to .hm-page, because Next keeps page stylesheets
-  loaded after navigating away.
+  - Type: four sizes, in px so they don't shrink with the fluid root size
+    (embeds.css scales html font-size with the window width).
+      display  headlines         64 / 48 / 40
+      title    section titles    32 / 28 / 26
+      body     running text      20 / 19 / 18, black
+      small    labels, captions  15
+  - One column: content is max 1200px wide with the same side gutter
+    everywhere. Only the stage, the logo bands, the black teaser band and
+    the footer run full width.
+  - Spacing: one gap between sections, one gap inside them.
+  - Images: fixed proportions (3:2 teasers, 16:10 cases), never tied to the
+    window height or width.
+
+  Then a few deliberate breaks, so it doesn't read as a template:
+  - one jump in scale: "hero" headlines at 112 / 80px (phone: fits the width),
+  - teaser photos run off one edge of the screen, alternating sides,
+  - the intro and "Why blut" sit on a 12-column grid at uneven offsets,
+  - Selected cases are full-width rows in each case's colour, not cards,
+  - clients as one large run of names instead of tiles.
 */
 
-.gl-page.hm-page {
-  --hm-stage-h: 600px; /* px: stays 600 when the fluid root type scales */
-  --hm-client-h: 140px;
-  --hm-case-row-h: 400px;
+.hp {
+  --hp-max: 1200px;
+  --hp-gutter: 64px;
+  --hp-section: 128px;
+  --hp-gap: 48px;
+
+  --hp-hero: 112px;
+  --hp-display: 64px;
+  --hp-title: 32px;
+  --hp-statement: 36px;
+  --hp-body: 20px;
+  --hp-small: 15px;
+
+  --hp-stage-h: 720px;
 }
 
-/* ---------- Stage: fixed 600px instead of filling the first screen ---------- */
-.gl-page.hm-page .gl-stage .home-stage-wrapper {
-  min-height: 0;
-  height: var(--hm-stage-h);
-}
-
-/* "Click for sound": the label never wraps. (The "Pause" button is already
-   hidden until the sound plays, by globals.css + embeds.js.) */
-.hm-page .gl-stage .play-toggle-text {
-  white-space: nowrap;
-}
-
-/* ---------- Teasers: heading, sub-line, captioned photo ---------- */
-.hm-page .hm-teaser-media {
-  margin: 0;
-}
-
-.hm-page .gl-teaser .hm-teaser-heading {
-  text-wrap: balance;
-}
-
-.hm-page .hm-teaser-sub {
-  margin: var(--spacing--md, 1.5rem) 0 0;
-  max-width: 30em;
-  font-size: var(--heading--m);
-  line-height: 1.35;
-  color: rgb(255 255 255 / 0.72);
-}
-
-/* Caption on the photo: bottom-left, on a soft dark fade so it reads on any image. */
-.hm-page .hm-caption {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 1;
-  margin: 0;
-  padding: 3rem var(--gl-pad) 1rem;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.65), transparent);
-  color: var(--_color---copy-bright, #fff);
-  font-size: 13px;
-  line-height: 1.3;
-  pointer-events: none;
-}
-
-/* ---------- Section header rows (Selected cases / Selected clients) ---------- */
-.hm-page .hm-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing--sm, 1rem) var(--spacing--l, 2.5rem);
-}
-
-.hm-page .hm-label {
-  margin: 0;
-  font-size: calc(var(--heading--l) * 1.25);
-  line-height: 1.1;
-  font-weight: 400;
-}
-
-/* ---------- Selected cases: Cases rows, a little taller as drawn ---------- */
-.gl-page.hm-page .cs-rows {
-  --cs-row-h: var(--hm-case-row-h);
-}
-
-/* ---------- Selected clients: 6 × 2 hairline grid of equal cells ---------- */
-.hm-page .hm-client-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 1px;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-  background: var(--gl-line); /* the 1px gaps draw the hairlines */
-}
-
-.hm-page .hm-client {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--hm-client-h);
-  padding: 0.75rem;
-  background: var(--_color---white);
-  text-align: center;
-  font-size: max(16px, var(--heading--m));
-  line-height: 1.25;
-  text-wrap: balance;
-}
-
-/* ---------- Tablets and phones ---------- */
-@media screen and (max-width: 991px) {
-  .hm-page .hm-teaser-sub {
-    font-size: var(--heading--s);
+@media screen and (max-width: 1199px) {
+  .hp {
+    --hp-gutter: 40px;
+    --hp-section: 96px;
+    --hp-gap: 40px;
+    --hp-hero: 80px;
+    --hp-display: 48px;
+    --hp-title: 28px;
+    --hp-statement: 30px;
+    --hp-body: 19px;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .gl-page.hm-page {
-    --hm-client-h: 88px;
+  .hp {
+    --hp-gutter: 20px;
+    --hp-section: 72px;
+    --hp-gap: 28px;
+    --hp-hero: min(44px, 10.5vw);
+    --hp-display: 40px;
+    --hp-title: 26px;
+    --hp-statement: 24px;
+    --hp-body: 18px;
+  }
+}
+
+/* ---------- Stage: fixed height instead of filling the first screen ---------- */
+.gl-page.hp .gl-stage .home-stage-wrapper {
+  min-height: 0;
+  height: var(--hp-stage-h);
+}
+
+@media screen and (max-width: 767px) {
+  .gl-page.hp .gl-stage .home-stage-wrapper {
+    height: 480px;
+  }
+}
+
+/* "Click for sound": the label never wraps. */
+.hp .gl-stage .play-toggle-text {
+  white-space: nowrap;
+}
+
+/* ---------- Type ---------- */
+.hp .hp-hero,
+.hp .hp-display,
+.hp .hp-title,
+.hp .hp-body,
+.hp .hp-small,
+.hp .hp-statement {
+  margin: 0;
+  font-family: var(--font-family--pp-agrandir);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.hp .hp-hero {
+  font-size: var(--hp-hero);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.hp .hp-display {
+  font-size: var(--hp-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.hp .hp-title {
+  font-size: var(--hp-title);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.hp .hp-body {
+  font-size: var(--hp-body);
+  line-height: 1.5;
+  max-width: 34em;
+  color: inherit;
+}
+
+/* A sentence set large: statement size, never headline size. */
+.hp .hp-statement {
+  margin: 0;
+  font-size: var(--hp-statement);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  max-width: 24em;
+}
+
+.hp .hp-small {
+  font-size: var(--hp-small);
+  line-height: 1.4;
+}
+
+/* ---------- Layout ---------- */
+.hp .hp-col {
+  width: 100%;
+  max-width: calc(var(--hp-max) + 2 * var(--hp-gutter));
+  margin-inline: auto;
+  padding-inline: var(--hp-gutter);
+  box-sizing: border-box;
+}
+
+.hp .hp-section {
+  padding-block: var(--hp-section);
+  color: var(--_color---copy-dark);
+}
+
+.hp .hp-section.is-tight {
+  padding-top: 0;
+}
+
+.hp .hp-dark {
+  padding-block: var(--hp-section);
+  background: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
+}
+
+/* 12 columns inside the content column, for the uneven placements. */
+.hp .hp-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: var(--hp-gap);
+  align-items: start;
+}
+
+/* Intro: the question across the column, the answer filling the right two thirds. */
+.hp .hp-intro-q {
+  grid-column: 1 / -1;
+}
+
+.hp .hp-intro-a {
+  grid-column: 5 / -1;
+}
+
+/* Why blut: question left, answer dropped lower on the right. */
+.hp .hp-why-q {
+  grid-column: 1 / span 6;
+}
+
+.hp .hp-why-a {
+  grid-column: 8 / -1;
+  padding-top: calc(var(--hp-hero) * 1.5);
+}
+
+.hp .hp-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.hp .hp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: var(--hp-gap);
+}
+
+/* ---------- "— Label" link ---------- */
+.hp .hp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: var(--hp-body);
+  line-height: 1.2;
+  color: inherit;
+  text-decoration: none;
+}
+
+.hp .hp-link-line {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.hp .hp-link:hover .hp-link-line,
+.hp .hp-link:focus-visible .hp-link-line {
+  width: 40px;
+}
+
+.hp .hp-link:focus-visible {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: 4px;
+}
+
+/* ---------- Images: fixed proportions ---------- */
+.hp .hp-media {
+  margin: 0;
+}
+
+.hp .hp-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.hp .hp-media figcaption {
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+/* ---------- Teasers ---------- */
+/* Distance from the screen edge to the content column, for the full-width teaser rows. */
+.hp {
+  --hp-edge: max(var(--hp-gutter), calc((100vw - var(--hp-max)) / 2));
+}
+
+.hp .hp-teaser + .hp-teaser {
+  margin-top: var(--hp-section);
+}
+
+.hp .hp-teaser-heading {
+  max-width: 11em;
+  margin-bottom: var(--hp-gap);
+}
+
+/* Flipped rows: the headline steps in, so the left edge isn't the same every time. */
+.hp .hp-teaser.is-flipped .hp-col > * {
+  margin-left: calc(100% / 6);
+}
+
+/* Photo (7 parts) runs to the screen edge; copy (5 parts) sits at its foot. */
+.hp .hp-teaser-body {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  align-items: end;
+}
+
+.hp .hp-teaser.is-flipped .hp-teaser-body {
+  grid-template-columns: 5fr 7fr;
+}
+
+.hp .hp-teaser.is-flipped .hp-bleed {
+  order: 2;
+}
+
+.hp .hp-bleed img {
+  aspect-ratio: 3 / 2;
+}
+
+.hp .hp-bleed figcaption {
+  padding-left: var(--hp-gutter);
+}
+
+.hp .hp-teaser.is-flipped .hp-bleed figcaption {
+  padding-left: 0;
+  padding-right: var(--hp-gutter);
+  text-align: right;
+}
+
+.hp .hp-teaser-copy {
+  padding: 0 var(--hp-edge) calc(var(--hp-small) * 1.4 + 12px) var(--hp-gap);
+}
+
+.hp .hp-teaser.is-flipped .hp-teaser-copy {
+  padding-left: var(--hp-edge);
+  padding-right: var(--hp-gap);
+}
+
+/* ---------- Selected cases: full-width colour rows ---------- */
+.hp .hp-cases {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hp .hp-case {
+  position: relative;
+  overflow: hidden;
+}
+
+/* The case's animated shape, behind the row. */
+.hp .hp-case-visual {
+  display: block;
+}
+
+.hp .hp-case-link {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--hp-gap);
+  align-items: end;
+  color: inherit;
+  text-decoration: none;
+}
+
+.hp .hp-case-name {
+  grid-column: 1 / span 6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hp .hp-case-info {
+  grid-column: 7 / span 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.hp .hp-case-photo {
+  grid-column: 10 / -1;
+}
+
+.hp .hp-case-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.hp .hp-case-link:hover .hp-link-line {
+  width: 40px;
+}
+
+.hp .hp-case-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -6px;
+}
+
+/* ---------- Selected clients: one large run of names ---------- */
+.hp .hp-clients {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 22em;
+  font-size: var(--hp-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+.hp .hp-clients li {
+  display: inline;
+  white-space: nowrap;
+}
+
+.hp .hp-clients li:not(:last-child)::after {
+  content: " / ";
+  color: var(--_color---copy-grey);
+  white-space: normal; /* the line may break after the slash, never inside a name */
+}
+
+/* ---------- Tablet: one case per row, photo and panel side by side ---------- */
+@media screen and (max-width: 1199px) {
+  .hp .hp-case-name {
+    grid-column: 1 / span 7;
   }
 
-  /* Long words ("post-production.") must fit a phone-width cell. */
-  .hm-page .gl-teaser .hm-teaser-heading {
-    font-size: min(var(--heading--xxl), 7vw);
+  .hp .hp-case-info {
+    grid-column: 1 / span 7;
   }
 
-  /* 3 columns × 4 rows */
-  .hm-page .hm-client-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .hp .hp-case-photo {
+    grid-column: 8 / -1;
+    grid-row: 1 / span 2;
   }
 
-  .hm-page .hm-client {
-    font-size: 14px;
-    padding: 0.5rem;
+  .hp .hp-intro-a {
+    grid-column: 4 / -1;
   }
+
+  .hp .hp-why-q {
+    grid-column: 1 / span 7;
+  }
+
+  .hp .hp-teaser.is-flipped .hp-col > * {
+    margin-left: 16%;
+  }
+}
+
+/* ---------- Phone: everything stacks, photo first, edge to edge ---------- */
+@media screen and (max-width: 767px) {
+  .hp .hp-intro-a,
+  .hp .hp-why-q,
+  .hp .hp-why-a {
+    grid-column: 1 / -1;
+  }
+
+  .hp .hp-why-a {
+    padding-top: 0;
+  }
+
+  .hp .hp-teaser.is-flipped .hp-col > * {
+    margin-left: 0;
+  }
+
+  .hp .hp-teaser-body,
+  .hp .hp-teaser.is-flipped .hp-teaser-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hp .hp-case-name,
+  .hp .hp-case-info {
+    grid-column: 1 / -1;
+  }
+
+  .hp .hp-case-photo {
+    grid-column: 1 / span 6;
+    grid-row: auto;
+  }
+
+  .hp .hp-teaser.is-flipped .hp-bleed {
+    order: 0;
+  }
+
+  .hp .hp-bleed figcaption,
+  .hp .hp-teaser.is-flipped .hp-bleed figcaption {
+    padding-inline: var(--hp-gutter);
+    text-align: left;
+  }
+
+  .hp .hp-teaser-copy,
+  .hp .hp-teaser.is-flipped .hp-teaser-copy {
+    padding: var(--hp-gap) var(--hp-gutter) 0;
+  }
+
 }

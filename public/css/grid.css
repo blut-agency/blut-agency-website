@@ -14,10 +14,11 @@
 .gl-page {
   --gl-max: 80rem;
   --gl-margin: clamp(0.75rem, 5.5vw, 5rem);
-  --gl-line: #e6e6e6;
-  --gl-line-dark: #262626;
+  /* Grid lines are switched off; the 1px borders stay so spacing is unchanged. */
+  --gl-line: transparent;
+  --gl-line-dark: transparent;
   --gl-pad: clamp(1.25rem, 0.8rem + 1.2vw, 2rem);
-  --gl-spacer: clamp(3rem, 1.5rem + 5vw, 8rem);
+  --gl-spacer: clamp(1.5rem, 0.75rem + 2.5vw, 4rem);
   --gl-block: clamp(22rem, 44.5vw, 40rem);
   --gl-band: clamp(3.25rem, 2.5rem + 2vw, 5rem);
   /* Top banner on the inner pages (Cases, Work, Strategy): one shared height.
@@ -121,6 +122,9 @@
 
 .gl-page .gl-cta .cta-link-line {
   background-color: currentColor;
+  /* embeds.css hides the line until hover; on the grid it is always drawn. */
+  opacity: 1;
+  transform: none;
 }
 
 /* As drawn: "— Label", no arrow. */

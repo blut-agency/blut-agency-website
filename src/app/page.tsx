@@ -4,16 +4,15 @@ import GridFooter from "@/components/GridFooter";
 import LogoBand from "@/components/LogoBand";
 import { getCaseStudyBySlug, getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
-import CaseRowItem from "./case-studies/CaseRowItem";
+import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { toCaseRow, type CaseRow } from "./case-studies/caseRows";
-import "./case-studies/cases.css";
 import "./home.css";
 
 /*
-  Home content as agreed with Nic (blut-handoff/home-decisions.md) and drawn
-  in Figma 9GWn7JIeYMkfMYeLSkFiUS, node 130:276. Page-only styles: ./home.css
-  (scoped to .hm-page); the Selected cases rows reuse the Cases row and its
-  pills (./case-studies/cases.css, via the .cs-rows wrapper).
+  Home content as agreed with Nic (blut-handoff/home-decisions.md). Every
+  section below the stage is styled only by ./home.css (the .hp-* classes),
+  which keeps to a few fixed rules: four type sizes in px, one content column,
+  one section gap, and fixed image proportions.
 */
 
 // The four dark teasers below the lime band. Odd rows (Tab 2, Tab 4) are
@@ -110,15 +109,13 @@ const CLIENTS = [
 // TODO: contact address for "Get in touch" is still TBD (Nic).
 const CONTACT_MAILTO = "mailto:contact@blut.agency";
 
-/** "— Label" text link, used instead of buttons on the grid layout. */
-function CtaLink({ href, label }: { href: string; label: string }) {
+/** "— Label" text link: the dash is always drawn and stretches on hover. */
+function HpLink({ href, label }: { href: string; label: string }) {
   return (
-    <div className="cta-link-component gl-cta">
-      <Link aria-label={label} href={href} className="cta-link w-inline-block">
-        <div className="cta-link-line" />
-        <div className="cta-link-text">{label}</div>
-      </Link>
-    </div>
+    <Link href={href} className="hp-link">
+      <span className="hp-link-line" aria-hidden="true" />
+      {label}
+    </Link>
   );
 }
 
@@ -131,8 +128,8 @@ export default function HomePage() {
 
   return (
     <>
-<div className="main-wrapper gl-page hm-page">
-    {/* Landing: the red logo stage (600px, see home.css), then the nav, which
+<div className="main-wrapper gl-page hm-page hp">
+    {/* Landing: the red logo stage (720px, see home.css), then the nav, which
         sticks to the top (see grid.css). */}
     <section className="section-home-stage gl-stage">
       <div className="home-stage-wrapper">
@@ -208,101 +205,110 @@ export default function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
-
-    {/* Intro: question left, answer right, a grid line between them. */}
-    <section className="gl-row">
-      <div className="gl-col gl-split">
-        <div className="gl-cell">
-          <RevealText className="heading-style-h1" text="Do you even know if your music strategy works?" />
-        </div>
-        <div className="gl-cell gl-copy">
-          <div className="rich-text-custom w-richtext">
-            <p>blut creates unique music strategies - and makes their impact measurable.</p>
-          </div>
-          <CtaLink href="/about" label="Get to know us" />
+    {/* Intro: the question across the column, the answer as a large
+        statement filling the right two thirds below it. */}
+    <section className="hp-section">
+      <div className="hp-col hp-grid">
+        <RevealText as="h1" className="hp-hero hp-intro-q" text="Do you even know if your music strategy works?" />
+        <div className="hp-copy hp-intro-a">
+          <p className="hp-statement">blut creates unique music strategies - and makes their impact measurable.</p>
+          <HpLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
     <LogoBand theme="lime" />
 
-    {/* Teasers: photo and black panel pairs, alternating sides. */}
-    <section className="gl-teasers">
+    {/* Teasers: a big headline, then the photo running off one edge
+        of the screen with the copy beside it. Sides alternate. */}
+    <section className="hp-dark">
       {TEASERS.map((t, i) => (
-        <div className={`gl-row is-dark${i % 2 ? " is-flipped" : ""}`} key={t.href}>
-          <div className="gl-col gl-split gl-teaser cta-panel">
-            <figure className="gl-teaser-media grid-item is-media hm-teaser-media">
-              <img src={t.image} alt={t.alt} loading="lazy" />
-              <figcaption className="hm-caption">{t.caption}</figcaption>
-              <Link aria-hidden="true" tabIndex={-1} href={t.href} className="cta-link-full-cover w-inline-block" />
+        <article className={`hp-teaser${i % 2 ? " is-flipped" : ""}`} key={t.href}>
+          <div className="hp-col">
+            <RevealText className="hp-hero hp-teaser-heading" text={t.heading} />
+          </div>
+          <div className="hp-teaser-body">
+            <figure className="hp-media hp-bleed">
+              <Link href={t.href} tabIndex={-1} aria-hidden="true">
+                <img src={t.image} alt={t.alt} loading="lazy" />
+              </Link>
+              <figcaption className="hp-small">{t.caption}</figcaption>
             </figure>
-            <div className="gl-cell gl-teaser-copy">
-              <div className="gl-teaser-top">
-                <RevealText className="heading-style-h1 hm-teaser-heading" text={t.heading} />
-                <p className="hm-teaser-sub">{t.sub}</p>
-              </div>
-              <CtaLink href={t.href} label={t.cta} />
+            <div className="hp-copy hp-teaser-copy">
+              <p className="hp-body">{t.sub}</p>
+              <HpLink href={t.href} label={t.cta} />
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </section>
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
-
-    {/* Selected cases: a curated list in the Cases-page row style. */}
-    <section className="hm-cases" aria-labelledby="hm-cases-title">
-      <div className="gl-row">
-        <div className="gl-col gl-cell hm-head">
-          <h2 id="hm-cases-title" className="hm-label">Selected cases</h2>
-          <CtaLink href="/case-studies" label="View all case studies" />
+    {/* Selected cases: one full-width row per case in its own colour, title
+        large on the left, result and photo on the right. */}
+    <section className="hp-section" aria-labelledby="hp-cases-title">
+      <div className="hp-col">
+        <div className="hp-head">
+          <h2 id="hp-cases-title" className="hp-title">Selected cases</h2>
+          <HpLink href="/case-studies" label="View all case studies" />
         </div>
       </div>
-      <div className="cs-rows" role="list">
+      <ul role="list" className="hp-cases">
         {selectedCases.map((c) => (
-          <CaseRowItem key={c.slug} c={c} titleAs="h3" visualPrefix="home" />
+          <li key={c.slug} className="hp-case" style={{ backgroundColor: c.panel, color: c.text }}>
+            <div className="case-study-teaser-visual hp-case-visual" style={{ color: c.line }} aria-hidden="true">
+              <CaseStudyVisual
+                slug={`home-${c.slug}`}
+                variant={visualVariant(c.useVisual)}
+                speed={visualVariant(c.useVisual) === 1 ? 8 : 10}
+                visualizationJson={c.visualizationJson}
+              />
+            </div>
+            <Link href={`/project/${c.slug}`} className="hp-col hp-grid hp-case-link">
+              <div className="hp-case-name">
+                <p className="hp-body">{c.client}</p>
+                <h3 className="hp-display">{c.campaign}</h3>
+              </div>
+              <div className="hp-case-info">
+                {c.result && <p className="hp-body">{c.result}</p>}
+                <span className="hp-link" aria-hidden="true">
+                  <span className="hp-link-line" />
+                  Read more
+                </span>
+              </div>
+              <div className="hp-case-photo">
+                <img src={c.thumbnail} alt="" loading="lazy" />
+              </div>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
-
-    {/* Selected clients: names in a hairline grid (logos later). */}
-    <section className="hm-clients" aria-labelledby="hm-clients-title">
-      <div className="gl-row">
-        <div className="gl-col gl-cell hm-head">
-          <h2 id="hm-clients-title" className="hm-label">Selected clients</h2>
+    {/* Selected clients: names for now, logos later. */}
+    <section className="hp-section" aria-labelledby="hp-clients-title">
+      <div className="hp-col">
+        <div className="hp-head">
+          <h2 id="hp-clients-title" className="hp-title">Selected clients</h2>
         </div>
-      </div>
-      <div className="gl-row">
-        <ul role="list" className="gl-col hm-client-grid">
+        <ul role="list" className="hp-clients">
           {CLIENTS.map((name) => (
-            <li key={name} className="hm-client">{name}</li>
+            <li key={name}>{name}</li>
           ))}
         </ul>
       </div>
     </section>
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
-
-    {/* Why blut: a third for the question, two thirds for the answer. */}
-    <section className="gl-row">
-      <div className="gl-col gl-split is-third">
-        <div className="gl-cell">
-          <RevealText className="heading-style-h1" text="Why do you need blut?" />
-        </div>
-        <div className="gl-cell gl-copy">
-          <div className="rich-text-custom w-richtext">
-            <p>We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll <em>know</em> you’ve made the right call.</p>
-          </div>
-          <CtaLink href={CONTACT_MAILTO} label="Get in touch" />
+    {/* Why blut: the question on the left, the answer dropped lower on the right. */}
+    <section className="hp-section">
+      <div className="hp-col hp-grid">
+        <RevealText className="hp-hero hp-why-q" text="Why do you need blut?" />
+        <div className="hp-copy hp-why-a">
+          <p className="hp-body">We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll <em>know</em> you’ve made the right call.</p>
+          <HpLink href={CONTACT_MAILTO} label="Get in touch" />
         </div>
       </div>
     </section>
 
-    <div className="gl-spacer" aria-hidden="true"><div className="gl-col" /></div>
     <LogoBand theme="sky" reverse />
     <GridFooter />
   </div>
