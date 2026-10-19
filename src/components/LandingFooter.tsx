@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-/** Footer for the grid layout: black, three columns divided by the grid lines, no giant logo. */
-export default function GridFooter() {
+/** Footer for the landing page: black, contact · legal · social in three columns, no giant logo. */
+export default function LandingFooter() {
   return (
-    <footer id="footer" className="gl-footer">
-      <div className="gl-col gl-footer-cols">
-        <ul role="list" className="gl-footer-list">
+    <footer id="footer" className="lp-footer">
+      <div className="lp-wrap">
+        <ul role="list" className="lp-footer-list">
           <li>blut.agency</li>
           <li>
             <a href="mailto:contact@blut.agency">contact@blut.agency</a>
@@ -18,7 +18,7 @@ export default function GridFooter() {
             20355 Hamburg
           </li>
         </ul>
-        <ul role="list" className="gl-footer-list">
+        <ul role="list" className="lp-footer-list">
           <li>
             <Link href="/imprint">Imprint</Link>
           </li>
@@ -26,7 +26,7 @@ export default function GridFooter() {
             <Link href="/privacy-policy">Privacy Policy</Link>
           </li>
         </ul>
-        <ul role="list" className="gl-footer-list">
+        <ul role="list" className="lp-footer-list">
           <li>
             <a href="https://www.instagram.com/blut.agency/" target="_blank" rel="noopener noreferrer">
               Instagram

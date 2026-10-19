@@ -1,6 +1,6 @@
 /**
  * A full-width strip of repeating blut wordmarks scrolling sideways over a
- * moving texture. Pure CSS (see grid.css): the track holds two identical
+ * moving texture. Pure CSS (see landing.css): the track holds two identical
  * runs of logos and slides by exactly one run, so the loop is seamless.
  * Without JavaScript it still scrolls; with reduced motion it stands still.
  * Decorative only, so it's hidden from screen readers.
@@ -16,7 +16,7 @@ const PER_RUN = 12;
 
 function Logo() {
   return (
-    <svg className="gl-band-logo" viewBox="0 0 58 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <svg className="lp-band-logo" viewBox="0 0 58 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       {LOGO_PATHS.map((d) => (
         <path key={d.slice(0, 12)} d={d} />
       ))}
@@ -25,20 +25,20 @@ function Logo() {
 }
 
 export default function LogoBand({
-  theme = "lime",
+  theme = "brown-yellow",
   reverse = false,
 }: {
-  /** lime: yellow-green with a dark blob, black logos. sky: pale lime with a blue blob, white logos. */
-  theme?: "lime" | "sky";
+  /** One of the case-study colour themes: background is its secondary colour, the soft strokes its main colour. */
+  theme?: "brown-yellow" | "blue-violet" | "red-pink";
   reverse?: boolean;
 }) {
   const run = Array.from({ length: PER_RUN }, (_, i) => <Logo key={i} />);
   return (
-    <div className={`gl-band is-${theme}${reverse ? " is-reverse" : ""}`} aria-hidden="true">
-      <div className="gl-band-texture" />
-      <div className="gl-band-track">
-        <div className="gl-band-run">{run}</div>
-        <div className="gl-band-run">{run}</div>
+    <div className={`lp-band is-${theme}${reverse ? " is-reverse" : ""}`} aria-hidden="true">
+      <div className="lp-band-texture" />
+      <div className="lp-band-track">
+        <div className="lp-band-run">{run}</div>
+        <div className="lp-band-run">{run}</div>
       </div>
     </div>
   );
