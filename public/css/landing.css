@@ -33,15 +33,15 @@
   margin-inline: auto;
 }
 
-/* ---------- Landing: logo stage + nav fill exactly one screen ---------- */
+/* ---------- Landing: the red logo stage is 720px tall, as drawn ---------- */
 .lp-page .lp-stage {
   padding-bottom: 0;
   overflow: clip;
 }
 
 .lp-page .lp-stage .home-stage-wrapper {
-  min-height: calc(100svh - var(--_project---nav-height));
-  height: calc(100svh - var(--_project---nav-height));
+  min-height: 720px;
+  height: 720px;
 }
 
 /* The nav sits under the stage, then sticks to the top and stays there. */
