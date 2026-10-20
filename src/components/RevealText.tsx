@@ -18,12 +18,15 @@ export default function RevealText({
   as: Tag = "h2",
   className,
   stagger = 0.02,
+  parallax,
 }: {
   text: string | string[];
   as?: ElementType;
   className?: string;
   /** Seconds between one letter starting and the next. */
   stagger?: number;
+  /** Parallax rate (MotionLayer's data-parallax). */
+  parallax?: number;
 }) {
   const ref = useRef<HTMLElement>(null);
 
@@ -52,7 +55,12 @@ export default function RevealText({
   let letterIndex = 0;
 
   return (
-    <Tag ref={ref} className={className ? `${className} reveal-text` : "reveal-text"} aria-label={label}>
+    <Tag
+      ref={ref}
+      className={className ? `${className} reveal-text` : "reveal-text"}
+      aria-label={label}
+      data-parallax={parallax}
+    >
       {lines.map((line, lineIndex) => {
         const words = line ? line.split(/\s+/) : [];
         return (

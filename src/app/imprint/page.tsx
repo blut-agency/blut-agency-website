@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import LandingFooter from "@/components/LandingFooter";
 
 export const metadata: Metadata = {
   title: "Imprint",
@@ -10,7 +10,7 @@ export default function ImprintPage() {
   return (
     <>
       <Header variant="start-top" />
-      <main className="main-wrapper">
+      <main className="main-wrapper lp-page bk-legacy">
         <section>
           <div className="page-padding">
             <div className="container-medium">
@@ -88,7 +88,7 @@ export default function ImprintPage() {
             </div>
           </div>
         </section>
-        <Footer />
+        <LandingFooter />
       </main>
     </>
   );

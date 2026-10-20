@@ -1,195 +1,205 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import GradientBanner from "@/components/GradientBanner";
-import VideoSpot from "@/components/VideoSpot";
-import VideoPanel from "@/components/VideoPanel";
-import PageTeaser from "@/components/PageTeaser";
-import RevealText from "@/components/RevealText";
+import LandingFooter from "@/components/LandingFooter";
+import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
+import WorkSpot, { type WorkSpotData } from "@/components/WorkSpot";
+import { themesForImages } from "@/lib/imageTheme";
 
 export const metadata: Metadata = {
   title: "Work – A 360° Approach to Sonic Storytelling | blut",
   description:
-    "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out (it’s blut, of course).",
+    "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
 };
 
-/**
- * Page structure and copy follow the "Website v2 → WORK" section of the Figma
- * board (🛝 The Playground). Stills come from the board and act as posters
- * until the team sends Vimeo links; set `vimeoId` on a spot to make it play.
- * `placeholder` marks a spot whose copy on the board is still lorem ipsum.
- */
-type Spot = { client: string; text: string; image: string; vimeoId?: string; placeholder?: boolean };
+/*
+  Layout: Figma "Work v02" (node 223:2364). Copy: the WORK column of the
+  "Website v2" board (node 85:2285), in board order. The first and last spots
+  run full width; every other spot sits in a half-and-half pair under a
+  headline that ties the two together. Spot copy is the board's, word for
+  word; pair headlines, card titles and tags are drawn from it.
 
-const OPENER: Spot = {
-  client: "Samsung / Nina Chuba",
+  Built from the landing page's parts (landing.css: .lp-heading, .lp-copy,
+  .lp-panel, .lp-case-tags, logo band, footer); page-only styles in
+  ./work.css. Stills act as posters until the team sends Vimeo links: set
+  `vimeoId` on a spot to make it play.
+
+  Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
+*/
+
+const SAMSUNG: WorkSpotData = {
+  client: "Samsung",
   image: "/images/story/samsung-nina-chuba.jpg",
-  text: "Some projects call for all-round production, like when we worked with Nina Chuba on this Samsung spot. We took her voice recordings from the film set and created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
+  text: "Taking her voice recordings from the film set, we created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
 };
 
-// Board order (Website v2). Haribo isn't on the v2 board; it keeps its spot
-// after Dr. Oetker until the team says otherwise.
-const ROWS_BEFORE_INTERLUDE: Spot[] = [
-  {
-    client: "Nivea / Serenia",
-    image: "/images/story/nivea-serenia.jpg",
-    text: "Copy for this spot is still to come – the board only has placeholder text here.",
-    placeholder: true,
-  },
-  {
-    client: "Schwarzkopf",
-    image: "/images/story/schwarzkopf.jpg",
-    text: "But the talent doesn’t always have to be musical. For the relaunch of the Schwarzkopf brand, we composed a brand song with changing arrangements to suit a variety of celebrities and influencers including Diane Kruger, Collien Fernandes, Sofia Vergara, Ana Ivanović and Alli Neumann to name a few (oh wait, Alli actually is a musician, but you get the drift). Here’s the hero version.",
-  },
-  {
-    client: "Volkswagen",
-    image: "/images/story/volkswagen.jpg",
-    text: "Sometimes the artist is in the spotlight, but for this VW campaign, the talent was hiding in the background. For the launch of the VW e-up! we created this fresh beat and had UK Grime legend Che Lingo work his magic on it. “They never thought we were good enough, now we’re pullin’ up…”",
-  },
-  {
-    client: "Gore-Tex",
-    image: "/images/story/gore-tex.jpg",
-    text: "A song doesn’t always have to be the main focus though. For this Gore-Tex campaign we went into their secret testing facility in the Bavarian Alps and recorded all of their weird and wonderful all-weather testing machines, turning them into this epic adventure in sound design.",
-  },
-];
-
-const INTERLUDE: Spot = {
-  client: "Crazy Wolf",
-  image: "/images/story/crazy-wolf.jpg",
-  text: "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
-};
-
-// Open question from Timo on the board ("makes us look like bad musicians").
-// Kept in for now; remove this entry if the team decides against it.
-const ROWS_AFTER_INTERLUDE: Spot[] = [
-  {
-    client: "McDonald’s",
-    image: "/images/story/mcdonalds.jpg",
-    text: "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
-  },
-  {
-    client: "Targobank",
-    image: "/images/story/targobank.jpg",
-    text: "Earlier we remade the Backstreet Boys, now we’re remaking Michael Sembello’s 80s classic, Maniac. From licensing, to recreating those legendary 80s synth sounds to casting a singer who can hit the (very) high notes like it’s the most normal thing in the world, we had it “covered” from start to finish.",
-  },
-  {
-    client: "Dr. Oetker",
-    image: "/images/story/dr-oetker.jpg",
-    text: "Phew… need to calm down a little after that one. How about a lovely little heart-warming, nostalgic, acoustic ballad to bring down the pulse and remind us of the sweeter moments in life?",
-  },
-  {
-    client: "Haribo",
-    image: "/images/story/haribo.jpg",
-    text: "Here’s another remake of a classic song that literally everyone knows. It’s Happy Birthday… but not as simple as it sounds. We got to work with the iconic Haribo Voice Kids concept, but turn it into music for the first time. We experimented with punk, metal, pop and stadium rock and recorded several hours of kids’ voices before landing on this final version.",
-  },
-  {
-    client: "Adidas Originals",
-    image: "/images/story/adidas-originals.jpg",
-    text: "We do like to get more artistic too from time to time, like in this cinematic Adidas Superstar spot featuring rapper Jugo Ürdens and shot on 16mm. The music sounds like a film score from yesteryear and we felt nostalgic recording brass, woodwinds and grand piano for it, before creating the sound design and final mix.",
-  },
-];
-
-const CLOSER: Spot = {
+const HARDMADE: WorkSpotData = {
   client: "Hardmade",
   image: "/images/story/hardmade.jpg",
-  text: "To sum it all up… we love all things music and all things audio. Here’s one last spot with lots of different styles and sounds in it, because you can combine metal with salsa and trap if you want to.",
+  text: "Here’s one last spot with lots of different styles and sounds in it.",
 };
 
-/** A full-width spot: copy over the still, "Play Video" on hover, video in a lightbox. */
-function FullWidthSpot({ spot }: { spot: Spot }) {
-  return (
-    <section className="section-story-spot">
-      <VideoSpot client={spot.client} text={spot.text} image={spot.image} vimeoId={spot.vimeoId} />
-    </section>
-  );
-}
+type Pair = {
+  id: string;
+  heading: string;
+  line: string;
+  spots: [WorkSpotData, WorkSpotData];
+};
 
-/**
- * Work rows, 50/50 and full width like the Strategy sections: the still covers
- * the media half (hover zoom, "Play Video", lightbox) and the copy sits in the
- * padded text half. Checkerboard like the board: image right, image left, …
- * Sections alternate grey and white.
- */
-function SpotRows({ spots }: { spots: Spot[] }) {
-  return (
-    <>
-      {spots.map((spot, i) => (
-        <section className={i % 2 === 0 ? "background-color-light-1" : undefined} key={spot.client}>
-          <div className={i % 2 === 0 ? "_2-column-grid is-reversed" : "_2-column-grid"}>
-            <div className="grid-item is-media">
-              <VideoPanel title={spot.client} image={spot.image} vimeoId={spot.vimeoId} />
-            </div>
-            <div className="grid-item">
-              <div className="item-inner is-case-study">
-                <div>
-                  <h3 className="heading-style-h2">{spot.client}</h3>
-                  <div
-                    data-wf--spacer--variant="l"
-                    className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                  ></div>
-                  {spot.placeholder ? (
-                    <div className="content-placeholder-text">
-                      <p>{spot.text}</p>
-                    </div>
-                  ) : (
-                    <div className="rich-text-custom w-richtext">
-                      <p>{spot.text}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      ))}
-    </>
-  );
-}
+const PAIRS: Pair[] = [
+  {
+    id: "talent",
+    heading: "Sometimes the artist is in the spotlight.",
+    line: "Sometimes the talent is in the spotlight, sometimes it’s hiding in the background.",
+    spots: [
+      {
+        client: "Schwarzkopf",
+        title: "Brand relaunch",
+        tags: ["Brand Song", "Music Production"],
+        image: "/images/story/schwarzkopf.jpg",
+        text: "But the talent doesn’t always have to be musical. For the relaunch of the Schwarzkopf brand, we composed a brand song with changing arrangements to suit a variety of celebrities and influencers including Diane Kruger, Collien Fernandes, Sofia Vergara, Ana Ivanović and Alli Neumann to name a few (oh wait, Alli actually is a musician, but you get the drift). Here’s the hero version.",
+      },
+      {
+        client: "Volkswagen",
+        title: "VW e-up!",
+        tags: ["Music Production", "Artist Partnership"],
+        image: "/images/story/volkswagen.jpg",
+        text: "Sometimes the artist is in the spotlight, but for this VW campaign, the talent was hiding in the background. For the launch of the VW e-up! we created this fresh beat and had UK Grime legend Che Lingo work his magic on it. “They never thought we were good enough, now we’re pullin’ up…”",
+      },
+    ],
+  },
+  {
+    id: "sound-design",
+    heading: "A song doesn’t always have to be the main focus.",
+    line: "Sound design can be adventurous, it can be subtle, and it can also be insane.",
+    spots: [
+      {
+        client: "Gore-Tex",
+        title: "A secret lab in the Alps",
+        tags: ["Sound Design", "Field Recording"],
+        image: "/images/story/gore-tex.jpg",
+        text: "A song doesn’t always have to be the main focus though. For this Gore-Tex campaign we went into their secret testing facility in the Bavarian Alps and recorded all of their weird and wonderful all-weather testing machines, turning them into this epic adventure in sound design.",
+      },
+      {
+        client: "Crazy Wolf",
+        title: "Energy drink overload",
+        tags: ["Sound Design"],
+        image: "/images/story/crazy-wolf.jpg",
+        text: "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
+      },
+    ],
+  },
+  {
+    id: "covers",
+    heading: "We didn’t write this song (obviously).",
+    line: "From licensing to casting, we had it covered from start to finish.",
+    spots: [
+      {
+        client: "McDonald’s",
+        title: "Backstreet Boys remake",
+        tags: ["Music Production", "Sound Design"],
+        image: "/images/story/mcdonalds.jpg",
+        text: "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
+      },
+      {
+        client: "Targobank",
+        title: "Maniac",
+        tags: ["Licensing", "Casting"],
+        image: "/images/story/targobank.jpg",
+        text: "Earlier we remade the Backstreet Boys, now we’re remaking Michael Sembello’s 80s classic, Maniac. From licensing, to recreating those legendary 80s synth sounds to casting a singer who can hit the (very) high notes like it’s the most normal thing in the world, we had it “covered” from start to finish.",
+      },
+    ],
+  },
+  {
+    id: "calm",
+    heading: "Phew… time to calm down a little.",
+    line: "From a heart-warming acoustic ballad to a film score from yesteryear.",
+    spots: [
+      {
+        client: "Dr. Oetker",
+        title: "Acoustic ballad",
+        tags: ["Music Production"],
+        image: "/images/story/dr-oetker.jpg",
+        text: "Phew… need to calm down a little after that one. How about a lovely little heart-warming, nostalgic, acoustic ballad to bring down the pulse and remind us of the sweeter moments in life?",
+      },
+      {
+        client: "Adidas",
+        title: "Superstar on 16mm",
+        tags: ["Music Production", "Sound Design"],
+        image: "/images/story/adidas-originals.jpg",
+        text: "We do like to get more artistic too from time to time, like in this cinematic Adidas Superstar spot featuring rapper Jugo Ürdens and shot on 16mm. The music sounds like a film score from yesteryear and we felt nostalgic recording brass, woodwinds and grand piano for it, before creating the sound design and final mix.",
+      },
+    ],
+  },
+];
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const spots = [SAMSUNG, ...PAIRS.flatMap((p) => p.spots), HARDMADE];
+  const themes = await themesForImages(spots.map((s) => s.image));
+  const themeOf = (spot: WorkSpotData) => themes[spots.indexOf(spot)];
+
   return (
-    <>
+    <div className="main-wrapper lp-page bk-page">
+      <PageHero
+        form="work-hero"
+        heading="A 360 degree Approach to Sonic Storytelling"
+        line="What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course."
+      />
       <Header variant="start-top" />
-      <div className="main-wrapper">
-        <div className="nav-distance"></div>
 
-        {/* The only banner on the page, copy right-aligned (board notes). */}
-        <GradientBanner
-          form="story-hero"
-          background="var(--_color---accent-color-3)"
-          line="var(--_color---accent-color-1)"
-          align="right"
-        >
-          <div className="container-small">
-            <RevealText as="h1" className="heading-style-h1" text="A 360° Approach to Sonic Storytelling" />
-          </div>
-          <div data-wf--spacer--variant="sm" className="spacer-component w-variant-1ed5893b-149c-09fd-1a9e-43daba4600bc"></div>
-          <div className="container-small">
-            <p className="copy-medium">
-              What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out
-              (it’s blut, of course).
-            </p>
-          </div>
-        </GradientBanner>
-
-        <FullWidthSpot spot={OPENER} />
-        <SpotRows spots={ROWS_BEFORE_INTERLUDE} />
-
-        <FullWidthSpot spot={INTERLUDE} />
-        <SpotRows spots={ROWS_AFTER_INTERLUDE} />
-
-        <FullWidthSpot spot={CLOSER} />
-
-        <PageTeaser
-          heading="It’s not just music, it’s everything around it."
-          text="We specialize in assessing brands and creating bespoke sonic strategies."
-          href="/strategy"
-          ctaLabel="Get to know our process"
-          ariaLabel="Get to know our process"
+      <section className="bk-section is-dark">
+        <Lead
+          flipped
+          heading="Some projects call for all-round production..."
+          text="Like when we worked with Nina Chuba on this Samsung spot."
         />
+        <div className="lp-wrap">
+          <WorkSpot spot={SAMSUNG} theme={themeOf(SAMSUNG)} variant="wide" formId="work-samsung" />
+        </div>
+      </section>
 
-        <Footer />
-      </div>
-    </>
+      {PAIRS.map((pair, p) => {
+        // Sections alternate white and black after the black Samsung section;
+        // on the black ones the headline flips to the right and the card
+        // stagger mirrors.
+        const flipped = p % 2 === 1;
+        return (
+          <section className={`bk-section${flipped ? " is-dark" : ""}`} key={pair.id}>
+            <Lead boxed flipped={flipped} heading={pair.heading} text={pair.line} />
+            <ul role="list" className={`lp-wrap bk-cards${flipped ? " is-flipped" : ""}`}>
+              {pair.spots.map((spot, i) => (
+                <li key={spot.client} data-parallax={(i === 0) !== flipped ? 0.4 : 1}>
+                  <WorkSpot spot={spot} theme={themeOf(spot)} variant="card" formId={`work-${pair.id}-${i}`} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+
+      <section className="bk-section is-dark">
+        <Lead
+          flipped
+          heading="You can combine metal with salsa and trap if you want to."
+          text="To sum it all up… we love all things music and all things audio."
+        />
+        <div className="lp-wrap">
+          <WorkSpot spot={HARDMADE} theme={themeOf(HARDMADE)} variant="wide" formId="work-hardmade" />
+        </div>
+      </section>
+
+      <section className="bk-section">
+        <Lead
+          boxed
+          heading="It’s not just music, it’s everything around it."
+          text="We specialize in assessing brands and creating bespoke sonic strategies"
+        >
+          <CtaLink href="/strategy" label="Get to know our process" />
+        </Lead>
+      </section>
+
+      <ContactBlock person="karl" />
+
+      <LandingFooter band={{ background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" }} />
+    </div>
   );
 }

@@ -24,17 +24,39 @@ function Logo() {
   );
 }
 
+export type BandColors = {
+  /** Band background (the page header's background). */
+  background: string;
+  /** The soft moving strokes (the header's line colour). */
+  line: string;
+  /** Dark logos on a light background; white otherwise. */
+  light?: boolean;
+};
+
 export default function LogoBand({
   theme = "brown-yellow",
+  colors,
   reverse = false,
 }: {
   /** One of the case-study colour themes: background is its secondary colour, the soft strokes its main colour. */
   theme?: "brown-yellow" | "blue-violet" | "red-pink";
+  /** Custom colours instead of a theme, e.g. to match the page header. */
+  colors?: BandColors;
   reverse?: boolean;
 }) {
   const run = Array.from({ length: PER_RUN }, (_, i) => <Logo key={i} />);
   return (
-    <div className={`lp-band is-${theme}${reverse ? " is-reverse" : ""}`} aria-hidden="true">
+    <div
+      className={`lp-band is-${theme}${reverse ? " is-reverse" : ""}`}
+      aria-hidden="true"
+      style={
+        colors && {
+          ["--lp-band-bg" as string]: colors.background,
+          ["--lp-band-line" as string]: colors.line,
+          color: colors.light ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)",
+        }
+      }
+    >
       <div className="lp-band-texture" />
       <div className="lp-band-track">
         <div className="lp-band-run">{run}</div>

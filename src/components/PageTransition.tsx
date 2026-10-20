@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 /**
- * Crossfade between pages, matching the Webflow site: the wrapper fades in over
- * 0.3s on arrival and out over 0.5s before leaving.
+ * Fade between pages: the wrapper fades out over 0.4s before leaving and in
+ * over 0.6s on arrival.
  *
  * The fade-in is a CSS animation on `.main-wrapper` (see globals.css), so the
  * page shows even if this script never runs. This component only handles the
@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
  * frozen (and the homepage showed "Click for sound" and "Pause" together).
  */
 
-const FADE_OUT_MS = 500;
+const FADE_OUT_MS = 400;
 
 export default function PageTransition() {
   const pathname = usePathname();
@@ -74,8 +74,16 @@ export default function PageTransition() {
       // client-side immediately, skipping the fade and the script re-run.
       event.preventDefault();
       event.stopPropagation();
+      // Leave once the fade has finished (or a little after, if no animation runs).
+      let left = false;
+      const go = () => {
+        if (left) return;
+        left = true;
+        window.location.assign(url.pathname + url.search + url.hash);
+      };
+      wrapper.addEventListener("animationend", go, { once: true });
+      window.setTimeout(go, FADE_OUT_MS + 150);
       wrapper.classList.add("is-leaving");
-      window.setTimeout(() => window.location.assign(url.pathname + url.search + url.hash), FADE_OUT_MS);
     }
 
     document.addEventListener("click", onClick, true);

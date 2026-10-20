@@ -1,0 +1,858 @@
+/*
+  Page building blocks (Figma "Work v02"), used by src/components/Blocks.tsx
+  and WorkSpot.tsx on every page in the new design. Builds on landing.css (.lp-page tokens,
+  .lp-heading, .lp-copy, .lp-panel, CTA, logo band, footer) and highlight.css
+  (hover fade + highlight). Desktop: 1280px content, 48px gaps, 80px section
+  padding, three-column text grid.
+*/
+
+/* ---------- Red banner (720px), the nav sits under it ---------- */
+.bk-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--lp-gap);
+  min-height: 720px;
+  /* Own padding, not the section spacing: the headline sits at the top and
+     the line at the bottom of the 720px banner. */
+  padding-block: 64px;
+  overflow: clip;
+  background: var(--_color---accent-color-3);
+  color: var(--_color---copy-bright);
+}
+
+.bk-hero-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--_project---blur-full-width);
+  color: var(--_color---accent-color-1);
+  pointer-events: none;
+}
+
+.bk-hero-visual .visual-canvas {
+  width: 120%;
+  flex: none;
+}
+
+.bk-hero .bk-lead,
+.bk-hero-top {
+  position: relative;
+}
+
+/* 128px headline across the full content width. */
+.bk-hero-heading {
+  max-width: 1280px;
+}
+
+@media screen and (min-width: 768px) {
+  .bk-hero-heading {
+    font-size: var(--lp-hero);
+    letter-spacing: -0.03em;
+  }
+}
+
+.bk-hero.is-dark-text {
+  color: var(--_color---copy-dark);
+}
+
+/* ---------- Sections ---------- */
+.bk-section {
+  padding-block: var(--lp-space);
+  background: var(--_color---white);
+  color: var(--_color---copy-dark);
+}
+
+.bk-section.is-dark {
+  background: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
+}
+
+.bk-section > * + * {
+  margin-top: var(--lp-stack);
+}
+
+/* Headline over two of three columns, the short line under it in the other
+   two (or, flipped, headline right and line left). */
+/* Headline and its line belong together (48px apart); the content that
+   follows sits further away (--lp-stack), so the grouping stays clear. */
+.bk-lead {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+  row-gap: var(--lp-gap);
+  align-items: start;
+}
+
+.bk-lead-heading {
+  grid-column: 1 / span 2;
+  /* Fill each line as in Figma; balancing would break "Sometimes the
+     artist…" after the first word. */
+  text-wrap: wrap;
+}
+
+.bk-lead-text {
+  grid-column: 2 / span 2;
+}
+
+.bk-lead.is-flipped .bk-lead-heading {
+  grid-column: 2 / span 2;
+}
+
+.bk-lead.is-flipped .bk-lead-text {
+  grid-column: 1 / span 1;
+}
+
+.bk-lead-text.lp-panel {
+  gap: var(--lp-pad);
+}
+
+/* Flipped thirds: headline in the right two thirds, the grey box under it in
+   the left two thirds. */
+.bk-lead.is-flipped .bk-lead-text.lp-panel {
+  grid-column: 1 / span 2;
+}
+
+/* On black sections the box is dark grey with light text. */
+.bk-section.is-dark .bk-lead-text.lp-panel {
+  background: var(--lp-panel-dark);
+  color: var(--_color---copy-bright);
+}
+
+.bk-section.is-dark .bk-lead-text.lp-panel .lp-copy {
+  color: var(--_color---copy-bright);
+}
+
+.bk-section.is-dark .lp-case-tags li {
+  border-color: rgb(255 255 255 / 0.4);
+}
+
+/* ---------- Two cards side by side, one dropped by a gap ---------- */
+.bk-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  align-items: start;
+  padding: 0;
+  list-style: none;
+}
+
+.bk-cards > :nth-child(even),
+.bk-cards.is-flipped > :nth-child(odd) {
+  padding-top: var(--lp-stack);
+}
+
+.bk-cards.is-flipped > :nth-child(even) {
+  padding-top: 0;
+}
+
+/* ---------- Case index: one stacked list, photo 2/3 + text 1/3 per card ---------- */
+/* A one-column grid, not a flex column: in a flex column each row's height is
+   worked out before the 16:9 photo's, so rows came out shorter than their
+   cards and the cards spilled into the gaps. */
+.bk-case-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--lp-stack);
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bk-case-list > li {
+  min-width: 0;
+}
+
+.bk-case-list .lp-case {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.bk-case-list .lp-case-media {
+  aspect-ratio: 16 / 9;
+}
+
+.bk-case-list .lp-case-body {
+  aspect-ratio: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-case-list .lp-case {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bk-case-list .lp-case-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Same card height whatever the title and tag count. */
+  .bk-case-list .lp-case-body {
+    min-height: 272px;
+  }
+}
+
+/* Case cards in two columns: the text box fits its content. */
+.bk-cards .lp-case-body {
+  aspect-ratio: auto;
+  min-height: 320px;
+}
+
+/* ---------- Spot: still + text box ---------- */
+.bk-spot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: var(--_color---copy-bright);
+}
+
+.bk-spot-media {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #111;
+}
+
+.bk-spot.is-card .bk-spot-media {
+  aspect-ratio: 4 / 3;
+}
+
+.bk-spot-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--fx-ease, ease);
+}
+
+/* Client name at the bottom left of the photo, inset from the bottom by the
+   same distance it used to have from the top. */
+.bk-spot-client {
+  position: absolute;
+  bottom: var(--lp-pad);
+  left: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 8px 24px 8px var(--lp-pad);
+  background: var(--_color---white);
+  color: var(--_color---copy-dark);
+  font-size: var(--lp-client);
+  line-height: 1.15;
+  transition: background-color 0.5s ease;
+}
+
+/* "Play video" with its arrow, bottom right on the still. A button (not a
+   paragraph), so embeds.css doesn't trim its line height and the arrow sits
+   centred on the text. */
+.bk-spot-play {
+  position: absolute;
+  right: 0;
+  bottom: var(--lp-pad);
+  z-index: 2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 var(--lp-pad);
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--_color---copy-bright);
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
+  cursor: pointer;
+}
+
+.bk-spot-play svg {
+  flex: none;
+  filter: drop-shadow(0 1px 8px rgb(0 0 0 / 0.35));
+}
+
+.bk-spot-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--lp-pad);
+  padding: var(--lp-pad);
+  background: var(--lp-panel-dark);
+}
+
+/* Wide spot (Figma 244:1641): the text box sits on the photo, bottom right,
+   24px in and one column wide; "Play video" moves to the bottom left. On
+   phones the box drops below the photo again. */
+@media screen and (min-width: 768px) {
+  .bk-spot.is-wide .bk-spot-body.hl-panel {
+    position: absolute;
+    right: var(--lp-pad);
+    bottom: var(--lp-pad);
+    z-index: 2;
+    width: calc((100% - 2 * var(--lp-gap)) / 3 - var(--lp-pad));
+  }
+
+  /* The text box owns the bottom right here, so "Play video" goes top right. */
+  .bk-spot.is-wide .bk-spot-play {
+    top: var(--lp-pad);
+    bottom: auto;
+  }
+
+
+}
+
+.bk-spot.is-card .bk-spot-body {
+  gap: 24px;
+  min-height: 320px;
+}
+
+.bk-spot-title {
+  margin: 0;
+  font-size: var(--lp-copy);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.bk-spot-text {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.bk-spot.is-card .bk-spot-text {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Buttons that look like the "— Label" link and the invisible click areas. */
+.bk-cta,
+.bk-cover {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-spot:hover .bk-spot-client {
+    background: var(--bk-accent);
+  }
+
+  .bk-spot:hover .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .bk-spot:hover .bk-spot-media img {
+    transform: scale(1.03);
+  }
+
+  .bk-spot:hover .lp-cta-line {
+    width: 40px;
+  }
+}
+
+/* ---------- Contact: Karl, then "Sound good? Get in touch!" ---------- */
+.bk-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lp-gap);
+}
+
+.bk-contact-person {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lp-gap);
+}
+
+/* Name, then title, then Mail: 8px apart as in Figma. embeds.css trims the
+   half-leading above and below every paragraph, so stacked paragraphs lose a
+   line gap between them; add it back so the name sits one normal line above
+   the title. */
+.bk-contact-person .lp-copy {
+  margin: 0 0 calc(8px + 1lh - 0.74em);
+}
+
+.bk-contact-person .lp-copy + .lp-copy {
+  margin-bottom: 8px;
+}
+
+.bk-contact-role {
+  color: var(--lp-muted);
+}
+
+.bk-contact-photo {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--_color---white);
+}
+
+.bk-contact-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bk-contact-heading {
+  grid-column: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--lp-pad);
+}
+
+.bk-contact-heading .lp-heading {
+  margin: 0;
+}
+
+.bk-contact-heading .lp-heading + .lp-heading {
+  /* 24px between the lines as in Figma, plus the half-leading embeds.css trims. */
+  margin-top: calc(1lh - 0.74em);
+  text-align: right;
+}
+
+/* ---------- Phones: one column ---------- */
+@media screen and (max-width: 767px) {
+  .bk-hero {
+    min-height: 512px;
+    padding-block: 48px;
+  }
+
+  .bk-lead,
+  .bk-lead.is-flipped,
+  .bk-cards,
+  .bk-contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bk-lead-heading,
+  .bk-lead-text,
+  .bk-lead.is-flipped .bk-lead-heading,
+  .bk-lead.is-flipped .bk-lead-text,
+  .bk-contact-heading {
+    grid-column: 1 / -1;
+  }
+
+  .bk-cards,
+  .bk-contact-grid {
+    row-gap: var(--lp-stack);
+  }
+
+  .bk-cards > * {
+    padding-top: 0 !important;
+  }
+
+  .bk-spot-client {
+    padding: 8px 16px;
+  }
+
+  .bk-contact-heading .lp-heading + .lp-heading {
+    text-align: left;
+  }
+}
+
+/* ---------- Case pages ---------- */
+.bk-meta {
+  padding-block: var(--lp-stack);
+  background: var(--_color---white);
+  color: var(--_color---copy-dark);
+}
+
+.bk-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lp-gap);
+}
+
+.bk-meta-label {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--lp-text-secondary);
+}
+
+.bk-meta .lp-case-tags li {
+  border-color: currentColor;
+}
+
+/* Pages that keep Webflow sections (case body, About, legal): headlines
+   move onto the new type scale. */
+.bk-legacy .heading-style-h1 {
+  font-size: var(--lp-heading);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+/* "Next case study:" on the left, the case card on the right. */
+.bk-next-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  align-items: start;
+}
+
+.bk-next-grid .lp-heading {
+  margin: 0;
+}
+
+.bk-next .lp-case-body {
+  aspect-ratio: auto;
+  min-height: 320px;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-meta-grid,
+  .bk-next-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--lp-stack);
+  }
+}
+
+/* ---------- Service with drawers (Strategy, Figma 250:1130) ----------
+   Top: headline over two thirds with its line stepped into the second half
+   beneath it; the intro (muted, 24px) in the last third, columns 96px apart.
+   Below: the drawers in two thirds, a static 4:5 photo in the last third. */
+.bk-section {
+  --bk-rule: #dcdcdc;
+}
+
+.bk-section.is-dark {
+  --bk-rule: #343434;
+}
+
+.bk-service-top {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 96px;
+  row-gap: var(--lp-gap);
+  align-items: start;
+}
+
+.bk-service-lead {
+  grid-column: 1 / span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--lp-gap);
+  row-gap: var(--lp-gap);
+}
+
+.bk-service-lead .lp-heading {
+  grid-column: 1 / -1;
+  margin: 0;
+  text-wrap: wrap;
+}
+
+.bk-service-line {
+  grid-column: 2;
+  margin: 0;
+}
+
+.bk-service-intro {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--lp-muted);
+}
+
+.bk-section:not(.is-dark) .bk-service-intro {
+  color: var(--lp-text-secondary);
+}
+
+.bk-service {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  align-items: start;
+}
+
+.bk-service-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #111;
+}
+
+.bk-service-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bk-service-body {
+  grid-column: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--lp-stack);
+}
+
+.bk-drawers {
+  width: 100%;
+  border-top: 1px solid var(--bk-rule);
+}
+
+.bk-drawer {
+  border-bottom: 1px solid var(--bk-rule);
+}
+
+.bk-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: var(--lp-pad);
+  font-size: var(--lp-copy);
+  line-height: 1.15;
+  list-style: none;
+  cursor: pointer;
+}
+
+.bk-drawer-head::-webkit-details-marker {
+  display: none;
+}
+
+/* Plus that turns into a minus. */
+.bk-drawer-icon {
+  position: relative;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+.bk-drawer-icon::before,
+.bk-drawer-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.4s var(--fx-ease, ease);
+}
+
+.bk-drawer-icon::after {
+  transform: rotate(90deg);
+}
+
+.bk-drawer[open] .bk-drawer-icon::after {
+  transform: rotate(0deg);
+}
+
+.bk-drawer-body p {
+  margin: 0;
+  max-width: 640px;
+  padding-bottom: var(--lp-pad);
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.bk-section:not(.is-dark) .bk-drawer-body p {
+  color: var(--lp-text-secondary);
+}
+
+/* The body slides open and closed in Drawer.tsx. */
+.bk-drawer-body {
+  overflow: hidden;
+}
+
+/* While closing, the icon already shows "closed". */
+.bk-drawer.is-closing .bk-drawer-icon::after {
+  transform: rotate(90deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-drawer-head:hover .bk-drawer-icon::before,
+  .bk-drawer-head:hover .bk-drawer-icon::after {
+    background: var(--_color---accent-color-1);
+  }
+}
+
+
+@media screen and (max-width: 991px) {
+  .bk-service-top,
+  .bk-service {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--lp-stack);
+  }
+
+  .bk-service-lead,
+  .bk-service-body {
+    grid-column: 1;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .bk-service-lead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bk-service-line {
+    grid-column: 1;
+  }
+
+  .bk-service-media {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Client labels keep their full line height: embeds.css trims the half-leading
+   off every paragraph, which cut the box tight to ascenders and descenders. */
+.bk-spot .bk-spot-client::before,
+.bk-spot .bk-spot-client::after,
+.lp-case .lp-case-client::before,
+.lp-case .lp-case-client::after {
+  content: none;
+}
+
+/* ---------- About: team circling the middle (TeamOrbit) ---------- */
+.bk-team {
+  position: relative;
+  width: min(800px, 100%);
+  aspect-ratio: 800 / 620;
+  margin-inline: auto;
+}
+
+.bk-team-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.bk-team-text {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 640px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.bk-team-text.is-shown {
+  opacity: 1;
+}
+
+.bk-team-text .lp-heading {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.bk-team-intro {
+  margin: 0;
+  font-size: var(--lp-copy);
+  line-height: 1.15;
+}
+
+.bk-team-role {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.bk-team-face {
+  position: absolute;
+  z-index: 1;
+  width: 20%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: #eee;
+  translate: -50% -50%;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.bk-team-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+/* One face picked: the others go grey and pale. */
+.bk-team.has-active .bk-team-face:not(.is-active) img {
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
+.bk-team-face:focus-visible {
+  outline: 2px solid var(--_color---copy-dark);
+  outline-offset: 4px;
+}
+
+/* ---------- About: offices ---------- */
+.bk-office-visual {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: var(--_project---blur-half-width);
+}
+
+.bk-office-visual .visual-canvas {
+  width: 160%;
+  flex: none;
+}
+
+.bk-office-address {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-team {
+    aspect-ratio: 3 / 4;
+  }
+
+  .bk-team-face {
+    width: 28%;
+  }
+
+  /* Keep the role clear of the faces passing by. */
+  .bk-team-text {
+    z-index: 2;
+  }
+
+  .bk-team-text {
+    max-width: 64%;
+  }
+
+  .bk-team-text .lp-heading {
+    white-space: normal;
+  }
+
+  .bk-team-intro {
+    font-size: 16px;
+  }
+
+  .bk-team-role {
+    font-size: 16px;
+  }
+}
+
+/* Phones: the client name takes most of the still's width, so "Play video"
+   shrinks to its arrow (the button keeps its label for screen readers). */
+@media screen and (max-width: 767px) {
+  .bk-spot-play-text {
+    display: none;
+  }
+
+  .bk-spot-play svg {
+    width: 32px;
+    height: 32px;
+  }
+}

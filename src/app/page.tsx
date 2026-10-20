@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import LogoBand from "@/components/LogoBand";
-import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
+import CaseStudyVisual from "@/components/CaseStudyVisual";
 import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
 import RevealText from "@/components/RevealText";
+import CaseCard from "@/components/CaseCard";
+import { TEXT_PARALLAX } from "@/components/Blocks";
+import CtaArrow from "@/components/CtaArrow";
+import { highlightThemes, themesForImages, type ImageTheme } from "@/lib/imageTheme";
 
 // The three photo + panel features (Figma "Landng v02"). The photo runs from
 // the screen edge across two columns and the panel sits in the third; the
@@ -52,52 +55,31 @@ const MORE_CASES = [
   "devils-advocate-brand-launch",
   "volkswagen-bringing-it-all-back-home",
 ];
-const CASE_TAGS = ["Sonic Strategy", "Artist Partnership"];
+// Parallax rates for the three cards: all move with the scroll, each at its
+// own speed, so the stagger shifts as the row passes (MotionLayer).
+const CASE_PARALLAX = [0.8, 0.4, 1.2];
 
-/** "— Label" text link. The line stretches and an arrow slides in on hover. */
+/** "— Label" text link (the line stretches on hover) with the corner arrow. */
 function CtaLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="lp-cta">
-      <span className="lp-cta-line" aria-hidden="true" />
-      <span className="lp-cta-text">{label}</span>
-    </Link>
+    <div className="cta-row">
+      <Link href={href} className="lp-cta">
+        <span className="lp-cta-line" aria-hidden="true" />
+        <span className="lp-cta-text">{label}</span>
+      </Link>
+      <CtaArrow />
+    </div>
   );
 }
 
-function CaseCard({ cs }: { cs: CaseStudy }) {
-  const href = `/project/${cs.slug}`;
-  const variant = visualVariant(cs.useVisual);
-  const accent = cs.color?.secondary ?? "var(--_color---accent-color-2)";
-  return (
-    <article className="lp-case lp-hover" style={{ ["--lp-case-accent" as string]: accent }}>
-      <div className="lp-case-media">
-        <img src={cs.thumbnail} alt="" loading="lazy" />
-        <p className="lp-case-client">{cs.teaserClient}</p>
-      </div>
-      <div className="lp-case-body">
-        <div
-          className="lp-case-visual"
-          aria-hidden="true"
-          style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
-        >
-          <CaseStudyVisual slug={`home-${cs.slug}`} variant={variant} speed={variant === 1 ? 8 : 10} />
-        </div>
-        <h3 className="lp-case-title">{cs.teaserCampaign}</h3>
-        <ul className="lp-case-tags" aria-label="Services">
-          {CASE_TAGS.map((tag) => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
-        <CtaLink href={href} label="Read more" />
-      </div>
-      <Link href={href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-    </article>
-  );
-}
 
-export default function HomePage() {
+export default async function HomePage() {
   const homeSound = getHomeSound();
   const cases = MORE_CASES.map((slug) => getCaseStudyBySlug(slug)).filter((cs): cs is CaseStudy => Boolean(cs));
+  // Each feature panel's hover highlight uses the CMS theme closest to its photo.
+  const themes = await themesForImages(FEATURES.map((f) => f.image));
+  // Cases keep their own CMS theme (the one their case page uses).
+  const caseThemes = await highlightThemes(cases.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
   return (
     <>
@@ -181,34 +163,30 @@ export default function HomePage() {
     {/* Intro: the question over two columns, the answer below it, shifted right. */}
     <section className="lp-intro">
       <div className="lp-wrap">
-        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" />
-        <div className="lp-panel">
+        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" parallax={TEXT_PARALLAX.heading} />
+        <div className="lp-panel" data-parallax={TEXT_PARALLAX.text}>
           <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
           <CtaLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
 
-    <LogoBand theme="brown-yellow" />
-
     <div className="lp-dark">
       {FEATURES.slice(0, 2).map((f, i) => (
-        <Feature key={f.href} feature={f} flipped={i % 2 === 1} />
+        <Feature key={f.href} feature={f} theme={themes[i]} flipped={i % 2 === 1} />
       ))}
     </div>
 
-    <LogoBand theme="blue-violet" reverse />
-
     <div className="lp-dark">
-      <Feature feature={FEATURES[2]} />
+      <Feature feature={FEATURES[2]} theme={themes[2]} />
 
       <section className="lp-cases">
         <div className="lp-wrap">
           <RevealText className="lp-heading" text="Check out some more:" />
           <ul role="list" className="lp-case-grid">
-            {cases.map((cs) => (
-              <li key={cs.slug}>
-                <CaseCard cs={cs} />
+            {cases.map((cs, i) => (
+              <li key={cs.slug} data-parallax={CASE_PARALLAX[i % CASE_PARALLAX.length]}>
+                <CaseCard cs={cs} theme={caseThemes[i]} formPrefix="home" />
               </li>
             ))}
           </ul>
@@ -216,40 +194,56 @@ export default function HomePage() {
       </section>
     </div>
 
-    <LogoBand theme="red-pink" />
-
     {/* Why blut: the question on the left half, the answer lower on the right. */}
     <section className="lp-why">
       <div className="lp-wrap">
-        <RevealText className="lp-heading" text="Why do you need blut?" />
-        <div className="lp-panel">
+        <RevealText className="lp-heading" text="Why do you need blut?" parallax={TEXT_PARALLAX.heading} />
+        <div className="lp-panel" data-parallax={TEXT_PARALLAX.text}>
           <p className="lp-copy">We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll know you’ve made the right call.</p>
           <CtaLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
 
-    <LandingFooter />
+    <LandingFooter band={{ background: "#ff0b0b", line: "var(--_color---accent-color-1)" }} />
   </div>
     </>
   );
 }
 
-function Feature({ feature: f, flipped = false }: { feature: (typeof FEATURES)[number]; flipped?: boolean }) {
+function Feature({
+  feature: f,
+  theme,
+  flipped = false,
+}: {
+  feature: (typeof FEATURES)[number];
+  theme: ImageTheme | null;
+  flipped?: boolean;
+}) {
   return (
     <section className={`lp-feature${flipped ? " is-flipped" : ""}`}>
       <div className="lp-wrap">
         <RevealText className={`lp-heading${f.longWord ? " is-long-word" : ""}`} text={f.heading} />
       </div>
-      <div className="lp-feature-row lp-hover">
-        <figure className="lp-feature-media">
+      <div className="lp-feature-row lp-hover hl-row">
+        <figure className="lp-feature-media hl-media">
           <img src={f.image} alt={f.alt} loading="lazy" />
+          <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
         </figure>
-        <div className="lp-panel is-dark">
+        <div className={`lp-panel is-dark hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
+          {theme && (
+            <div
+              className="hl-visual"
+              aria-hidden="true"
+              style={{ backgroundColor: theme.background, color: theme.line }}
+            >
+              <CaseStudyVisual slug={`home-feature-${f.href.slice(1)}`} variant={2} speed={10} />
+            </div>
+          )}
           <p className="lp-copy">{f.copy}</p>
           <CtaLink href={f.href} label={f.cta} />
+          <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
         </div>
-        <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
       </div>
     </section>
   );

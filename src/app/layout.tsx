@@ -3,6 +3,9 @@ import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
 import MotionLayer from "@/components/MotionLayer";
 import "./globals.css";
+import "./landing.css";
+import "./highlight.css";
+import "./blocks.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.blut.agency"),
@@ -24,7 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/css/blut-dev.webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/embeds.css" rel="stylesheet" type="text/css" />
         <link href="/css/expressive.css" rel="stylesheet" type="text/css" />
-        <link href="/css/landing.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
         <PageTransition />

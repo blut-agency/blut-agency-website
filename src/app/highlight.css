@@ -1,0 +1,129 @@
+/*
+  Image + text box teasers, one hover for all of them: the image fades a
+  little and the text box fades into its highlight (a theme colour with the
+  animated blut line). Used by the landing features, every case card and the
+  Work spots.
+
+  .hl-row     the teaser; hovering anywhere on it triggers the effect
+  .hl-media   the image frame; its <img> fades
+  .hl-panel   the text box. Add .is-light-highlight when the highlight colour
+              is light, so the text turns dark while it shows.
+  .hl-visual  the highlight layer inside .hl-panel. Teasers that already
+              bring their own layer (the case teasers) keep it.
+
+  Theme colours come from src/lib/imageTheme.ts. Pointer devices only; the
+  layer is decorative and the text reads fine without it.
+*/
+
+.hl-media img {
+  transition: transform 1.2s var(--fx-ease, ease), opacity 0.6s ease;
+}
+
+.hl-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: color 0.6s ease;
+}
+
+.hl-visual {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--_project---blur-half-width);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.hl-visual .visual-canvas {
+  width: 180%;
+  flex: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hl-row:hover .hl-media img {
+    opacity: 0.85;
+  }
+
+  .hl-row:hover .hl-visual {
+    opacity: 1;
+  }
+
+  .hl-row:hover .hl-panel.is-light-highlight,
+  .hl-row:hover .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div) {
+    color: var(--_color---copy-dark);
+  }
+
+  .hl-row:hover .hl-panel.is-light-highlight .cta-link-line {
+    background-color: currentColor;
+  }
+}
+
+/* Parallax (MotionLayer): photos drawn a little larger so they can drift
+   inside their frames without showing an edge. */
+.fx-parallax .fx-parallax-img {
+  scale: 1.2;
+  will-change: translate;
+}
+
+.fx-parallax [data-parallax] {
+  will-change: translate;
+}
+
+/* CTA row: the "— Label" link on the left, a thin ↗ in the bottom-right
+   corner that fades and slides in when the teaser (or the link) is hovered.
+   Touch screens never show it. */
+.cta-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.cta-arrow {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  opacity: 0;
+  translate: -8px 8px;
+  transition:
+    opacity 0.5s var(--fx-ease, ease),
+    translate 0.5s var(--fx-ease, ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.hl-row, .lp-hover, .cta-row):hover .cta-arrow {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* "In" animation (MotionLayer), after the headline letter reveal: each card
+   or row rises 48px into place and fades in as one piece. Hidden only once
+   MotionLayer runs (.fx-on), so without JavaScript or with reduced motion
+   everything simply shows. An animation, not a transition, so hover
+   transitions stay untouched. */
+@keyframes fx-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fx-on .fx-rise:not(.is-in) {
+  opacity: 0;
+}
+
+.fx-rise.is-in {
+  animation: fx-rise-in 0.9s var(--fx-ease, ease) both;
+}
