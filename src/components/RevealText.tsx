@@ -37,18 +37,25 @@ export default function RevealText({
     el.classList.add("is-armed");
     // Commit the hidden state before any reveal, so every letter starts from it.
     void el.offsetWidth;
+    let done: number | undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("is-revealed");
           observer.disconnect();
+          // Safety net: once the last letter should be in, show them all.
+          const letters = el.querySelectorAll(".reveal-letter").length;
+          done = window.setTimeout(() => el.classList.add("is-done"), (letters * stagger + 0.6) * 1000 + 200);
         }
       },
       { threshold: 0.25 },
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(done);
+    };
+  }, [stagger]);
 
   const lines = (Array.isArray(text) ? text : [text]).map((line) => line.trim());
   const label = lines.filter(Boolean).join(" ");
@@ -73,7 +80,7 @@ export default function RevealText({
                     <span
                       key={l}
                       className="reveal-letter"
-                      style={{ transitionDelay: `${(letterIndex++ * stagger).toFixed(3)}s` }}
+                      style={{ animationDelay: `${(letterIndex++ * stagger).toFixed(3)}s` }}
                     >
                       {letter}
                     </span>

@@ -99,12 +99,13 @@ export function PageHero({
   );
 }
 
-/** Big headline over two of three columns, the short line under it in the other two (flipped: headline right, line left). */
+/** Big headline over two of three columns, the short line under it in the other two (flipped: headline right, line left; side: line in the last third, beside it). */
 export function Lead({
   heading,
   text,
   flipped = false,
   boxed = false,
+  side = false,
   as = "h2",
   longWord = false,
   parallax = true,
@@ -119,11 +120,13 @@ export function Lead({
   flipped?: boolean;
   /** The line sits in a grey box. */
   boxed?: boolean;
+  /** The line sits in the last third, beside the headline's last line. */
+  side?: boolean;
   as?: "h1" | "h2";
   children?: ReactNode;
 }) {
   return (
-    <div className={`lp-wrap bk-lead${flipped ? " is-flipped" : ""}`}>
+    <div className={`lp-wrap bk-lead${flipped ? " is-flipped" : ""}${side ? " is-side" : ""}`}>
       <RevealText
         as={as}
         className={`lp-heading bk-lead-heading${longWord || hasLongWord(heading) ? " is-long-word" : ""}`}
@@ -141,8 +144,8 @@ export function Lead({
 }
 
 const PEOPLE = {
-  karl: { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", mail: "karl.jawara@blut.agency" },
-  michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency" },
+  karl: { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara" },
+  michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb" },
 } as const;
 
 /** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469). */
@@ -166,7 +169,11 @@ export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
             />
           </div>
           <div>
-            <p className="lp-copy">{p.name}</p>
+            <p className="lp-copy">
+              <Link href={p.page} className="bk-contact-name">
+                {p.name}
+              </Link>
+            </p>
             <p className="lp-copy bk-contact-role">{p.role}</p>
             <CtaLink href={`mailto:${p.mail}`} label="Mail" />
           </div>

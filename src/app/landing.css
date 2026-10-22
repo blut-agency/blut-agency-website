@@ -68,6 +68,14 @@
   height: 720px;
 }
 
+/* Same height as the page banners on every screen (blocks.css .bk-hero). */
+@media screen and (max-width: 767px) {
+  .lp-page .lp-stage .home-stage-wrapper {
+    min-height: 512px;
+    height: 512px;
+  }
+}
+
 /* The nav sits under the stage, then sticks to the top and stays there. */
 .lp-page .header {
   position: sticky;
@@ -489,8 +497,8 @@
 
 .lp-band-run {
   display: flex;
-  gap: calc(var(--lp-band) * 0.2);
-  padding-right: calc(var(--lp-band) * 0.2);
+  gap: var(--lp-gap);
+  padding-right: var(--lp-gap);
 }
 
 .lp-band-logo {
@@ -578,7 +586,7 @@
     --lp-heading: 48px;
     --lp-hero: 48px;
     --lp-copy: 24px;
-    --lp-client: 32px;
+    --lp-client: 16px;
     --lp-band: 48px;
   }
 

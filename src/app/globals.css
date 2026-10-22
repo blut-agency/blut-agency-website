@@ -82,27 +82,43 @@
   white-space: nowrap;
 }
 
-/* Hiding is instant: a transition here would fade letters out with their
-   staggered delays, so later letters would still be visible when the reveal
-   starts. The transition only exists in the revealed state. */
+/* Letters hide once armed and play a keyframe animation when revealed, each
+   with its own delay. An animation, not a transition: a pending transition
+   delay is dropped whenever the letter's style is recalculated mid-way
+   (scrolling, parallax, hover), which left headlines stuck after the first
+   letter. .is-done (set by RevealText once every letter should be in) shows
+   them all regardless. */
 .reveal-text.is-armed .reveal-letter {
   opacity: 0;
   transform: translateY(0.35em);
 }
 
 .reveal-text.is-armed.is-revealed .reveal-letter {
+  animation: reveal-letter-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.reveal-text.is-armed.is-done .reveal-letter {
   opacity: 1;
   transform: none;
-  transition:
-    opacity 0.5s ease,
-    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation: none;
+}
+
+@keyframes reveal-letter-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal-text.is-armed .reveal-letter {
     opacity: 1;
     transform: none;
-    transition: none;
+    animation: none;
   }
 }
 

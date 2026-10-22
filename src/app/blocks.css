@@ -110,6 +110,13 @@
   gap: var(--lp-pad);
 }
 
+/* Side line: headline in the first two thirds, the line in the last third,
+   level with the headline's last line. */
+.bk-lead.is-side .bk-lead-text {
+  grid-column: 3 / span 1;
+  align-self: end;
+}
+
 /* Flipped thirds: headline in the right two thirds, the grey box under it in
    the left two thirds. */
 .bk-lead.is-flipped .bk-lead-text.lp-panel {
@@ -157,7 +164,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   row-gap: var(--lp-stack);
-  margin-block: 0;
+  margin-bottom: 0;
   padding: 0;
   list-style: none;
 }
@@ -245,27 +252,42 @@
   transition: background-color 0.5s ease;
 }
 
-/* "Play video" with its arrow, bottom right on the still. A button (not a
-   paragraph), so embeds.css doesn't trim its line height and the arrow sits
+/* "Play video ▶" fades in centred on the still while the spot is hovered
+   (always shown on touch screens, which have no hover). A button, not a
+   paragraph, so embeds.css doesn't trim its line height and the arrow sits
    centred on the text. */
 .bk-spot-play {
   position: absolute;
-  right: 0;
-  bottom: var(--lp-pad);
+  top: 50%;
+  left: 50%;
   z-index: 2;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 0 var(--lp-pad);
+  padding: 0;
   border: 0;
   background: none;
   font: inherit;
   font-size: 24px;
   line-height: 1;
+  white-space: nowrap;
   color: var(--_color---copy-bright);
   text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
+  translate: -50% -50%;
   cursor: pointer;
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-spot-play {
+    opacity: 0;
+  }
+
+  .bk-spot:hover .bk-spot-play,
+  .bk-spot-play:focus-visible {
+    opacity: 1;
+  }
 }
 
 .bk-spot-play svg {
@@ -294,11 +316,6 @@
     width: calc((100% - 2 * var(--lp-gap)) / 3 - var(--lp-pad));
   }
 
-  /* The text box owns the bottom right here, so "Play video" goes top right. */
-  .bk-spot.is-wide .bk-spot-play {
-    top: var(--lp-pad);
-    bottom: auto;
-  }
 
 
 }
@@ -401,7 +418,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--lp-pad);
 }
 
 .bk-contact-heading .lp-heading {
@@ -409,7 +425,8 @@
 }
 
 .bk-contact-heading .lp-heading + .lp-heading {
-  /* 24px between the lines as in Figma, plus the half-leading embeds.css trims. */
+  /* Set like one two-line headline: the normal line height, nothing extra
+     (this adds back the half-leading embeds.css trims). */
   margin-top: calc(1lh - 0.74em);
   text-align: right;
 }
@@ -430,6 +447,7 @@
 
   .bk-lead-heading,
   .bk-lead-text,
+  .bk-lead.is-side .bk-lead-text,
   .bk-lead.is-flipped .bk-lead-heading,
   .bk-lead.is-flipped .bk-lead-text,
   .bk-contact-heading {
@@ -844,15 +862,302 @@
   }
 }
 
-/* Phones: the client name takes most of the still's width, so "Play video"
-   shrinks to its arrow (the button keeps its label for screen readers). */
+
+/* ---------- Work mosaic (Figma 264:1110): rows of still (2/3) + light text
+   box (1/3), alternating sides, no gaps; full-width spots break it up. */
+.bk-mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bk-spot.is-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+}
+
+.bk-spot.is-row .bk-spot-media {
+  aspect-ratio: 16 / 9;
+}
+
+.bk-spot.is-row.is-flipped {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.bk-spot.is-row.is-flipped .bk-spot-media {
+  order: 2;
+}
+
+.bk-spot.is-row .bk-spot-body {
+  gap: 24px;
+  background: var(--lp-panel-light);
+  color: var(--_color---copy-dark);
+}
+
+.bk-spot.is-row .bk-spot-text {
+  font-size: 24px;
+  line-height: 1.35;
+  color: var(--lp-text-secondary);
+}
+
 @media screen and (max-width: 767px) {
-  .bk-spot-play-text {
-    display: none;
+  .bk-spot.is-row .bk-spot-text {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .bk-spot.is-row,
+  .bk-spot.is-row.is-flipped {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .bk-spot-play svg {
-    width: 32px;
-    height: 32px;
+  .bk-spot.is-row.is-flipped .bk-spot-media {
+    order: 0;
+  }
+}
+
+/* Row boxes are light; when the hover highlight behind them is dark, the
+   text turns white (light highlights keep it dark, see highlight.css). */
+@media (hover: hover) and (pointer: fine) {
+  .bk-spot.is-row:hover .bk-spot-body:not(.is-light-highlight),
+  .bk-spot.is-row:hover .bk-spot-body:not(.is-light-highlight) .bk-spot-text {
+    color: var(--_color---copy-bright);
+  }
+}
+
+/* ---------- Home rows (Elliot's layout, Figma 267-1107): photo and black
+   text box 50/50, sides swapping, no gaps; question at the top of the box,
+   its link at the bottom. */
+.bk-spot.is-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.bk-spot.is-split .bk-spot-media {
+  aspect-ratio: 4 / 3;
+}
+
+.bk-spot.is-split.is-flipped .bk-spot-media {
+  order: 2;
+}
+
+.bk-spot.is-split .bk-spot-body {
+  justify-content: space-between;
+  gap: var(--lp-stack);
+  padding: var(--lp-gap);
+  background: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
+}
+
+.bk-spot.is-split .lp-copy {
+  margin: 0;
+  max-width: 480px;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-spot.is-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bk-spot.is-split.is-flipped .bk-spot-media {
+    order: 0;
+  }
+}
+
+/* ---------- Team pages: portrait in a third, role and intro in two ---------- */
+.bk-person {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  align-items: start;
+}
+
+.bk-person-text {
+  grid-column: 2 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--lp-pad);
+}
+
+.bk-person-text .lp-heading {
+  margin: 0 0 var(--lp-pad);
+}
+
+.bk-person-text .lp-copy {
+  margin: 0;
+}
+
+.bk-faq .bk-drawers {
+  max-width: 856px;
+  margin-left: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-person {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--lp-stack);
+  }
+
+  .bk-person-text {
+    grid-column: 1;
+  }
+}
+
+.bk-contact-name {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--fx-ease, ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-contact-name:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* Lists keep the section's spacing after a headline; only a list that opens
+   its section drops the top margin. */
+.bk-section > .bk-mosaic:first-child,
+.bk-section > .bk-case-list:first-child {
+  margin-top: 0;
+}
+
+/* Spaced mosaic (Work): the case list's spacing between cards; on black the
+   row boxes are dark like the case cards. */
+.bk-mosaic.is-spaced {
+  row-gap: var(--lp-stack);
+}
+
+.bk-section.is-dark .bk-spot.is-row .bk-spot-body {
+  background: var(--lp-panel-dark);
+  color: var(--_color---copy-bright);
+}
+
+.bk-section.is-dark .bk-spot.is-row .bk-spot-text {
+  color: var(--_color---copy-bright);
+}
+
+/* Light highlight colours take dark text on hover (highlight.css), here too:
+   the dark-section colours above would otherwise keep the text white. */
+@media (hover: hover) and (pointer: fine) {
+  .bk-section.is-dark .bk-spot.hl-row:hover .bk-spot-body.is-light-highlight,
+  .bk-section.is-dark .bk-spot.hl-row:hover .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div) {
+    color: var(--_color---copy-dark);
+  }
+}
+
+/* Slimmer contact block: less padding than a full section, a 192px portrait
+   with name, role and Mail beside it (stacked again on phones). */
+.bk-section.bk-contact {
+  padding-block: var(--lp-stack);
+}
+
+.bk-contact-grid {
+  align-items: center;
+}
+
+.bk-contact .bk-contact-person {
+  flex-direction: row;
+  align-items: flex-end;
+  gap: var(--lp-pad);
+}
+
+.bk-contact .bk-contact-photo {
+  flex: none;
+  width: 192px;
+}
+
+.bk-contact .bk-contact-person .lp-copy {
+  font-size: 24px;
+}
+
+@media screen and (max-width: 1279px) {
+  .bk-contact-heading {
+    grid-column: 1 / -1;
+  }
+
+  .bk-contact-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--lp-stack);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .bk-contact .bk-contact-photo {
+    width: 128px;
+  }
+}
+
+/* Inline player (Vimeo ID set): the iframe over the still, controls along
+   the bottom edge. */
+.bk-spot-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+.bk-spot-controls {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 3;
+  padding: var(--lp-pad);
+  color: var(--_color---copy-bright);
+}
+
+/* "— See case" in a spot's box (spots with a case study); above the box's
+   click-to-play cover so it stays a link. */
+.bk-spot-case {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Phones: small client chips, close to the corner, so they don't cover the
+   photo (16px text, see --lp-client). */
+@media screen and (max-width: 767px) {
+  .bk-spot-client,
+  .lp-case-client {
+    bottom: 16px;
+    padding: 8px 16px;
+  }
+}
+
+/* Rows where the text box can outgrow the photo (narrow desktops, tablets):
+   the photo keeps its proportion as a minimum but stretches to the box's
+   height, so the two always line up. The image covers the frame either way. */
+.bk-spot.is-row .bk-spot-media,
+.bk-spot.is-split .bk-spot-media,
+.bk-case-list .lp-case-media {
+  aspect-ratio: auto;
+  align-self: stretch;
+  min-height: 0;
+}
+
+.bk-spot.is-row .bk-spot-media::before,
+.bk-spot.is-split .bk-spot-media::before,
+.bk-case-list .lp-case-media::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
+
+.bk-spot.is-split .bk-spot-media::before {
+  padding-top: 75%;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-case-list .lp-case-media::before {
+    padding-top: 75%;
   }
 }

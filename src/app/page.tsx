@@ -2,28 +2,23 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
-import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
-import CaseCard from "@/components/CaseCard";
 import { TEXT_PARALLAX } from "@/components/Blocks";
 import CtaArrow from "@/components/CtaArrow";
-import { highlightThemes, themesForImages, type ImageTheme } from "@/lib/imageTheme";
+import { themesForImages, type ImageTheme } from "@/lib/imageTheme";
 
 // The three photo + panel features (Figma "Landng v02"). The photo runs from
 // the screen edge across two columns and the panel sits in the third; the
 // middle one is mirrored. Photos come from the Figma board's home mockup.
-const FEATURES: {
-  heading: string | string[];
-  copy: string;
-  href: string;
-  cta: string;
-  image: string;
-  alt: string;
-  /** Has a word too long for the phone headline size; shrink it there so it doesn't overflow. */
-  longWord?: boolean;
-}[] = [
+/*
+  Home rows as Elliot laid them out (Figma 267-1107), with the board's copy
+  changes: three 50/50 rows with no gaps, photo and black text box swapping
+  sides, the question at the top of the box and its link at the bottom.
+  Styled with the site's system (highlight.css hover, blocks.css .is-split).
+*/
+const ROWS: { copy: string; href: string; cta: string; image: string; alt: string }[] = [
   {
-    heading: ["Strategy, production", "& sound design"],
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
     href: "/work",
     cta: "See us in action",
@@ -31,33 +26,20 @@ const FEATURES: {
     alt: "Nina Chuba in the Samsung spot",
   },
   {
-    heading: "Music strategy and measurement.",
-    longWord: true,
-    copy: "Find out what your sound is really saying.",
+    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
     href: "/strategy",
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
   },
   {
-    heading: "Where strategy and music production come together.",
-    copy: "Over 400,000 streams in the first week.",
+    copy: "Music production, sound design, and 360° sonic strategy.",
     href: "/case-studies",
-    cta: "See our cases",
+    cta: "View our case studies",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
   },
 ];
-
-// "Check out some more:" cards, in the order the Figma frame shows them.
-const MORE_CASES = [
-  "wdr---re-arranging-perceptions",
-  "devils-advocate-brand-launch",
-  "volkswagen-bringing-it-all-back-home",
-];
-// Parallax rates for the three cards: all move with the scroll, each at its
-// own speed, so the stagger shifts as the row passes (MotionLayer).
-const CASE_PARALLAX = [0.8, 0.4, 1.2];
 
 /** "— Label" text link (the line stretches on hover) with the corner arrow. */
 function CtaLink({ href, label }: { href: string; label: string }) {
@@ -75,11 +57,8 @@ function CtaLink({ href, label }: { href: string; label: string }) {
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
-  const cases = MORE_CASES.map((slug) => getCaseStudyBySlug(slug)).filter((cs): cs is CaseStudy => Boolean(cs));
-  // Each feature panel's hover highlight uses the CMS theme closest to its photo.
-  const themes = await themesForImages(FEATURES.map((f) => f.image));
-  // Cases keep their own CMS theme (the one their case page uses).
-  const caseThemes = await highlightThemes(cases.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
+  // Each row's hover highlight uses the CMS theme closest to its photo.
+  const themes = await themesForImages(ROWS.map((r) => r.image));
 
   return (
     <>
@@ -160,39 +139,15 @@ export default async function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    {/* Intro: the question over two columns, the answer below it, shifted right. */}
-    <section className="lp-intro">
-      <div className="lp-wrap">
-        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" parallax={TEXT_PARALLAX.heading} />
-        <div className="lp-panel" data-parallax={TEXT_PARALLAX.text}>
-          <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
-          <CtaLink href="/about" label="Get to know us" />
-        </div>
-      </div>
+    <section className="bk-section is-dark">
+      <ul role="list" className="lp-wrap bk-mosaic is-spaced">
+        {ROWS.map((row, i) => (
+          <li key={row.href}>
+            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} />
+          </li>
+        ))}
+      </ul>
     </section>
-
-    <div className="lp-dark">
-      {FEATURES.slice(0, 2).map((f, i) => (
-        <Feature key={f.href} feature={f} theme={themes[i]} flipped={i % 2 === 1} />
-      ))}
-    </div>
-
-    <div className="lp-dark">
-      <Feature feature={FEATURES[2]} theme={themes[2]} />
-
-      <section className="lp-cases">
-        <div className="lp-wrap">
-          <RevealText className="lp-heading" text="Check out some more:" />
-          <ul role="list" className="lp-case-grid">
-            {cases.map((cs, i) => (
-              <li key={cs.slug} data-parallax={CASE_PARALLAX[i % CASE_PARALLAX.length]}>
-                <CaseCard cs={cs} theme={caseThemes[i]} formPrefix="home" />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </div>
 
     {/* Why blut: the question on the left half, the answer lower on the right. */}
     <section className="lp-why">
@@ -211,40 +166,31 @@ export default async function HomePage() {
   );
 }
 
-function Feature({
-  feature: f,
+function HomeRow({
+  row,
   theme,
   flipped = false,
 }: {
-  feature: (typeof FEATURES)[number];
+  row: (typeof ROWS)[number];
   theme: ImageTheme | null;
   flipped?: boolean;
 }) {
   return (
-    <section className={`lp-feature${flipped ? " is-flipped" : ""}`}>
-      <div className="lp-wrap">
-        <RevealText className={`lp-heading${f.longWord ? " is-long-word" : ""}`} text={f.heading} />
+    <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
+      <div className="bk-spot-media hl-media">
+        <img src={row.image} alt={row.alt} loading="lazy" />
+        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
       </div>
-      <div className="lp-feature-row lp-hover hl-row">
-        <figure className="lp-feature-media hl-media">
-          <img src={f.image} alt={f.alt} loading="lazy" />
-          <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-        </figure>
-        <div className={`lp-panel is-dark hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
-          {theme && (
-            <div
-              className="hl-visual"
-              aria-hidden="true"
-              style={{ backgroundColor: theme.background, color: theme.line }}
-            >
-              <CaseStudyVisual slug={`home-feature-${f.href.slice(1)}`} variant={2} speed={10} />
-            </div>
-          )}
-          <p className="lp-copy">{f.copy}</p>
-          <CtaLink href={f.href} label={f.cta} />
-          <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-        </div>
+      <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
+        {theme && (
+          <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
+            <CaseStudyVisual slug={`home-row-${row.href.slice(1)}`} variant={2} speed={10} />
+          </div>
+        )}
+        <p className="lp-copy">{row.copy}</p>
+        <CtaLink href={row.href} label={row.cta} />
+        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
       </div>
-    </section>
+    </article>
   );
 }
