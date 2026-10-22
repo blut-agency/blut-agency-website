@@ -133,8 +133,16 @@
   color: var(--_color---copy-bright);
 }
 
+/* Pill outlines follow the text colour, so they turn dark with the text on a
+   light hover highlight: faint at rest, full on hover. */
 .bk-section.is-dark .lp-case-tags li {
-  border-color: rgb(255 255 255 / 0.4);
+  border-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-section.is-dark :is(.lp-case, .bk-spot):hover .lp-case-tags li {
+    border-color: currentColor;
+  }
 }
 
 /* ---------- Two cards side by side, one dropped by a gap ---------- */
@@ -252,31 +260,14 @@
   transition: background-color 0.5s ease;
 }
 
-/* "Play video ▶" fades in centred on the still while the spot is hovered
-   (always shown on touch screens, which have no hover). A button, not a
-   paragraph, so embeds.css doesn't trim its line height and the arrow sits
-   centred on the text. */
+/* "▶ Play video" (a white pill Button) fades in centred on the still while
+   the spot is hovered (always shown on touch screens, which have no hover). */
 .bk-spot-play {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 2;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  font-size: 24px;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--_color---copy-bright);
-  text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
   translate: -50% -50%;
-  cursor: pointer;
-  transition: opacity 0.4s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -288,11 +279,6 @@
   .bk-spot-play:focus-visible {
     opacity: 1;
   }
-}
-
-.bk-spot-play svg {
-  flex: none;
-  filter: drop-shadow(0 1px 8px rgb(0 0 0 / 0.35));
 }
 
 .bk-spot-body {
@@ -425,9 +411,10 @@
 }
 
 .bk-contact-heading .lp-heading + .lp-heading {
-  /* Set like one two-line headline: the normal line height, nothing extra
-     (this adds back the half-leading embeds.css trims). */
-  margin-top: calc(1lh - 0.74em);
+  /* The normal line height (adding back the half-leading embeds.css trims)
+     plus a quarter em, so the "g" of "good" clears the "G" of "Get"
+     (24px at the 96px desktop size). */
+  margin-top: calc(1lh - 0.74em + 0.25em);
   text-align: right;
 }
 
@@ -541,42 +528,66 @@
   --bk-rule: #343434;
 }
 
+/* Service head on the thirds: the headline across two thirds with its
+   subline close under it (copy size, full colour), and the body (smaller,
+   muted) in the last third, starting level with the subline. Flipped, the
+   headline group takes the right two thirds and the body the left third. */
 .bk-service-top {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 96px;
-  row-gap: var(--lp-gap);
+  column-gap: var(--lp-gap);
   align-items: start;
 }
 
 .bk-service-lead {
-  grid-column: 1 / span 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: var(--lp-gap);
-  row-gap: var(--lp-gap);
+  display: contents;
 }
 
 .bk-service-lead .lp-heading {
-  grid-column: 1 / -1;
+  grid-column: 1 / span 2;
+  grid-row: 1;
   margin: 0;
   text-wrap: wrap;
 }
 
 .bk-service-line {
-  grid-column: 2;
-  margin: 0;
+  grid-column: 1 / span 2;
+  grid-row: 2;
+  margin: 32px 0 0;
 }
 
 .bk-service-intro {
-  margin: 0;
+  grid-column: 3;
+  grid-row: 2;
+  margin: 32px 0 0;
   font-size: 24px;
-  line-height: 1.15;
+  line-height: 1.35;
   color: var(--lp-muted);
 }
 
 .bk-section:not(.is-dark) .bk-service-intro {
   color: var(--lp-text-secondary);
+}
+
+.bk-service-top.is-flipped .lp-heading,
+.bk-service-top.is-flipped .bk-service-line {
+  grid-column: 2 / span 2;
+}
+
+.bk-service-top.is-flipped .bk-service-intro {
+  grid-column: 1;
+}
+
+@media screen and (max-width: 1279px) {
+  .bk-service-line,
+  .bk-service-intro {
+    margin-top: 24px;
+  }
+
+  .bk-service-intro {
+    font-size: 16px;
+    line-height: 1.55;
+  }
 }
 
 .bk-service {
@@ -607,6 +618,18 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--lp-stack);
+}
+
+/* Mirrored service: headline and drawers in the right two thirds, the intro
+   and photo in the left third. */
+.bk-service.is-flipped .bk-service-body {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+}
+
+.bk-service.is-flipped .bk-service-media {
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .bk-drawers {
@@ -696,24 +719,27 @@
   .bk-service-top,
   .bk-service {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bk-service {
     row-gap: var(--lp-stack);
   }
 
-  .bk-service-lead,
-  .bk-service-body {
+  .bk-service-lead .lp-heading,
+  .bk-service-line,
+  .bk-service-intro,
+  .bk-service-top.is-flipped .lp-heading,
+  .bk-service-top.is-flipped .bk-service-line,
+  .bk-service-top.is-flipped .bk-service-intro,
+  .bk-service-body,
+  .bk-service.is-flipped .bk-service-body,
+  .bk-service.is-flipped .bk-service-media {
     grid-column: 1;
+    grid-row: auto;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .bk-service-lead {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .bk-service-line {
-    grid-column: 1;
-  }
-
   .bk-service-media {
     aspect-ratio: 4 / 3;
   }
@@ -1159,5 +1185,225 @@
 @media screen and (max-width: 767px) {
   .bk-case-list .lp-case-media::before {
     padding-top: 75%;
+  }
+}
+
+/* Rows with the photo on the right: the client chip sits on the photo's
+   right edge, away from the text box. Phones stack the row, so it stays left. */
+@media screen and (min-width: 768px) {
+  .bk-spot.is-row.is-flipped .bk-spot-client {
+    left: auto;
+    right: 0;
+    padding: 8px var(--lp-pad) 8px 24px;
+  }
+}
+
+/* Offices below 992px, where the three columns give way to one: each office
+   runs the full content width as a row, the visual on the left half and the
+   address beside it, so no card sits narrow on one side of the screen. Small
+   phones stack them, with the text box only as tall as its content. */
+@media screen and (max-width: 991px) {
+  .lp-case-grid.bk-offices {
+    max-width: none;
+    row-gap: var(--lp-gap);
+  }
+
+  .bk-offices .lp-case {
+    flex-direction: row;
+  }
+
+  .bk-offices .lp-case-media,
+  .bk-offices .lp-case-body {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  .bk-offices .lp-case-body {
+    aspect-ratio: auto;
+  }
+}
+
+@media screen and (max-width: 559px) {
+  .bk-offices .lp-case {
+    flex-direction: column;
+  }
+
+  .bk-offices .lp-case-media,
+  .bk-offices .lp-case-body {
+    flex: none;
+  }
+
+  .bk-offices .lp-case-body {
+    gap: var(--lp-gap);
+  }
+}
+
+/* ---------- Buttons (Button.tsx) ----------
+   Solid: black, red on hover, darker red pressed. Outline: a 1px line in the
+   text colour, filled black on hover. Focus: a 2px blue ring 2px out.
+   Disabled: grey, no hover. Sizes 32 / 48 / 64px tall; icon-only buttons are
+   square (round as a pill). On black sections everything inverts.
+   .is-hover / .is-pressed / .is-focus force a state, for the component sheet. */
+.bk-btn {
+  --bk-btn-bg: var(--_color---copy-dark);
+  --bk-btn-fg: var(--_color---copy-bright);
+  --bk-btn-line: var(--_color---copy-dark);
+  --bk-btn-hover-bg: var(--_color---accent-color-3);
+  --bk-btn-hover-fg: var(--_color---copy-bright);
+  --bk-btn-hover-line: var(--_color---accent-color-3);
+  --bk-btn-pressed-bg: #c80000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  margin: 0;
+  padding: 0 24px;
+  border-radius: 0;
+  background: var(--bk-btn-bg);
+  color: var(--bk-btn-fg);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.15s ease;
+}
+
+/* Webflow's reset sets `button { border: 0 }` after this file loads, so the
+   line needs the extra element in the selector to win. */
+:is(a, button).bk-btn {
+  border: 1px solid var(--bk-btn-line);
+}
+
+.bk-btn.is-outline {
+  --bk-btn-bg: transparent;
+  --bk-btn-fg: var(--_color---copy-dark);
+  --bk-btn-hover-bg: var(--_color---copy-dark);
+  --bk-btn-hover-fg: var(--_color---copy-bright);
+  --bk-btn-hover-line: var(--_color---copy-dark);
+  --bk-btn-pressed-bg: #333;
+}
+
+:is(.bk-section.is-dark .bk-btn, .bk-btn.is-on-dark) {
+  --bk-btn-bg: var(--_color---copy-bright);
+  --bk-btn-fg: var(--_color---copy-dark);
+  --bk-btn-line: var(--_color---copy-bright);
+}
+
+:is(.bk-section.is-dark .bk-btn, .bk-btn.is-on-dark).is-outline {
+  --bk-btn-bg: transparent;
+  --bk-btn-fg: var(--_color---copy-bright);
+  --bk-btn-hover-bg: var(--_color---copy-bright);
+  --bk-btn-hover-fg: var(--_color---copy-dark);
+  --bk-btn-hover-line: var(--_color---copy-bright);
+  --bk-btn-pressed-bg: #dcdcdc;
+}
+
+.bk-btn.is-sm {
+  height: 32px;
+  padding: 0 16px;
+}
+
+.bk-btn.is-lg {
+  height: 64px;
+  padding: 0 32px;
+  gap: 16px;
+  font-size: 24px;
+}
+
+.bk-btn.is-pill {
+  border-radius: 999px;
+}
+
+.bk-btn.is-icon-only {
+  padding: 0;
+  aspect-ratio: 1;
+}
+
+.bk-btn-label {
+  /* embeds.css trims paragraph leading, not spans; keep the label centred */
+  display: block;
+}
+
+.bk-btn .bk-icon {
+  flex: none;
+}
+
+.bk-btn:is(:hover, .is-hover):not(:disabled, .is-disabled) {
+  background: var(--bk-btn-hover-bg);
+  color: var(--bk-btn-hover-fg);
+  border-color: var(--bk-btn-hover-line);
+}
+
+.bk-btn:is(:active, .is-pressed):not(:disabled, .is-disabled) {
+  background: var(--bk-btn-pressed-bg);
+  border-color: var(--bk-btn-pressed-bg);
+  color: var(--bk-btn-hover-fg);
+  transform: translateY(1px);
+}
+
+.bk-btn:is(:focus-visible, .is-focus) {
+  outline: 2px solid var(--_color---accent-color-1);
+  outline-offset: 2px;
+}
+
+.bk-btn:is(:disabled, .is-disabled) {
+  --bk-btn-bg: #dcdcdc;
+  --bk-btn-fg: var(--lp-muted);
+  --bk-btn-line: #dcdcdc;
+  cursor: not-allowed;
+}
+
+.bk-btn.is-outline:is(:disabled, .is-disabled) {
+  --bk-btn-bg: transparent;
+}
+
+:is(.bk-section.is-dark .bk-btn, .bk-btn.is-on-dark):is(:disabled, .is-disabled) {
+  --bk-btn-bg: #343434;
+  --bk-btn-fg: #777;
+  --bk-btn-line: #343434;
+}
+
+:is(.bk-section.is-dark .bk-btn, .bk-btn.is-on-dark).is-outline:is(:disabled, .is-disabled) {
+  --bk-btn-bg: transparent;
+}
+
+/* Buttons placed on the site: the spot's "Play video" (a Button) fades in on
+   hover, and the lightbox close sits in the top-right corner. */
+.bk-btn.bk-spot-play {
+  transition:
+    opacity 0.4s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Accent buttons (Button `accent`): hover takes the colour of the content
+   around them, e.g. a spot's highlight or a case's colour. In a hover teaser
+   the button changes with the rest of it, while the teaser is hovered. */
+.bk-btn.is-accent:is(:hover, .is-hover):not(:disabled, .is-disabled) {
+  background: var(--bk-btn-accent);
+  color: var(--bk-btn-accent-fg);
+  border-color: var(--bk-btn-accent);
+}
+
+.bk-btn.is-accent:is(:active, .is-pressed):not(:disabled, .is-disabled) {
+  background: var(--bk-btn-accent);
+  color: var(--bk-btn-accent-fg);
+  border-color: var(--bk-btn-accent);
+  filter: brightness(0.9);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hl-row:hover .bk-btn.is-accent:not(:disabled, .is-disabled) {
+    background: var(--bk-btn-accent);
+    color: var(--bk-btn-accent-fg);
+    border-color: var(--bk-btn-accent);
   }
 }

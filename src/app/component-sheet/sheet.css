@@ -1,0 +1,218 @@
+/* Component sheet (scratch page): labels and token specimens only. */
+.cs-page .cs-group {
+  padding-block: 16px;
+  background: var(--_color---accent-color-1);
+  color: var(--_color---copy-bright);
+}
+
+.cs-page .cs-group-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.cs-page .cs-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: baseline;
+  padding-block: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.cs-page .bk-section .cs-label {
+  margin-top: var(--lp-stack);
+  padding-block: 0;
+}
+
+.cs-page .bk-section .cs-label:first-child {
+  margin-top: 0;
+}
+
+.cs-page .bk-section .cs-label + * {
+  margin-top: 16px;
+}
+
+.cs-page .cs-label-name {
+  padding: 4px 8px;
+  background: var(--_color---accent-color-2);
+  color: var(--_color---copy-dark);
+  font-family: ui-monospace, Menlo, monospace;
+}
+
+.cs-page .cs-label-used,
+.cs-page .cs-meta {
+  color: var(--lp-muted);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 12px;
+}
+
+.cs-page .cs-tight {
+  padding-block: var(--lp-stack);
+}
+
+.cs-page .cs-intro {
+  margin-top: 24px;
+  max-width: 800px;
+}
+
+.cs-page .cs-narrow {
+  max-width: 640px;
+  margin-left: max(24px, (100% - var(--lp-max)) / 2);
+}
+
+.cs-page .cs-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 16px;
+  font-size: 12px;
+}
+
+.cs-page .cs-swatch {
+  display: grid;
+  gap: 8px;
+}
+
+.cs-page .cs-swatch-chip {
+  height: 64px;
+  border: 1px solid #ddd;
+}
+
+.cs-page .cs-theme {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.cs-page .cs-theme span {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.cs-page .cs-type {
+  display: grid;
+  gap: 24px;
+}
+
+.cs-page .cs-type-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+
+.cs-page .cs-spacing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.cs-page .cs-space {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.cs-page .cs-space div,
+.cs-page .cs-token-bar {
+  background: var(--_color---accent-color-3);
+}
+
+.cs-page .cs-tokens {
+  display: grid;
+  gap: 16px;
+}
+
+.cs-page .cs-token {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.cs-page .cs-token-bar {
+  height: 16px;
+  flex: none;
+}
+
+@media screen and (max-width: 767px) {
+  .cs-page .cs-type-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.cs-page .cs-replay {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
+
+
+.cs-page .cs-buttons {
+  display: grid;
+  gap: var(--lp-stack);
+}
+
+.cs-page .bk-section .cs-buttons + .cs-buttons {
+  margin-top: var(--lp-stack);
+}
+
+.cs-page .cs-btn-grid {
+  display: grid;
+  grid-template-columns: 96px repeat(5, max-content);
+  gap: 24px 32px;
+  align-items: center;
+}
+
+.cs-page .cs-btn-row {
+  display: contents;
+}
+
+.cs-page .cs-btn-sizes {
+  display: grid;
+  gap: 32px;
+}
+
+.cs-page .cs-btn-size {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.cs-page .cs-btn-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.cs-page .cs-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 32px 16px;
+}
+
+.cs-page .cs-icon {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .cs-page .cs-btn-size {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .cs-page .cs-btn-grid {
+    grid-template-columns: 96px repeat(5, max-content);
+    overflow-x: auto;
+    padding: 4px;
+  }
+}

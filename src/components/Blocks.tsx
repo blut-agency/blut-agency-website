@@ -184,10 +184,11 @@ export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
 }
 
 /**
- * A service (Strategy, Figma 250:1130): headline across two thirds with its
- * line stepped in beneath it, the intro in muted grey in the last third; then
+ * A service (Strategy, Figma 250:1130): headline, subline and intro stacked in
+ * two thirds (headline → subline → muted body); then
  * the tools as FAQ-style drawers in two thirds and a static photo in the last
- * third. Drawers: see Drawer.tsx.
+ * third. Drawers: see Drawer.tsx. `flipped` mirrors both rows, for the
+ * left-right-left arrangement down a page.
  */
 export function ServiceDrawers({
   heading,
@@ -197,7 +198,10 @@ export function ServiceDrawers({
   intro,
   items,
   cta,
+  flipped = false,
 }: {
+  /** Mirrored: headline and drawers on the right, intro and photo on the left. */
+  flipped?: boolean;
   heading: string;
   line: string;
   image: string;
@@ -208,7 +212,7 @@ export function ServiceDrawers({
 }) {
   return (
     <>
-      <div className="lp-wrap bk-service-top">
+      <div className={`lp-wrap bk-service-top${flipped ? " is-flipped" : ""}`}>
         <div className="bk-service-lead">
           <RevealText
             as="h2"
@@ -216,10 +220,10 @@ export function ServiceDrawers({
             text={heading}
           />
           <p className="lp-copy bk-service-line">{line}</p>
+          <p className="bk-service-intro">{intro}</p>
         </div>
-        <p className="bk-service-intro">{intro}</p>
       </div>
-      <div className="lp-wrap bk-service">
+      <div className={`lp-wrap bk-service${flipped ? " is-flipped" : ""}`}>
         <div className="bk-service-body">
           <div className="bk-drawers">
             {items.map((item) => (

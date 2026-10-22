@@ -5,6 +5,7 @@ import CaseStudyVisual from "@/components/CaseStudyVisual";
 import VideoLightbox from "@/components/VideoLightbox";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
 import { CtaLink } from "@/components/Blocks";
+import Button from "@/components/Button";
 import type { ImageTheme } from "@/lib/imageTheme";
 
 export type WorkSpotData = {
@@ -59,6 +60,11 @@ export default function WorkSpot({
   const play = () => setOpen(true);
 
   const accent = theme?.background ?? "var(--_color---accent-color-2)";
+  // Buttons on the spot take its highlight colour on hover, like the chip.
+  const buttonAccent = {
+    background: accent,
+    text: theme && !theme.lightBackground ? "var(--_color---copy-bright)" : "var(--_color---copy-dark)",
+  };
   // With a Vimeo ID the spot plays inline with the case pages' player
   // (embeds.js); without one, the big Play opens the lightbox.
   const inline = Boolean(spot.vimeoId);
@@ -86,19 +92,19 @@ export default function WorkSpot({
               allowFullScreen
               className="bk-spot-iframe"
             />
-            <button
+            <Button
+              shape="pill"
+              icon="play"
+              iconFirst
+              onDark
+              accent={buttonAccent}
               data-player="play-button-big"
               data-player-target={playerId}
               aria-label={`Play and pause: ${spot.client}`}
               className="bk-spot-play"
             >
-              <span data-player="play-text" className="bk-spot-play-text">
-                Play video
-              </span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-                <path d="M6 4v16l14-8z" fill="currentColor" />
-              </svg>
-            </button>
+              <span data-player="play-text">Play video</span>
+            </Button>
             <div className="project-video-controls bk-spot-controls">
               <div data-player-file={playerId} className="audioplayer-controls">
                 <div data-player="progress-bar" className="progress-bar">
@@ -120,12 +126,19 @@ export default function WorkSpot({
         ) : (
           <>
             {cover}
-            <button ref={buttonRef} type="button" className="bk-spot-play" onClick={play} aria-label={`Play video: ${spot.client}`}>
-              <span className="bk-spot-play-text">Play video</span>
-              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-                <path d="M6 4v16l14-8z" fill="currentColor" />
-              </svg>
-            </button>
+            <Button
+              ref={buttonRef}
+              shape="pill"
+              icon="play"
+              iconFirst
+              onDark
+              accent={buttonAccent}
+              className="bk-spot-play"
+              onClick={play}
+              aria-label={`Play video: ${spot.client}`}
+            >
+              Play video
+            </Button>
           </>
         )}
       </div>
@@ -152,7 +165,14 @@ export default function WorkSpot({
         {cover}
       </div>
       {!inline && (
-        <VideoLightbox open={open} onClose={close} title={`${spot.client} spot`} vimeoId={spot.vimeoId} poster={spot.image} />
+        <VideoLightbox
+          open={open}
+          onClose={close}
+          title={`${spot.client} spot`}
+          vimeoId={spot.vimeoId}
+          poster={spot.image}
+          accent={buttonAccent}
+        />
       )}
     </article>
   );

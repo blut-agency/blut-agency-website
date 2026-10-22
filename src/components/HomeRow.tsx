@@ -1,0 +1,40 @@
+import Link from "next/link";
+import CaseStudyVisual from "@/components/CaseStudyVisual";
+import { CtaLink } from "@/components/Blocks";
+import type { ImageTheme } from "@/lib/imageTheme";
+
+export type HomeRowData = { copy: string; href: string; cta: string; image: string; alt: string };
+
+/**
+ * A Home row (Figma 267-1107): photo and black text box side by side, 50/50,
+ * the question at the top of the box and its link at the bottom; `flipped`
+ * swaps the sides. Styles: blocks.css (.bk-spot.is-split) and highlight.css.
+ */
+export default function HomeRow({
+  row,
+  theme,
+  flipped = false,
+}: {
+  row: HomeRowData;
+  theme: ImageTheme | null;
+  flipped?: boolean;
+}) {
+  return (
+    <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
+      <div className="bk-spot-media hl-media">
+        <img src={row.image} alt={row.alt} loading="lazy" />
+        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
+      </div>
+      <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
+        {theme && (
+          <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
+            <CaseStudyVisual slug={`home-row-${row.href.slice(1)}`} variant={2} speed={10} />
+          </div>
+        )}
+        <p className="lp-copy">{row.copy}</p>
+        <CtaLink href={row.href} label={row.cta} />
+        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
+      </div>
+    </article>
+  );
+}

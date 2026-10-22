@@ -117,7 +117,10 @@ export default function MotionLayer() {
         // A card moves as one piece: nothing inside it animates on its own.
         if (el.closest(IN_SKIP) || el.parentElement?.closest(".fx-rise")) return;
         el.classList.add(cls);
-        const watched = el.parentElement ?? el;
+        // A display: contents parent has no box of its own, so it never
+        // intersects; watch the nearest ancestor that has one.
+        let watched = el.parentElement ?? el;
+        while (watched.parentElement && getComputedStyle(watched).display === "contents") watched = watched.parentElement;
         inTargets.set(watched, [...(inTargets.get(watched) ?? []), el]);
         inObserver.observe(watched);
       });

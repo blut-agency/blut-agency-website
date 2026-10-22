@@ -10,6 +10,9 @@ const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
  * JavaScript; with it, the height slides open and closed and the text fades
  * in, in every browser (Safari can't animate <details> to its natural height
  * in CSS). Reduced motion: no animation.
+ *
+ * Only one drawer in a group (the drawers sharing a parent) is open at a time:
+ * opening one closes the others, with the same slide.
  */
 export default function Drawer({ name, text }: { name: string; text: string }) {
   const detailsRef = useRef<HTMLDetailsElement>(null);
@@ -19,7 +22,11 @@ export default function Drawer({ name, text }: { name: string; text: string }) {
   function onToggleClick(event: MouseEvent) {
     const details = detailsRef.current;
     const body = bodyRef.current;
-    if (!details || !body || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!details || !body) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (!details.open) closeSiblings(details);
+      return;
+    }
     event.preventDefault();
 
     const opening = !details.open || details.classList.contains("is-closing");
@@ -27,6 +34,7 @@ export default function Drawer({ name, text }: { name: string; text: string }) {
     animation.current?.cancel();
 
     if (opening) {
+      closeSiblings(details);
       details.classList.remove("is-closing");
       details.open = true;
     } else {
@@ -62,4 +70,13 @@ export default function Drawer({ name, text }: { name: string; text: string }) {
       </div>
     </details>
   );
+}
+
+/** Closes the other open drawers in the same group by toggling them, so they slide shut. */
+function closeSiblings(details: HTMLDetailsElement) {
+  details.parentElement
+    ?.querySelectorAll<HTMLDetailsElement>(":scope > details.bk-drawer[open]:not(.is-closing)")
+    .forEach((other) => {
+      if (other !== details) other.querySelector("summary")?.click();
+    });
 }

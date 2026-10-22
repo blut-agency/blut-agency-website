@@ -9,6 +9,7 @@ import { themeFromColors } from "@/lib/imageTheme";
 import { getCaseStudies, getCaseStudyBySlug } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
+import Button from "@/components/Button";
 import RevealText from "@/components/RevealText";
 
 // Morph durations the live project pages use, per case study.
@@ -29,14 +30,6 @@ const AUDIO_SPEED: Record<string, number> = {
 };
 const stageSpeed = (slug: string) => STAGE_SPEED[slug] ?? 10;
 const audioSpeed = (slug: string) => AUDIO_SPEED[slug] ?? 8;
-
-const BUTTON_FORM = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form">
-  <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path"></path>
-</svg>`;
-
-const BUTTON_FORM_HIGHLIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 220 105" fill="none" data-visual-form-rotate="80%" data-visual-form-move-x="-20%" data-visual-form-move-y="-10%" class="button-form is-thin-line">
-  <path d="M46.1254 75.4987C20.0059 66.0511 2.35522 57.9396 4.83797 36.508C7.32072 15.0763 44.8821 21.0566 63.0105 12.297C92.3359 -1.8728 147.508 8.51107 168.616 13.1284C189.725 17.7456 212.528 20.1457 214.747 75.4854C216.3 114.217 172.282 98.801 155.891 88.2146C139.501 77.6281 127.73 75.1786 108.334 72.9316C79.03 69.5369 77.0438 86.6822 46.1254 75.4987Z" stroke="currentColor" class="button-form-path is-highlight"></path>
-</svg>`;
 
 export function generateStaticParams() {
   return getCaseStudies().map((cs) => ({ slug: cs.slug }));
@@ -451,22 +444,20 @@ export default async function CaseStudyDetailPage({
                     data-wf--spacer--variant="l"
                     className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
                   />
-                  <div className="button-component">
-                    <Link data-visual-speed="15" data-visual-form="button" href="/strategy" className="button w-inline-block">
-                      <span
-                        className="button-form"
-                        style={{ display: "contents" }}
-                        dangerouslySetInnerHTML={{ __html: BUTTON_FORM }}
-                      />
-                      <span
-                        className="button-form is-thin-line"
-                        style={{ display: "contents" }}
-                        dangerouslySetInnerHTML={{ __html: BUTTON_FORM_HIGHLIGHT }}
-                      />
-                      <div className="button-hover-background" />
-                      <div className="button-text crop-line-height">Want to know more about how we work?</div>
-                    </Link>
-                  </div>
+                  <Button
+                    href="/strategy"
+                    icon="arrow-right"
+                    accent={
+                      theme
+                        ? {
+                            background: theme.background,
+                            text: theme.lightBackground ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)",
+                          }
+                        : undefined
+                    }
+                  >
+                    Want to know more about how we work?
+                  </Button>
                 </div>
               </div>
             </div>

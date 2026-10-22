@@ -80,6 +80,7 @@ export default async function StrategyPage() {
 
       <section className="bk-section" id="content-production">
         <ServiceDrawers
+          flipped
           heading="Content Production"
           line="How do we bring your sonic identity to life?"
           image={CONTENT_STILL}

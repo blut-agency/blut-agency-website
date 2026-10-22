@@ -2,6 +2,14 @@
 
 import { Fragment, useEffect, useRef, type ElementType } from "react";
 
+/** Each letter fades in while rising 0.35em into place. */
+const LETTER_FRAMES: Keyframe[] = [
+  { opacity: 0, transform: "translateY(0.35em)" },
+  { opacity: 1, transform: "none" },
+];
+const LETTER_MS = 600;
+const LETTER_EASING = "cubic-bezier(0.2, 0.7, 0.2, 1)";
+
 /**
  * Headline that reveals letter by letter (fade in + rise) the first time it
  * scrolls into view. Letters are grouped per word so lines still only break
@@ -10,8 +18,8 @@ import { Fragment, useEffect, useRef, type ElementType } from "react";
  * Pass an array for headlines with deliberate line breaks; an empty string
  * adds a blank line (two <br>s in a row).
  *
- * The hidden starting state is only applied once this effect runs, so without
- * JavaScript, or with reduced motion requested, the text simply shows.
+ * Letters start hidden from the first paint, but only with JavaScript on
+ * (globals.css); without it, or with reduced motion, the text simply shows.
  */
 export default function RevealText({
   text,
@@ -32,34 +40,44 @@ export default function RevealText({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || el.dataset.reveal === "shown") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.dataset.reveal = "shown";
+      return;
+    }
 
-    el.classList.add("is-armed");
-    // Commit the hidden state before any reveal, so every letter starts from it.
-    void el.offsetWidth;
-    let done: number | undefined;
+    let animations: Animation[] = [];
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("is-revealed");
-          observer.disconnect();
-          // Safety net: once the last letter should be in, show them all.
-          const letters = el.querySelectorAll(".reveal-letter").length;
-          done = window.setTimeout(() => el.classList.add("is-done"), (letters * stagger + 0.6) * 1000 + 200);
-        }
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        const letters = el.querySelectorAll<HTMLElement>(".reveal-letter");
+        // "backwards" keeps each letter at the first frame (hidden, lowered)
+        // until its delay is up; once finished, the letter simply is its
+        // normal, visible self.
+        animations = Array.from(letters, (letter, i) =>
+          letter.animate(LETTER_FRAMES, {
+            duration: LETTER_MS,
+            delay: i * stagger * 1000,
+            easing: LETTER_EASING,
+            fill: "backwards",
+          }),
+        );
+        el.dataset.reveal = "shown";
       },
-      { threshold: 0.25 },
+      // Any part of it on screen, a little above the bottom edge: also fires
+      // for headlines taller than the viewport.
+      { rootMargin: "0px 0px -15% 0px" },
     );
     observer.observe(el);
     return () => {
       observer.disconnect();
-      window.clearTimeout(done);
+      animations.forEach((animation) => animation.finish());
     };
   }, [stagger]);
 
   const lines = (Array.isArray(text) ? text : [text]).map((line) => line.trim());
   const label = lines.filter(Boolean).join(" ");
-  let letterIndex = 0;
 
   return (
     <Tag
@@ -67,6 +85,7 @@ export default function RevealText({
       className={className ? `${className} reveal-text` : "reveal-text"}
       aria-label={label}
       data-parallax={parallax}
+      data-reveal="hidden"
     >
       {lines.map((line, lineIndex) => {
         const words = line ? line.split(/\s+/) : [];
@@ -77,11 +96,7 @@ export default function RevealText({
               <span key={w}>
                 <span className="reveal-word" aria-hidden="true">
                   {Array.from(word).map((letter, l) => (
-                    <span
-                      key={l}
-                      className="reveal-letter"
-                      style={{ animationDelay: `${(letterIndex++ * stagger).toFixed(3)}s` }}
-                    >
+                    <span key={l} className="reveal-letter">
                       {letter}
                     </span>
                   ))}

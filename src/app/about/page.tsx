@@ -60,7 +60,7 @@ export default function AboutPage() {
           <RevealText as="h2" className="lp-heading" text="Offices" />
         </div>
         <div className="lp-wrap">
-          <ul role="list" className="lp-case-grid">
+          <ul role="list" className="lp-case-grid bk-offices">
             {offices.map((office, i) => {
               const { href, lines } = officeDetails(office.contentHtml);
               const theme = OFFICE_THEMES[office.slug] ?? OFFICE_THEMES.hamburg;

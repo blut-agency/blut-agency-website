@@ -1,12 +1,10 @@
-import Link from "next/link";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
 import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
-import { TEXT_PARALLAX } from "@/components/Blocks";
-import CtaArrow from "@/components/CtaArrow";
-import { themesForImages, type ImageTheme } from "@/lib/imageTheme";
+import { CtaLink, TEXT_PARALLAX } from "@/components/Blocks";
+import HomeRow, { type HomeRowData } from "@/components/HomeRow";
+import { themesForImages } from "@/lib/imageTheme";
 
 // The three photo + panel features (Figma "Landng v02"). The photo runs from
 // the screen edge across two columns and the panel sits in the third; the
@@ -17,7 +15,7 @@ import { themesForImages, type ImageTheme } from "@/lib/imageTheme";
   sides, the question at the top of the box and its link at the bottom.
   Styled with the site's system (highlight.css hover, blocks.css .is-split).
 */
-const ROWS: { copy: string; href: string; cta: string; image: string; alt: string }[] = [
+const ROWS: HomeRowData[] = [
   {
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
     href: "/work",
@@ -40,20 +38,6 @@ const ROWS: { copy: string; href: string; cta: string; image: string; alt: strin
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
   },
 ];
-
-/** "— Label" text link (the line stretches on hover) with the corner arrow. */
-function CtaLink({ href, label }: { href: string; label: string }) {
-  return (
-    <div className="cta-row">
-      <Link href={href} className="lp-cta">
-        <span className="lp-cta-line" aria-hidden="true" />
-        <span className="lp-cta-text">{label}</span>
-      </Link>
-      <CtaArrow />
-    </div>
-  );
-}
-
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
@@ -139,6 +123,16 @@ export default async function HomePage() {
     </section>
     <Header variant="start-top" />
 
+    {/* Intro: the claim over two columns, the answer below it, shifted right. */}
+    <section className="lp-intro">
+      <div className="lp-wrap">
+        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" />
+        <div className="lp-panel">
+          <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
+        </div>
+      </div>
+    </section>
+
     <section className="bk-section is-dark">
       <ul role="list" className="lp-wrap bk-mosaic is-spaced">
         {ROWS.map((row, i) => (
@@ -163,34 +157,5 @@ export default async function HomePage() {
     <LandingFooter band={{ background: "#ff0b0b", line: "var(--_color---accent-color-1)" }} />
   </div>
     </>
-  );
-}
-
-function HomeRow({
-  row,
-  theme,
-  flipped = false,
-}: {
-  row: (typeof ROWS)[number];
-  theme: ImageTheme | null;
-  flipped?: boolean;
-}) {
-  return (
-    <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
-      <div className="bk-spot-media hl-media">
-        <img src={row.image} alt={row.alt} loading="lazy" />
-        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-      </div>
-      <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
-        {theme && (
-          <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
-            <CaseStudyVisual slug={`home-row-${row.href.slice(1)}`} variant={2} speed={10} />
-          </div>
-        )}
-        <p className="lp-copy">{row.copy}</p>
-        <CtaLink href={row.href} label={row.cta} />
-        <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-      </div>
-    </article>
   );
 }

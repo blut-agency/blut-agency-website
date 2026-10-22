@@ -184,15 +184,28 @@
 }
 
 /* ---------- Intro and "Why blut" (white) ---------- */
+/* Compact: less space above and below than a full section. */
+.lp-intro,
+.lp-why {
+  --lp-section-pad: 64px;
+}
+
+@media screen and (max-width: 1279px) {
+  .lp-intro,
+  .lp-why {
+    --lp-section-pad: 48px;
+  }
+}
+
 .lp-intro {
-  padding-block: var(--lp-space);
+  padding-block: var(--lp-section-pad);
 }
 
 .lp-intro .lp-wrap {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: var(--lp-gap);
-  row-gap: var(--lp-stack);
+  row-gap: var(--lp-gap);
 }
 
 .lp-intro .lp-heading {
@@ -204,7 +217,7 @@
 }
 
 .lp-why {
-  padding-block: var(--lp-space);
+  padding-block: var(--lp-section-pad);
 }
 
 .lp-why .lp-wrap {
@@ -214,7 +227,7 @@
 }
 
 .lp-why .lp-panel {
-  margin-top: var(--lp-stack);
+  margin-top: var(--lp-gap);
 }
 
 /* ---------- Dark part: features and cases ---------- */
@@ -565,7 +578,7 @@
 
   .lp-why .lp-wrap {
     grid-template-columns: 1fr;
-    gap: var(--lp-stack);
+    gap: var(--lp-gap);
   }
 
   .lp-why .lp-panel {
