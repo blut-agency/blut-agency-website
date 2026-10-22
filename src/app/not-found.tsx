@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import LandingFooter from "@/components/LandingFooter";
 import RevealText from "@/components/RevealText";
 
 export default function NotFound() {
@@ -24,7 +24,7 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
-      <Footer />
+      <LandingFooter />
     </>
   );
 }

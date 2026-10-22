@@ -12,24 +12,48 @@
 */
 
 .lp-page {
-  --lp-max: 80rem;
-  --lp-gap: clamp(1rem, 3.33vw, 3rem);
-  --lp-gutter: max(1.5rem, (100% - var(--lp-max)) / 2);
-  --lp-space: clamp(3rem, 5.56vw, 5rem);
-  --lp-pad: clamp(1rem, 1.67vw, 1.5rem);
-  --lp-heading: clamp(2.5rem, 6.67vw, 6rem);
-  --lp-copy: clamp(1.375rem, 1rem + 1.1vw, 2rem);
+  --lp-max: 1280px; /* Figma content width; px because the root font size is fluid */
+  /* Sizes come from one stepped scale on an 8px grid (4, 8, 16, 24, 32, 48,
+     64, 96, 128, …), never fluid in-between values: three steps (desktop
+     from 1280px, tablet, phone), set here and below. In px because the
+     Webflow root font size is fluid. Roomier than the Figma frames (Nic,
+     19 Oct): sections 160px apart, headline → content 96px on desktop. */
+  --lp-gap: 48px;
+  --lp-gutter: max(24px, (100% - var(--lp-max)) / 2);
+  --lp-space: 160px;
+  --lp-stack: 96px;
+  --lp-pad: 32px;
+  --lp-heading: 96px;
+  --lp-hero: 128px;
+  --lp-copy: 32px;
+  --lp-client: 48px;
+  --lp-text: 16px;
   --lp-panel-light: #f5f5f5;
   --lp-panel-dark: #212121;
   --lp-text-secondary: #424242;
   --lp-muted: #a3a3a3;
-  --lp-band: clamp(3.5rem, 2.5rem + 2.8vw, 5rem);
+  --lp-band: 80px;
   background: var(--_color---white);
   color: var(--_color---copy-dark);
 }
 
+/* Tablet step. */
+@media screen and (max-width: 1279px) {
+  .lp-page {
+    --lp-gap: 32px;
+    --lp-space: 128px;
+    --lp-stack: 64px;
+    --lp-pad: 24px;
+    --lp-heading: 64px;
+    --lp-hero: 96px;
+    --lp-copy: 24px;
+    --lp-client: 32px;
+    --lp-band: 64px;
+  }
+}
+
 .lp-wrap {
-  width: min(100% - 3rem, var(--lp-max));
+  width: min(100% - 48px, var(--lp-max));
   margin-inline: auto;
 }
 
@@ -44,6 +68,14 @@
   height: 720px;
 }
 
+/* Same height as the page banners on every screen (blocks.css .bk-hero). */
+@media screen and (max-width: 767px) {
+  .lp-page .lp-stage .home-stage-wrapper {
+    min-height: 512px;
+    height: 512px;
+  }
+}
+
 /* The nav sits under the stage, then sticks to the top and stays there. */
 .lp-page .header {
   position: sticky;
@@ -56,9 +88,9 @@
 }
 
 .lp-page .navbar {
-  background-color: rgb(255 255 255 / 0.82);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background-color: var(--_color---white);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 /* ---------- Type ---------- */
@@ -105,35 +137,26 @@
   color: var(--lp-muted);
 }
 
-/* ---------- "— Label" link: the line stretches and an arrow slides in on hover ---------- */
+/* ---------- "— Label" link: the line stretches on hover; the arrow is in highlight.css ---------- */
 .lp-cta {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  min-height: 44px;
+  gap: 16px;
+  min-height: 48px;
   color: inherit;
-  font-size: var(--heading--s);
+  font-size: var(--lp-text);
   line-height: 1.55;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .lp-cta-line {
-  width: 1.5rem;
+  width: 24px;
   height: 1px;
   flex: none;
   background: currentColor;
   transition: width 0.5s var(--fx-ease, ease);
-}
-
-.lp-cta-text::after {
-  content: "→";
-  display: inline-block;
-  margin-left: 0.4em;
-  opacity: 0;
-  transform: translateX(-0.4em);
-  transition: opacity 0.4s ease, transform 0.5s var(--fx-ease, ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -149,13 +172,7 @@
 
   .lp-cta:hover .lp-cta-line,
   .lp-hover:hover .lp-cta-line {
-    width: 2.5rem;
-  }
-
-  .lp-cta:hover .lp-cta-text::after,
-  .lp-hover:hover .lp-cta-text::after {
-    opacity: 1;
-    transform: none;
+    width: 40px;
   }
 }
 
@@ -167,14 +184,28 @@
 }
 
 /* ---------- Intro and "Why blut" (white) ---------- */
+/* Compact: less space above and below than a full section. */
+.lp-intro,
+.lp-why {
+  --lp-section-pad: 64px;
+}
+
+@media screen and (max-width: 1279px) {
+  .lp-intro,
+  .lp-why {
+    --lp-section-pad: 48px;
+  }
+}
+
 .lp-intro {
-  padding-block: var(--lp-space);
+  padding-block: var(--lp-section-pad);
 }
 
 .lp-intro .lp-wrap {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--lp-gap);
+  column-gap: var(--lp-gap);
+  row-gap: var(--lp-gap);
 }
 
 .lp-intro .lp-heading {
@@ -186,7 +217,7 @@
 }
 
 .lp-why {
-  padding-block: var(--lp-space);
+  padding-block: var(--lp-section-pad);
 }
 
 .lp-why .lp-wrap {
@@ -196,7 +227,7 @@
 }
 
 .lp-why .lp-panel {
-  margin-top: clamp(2rem, 8.9vw, 8rem);
+  margin-top: var(--lp-gap);
 }
 
 /* ---------- Dark part: features and cases ---------- */
@@ -211,7 +242,14 @@
 }
 
 .lp-feature .lp-heading {
-  margin-bottom: var(--lp-gap);
+  margin-bottom: var(--lp-stack);
+}
+
+/* Mirrored feature: the headline sits right, over the photo (Landng v02). */
+@media screen and (min-width: 768px) {
+  .lp-feature.is-flipped .lp-heading {
+    text-align: right;
+  }
 }
 
 /* Photo from the screen edge across two columns, panel in the third. */
@@ -255,6 +293,18 @@
   grid-column: 2 / 3;
 }
 
+/* Only the photo and the text box react to the pointer, so the empty part
+   of the row (beside and under the box) doesn't trigger the hover. Each has
+   its own cover link. Hover fade + highlight: see highlight.css. */
+.lp-feature-row {
+  pointer-events: none;
+}
+
+.lp-feature-row > .lp-feature-media,
+.lp-feature-row > .lp-panel {
+  pointer-events: auto;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .lp-feature-row:hover .lp-feature-media img {
     transform: scale(1.03);
@@ -267,7 +317,7 @@
 }
 
 .lp-cases .lp-heading {
-  margin-bottom: var(--lp-gap);
+  margin-bottom: var(--lp-stack);
 }
 
 .lp-case-grid {
@@ -281,9 +331,9 @@
 }
 
 /* Offsets as drawn: 64px, 24px, 96px from the top. */
-.lp-case-grid > :nth-child(3n + 1) { padding-top: clamp(1.5rem, 4.44vw, 4rem); }
-.lp-case-grid > :nth-child(3n + 2) { padding-top: clamp(0.5rem, 1.67vw, 1.5rem); }
-.lp-case-grid > :nth-child(3n) { padding-top: clamp(2rem, 6.67vw, 6rem); }
+.lp-case-grid > :nth-child(3n + 1) { padding-top: 64px; }
+.lp-case-grid > :nth-child(3n + 2) { padding-top: 24px; }
+.lp-case-grid > :nth-child(3n) { padding-top: 96px; }
 
 .lp-case {
   position: relative;
@@ -309,15 +359,18 @@
   transition: transform 1.2s var(--fx-ease, ease);
 }
 
+/* Client name at the bottom left of the photo, inset from the bottom by the
+   same distance it used to have from the top. */
 .lp-case-client {
   position: absolute;
-  top: var(--lp-pad);
+  bottom: var(--lp-pad);
   left: 0;
+  z-index: 1;
   margin: 0;
-  padding: 0.5rem 1rem 0.5rem var(--lp-pad);
+  padding: 8px 24px 8px var(--lp-pad);
   background: var(--_color---white);
   color: var(--_color---copy-dark);
-  font-size: var(--lp-copy);
+  font-size: var(--lp-client);
   line-height: 1.15;
   transition: background-color 0.5s ease;
 }
@@ -329,7 +382,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 24px;
   aspect-ratio: 4 / 3;
   padding: var(--lp-pad);
 }
@@ -344,22 +397,22 @@
 .lp-case-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .lp-case-tags li {
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   border: 1px solid #eee;
   border-radius: 999px;
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1.15;
   transition: border-color 0.5s ease;
 }
 
-.lp-case-body .lp-cta {
+.lp-case-body .cta-row {
   margin-top: auto;
 }
 
@@ -386,10 +439,6 @@
 @media (hover: hover) and (pointer: fine) {
   .lp-case:hover .lp-case-visual {
     opacity: 1;
-  }
-
-  .lp-case:hover .lp-case-body {
-    color: var(--_color---copy-dark);
   }
 
   .lp-case:hover .lp-case-tags li {
@@ -461,8 +510,8 @@
 
 .lp-band-run {
   display: flex;
-  gap: calc(var(--lp-band) * 0.2);
-  padding-right: calc(var(--lp-band) * 0.2);
+  gap: var(--lp-gap);
+  padding-right: var(--lp-gap);
 }
 
 .lp-band-logo {
@@ -477,10 +526,12 @@
 }
 
 /* ---------- Footer: black, three columns ---------- */
+/* The band sits a full section gap below the content before it and close
+   to the footer text after it. */
 .lp-footer {
   background: var(--_color---copy-dark);
   color: var(--_color---copy-bright);
-  padding-block: var(--lp-space);
+  padding-block: var(--lp-stack) var(--lp-space);
 }
 
 .lp-footer .lp-wrap {
@@ -496,8 +547,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
-  font-size: var(--heading--m);
+  gap: 8px;
+  font-size: 24px;
   line-height: 1.35;
 }
 
@@ -514,11 +565,15 @@
 @media screen and (max-width: 991px) {
   .lp-case-grid {
     grid-template-columns: minmax(0, 1fr);
-    max-width: 30rem;
+    max-width: 480px;
   }
 
   .lp-case-grid > * {
     padding-top: 0 !important;
+  }
+
+  .lp-case-grid {
+    row-gap: var(--lp-stack);
   }
 
   .lp-why .lp-wrap {
@@ -537,14 +592,23 @@
    other (alternating sides), then the panel inset 24px on both sides. */
 @media screen and (max-width: 767px) {
   .lp-page {
-    --lp-gap: 1.5rem;
-    --lp-pad: 1.5rem;
-    --lp-heading: min(15.9vw, 4rem);
-    --lp-copy: clamp(1.625rem, 8vw, 2rem);
+    --lp-gap: 24px;
+    --lp-space: 96px;
+    --lp-stack: 64px;
+    --lp-pad: 24px;
+    --lp-heading: 48px;
+    --lp-hero: 48px;
+    --lp-copy: 24px;
+    --lp-client: 16px;
+    --lp-band: 48px;
   }
 
   .lp-heading.is-long-word {
-    font-size: min(13.5vw, 4rem);
+    font-size: 40px;
+  }
+
+  .lp-case-client {
+    padding: 8px 16px;
   }
 
   .lp-intro .lp-heading,
@@ -559,7 +623,7 @@
   .lp-feature-row,
   .lp-feature.is-flipped .lp-feature-row {
     grid-template-columns: var(--lp-gutter) minmax(0, 1fr) var(--lp-gutter);
-    row-gap: var(--lp-gap);
+    row-gap: var(--lp-pad);
   }
 
   .lp-feature-media {
@@ -579,6 +643,11 @@
 
   .lp-footer .lp-wrap {
     grid-template-columns: 1fr;
+    row-gap: var(--lp-stack);
+  }
+
+  .lp-footer-list {
+    font-size: 16px;
   }
 }
 

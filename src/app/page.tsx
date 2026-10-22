@@ -1,26 +1,22 @@
-import Link from "next/link";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import LogoBand from "@/components/LogoBand";
-import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
-import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
+import { CtaLink, TEXT_PARALLAX } from "@/components/Blocks";
+import HomeRow, { type HomeRowData } from "@/components/HomeRow";
+import { themesForImages } from "@/lib/imageTheme";
 
 // The three photo + panel features (Figma "Landng v02"). The photo runs from
 // the screen edge across two columns and the panel sits in the third; the
 // middle one is mirrored. Photos come from the Figma board's home mockup.
-const FEATURES: {
-  heading: string | string[];
-  copy: string;
-  href: string;
-  cta: string;
-  image: string;
-  alt: string;
-  /** Has a word too long for the phone headline size; shrink it there so it doesn't overflow. */
-  longWord?: boolean;
-}[] = [
+/*
+  Home rows as Elliot laid them out (Figma 267-1107), with the board's copy
+  changes: three 50/50 rows with no gaps, photo and black text box swapping
+  sides, the question at the top of the box and its link at the bottom.
+  Styled with the site's system (highlight.css hover, blocks.css .is-split).
+*/
+const ROWS: HomeRowData[] = [
   {
-    heading: ["Strategy, production", "& sound design"],
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
     href: "/work",
     cta: "See us in action",
@@ -28,76 +24,25 @@ const FEATURES: {
     alt: "Nina Chuba in the Samsung spot",
   },
   {
-    heading: "Music strategy and measurement.",
-    longWord: true,
-    copy: "Find out what your sound is really saying.",
+    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
     href: "/strategy",
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
   },
   {
-    heading: "Where strategy and music production come together.",
-    copy: "Over 400,000 streams in the first week.",
+    copy: "Music production, sound design, and 360° sonic strategy.",
     href: "/case-studies",
-    cta: "See our cases",
+    cta: "View our case studies",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
   },
 ];
 
-// "Check out some more:" cards, in the order the Figma frame shows them.
-const MORE_CASES = [
-  "wdr---re-arranging-perceptions",
-  "devils-advocate-brand-launch",
-  "volkswagen-bringing-it-all-back-home",
-];
-const CASE_TAGS = ["Sonic Strategy", "Artist Partnership"];
-
-/** "— Label" text link. The line stretches and an arrow slides in on hover. */
-function CtaLink({ href, label }: { href: string; label: string }) {
-  return (
-    <Link href={href} className="lp-cta">
-      <span className="lp-cta-line" aria-hidden="true" />
-      <span className="lp-cta-text">{label}</span>
-    </Link>
-  );
-}
-
-function CaseCard({ cs }: { cs: CaseStudy }) {
-  const href = `/project/${cs.slug}`;
-  const variant = visualVariant(cs.useVisual);
-  const accent = cs.color?.secondary ?? "var(--_color---accent-color-2)";
-  return (
-    <article className="lp-case lp-hover" style={{ ["--lp-case-accent" as string]: accent }}>
-      <div className="lp-case-media">
-        <img src={cs.thumbnail} alt="" loading="lazy" />
-        <p className="lp-case-client">{cs.teaserClient}</p>
-      </div>
-      <div className="lp-case-body">
-        <div
-          className="lp-case-visual"
-          aria-hidden="true"
-          style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
-        >
-          <CaseStudyVisual slug={`home-${cs.slug}`} variant={variant} speed={variant === 1 ? 8 : 10} />
-        </div>
-        <h3 className="lp-case-title">{cs.teaserCampaign}</h3>
-        <ul className="lp-case-tags" aria-label="Services">
-          {CASE_TAGS.map((tag) => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
-        <CtaLink href={href} label="Read more" />
-      </div>
-      <Link href={href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-    </article>
-  );
-}
-
-export default function HomePage() {
+export default async function HomePage() {
   const homeSound = getHomeSound();
-  const cases = MORE_CASES.map((slug) => getCaseStudyBySlug(slug)).filter((cs): cs is CaseStudy => Boolean(cs));
+  // Each row's hover highlight uses the CMS theme closest to its photo.
+  const themes = await themesForImages(ROWS.map((r) => r.image));
 
   return (
     <>
@@ -178,79 +123,39 @@ export default function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    {/* Intro: the question over two columns, the answer below it, shifted right. */}
+    {/* Intro: the claim over two columns, the answer below it, shifted right. */}
     <section className="lp-intro">
       <div className="lp-wrap">
         <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" />
         <div className="lp-panel">
           <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
-          <CtaLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
 
-    <LogoBand theme="brown-yellow" />
-
-    <div className="lp-dark">
-      {FEATURES.slice(0, 2).map((f, i) => (
-        <Feature key={f.href} feature={f} flipped={i % 2 === 1} />
-      ))}
-    </div>
-
-    <LogoBand theme="blue-violet" reverse />
-
-    <div className="lp-dark">
-      <Feature feature={FEATURES[2]} />
-
-      <section className="lp-cases">
-        <div className="lp-wrap">
-          <RevealText className="lp-heading" text="Check out some more:" />
-          <ul role="list" className="lp-case-grid">
-            {cases.map((cs) => (
-              <li key={cs.slug}>
-                <CaseCard cs={cs} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    </div>
-
-    <LogoBand theme="red-pink" />
+    <section className="bk-section is-dark">
+      <ul role="list" className="lp-wrap bk-mosaic is-spaced">
+        {ROWS.map((row, i) => (
+          <li key={row.href}>
+            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} />
+          </li>
+        ))}
+      </ul>
+    </section>
 
     {/* Why blut: the question on the left half, the answer lower on the right. */}
     <section className="lp-why">
       <div className="lp-wrap">
-        <RevealText className="lp-heading" text="Why do you need blut?" />
-        <div className="lp-panel">
+        <RevealText className="lp-heading" text="Why do you need blut?" parallax={TEXT_PARALLAX.heading} />
+        <div className="lp-panel" data-parallax={TEXT_PARALLAX.text}>
           <p className="lp-copy">We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll know you’ve made the right call.</p>
           <CtaLink href="/about" label="Get to know us" />
         </div>
       </div>
     </section>
 
-    <LandingFooter />
+    <LandingFooter band={{ background: "#ff0b0b", line: "var(--_color---accent-color-1)" }} />
   </div>
     </>
-  );
-}
-
-function Feature({ feature: f, flipped = false }: { feature: (typeof FEATURES)[number]; flipped?: boolean }) {
-  return (
-    <section className={`lp-feature${flipped ? " is-flipped" : ""}`}>
-      <div className="lp-wrap">
-        <RevealText className={`lp-heading${f.longWord ? " is-long-word" : ""}`} text={f.heading} />
-      </div>
-      <div className="lp-feature-row lp-hover">
-        <figure className="lp-feature-media">
-          <img src={f.image} alt={f.alt} loading="lazy" />
-        </figure>
-        <div className="lp-panel is-dark">
-          <p className="lp-copy">{f.copy}</p>
-          <CtaLink href={f.href} label={f.cta} />
-        </div>
-        <Link href={f.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
-      </div>
-    </section>
   );
 }

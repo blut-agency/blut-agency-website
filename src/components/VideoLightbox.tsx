@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import Button from "@/components/Button";
 
 /**
  * Full-screen video player: the video fills the available space at 16:9,
@@ -18,12 +19,15 @@ export default function VideoLightbox({
   title,
   vimeoId,
   poster,
+  accent,
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   vimeoId?: string;
   poster: string;
+  /** Hover colours for the close button, from the spot that opened it. */
+  accent?: { background: string; text: string };
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -48,11 +52,16 @@ export default function VideoLightbox({
 
   return createPortal(
     <div className="video-lightbox" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
-      <button ref={closeRef} type="button" className="video-lightbox-close" aria-label="Close video" onClick={onClose}>
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-      </button>
+      <Button
+        ref={closeRef}
+        variant="outline"
+        icon="close"
+        onDark
+        accent={accent}
+        className="video-lightbox-close"
+        aria-label="Close video"
+        onClick={onClose}
+      />
       <div className="video-lightbox-frame" onClick={(event) => event.stopPropagation()}>
         {vimeoId ? (
           <iframe
