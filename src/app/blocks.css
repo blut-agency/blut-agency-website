@@ -244,6 +244,32 @@
   transition: transform 1.2s var(--fx-ease, ease);
 }
 
+/* Hover loop over the still (WorkSpot `preview`): fades in once it is playing. */
+.bk-spot-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--fx-ease, ease);
+}
+
+.bk-spot-preview.is-playing {
+  opacity: 1;
+}
+
+/* A Vimeo loop is a 16:9 iframe, which can't object-fit: HoverClip sizes it
+   to cover the media box; centred here. */
+iframe.bk-spot-preview {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
 /* Client name at the bottom left of the photo, inset from the bottom by the
    same distance it used to have from the top. */
 .bk-spot-client {
@@ -291,9 +317,9 @@
 }
 
 /* Wide spot (Figma 244:1641): the text box sits on the photo, bottom right,
-   24px in and one column wide; "Play video" moves to the bottom left. On
-   phones the box drops below the photo again. */
-@media screen and (min-width: 768px) {
+   24px in and one column wide; "Play video" moves to the bottom left. Below
+   1024px a third is too narrow for the copy, so the box drops below the photo. */
+@media screen and (min-width: 1024px) {
   .bk-spot.is-wide .bk-spot-body.hl-panel {
     position: absolute;
     right: var(--lp-pad);
@@ -936,7 +962,17 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+/* Narrow desktops (1024-1279px): the text box is a third of a narrow row,
+   so the copy steps down to 16px and stays shorter than the photo. */
+@media screen and (min-width: 1024px) and (max-width: 1279px) {
+  .bk-spot.is-row .bk-spot-text {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+}
+
+/* Below 1024px rows stack, photo over text, like on phones. */
+@media screen and (max-width: 1023px) {
   .bk-spot.is-row,
   .bk-spot.is-row.is-flipped {
     grid-template-columns: minmax(0, 1fr);
@@ -1043,7 +1079,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .bk-contact-name:hover {
+  a.bk-contact-name:hover {
     background-size: 100% 1px;
   }
 }
@@ -1189,8 +1225,8 @@
 }
 
 /* Rows with the photo on the right: the client chip sits on the photo's
-   right edge, away from the text box. Phones stack the row, so it stays left. */
-@media screen and (min-width: 768px) {
+   right edge, away from the text box. Below 1024px the row stacks, so it stays left. */
+@media screen and (min-width: 1024px) {
   .bk-spot.is-row.is-flipped .bk-spot-client {
     left: auto;
     right: 0;
@@ -1407,3 +1443,48 @@
     border-color: var(--bk-btn-accent);
   }
 }
+
+
+/* >>> touch: centred card = hover (generated from the :hover rules above; see CenterHover.tsx) */
+@media (hover: none) {
+  .bk-section.is-dark :is(.lp-case, .bk-spot).is-centered .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .bk-spot.is-centered .bk-spot-play {
+    opacity: 1;
+  }
+
+  .bk-spot.is-centered .bk-spot-client {
+    background: var(--bk-accent);
+  }
+
+  .bk-spot.is-centered .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .bk-spot.is-centered .bk-spot-media img {
+    transform: scale(1.03);
+  }
+
+  .bk-spot.is-centered .lp-cta-line {
+    width: 40px;
+  }
+
+  .bk-spot.is-row.is-centered .bk-spot-body:not(.is-light-highlight),
+  .bk-spot.is-row.is-centered .bk-spot-body:not(.is-light-highlight) .bk-spot-text {
+    color: var(--_color---copy-bright);
+  }
+
+  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight,
+  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div) {
+    color: var(--_color---copy-dark);
+  }
+
+  .hl-row.is-centered .bk-btn.is-accent:not(:disabled, .is-disabled) {
+    background: var(--bk-btn-accent);
+    color: var(--bk-btn-accent-fg);
+    border-color: var(--bk-btn-accent);
+  }
+}
+/* <<< touch */

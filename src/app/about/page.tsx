@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import TeamOrbit from "@/components/TeamOrbit";
 import RevealText from "@/components/RevealText";
 import { CtaLink, PageHero } from "@/components/Blocks";
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
   title: "About Us – Meet the Team Behind blut’s Sonic Vision",
   description:
     "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
+  ...share({
+    title: "About – Meet the Team Behind blut’s Sonic Vision",
+    description: "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
+    path: "/about",
+  }),
 };
 
 /*
@@ -69,7 +75,7 @@ export default function AboutPage() {
                   <article className="lp-case lp-hover hl-row">
                     <div className="lp-case-media" style={{ background: theme.background }}>
                       <div className="bk-office-visual" aria-hidden="true" style={{ color: theme.line }}>
-                        <CaseStudyVisual slug={`office-${office.slug}`} variant={2} speed={10} />
+                        <CaseStudyVisual slug={`office-${office.slug}`} {...patternAt(i)} />
                       </div>
                     </div>
                     <div className="lp-case-body">

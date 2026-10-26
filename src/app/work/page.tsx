@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
@@ -10,6 +11,12 @@ export const metadata: Metadata = {
   title: "Work – A 360° Approach to Sonic Storytelling | blut",
   description:
     "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
+  ...share({
+    title: "Work – A 360° Approach to Sonic Storytelling",
+    description: "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
+    path: "/work",
+    image: { url: "/images/story/samsung-nina-chuba.jpg", alt: "Nina Chuba in the Samsung spot" },
+  }),
 };
 
 /*
@@ -29,8 +36,10 @@ export default async function WorkPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="work-hero"
-        heading="Work"
-        line="A 360 degree Approach to Sonic Storytelling"
+        heading="A 360° Approach to Sonic Storytelling"
+        // AI-written placeholder line (Oct 2026): replace, then drop lineAiDraft
+        lineAiDraft
+        line="Music production, sound design and everything around it, from the first idea to the final mix."
       />
       <Header variant="start-top" />
 
@@ -52,6 +61,7 @@ export default async function WorkPage() {
                 variant={item.layout === "wide" ? "wide" : "row"}
                 flipped={item.layout === "row-flipped"}
                 formId={`work-${i}`}
+                pattern={i}
               />
             </li>
           ))}

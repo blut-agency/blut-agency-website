@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AiDraftNote from "@/components/AiDraftNote";
 import type { ReactNode } from "react";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
 import CtaArrow from "@/components/CtaArrow";
@@ -61,6 +62,7 @@ export function PageHero({
   variant = 3,
   speed = 10,
   visualizationJson,
+  lineAiDraft = false,
 }: {
   /** One string, or one string per line. */
   heading: string | string[];
@@ -75,6 +77,8 @@ export function PageHero({
   variant?: 1 | 2 | 3;
   speed?: number;
   visualizationJson?: string;
+  /** The line is AI-written placeholder copy: shown in red with a note. */
+  lineAiDraft?: boolean;
 }) {
   return (
     <section className={`bk-hero${dark ? " is-dark-text" : ""}`} style={{ background }}>
@@ -91,7 +95,8 @@ export function PageHero({
       {line && (
         <div className="lp-wrap bk-lead">
           <div className="bk-lead-text">
-            <p className="lp-copy">{line}</p>
+            {lineAiDraft && <AiDraftNote>AI-generated placeholder line (in red), replace before launch.</AiDraftNote>}
+            <p className="lp-copy">{lineAiDraft ? <span className="ai-draft">{line}</span> : line}</p>
           </div>
         </div>
       )}
@@ -169,11 +174,8 @@ export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
             />
           </div>
           <div>
-            <p className="lp-copy">
-              <Link href={p.page} className="bk-contact-name">
-                {p.name}
-              </Link>
-            </p>
+            {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
+            <p className="lp-copy bk-contact-name">{p.name}</p>
             <p className="lp-copy bk-contact-role">{p.role}</p>
             <CtaLink href={`mailto:${p.mail}`} label="Mail" />
           </div>

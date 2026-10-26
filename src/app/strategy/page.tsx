@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import WorkSpot from "@/components/WorkSpot";
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   title: "Strategy – Find out what your sound is really saying | blut",
   description:
     "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences, then construct an action plan to get your brand on the right path.",
+  ...share({
+    title: "Strategy – Find out what your sound is really saying",
+    description: "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences, then construct an action plan to get your brand on the right path.",
+    path: "/strategy",
+    image: { url: "/images/spt/sales-video-poster.jpg", alt: "The Sonic Performance Tracker" },
+  }),
 };
 
 /*
@@ -38,7 +45,7 @@ export default async function StrategyPage() {
       <Header variant="start-top" />
 
       {/* The Sonic Performance Tracker sales video, full width (board node 85:2362),
-          as the Work page's wide spot. Plays once a Vimeo ID is set. */}
+          as the Work page's wide spot. Self-hosted for now (Nic's cutdown, Oct 2026). */}
       <section className="bk-section">
         <div className="lp-wrap">
           <WorkSpot
@@ -48,6 +55,8 @@ export default async function StrategyPage() {
             spot={{
               client: "Sonic Performance Tracker",
               image: SALES_VIDEO,
+              videoUrl: "/videos/spt-sales.mp4",
+              preview: "/videos/previews/spt-dashboard.mp4",
               text: "See how the Sonic Performance Tracker shows what your sound is really saying.",
             }}
           />

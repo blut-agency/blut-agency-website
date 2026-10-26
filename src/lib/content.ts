@@ -14,8 +14,16 @@ export interface CaseStudyColor {
 
 export interface CaseStudyMedia {
   vimeoId: string;
+  /** Self-hosted audio file (mp3), used when there is no Vimeo ID. */
+  url?: string;
   title: string;
   subline: string;
+}
+
+/** Self-hosted video file with its poster still, used when there is no Vimeo ID. */
+export interface CaseStudyVideoFile {
+  url: string;
+  poster: string;
 }
 
 export interface CaseStudy {
@@ -45,6 +53,13 @@ export interface CaseStudy {
   video1VimeoId: string;
   video2VimeoId: string;
   video3VimeoId: string;
+  /** Self-hosted videos, shown after the Vimeo ones in the same layout. */
+  videoFiles?: CaseStudyVideoFile[];
+  /** The page's copy is AI-written placeholder text: shown in red with a note. */
+  aiDraftCopy?: boolean;
+  /** Short silent hover loop on the case's card: a video file, or a Vimeo ID. */
+  previewUrl?: string;
+  previewVimeoId?: string;
   gallery2: string[];
   awards: CaseStudyAward[];
   nextCaseStudySlug: string;

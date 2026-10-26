@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import VideoLightbox from "@/components/VideoLightbox";
+import HoverClip from "@/components/HoverClip";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
 import { CtaLink } from "@/components/Blocks";
 import Button from "@/components/Button";
@@ -16,6 +17,10 @@ export type WorkSpotData = {
   title?: string;
   tags?: string[];
   vimeoId?: string;
+  /** Self-hosted mp4, played in the lightbox when there is no Vimeo ID. */
+  videoUrl?: string;
+  /** Short silent loop that plays over the still while the spot is hovered. */
+  preview?: string;
   /** Slug of the case study that belongs to this spot: adds "— See case". */
   caseSlug?: string;
 };
@@ -41,6 +46,7 @@ export default function WorkSpot({
   variant,
   flipped = false,
   formId,
+  pattern = 0,
 }: {
   spot: WorkSpotData;
   theme: ImageTheme | null;
@@ -50,6 +56,8 @@ export default function WorkSpot({
   flipped?: boolean;
   /** Unique per page: embeds.js animates each highlight visual by it. */
   formId: string;
+  /** Position in the list: picks the highlight's shape and tempo. */
+  pattern?: number;
 }) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -58,6 +66,7 @@ export default function WorkSpot({
     buttonRef.current?.focus();
   }, []);
   const play = () => setOpen(true);
+
 
   const accent = theme?.background ?? "var(--_color---accent-color-2)";
   // Buttons on the spot take its highlight colour on hover, like the chip.
@@ -80,6 +89,7 @@ export default function WorkSpot({
     >
       <div className="bk-spot-media hl-media">
         <img src={spot.image} alt="" loading="lazy" />
+        {spot.preview && <HoverClip src={spot.preview} />}
         <p className="bk-spot-client">{spot.client}</p>
         {inline ? (
           <>
@@ -145,7 +155,7 @@ export default function WorkSpot({
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         {theme && (
           <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
-            <CaseStudyVisual slug={formId} variant={2} speed={10} />
+            <CaseStudyVisual slug={formId} {...patternAt(pattern)} />
           </div>
         )}
         {spot.title && <h3 className="bk-spot-title">{spot.title}</h3>}
@@ -170,6 +180,7 @@ export default function WorkSpot({
           onClose={close}
           title={`${spot.client} spot`}
           vimeoId={spot.vimeoId}
+          videoUrl={spot.videoUrl}
           poster={spot.image}
           accent={buttonAccent}
         />

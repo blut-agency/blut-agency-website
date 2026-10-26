@@ -658,3 +658,40 @@
     animation: none;
   }
 }
+
+
+/* >>> touch: centred card = hover (generated from the :hover rules above; see CenterHover.tsx) */
+@media (hover: none) {
+  .lp-hover.is-centered .lp-cta {
+    color: inherit;
+  }
+
+  .lp-hover.is-centered .lp-panel.is-dark .lp-cta {
+    color: var(--_color---copy-bright);
+  }
+
+  .lp-hover.is-centered .lp-cta-line {
+    width: 40px;
+  }
+
+  .lp-feature-row.is-centered .lp-feature-media img {
+    transform: scale(1.03);
+  }
+
+  .lp-case.is-centered .lp-case-visual {
+    opacity: 1;
+  }
+
+  .lp-case.is-centered .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .lp-case.is-centered .lp-case-client {
+    background: var(--lp-case-accent);
+  }
+
+  .lp-case.is-centered .lp-case-media img {
+    transform: scale(1.04);
+  }
+}
+/* <<< touch */

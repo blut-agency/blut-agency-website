@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
+import CenterHover from "@/components/CenterHover";
 import MotionLayer from "@/components/MotionLayer";
 import "./globals.css";
 import "./landing.css";
@@ -12,6 +14,12 @@ export const metadata: Metadata = {
   title: "blut – Music Strategies with Measurable Impact | Sonic Branding Agency",
   description:
     "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
+  ...share({
+    title: "blut – Music Strategies with Measurable Impact",
+    description:
+      "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
+    path: "/",
+  }),
   icons: {
     icon: "/images/favicon.png",
     apple: "/images/webclip.png",
@@ -30,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <PageTransition />
+        <CenterHover />
         <MotionLayer />
         {children}
         <noscript>
@@ -44,9 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           strategy="beforeInteractive"
         />
         <Script src="/js/webflow.js" strategy="afterInteractive" />
-        <Script src="https://cdn.prod.website-files.com/gsap/3.15.0/gsap.min.js" strategy="beforeInteractive" />
+        <Script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" strategy="beforeInteractive" />
         <Script
-          src="https://cdn.prod.website-files.com/gsap/3.15.0/MorphSVGPlugin.min.js"
+          src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"
           strategy="beforeInteractive"
         />
         <Script id="gsap-register" strategy="beforeInteractive">

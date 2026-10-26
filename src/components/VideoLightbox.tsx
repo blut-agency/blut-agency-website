@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Button from "@/components/Button";
+import FilePlayer from "@/components/FilePlayer";
 
 /**
  * Full-screen video player: the video fills the available space at 16:9,
@@ -11,13 +12,15 @@ import Button from "@/components/Button";
  * to itself in onClose (a clicked button isn't focused in every browser).
  *
  * Rendered into <body> so it sits above the header and the page transition
- * wrapper. Without a Vimeo ID it shows the still with "Video coming soon".
+ * wrapper. Plays a Vimeo ID or, failing that, a video file; with neither it
+ * shows the still with "Video coming soon".
  */
 export default function VideoLightbox({
   open,
   onClose,
   title,
   vimeoId,
+  videoUrl,
   poster,
   accent,
 }: {
@@ -25,6 +28,8 @@ export default function VideoLightbox({
   onClose: () => void;
   title: string;
   vimeoId?: string;
+  /** Direct video file (mp4), used when there is no Vimeo ID. */
+  videoUrl?: string;
   poster: string;
   /** Hover colours for the close button, from the spot that opened it. */
   accent?: { background: string; text: string };
@@ -70,6 +75,8 @@ export default function VideoLightbox({
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
           />
+        ) : videoUrl ? (
+          <FilePlayer src={videoUrl} poster={poster} title={title} autoPlay accent={accent} />
         ) : (
           <>
             <img src={poster} alt="" className="fit-cover-absolute" />

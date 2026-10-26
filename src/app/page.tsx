@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { getHomeSound } from "@/lib/content";
@@ -15,6 +17,17 @@ import { themesForImages } from "@/lib/imageTheme";
   sides, the question at the top of the box and its link at the bottom.
   Styled with the site's system (highlight.css hover, blocks.css .is-split).
 */
+export const metadata: Metadata = {
+  description:
+    "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
+  ...share({
+    title: "blut – Music Strategies with Measurable Impact",
+    description:
+      "Music production, sound design and 360° sonic strategy: blut is a music-led creative agency from Hamburg, Berlin and Munich.",
+    path: "/",
+  }),
+};
+
 const ROWS: HomeRowData[] = [
   {
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
@@ -22,6 +35,7 @@ const ROWS: HomeRowData[] = [
     cta: "See us in action",
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
+    preview: "/videos/previews/samsung-nina-chuba.mp4",
   },
   {
     copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
@@ -29,6 +43,7 @@ const ROWS: HomeRowData[] = [
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
+    preview: "/videos/previews/spt-dashboard.mp4",
   },
   {
     copy: "Music production, sound design, and 360° sonic strategy.",
@@ -36,6 +51,8 @@ const ROWS: HomeRowData[] = [
     cta: "View our case studies",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
+    // The loop above "#sogumm #DJ Seinfeld" on the Hyundai case page.
+    previewVimeoId: "1090418649",
   },
 ];
 
@@ -137,7 +154,7 @@ export default async function HomePage() {
       <ul role="list" className="lp-wrap bk-mosaic is-spaced">
         {ROWS.map((row, i) => (
           <li key={row.href}>
-            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} />
+            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} pattern={i} />
           </li>
         ))}
       </ul>

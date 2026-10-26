@@ -127,3 +127,30 @@
 .fx-rise.is-in {
   animation: fx-rise-in 0.9s var(--fx-ease, ease) both;
 }
+
+
+/* >>> touch: centred card = hover (generated from the :hover rules above; see CenterHover.tsx) */
+@media (hover: none) {
+  .hl-row.is-centered .hl-media img {
+    opacity: 0.85;
+  }
+
+  .hl-row.is-centered .hl-visual {
+    opacity: 1;
+  }
+
+  .hl-row.is-centered .hl-panel.is-light-highlight,
+  .hl-row.is-centered .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div) {
+    color: var(--_color---copy-dark);
+  }
+
+  .hl-row.is-centered .hl-panel.is-light-highlight .cta-link-line {
+    background-color: currentColor;
+  }
+
+  :is(.hl-row, .lp-hover, .cta-row).is-centered .cta-arrow {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+/* <<< touch */
