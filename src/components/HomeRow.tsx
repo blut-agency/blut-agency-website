@@ -1,9 +1,18 @@
 import Link from "next/link";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
+import HoverClip from "@/components/HoverClip";
 import { CtaLink } from "@/components/Blocks";
 import type { ImageTheme } from "@/lib/imageTheme";
 
-export type HomeRowData = { copy: string; href: string; cta: string; image: string; alt: string };
+export type HomeRowData = {
+  copy: string;
+  href: string;
+  cta: string;
+  image: string;
+  alt: string;
+  /** Short silent loop that plays over the photo on hover. */
+  preview?: string;
+};
 
 /**
  * A Home row (Figma 267-1107): photo and black text box side by side, 50/50,
@@ -23,6 +32,7 @@ export default function HomeRow({
     <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
       <div className="bk-spot-media hl-media">
         <img src={row.image} alt={row.alt} loading="lazy" />
+        {row.preview && <HoverClip src={row.preview} />}
         <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
       </div>
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>

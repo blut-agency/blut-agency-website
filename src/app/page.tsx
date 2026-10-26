@@ -22,6 +22,7 @@ const ROWS: HomeRowData[] = [
     cta: "See us in action",
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
+    preview: "/videos/previews/samsung-nina-chuba.mp4",
   },
   {
     copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
@@ -36,6 +37,7 @@ const ROWS: HomeRowData[] = [
     cta: "View our case studies",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
+    preview: "/videos/previews/geramont-sommerregen.mp4",
   },
 ];
 

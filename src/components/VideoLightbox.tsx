@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Button from "@/components/Button";
+import FilePlayer from "@/components/FilePlayer";
 
 /**
  * Full-screen video player: the video fills the available space at 16:9,
@@ -75,7 +76,7 @@ export default function VideoLightbox({
             allowFullScreen
           />
         ) : videoUrl ? (
-          <video src={videoUrl} poster={poster} title={title} controls autoPlay playsInline />
+          <FilePlayer src={videoUrl} poster={poster} title={title} autoPlay />
         ) : (
           <>
             <img src={poster} alt="" className="fit-cover-absolute" />

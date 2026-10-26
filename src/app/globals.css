@@ -125,6 +125,65 @@
   border: 0;
 }
 
+/* Opening: the backdrop fades in, the player rises and grows into place. */
+.video-lightbox {
+  animation: video-lightbox-fade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.video-lightbox-frame,
+.video-lightbox-close {
+  animation: video-lightbox-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+@keyframes video-lightbox-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes video-lightbox-rise {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-lightbox,
+  .video-lightbox-frame,
+  .video-lightbox-close {
+    animation: none;
+  }
+}
+
+/* FilePlayer (case-page player for video files): fills its frame. */
+.file-player {
+  position: absolute;
+  inset: 0;
+}
+
+.file-player .play-toggle-big {
+  inset: 0;
+  border: 0;
+  background: transparent;
+  color: var(--_color---copy-bright);
+  cursor: pointer;
+}
+
+.file-player-controls {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  padding: var(--spacing--l);
+}
+
+.file-player .play-toggle {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
 .video-lightbox-status {
   position: absolute;
   left: 0;
