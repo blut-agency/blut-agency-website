@@ -28,6 +28,7 @@ export default function HoverClip({ src, vimeoId }: { src?: string; vimeoId?: st
   const playerRef = useRef<VimeoPlayer | null>(null);
   const [embed, setEmbed] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [cover, setCover] = useState<{ width: number; height: number } | null>(null);
   const hovered = useRef(false);
 
   useEffect(() => {
@@ -66,6 +67,20 @@ export default function HoverClip({ src, vimeoId }: { src?: string; vimeoId?: st
     };
   }, [vimeoId]);
 
+  // The 16:9 iframe can't object-fit: size it to cover the media box.
+  useEffect(() => {
+    const box = frameRef.current?.parentElement;
+    if (!embed || !box) return;
+    const fit = () => {
+      const { width, height } = box.getBoundingClientRect();
+      setCover({ width: Math.max(width, (height * 16) / 9), height: Math.max(height, (width * 9) / 16) });
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(box);
+    return () => observer.disconnect();
+  }, [embed]);
+
   if (vimeoId) {
     return (
       <>
@@ -79,6 +94,7 @@ export default function HoverClip({ src, vimeoId }: { src?: string; vimeoId?: st
             aria-hidden="true"
             tabIndex={-1}
             allow="autoplay"
+            style={cover ?? undefined}
             onLoad={() => {
               if (frameRef.current && window.Vimeo && !playerRef.current) {
                 playerRef.current = new window.Vimeo.Player(frameRef.current);

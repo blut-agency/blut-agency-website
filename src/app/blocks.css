@@ -261,18 +261,12 @@
   opacity: 1;
 }
 
-/* A Vimeo loop is a 16:9 iframe, which can't object-fit: size it to cover the
-   media box (any shape) from the box's own dimensions, centred. */
-.bk-spot-media:has(> iframe.bk-spot-preview) {
-  container-type: size;
-}
-
+/* A Vimeo loop is a 16:9 iframe, which can't object-fit: HoverClip sizes it
+   to cover the media box; centred here. */
 iframe.bk-spot-preview {
   inset: auto;
   top: 50%;
   left: 50%;
-  width: max(100cqw, 100cqh * 16 / 9);
-  height: max(100cqh, 100cqw * 9 / 16);
   translate: -50% -50%;
 }
 
