@@ -244,6 +244,22 @@
   transition: transform 1.2s var(--fx-ease, ease);
 }
 
+/* Hover loop over the still (WorkSpot `preview`): fades in once it is playing. */
+.bk-spot-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--fx-ease, ease);
+}
+
+.bk-spot-preview.is-playing {
+  opacity: 1;
+}
+
 /* Client name at the bottom left of the photo, inset from the bottom by the
    same distance it used to have from the top. */
 .bk-spot-client {

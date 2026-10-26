@@ -18,6 +18,8 @@ export type WorkSpotData = {
   vimeoId?: string;
   /** Self-hosted mp4, played in the lightbox when there is no Vimeo ID. */
   videoUrl?: string;
+  /** Short silent loop that plays over the still while the spot is hovered. */
+  preview?: string;
   /** Slug of the case study that belongs to this spot: adds "— See case". */
   caseSlug?: string;
 };
@@ -61,6 +63,20 @@ export default function WorkSpot({
   }, []);
   const play = () => setOpen(true);
 
+  // Hover loop: only with a real hover pointer and without reduced motion.
+  const previewRef = useRef<HTMLVideoElement>(null);
+  const startPreview = () => {
+    const video = previewRef.current;
+    if (!video || !window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) return;
+    video.play().catch(() => {});
+  };
+  const stopPreview = () => {
+    const video = previewRef.current;
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
+  };
+
   const accent = theme?.background ?? "var(--_color---accent-color-2)";
   // Buttons on the spot take its highlight colour on hover, like the chip.
   const buttonAccent = {
@@ -79,9 +95,25 @@ export default function WorkSpot({
     <article
       className={`bk-spot is-${variant}${flipped ? " is-flipped" : ""} hl-row`}
       style={{ ["--bk-accent" as string]: accent }}
+      onMouseEnter={spot.preview ? startPreview : undefined}
+      onMouseLeave={spot.preview ? stopPreview : undefined}
     >
       <div className="bk-spot-media hl-media">
         <img src={spot.image} alt="" loading="lazy" />
+        {spot.preview && (
+          <video
+            ref={previewRef}
+            className="bk-spot-preview"
+            src={spot.preview}
+            muted
+            loop
+            playsInline
+            preload="none"
+            aria-hidden="true"
+            onPlaying={(e) => e.currentTarget.classList.add("is-playing")}
+            onPause={(e) => e.currentTarget.classList.remove("is-playing")}
+          />
+        )}
         <p className="bk-spot-client">{spot.client}</p>
         {inline ? (
           <>
