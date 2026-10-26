@@ -16,6 +16,8 @@ export type WorkSpotData = {
   title?: string;
   tags?: string[];
   vimeoId?: string;
+  /** Self-hosted mp4, played in the lightbox when there is no Vimeo ID. */
+  videoUrl?: string;
   /** Slug of the case study that belongs to this spot: adds "— See case". */
   caseSlug?: string;
 };
@@ -170,6 +172,7 @@ export default function WorkSpot({
           onClose={close}
           title={`${spot.client} spot`}
           vimeoId={spot.vimeoId}
+          videoUrl={spot.videoUrl}
           poster={spot.image}
           accent={buttonAccent}
         />

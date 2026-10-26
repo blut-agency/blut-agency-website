@@ -6,7 +6,7 @@ import LandingFooter from "@/components/LandingFooter";
 import CaseCard, { listItems } from "@/components/CaseCard";
 import { ContactBlock, PageHero } from "@/components/Blocks";
 import { themeFromColors } from "@/lib/imageTheme";
-import { getCaseStudies, getCaseStudyBySlug } from "@/lib/content";
+import { getCaseStudies, getCaseStudyBySlug, type CaseStudyVideoFile } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
 import Button from "@/components/Button";
@@ -283,27 +283,31 @@ export default async function CaseStudyDetailPage({
           </section>
         )}
 
-        {cs.audioPlayer1.vimeoId && (
+        {(cs.audioPlayer1.vimeoId || cs.audioPlayer1.url) && (
           <section className="section-project-audio-player-1">
             <div className="_2-column-grid">
               <div className="grid-item is-media">
                 <div className="audio-preview-embed hide w-embed w-iframe">
-                  <iframe
-                    id={`${cs.slug}-audio-1`}
-                    title=""
-                    src={vimeoSrc(cs.audioPlayer1.vimeoId)}
-                    frameBorder="0"
-                    allow="autoplay"
-                    allowFullScreen
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      pointerEvents: "none",
-                    }}
-                  />
+                  {cs.audioPlayer1.url ? (
+                    <audio id={`${cs.slug}-audio-1`} src={cs.audioPlayer1.url} preload="metadata" />
+                  ) : (
+                    <iframe
+                      id={`${cs.slug}-audio-1`}
+                      title=""
+                      src={vimeoSrc(cs.audioPlayer1.vimeoId)}
+                      frameBorder="0"
+                      allow="autoplay"
+                      allowFullScreen
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
                 </div>
                 <div
                   className="audio-preview-visual-wrapper"
@@ -357,7 +361,7 @@ export default async function CaseStudyDetailPage({
           </section>
         )}
 
-        {cs.audioPlayer2.vimeoId && (
+        {(cs.audioPlayer2.vimeoId || cs.audioPlayer2.url) && (
           <section className="section-project-audio-player-2">
             <div className="_2-column-grid">
               <div className="grid-item is-player">
@@ -396,22 +400,26 @@ export default async function CaseStudyDetailPage({
               </div>
               <div className="grid-item is-media">
                 <div className="audio-preview-embed hide w-embed w-iframe">
-                  <iframe
-                    id={`${cs.slug}-audio-2`}
-                    title=""
-                    src={vimeoSrc(cs.audioPlayer2.vimeoId)}
-                    frameBorder="0"
-                    allow="autoplay"
-                    allowFullScreen
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      pointerEvents: "none",
-                    }}
-                  />
+                  {cs.audioPlayer2.url ? (
+                    <audio id={`${cs.slug}-audio-2`} src={cs.audioPlayer2.url} preload="metadata" />
+                  ) : (
+                    <iframe
+                      id={`${cs.slug}-audio-2`}
+                      title=""
+                      src={vimeoSrc(cs.audioPlayer2.vimeoId)}
+                      frameBorder="0"
+                      allow="autoplay"
+                      allowFullScreen
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
                 </div>
                 <div
                   className="audio-preview-visual-wrapper is-player-2"
@@ -464,9 +472,13 @@ export default async function CaseStudyDetailPage({
           </section>
         )}
 
-        {[cs.video1VimeoId, cs.video2VimeoId, cs.video3VimeoId].map(
-          (vimeoId, i) =>
-            vimeoId && (
+        {[
+          ...[cs.video1VimeoId, cs.video2VimeoId, cs.video3VimeoId]
+            .filter(Boolean)
+            .map((vimeoId) => ({ vimeoId, file: undefined as CaseStudyVideoFile | undefined })),
+          ...(cs.videoFiles ?? []).map((file) => ({ vimeoId: "", file })),
+        ].map(
+          ({ vimeoId, file }, i) => (
               <section className={`section-project-video-${i + 1}`} key={i}>
                 {i > 0 && (
                   <div
@@ -475,22 +487,41 @@ export default async function CaseStudyDetailPage({
                   />
                 )}
                 <div className="video-16-9 w-embed w-iframe">
-                  <iframe
-                    id={`${cs.slug}-video-${i + 1}`}
-                    title=""
-                    src={vimeoSrc(vimeoId)}
-                    frameBorder="0"
-                    allow="autoplay"
-                    allowFullScreen
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      pointerEvents: "none",
-                    }}
-                  />
+                  {file ? (
+                    <video
+                      id={`${cs.slug}-video-${i + 1}`}
+                      src={file.url}
+                      poster={file.poster}
+                      preload="none"
+                      playsInline
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <iframe
+                      id={`${cs.slug}-video-${i + 1}`}
+                      title=""
+                      src={vimeoSrc(vimeoId)}
+                      frameBorder="0"
+                      allow="autoplay"
+                      allowFullScreen
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
                 </div>
                 <button
                   data-player="play-button-big"
