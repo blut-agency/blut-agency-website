@@ -37,7 +37,7 @@ const ROWS: HomeRowData[] = [
     cta: "View our case studies",
     image: "/images/home/teaser-cases.jpg",
     alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    preview: "/videos/previews/geramont-sommerregen.mp4",
+    preview: "/videos/previews/hyundai-inster.mp4",
   },
 ];
 
