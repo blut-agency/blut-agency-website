@@ -169,11 +169,8 @@ export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
             />
           </div>
           <div>
-            <p className="lp-copy">
-              <Link href={p.page} className="bk-contact-name">
-                {p.name}
-              </Link>
-            </p>
+            {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
+            <p className="lp-copy bk-contact-name">{p.name}</p>
             <p className="lp-copy bk-contact-role">{p.role}</p>
             <CtaLink href={`mailto:${p.mail}`} label="Mail" />
           </div>

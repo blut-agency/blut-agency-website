@@ -29,8 +29,9 @@ export default async function WorkPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="work-hero"
-        heading="Work"
-        line="A 360 degree Approach to Sonic Storytelling"
+        heading="A 360° Approach to Sonic Storytelling"
+        // DRAFT line (suggested in the thread, Oct 2026): confirm with Nic
+        line="Music production, sound design and everything around it, from the first idea to the final mix."
       />
       <Header variant="start-top" />
 
