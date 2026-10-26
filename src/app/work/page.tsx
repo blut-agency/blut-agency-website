@@ -53,6 +53,7 @@ export default async function WorkPage() {
                 variant={item.layout === "wide" ? "wide" : "row"}
                 flipped={item.layout === "row-flipped"}
                 formId={`work-${i}`}
+                pattern={i}
               />
             </li>
           ))}

@@ -100,6 +100,21 @@ const SHAPES: Record<
 };
 
 /** `useVisual` flags -> the visual-<n>-size variant the live site renders. */
+/**
+ * Shape and tempo for the hover highlights in a list (Work spots, Home rows,
+ * case cards, offices): the n-th card takes the n-th pair, so neighbours never
+ * share a shape or a speed.
+ */
+const PATTERNS: { variant: Variant; speed: number }[] = [
+  { variant: 1, speed: 8 },
+  { variant: 2, speed: 12 },
+  { variant: 3, speed: 10 },
+];
+
+export function patternAt(n: number) {
+  return PATTERNS[((n % PATTERNS.length) + PATTERNS.length) % PATTERNS.length];
+}
+
 export function visualVariant(useVisual: boolean[]): Variant {
   const i = useVisual.findIndex(Boolean);
   const n = (i < 0 ? 0 : i) + 1;

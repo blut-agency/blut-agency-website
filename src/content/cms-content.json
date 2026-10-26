@@ -54,7 +54,8 @@
       "nextCaseStudySlug": "devils-advocate-brand-launch",
       "teaserClient": "Hyundai Insterstudios",
       "teaserCampaign": "Inster EV Launch",
-      "thumbnail": "/images/home/teaser-cases.jpg"
+      "thumbnail": "/images/home/teaser-cases.jpg",
+      "previewVimeoId": "1090418649"
     },
     {
       "slug": "devils-advocate-brand-launch",
@@ -112,7 +113,8 @@
       "nextCaseStudySlug": "feel-the-vibe",
       "teaserClient": "Devil’s Advocate",
       "teaserCampaign": "Brand Launch",
-      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e7946dbb7efe126e47bf0_devils_advocate01.webp"
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e7946dbb7efe126e47bf0_devils_advocate01.webp",
+      "previewVimeoId": "1096889748"
     },
     {
       "slug": "feel-the-vibe",
@@ -226,7 +228,8 @@
           "url": "/videos/cases/postbank-soundlogo.mp4",
           "poster": "/images/cases/postbank-soundlogo.jpg"
         }
-      ]
+      ],
+      "previewUrl": "/videos/previews/postbank-regentropfen.mp4"
     },
     {
       "slug": "reinventing-a-classic",
@@ -287,7 +290,8 @@
           "url": "/videos/cases/geramont-classic.mp4",
           "poster": "/images/cases/geramont-classic.jpg"
         }
-      ]
+      ],
+      "previewUrl": "/videos/previews/geramont-sommerregen.mp4"
     },
     {
       "slug": "wdr---re-arranging-perceptions",
@@ -346,7 +350,8 @@
       "nextCaseStudySlug": "volkswagen-bringing-it-all-back-home",
       "teaserClient": "WDR",
       "teaserCampaign": "Re:arranged",
-      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e659c2cc06d34f495fef3_WDR_Funkhaus_Orchester6.webp"
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/685e659c2cc06d34f495fef3_WDR_Funkhaus_Orchester6.webp",
+      "previewVimeoId": "1095948103"
     },
     {
       "slug": "volkswagen-bringing-it-all-back-home",
@@ -420,7 +425,8 @@
       "nextCaseStudySlug": "invention-is-instrumental",
       "teaserClient": "Volkswagen",
       "teaserCampaign": "VW Polo x Beats by Dre",
-      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68402c64abd06279af081021_1.webp"
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68402c64abd06279af081021_1.webp",
+      "previewUrl": "/videos/previews/vw-beats.mp4"
     },
     {
       "slug": "invention-is-instrumental",
@@ -501,7 +507,8 @@
       "nextCaseStudySlug": "hyundai-are-you-in",
       "teaserClient": "Schüco",
       "teaserCampaign": "Das Schücophon",
-      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68346509fa40ff318350bc05_1.webp"
+      "thumbnail": "https://cdn.prod.website-files.com/683078bb38d3d90622da1e51/68346509fa40ff318350bc05_1.webp",
+      "previewVimeoId": "1090421907"
     }
   ],
   "locations": [

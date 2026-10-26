@@ -14,7 +14,7 @@ const canPreview = () => window.matchMedia("(hover: hover) and (prefers-reduced-
 
 /**
  * Short silent loop over a spot's still (Work cards, Home rows): plays while
- * the surrounding `.bk-spot` is hovered, fades in once it is playing and
+ * the surrounding card (`.hl-row`) is hovered, fades in once it is playing and
  * resets on leave. Loads nothing until the first hover; stays off on touch
  * screens and with reduced motion. Styles: blocks.css (.bk-spot-preview).
  *
@@ -32,7 +32,7 @@ export default function HoverClip({ src, vimeoId }: { src?: string; vimeoId?: st
   const hovered = useRef(false);
 
   useEffect(() => {
-    const spot = (ref.current ?? anchorRef.current)?.closest(".bk-spot");
+    const spot = (ref.current ?? anchorRef.current)?.closest(".hl-row");
     if (!spot) return;
     const start = () => {
       if (!canPreview()) return;

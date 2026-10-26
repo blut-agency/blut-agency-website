@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import TeamOrbit from "@/components/TeamOrbit";
 import RevealText from "@/components/RevealText";
 import { CtaLink, PageHero } from "@/components/Blocks";
@@ -20,13 +20,6 @@ export const metadata: Metadata = {
 */
 
 // Each office card's visual, in one of the site's colour themes.
-/** Each office its own shape and tempo, as on the original site's office cards. */
-const OFFICE_MOTION: { variant: 1 | 2 | 3; speed: number }[] = [
-  { variant: 1, speed: 8 },
-  { variant: 2, speed: 12 },
-  { variant: 3, speed: 10 },
-];
-
 const OFFICE_THEMES: Record<string, { background: string; line: string }> = {
   hamburg: { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
   berlin: { background: "#7a3bff", line: "#02b7fd" },
@@ -76,7 +69,7 @@ export default function AboutPage() {
                   <article className="lp-case lp-hover hl-row">
                     <div className="lp-case-media" style={{ background: theme.background }}>
                       <div className="bk-office-visual" aria-hidden="true" style={{ color: theme.line }}>
-                        <CaseStudyVisual slug={`office-${office.slug}`} variant={OFFICE_MOTION[i % 3].variant} speed={OFFICE_MOTION[i % 3].speed} />
+                        <CaseStudyVisual slug={`office-${office.slug}`} {...patternAt(i)} />
                       </div>
                     </div>
                     <div className="lp-case-body">

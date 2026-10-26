@@ -141,7 +141,7 @@ export default async function HomePage() {
       <ul role="list" className="lp-wrap bk-mosaic is-spaced">
         {ROWS.map((row, i) => (
           <li key={row.href}>
-            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} />
+            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} pattern={i} />
           </li>
         ))}
       </ul>

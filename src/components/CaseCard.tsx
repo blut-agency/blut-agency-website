@@ -1,5 +1,6 @@
 import Link from "next/link";
-import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
+import HoverClip from "@/components/HoverClip";
 import { CtaLink } from "@/components/Blocks";
 import type { CaseStudy } from "@/lib/content";
 import type { ImageTheme } from "@/lib/imageTheme";
@@ -29,13 +30,15 @@ export function caseTags(cs: CaseStudy): string[] {
  */
 export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; theme: ImageTheme | null; formPrefix: string }) {
   const href = `/project/${cs.slug}`;
-  const variant = visualVariant(cs.useVisual);
+  // Shape and tempo by the case's place in the list, so neighbours differ.
+  const pattern = patternAt(cs.position - 1);
   const accent = theme?.background ?? "var(--_color---accent-color-2)";
   const tags = caseTags(cs);
   return (
     <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: accent }}>
       <div className="lp-case-media hl-media">
         <img src={cs.thumbnail} alt="" loading="lazy" />
+        {(cs.previewUrl || cs.previewVimeoId) && <HoverClip src={cs.previewUrl} vimeoId={cs.previewVimeoId} />}
         <p className="lp-case-client">{cs.teaserClient}</p>
       </div>
       <div className={`lp-case-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
@@ -44,7 +47,7 @@ export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; the
           aria-hidden="true"
           style={theme ? { backgroundColor: theme.background, color: theme.line } : undefined}
         >
-          <CaseStudyVisual slug={`${formPrefix}-${cs.slug}`} variant={variant} speed={variant === 1 ? 8 : 10} />
+          <CaseStudyVisual slug={`${formPrefix}-${cs.slug}`} {...pattern} />
         </div>
         <h3 className="lp-case-title">{cs.teaserCampaign}</h3>
         {tags.length > 0 && (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import HoverClip from "@/components/HoverClip";
 import { CtaLink } from "@/components/Blocks";
 import type { ImageTheme } from "@/lib/imageTheme";
@@ -24,10 +24,13 @@ export default function HomeRow({
   row,
   theme,
   flipped = false,
+  pattern = 0,
 }: {
   row: HomeRowData;
   theme: ImageTheme | null;
   flipped?: boolean;
+  /** Position in the list: picks the highlight's shape and tempo. */
+  pattern?: number;
 }) {
   return (
     <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
@@ -39,7 +42,7 @@ export default function HomeRow({
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         {theme && (
           <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
-            <CaseStudyVisual slug={`home-row-${row.href.slice(1)}`} variant={2} speed={10} />
+            <CaseStudyVisual slug={`home-row-${row.href.slice(1)}`} {...patternAt(pattern)} />
           </div>
         )}
         <p className="lp-copy">{row.copy}</p>

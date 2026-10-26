@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import VideoLightbox from "@/components/VideoLightbox";
 import HoverClip from "@/components/HoverClip";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
@@ -46,6 +46,7 @@ export default function WorkSpot({
   variant,
   flipped = false,
   formId,
+  pattern = 0,
 }: {
   spot: WorkSpotData;
   theme: ImageTheme | null;
@@ -55,6 +56,8 @@ export default function WorkSpot({
   flipped?: boolean;
   /** Unique per page: embeds.js animates each highlight visual by it. */
   formId: string;
+  /** Position in the list: picks the highlight's shape and tempo. */
+  pattern?: number;
 }) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -152,7 +155,7 @@ export default function WorkSpot({
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         {theme && (
           <div className="hl-visual" aria-hidden="true" style={{ backgroundColor: theme.background, color: theme.line }}>
-            <CaseStudyVisual slug={formId} variant={2} speed={10} />
+            <CaseStudyVisual slug={formId} {...patternAt(pattern)} />
           </div>
         )}
         {spot.title && <h3 className="bk-spot-title">{spot.title}</h3>}

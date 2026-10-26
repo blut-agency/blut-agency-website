@@ -152,6 +152,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
                   variant="row"
                   flipped={i % 2 === 1}
                   formId={`team-${p.slug}-${i}`}
+                  pattern={i}
                 />
               </li>
             ))}

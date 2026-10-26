@@ -55,6 +55,9 @@ export interface CaseStudy {
   video3VimeoId: string;
   /** Self-hosted videos, shown after the Vimeo ones in the same layout. */
   videoFiles?: CaseStudyVideoFile[];
+  /** Short silent hover loop on the case's card: a video file, or a Vimeo ID. */
+  previewUrl?: string;
+  previewVimeoId?: string;
   gallery2: string[];
   awards: CaseStudyAward[];
   nextCaseStudySlug: string;
