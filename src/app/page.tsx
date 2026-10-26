@@ -30,6 +30,7 @@ const ROWS: HomeRowData[] = [
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
+    preview: "/videos/previews/spt-dashboard.mp4",
   },
   {
     copy: "Music production, sound design, and 360° sonic strategy.",

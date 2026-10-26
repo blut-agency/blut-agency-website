@@ -38,7 +38,7 @@ export default async function StrategyPage() {
       <Header variant="start-top" />
 
       {/* The Sonic Performance Tracker sales video, full width (board node 85:2362),
-          as the Work page's wide spot. Plays once a Vimeo ID is set. */}
+          as the Work page's wide spot. Self-hosted for now (Nic's cutdown, Oct 2026). */}
       <section className="bk-section">
         <div className="lp-wrap">
           <WorkSpot
@@ -48,6 +48,8 @@ export default async function StrategyPage() {
             spot={{
               client: "Sonic Performance Tracker",
               image: SALES_VIDEO,
+              videoUrl: "/videos/spt-sales.mp4",
+              preview: "/videos/previews/spt-dashboard.mp4",
               text: "See how the Sonic Performance Tracker shows what your sound is really saying.",
             }}
           />
