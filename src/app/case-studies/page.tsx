@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 };
 
 /*
-  Only cases with a written page are listed. Rockstar, Postbank and Germont
-  stay in cms-content.json (and at /project/<slug>) until their copy exists.
+  Only cases with a written page are listed. Rockstar stays in
+  cms-content.json (and at /project/<slug>) until its copy exists.
 */
-const HIDDEN_CASES = new Set(["feel-the-vibe", "all-purpose-sound", "reinventing-a-classic"]);
+const HIDDEN_CASES = new Set(["feel-the-vibe"]);
 
 /** Spacer row as drawn in Figma (Spacer v02): side lines plus a centre line. */
 function Spacer() {

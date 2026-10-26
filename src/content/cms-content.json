@@ -167,12 +167,12 @@
     },
     {
       "slug": "all-purpose-sound",
-      "internalName": "All Purpose Sound (placeholder)",
+      "internalName": "All Purpose Sound (draft copy)",
       "title": "All Purpose Sound",
       "position": 4,
       "showOnHomepage": false,
       "clientListHtml": "<ul><li>Postbank</li></ul>",
-      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "whatWeDidHtml": "<ul><li>Sonic Strategy</li><li>Sonic Branding</li></ul>",
       "collaboratorsHtml": "",
       "color": {
         "main": "#3f7fd9",
@@ -190,22 +190,24 @@
       "quote": "",
       "quoteName": "",
       "videoUnderQuoteVimeoId": "",
-      "introTextHtml": "<h2>Case study coming soon</h2><p>We're still writing this one up — check back soon, or get in touch if you'd like the details now.</p>",
+      "introTextHtml": "<h2>One sound for every touchpoint</h2><p>Postbank needed a sonic identity that works wherever the brand speaks: on TV, in the app, on the phone and in its podcast. We built it from one piece of music, the Postbank Masterpiece, and drew everything else from it: the sound logo, podcast intros, tutorial music, UX sounds and the hold music.</p>",
       "gallery1": [],
       "textAfterGalleryHtml": "",
       "gifVideoVimeoId": "",
       "gifVideoHashtags": "",
       "audioPlayer1": {
         "vimeoId": "",
-        "title": "",
-        "subline": ""
+        "url": "/audio/cases/postbank-masterpiece.mp3",
+        "title": "The Postbank\nMasterpiece",
+        "subline": "Listen to the brand theme"
       },
       "audioPlayer2": {
         "vimeoId": "",
-        "title": "",
-        "subline": ""
+        "url": "/audio/cases/postbank-podcast-intro.mp3",
+        "title": "Podcast intro",
+        "subline": "The same theme, in a fresh mood"
       },
-      "textAfterAudioPlayerHtml": "",
+      "textAfterAudioPlayerHtml": "<h2>From the app to the TV spot</h2><p>The same musical DNA runs through four UX sounds for the app (push, pull, positive and negative), the sound logo and the 2025 TV spot “Regentropfen”.</p>",
       "video1VimeoId": "",
       "video2VimeoId": "",
       "video3VimeoId": "",
@@ -214,16 +216,26 @@
       "nextCaseStudySlug": "reinventing-a-classic",
       "teaserClient": "Postbank",
       "teaserCampaign": "All Purpose Sound",
-      "thumbnail": "/images/cases/postbank.jpg"
+      "thumbnail": "/images/cases/postbank.jpg",
+      "videoFiles": [
+        {
+          "url": "/videos/cases/postbank-regentropfen.mp4",
+          "poster": "/images/cases/postbank-regentropfen.jpg"
+        },
+        {
+          "url": "/videos/cases/postbank-soundlogo.mp4",
+          "poster": "/images/cases/postbank-soundlogo.jpg"
+        }
+      ]
     },
     {
       "slug": "reinventing-a-classic",
-      "internalName": "Reinventing a Classic (placeholder)",
+      "internalName": "Reinventing a Classic (draft copy)",
       "title": "Reinventing a Classic",
       "position": 5,
       "showOnHomepage": false,
-      "clientListHtml": "<ul><li>Germont</li></ul>",
-      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "clientListHtml": "<ul><li>Géramont</li></ul>",
+      "whatWeDidHtml": "<ul><li>Sonic Branding</li><li>Content Production</li></ul>",
       "collaboratorsHtml": "",
       "color": {
         "main": "#6183ff",
@@ -241,7 +253,7 @@
       "quote": "",
       "quoteName": "",
       "videoUnderQuoteVimeoId": "",
-      "introTextHtml": "<h2>Case study coming soon</h2><p>We're still writing this one up — check back soon, or get in touch if you'd like the details now.</p>",
+      "introTextHtml": "<h2>A jingle people already knew</h2><p>Géramont already had a well-known jingle: “sehen, schmecken, fühlen”. For the new Mathilda campaign we reworked it into a fresh sound that still feels like Géramont, and added the sound design and final mix for the summer-rain spot.</p>",
       "gallery1": [],
       "textAfterGalleryHtml": "",
       "gifVideoVimeoId": "",
@@ -256,16 +268,26 @@
         "title": "",
         "subline": ""
       },
-      "textAfterAudioPlayerHtml": "",
+      "textAfterAudioPlayerHtml": "<h2>Before and after</h2><p>The new film with the new jingle first, then the classic it grew out of.</p>",
       "video1VimeoId": "",
       "video2VimeoId": "",
       "video3VimeoId": "",
       "gallery2": [],
       "awards": [],
       "nextCaseStudySlug": "wdr---re-arranging-perceptions",
-      "teaserClient": "Germont",
+      "teaserClient": "Géramont",
       "teaserCampaign": "Reinventing a Classic",
-      "thumbnail": "/images/cases/germont.jpg"
+      "thumbnail": "/images/cases/germont.jpg",
+      "videoFiles": [
+        {
+          "url": "/videos/cases/geramont-sommerregen.mp4",
+          "poster": "/images/cases/geramont-sommerregen.jpg"
+        },
+        {
+          "url": "/videos/cases/geramont-classic.mp4",
+          "poster": "/images/cases/geramont-classic.jpg"
+        }
+      ]
     },
     {
       "slug": "wdr---re-arranging-perceptions",

@@ -40,11 +40,35 @@ function __onReady(fn) {
 (function(){
   // --- 1) Vimeo-Player UI ---
   window._VimeoPlayers = {};
+  // Self-hosted <video>/<audio> files get the same promise-based surface as Vimeo.Player.
+  function mediaPlayer(el) {
+    const ev = { play: 'play', pause: 'pause', seeked: 'seeked', error: 'error' };
+    return {
+      ready: () => Promise.resolve(),
+      play: () => el.play(),
+      pause: () => Promise.resolve(el.pause()),
+      getPaused: () => Promise.resolve(el.paused),
+      getCurrentTime: () => Promise.resolve(el.currentTime),
+      setCurrentTime: t => { el.currentTime = t; return Promise.resolve(t); },
+      getDuration: () => isFinite(el.duration) && el.duration > 0
+        ? Promise.resolve(el.duration)
+        : new Promise(res => el.addEventListener('loadedmetadata', () => res(el.duration), { once: true })),
+      on: (name, fn) => {
+        if (name === 'timeupdate') {
+          el.addEventListener('timeupdate', () => fn({ seconds: el.currentTime, duration: el.duration || 1 }));
+        } else if (ev[name]) {
+          el.addEventListener(ev[name], fn);
+        }
+      },
+    };
+  }
   document.querySelectorAll('[data-player-file]').forEach(container => {
     const slug = container.getAttribute('data-player-file');
     const iframe = document.getElementById(slug);
-    if (!iframe || !window.Vimeo) return;
-    const player = new Vimeo.Player(iframe);
+    if (!iframe) return;
+    const isFile = iframe.tagName === 'VIDEO' || iframe.tagName === 'AUDIO';
+    if (!isFile && !window.Vimeo) return;
+    const player = isFile ? mediaPlayer(iframe) : new Vimeo.Player(iframe);
     window._VimeoPlayers[slug] = player;
     // Finde den play-button-big direkt über data-player-target
     const bigPlay = document.querySelector(`[data-player-target="${slug}"][data-player="play-button-big"]`);
