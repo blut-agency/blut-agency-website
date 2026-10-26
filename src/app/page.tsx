@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { getHomeSound } from "@/lib/content";
@@ -15,6 +17,17 @@ import { themesForImages } from "@/lib/imageTheme";
   sides, the question at the top of the box and its link at the bottom.
   Styled with the site's system (highlight.css hover, blocks.css .is-split).
 */
+export const metadata: Metadata = {
+  description:
+    "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
+  ...share({
+    title: "blut – Music Strategies with Measurable Impact",
+    description:
+      "Music production, sound design and 360° sonic strategy: blut is a music-led creative agency from Hamburg, Berlin and Munich.",
+    path: "/",
+  }),
+};
+
 const ROWS: HomeRowData[] = [
   {
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",

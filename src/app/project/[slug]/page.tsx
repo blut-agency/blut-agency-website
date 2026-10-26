@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
+import AiDraftNote from "@/components/AiDraftNote";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
@@ -46,9 +48,18 @@ export async function generateMetadata({
   // Mirrors the live site's description pattern:
   // "<quote> <name> | Full-Service Music Agency | Strategy & Identity | <track> | Project Case Study"
   const track = cs.audioPlayer1.title.replace(/\s+/g, " ").trim();
+  const description = cs.quote
+    ? `${cs.quote} ${cs.quoteName} | Full-Service Music Agency | Strategy & Identity | ${track} | Project Case Study`
+    : `${cs.teaserClient}: ${cs.teaserCampaign}. A blut case study in music, sound and sonic strategy.`;
   return {
     title: `${cs.title} | blut | Case Study | Music Strategy`,
-    description: `${cs.quote} ${cs.quoteName} | Full-Service Music Agency | Strategy & Identity | ${track} | Project Case Study`,
+    description,
+    ...share({
+      title: `${cs.teaserClient} – ${cs.title}`,
+      description: cs.quote ? `${cs.quote} ${cs.quoteName}` : description,
+      path: `/project/${cs.slug}`,
+      image: { url: cs.thumbnail, alt: `${cs.teaserClient} – ${cs.teaserCampaign}` },
+    }),
   };
 }
 
@@ -156,10 +167,11 @@ export default async function CaseStudyDetailPage({
         )}
 
         {cs.introTextHtml && (
-          <section className="section-project-intro">
+          <section className={`section-project-intro${cs.aiDraftCopy ? " ai-draft" : ""}`}>
             <div className="page-padding">
               <div className="container-medium">
                 <div className="spacer-xxl-start spacer-xxl-end">
+                  {cs.aiDraftCopy && <AiDraftNote />}
                   <div
                     className="rich-text-custom h2-is-h1-size w-richtext"
                     dangerouslySetInnerHTML={{ __html: cs.introTextHtml }}
@@ -284,7 +296,7 @@ export default async function CaseStudyDetailPage({
         )}
 
         {(cs.audioPlayer1.vimeoId || cs.audioPlayer1.url) && (
-          <section className="section-project-audio-player-1">
+          <section className={`section-project-audio-player-1${cs.aiDraftCopy ? " ai-draft" : ""}`}>
             <div className="_2-column-grid">
               <div className="grid-item is-media">
                 <div className="audio-preview-embed hide w-embed w-iframe">
@@ -362,7 +374,7 @@ export default async function CaseStudyDetailPage({
         )}
 
         {(cs.audioPlayer2.vimeoId || cs.audioPlayer2.url) && (
-          <section className="section-project-audio-player-2">
+          <section className={`section-project-audio-player-2${cs.aiDraftCopy ? " ai-draft" : ""}`}>
             <div className="_2-column-grid">
               <div className="grid-item is-player">
                 <div className="grid-item-background-color" />
@@ -440,7 +452,7 @@ export default async function CaseStudyDetailPage({
         )}
 
         {cs.textAfterAudioPlayerHtml && (
-          <section className="section-project-cta-text">
+          <section className={`section-project-cta-text${cs.aiDraftCopy ? " ai-draft" : ""}`}>
             <div className="page-padding">
               <div className="container-medium">
                 <div className="spacer-xxl-start spacer-xxl-end">

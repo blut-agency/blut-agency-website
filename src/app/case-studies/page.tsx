@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseCard from "@/components/CaseCard";
@@ -10,6 +11,12 @@ export const metadata: Metadata = {
   title: "Case Studies | blut",
   description:
     "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
+  ...share({
+    title: "Case Studies",
+    description: "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
+    path: "/case-studies",
+    image: { url: "/images/open-graph-image-1.png", width: 1800, height: 945, alt: "DJ Seinfeld and sogumm recording in the Hyundai Inster" },
+  }),
 };
 
 /*

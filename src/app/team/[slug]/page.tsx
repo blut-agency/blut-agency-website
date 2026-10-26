@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AiDraftNote from "@/components/AiDraftNote";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
@@ -103,6 +104,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         background={p.hero.background}
         lineColor={p.hero.lineColor}
         dark={p.hero.dark}
+        lineAiDraft
       />
       <Header variant="start-top" />
 
@@ -118,9 +120,10 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
             />
           </div>
           <div className="bk-person-text">
+            <AiDraftNote />
             <h2 className="lp-heading">{p.role}</h2>
             {[...p.intro, ...p.bio].map((para) => (
-              <p className="lp-copy" key={para.slice(0, 24)}>
+              <p className="lp-copy ai-draft" key={para.slice(0, 24)}>
                 {para}
               </p>
             ))}
@@ -129,7 +132,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      <section className="bk-section is-dark">
+      <section className="bk-section is-dark ai-draft">
         <ServiceDrawers
           heading={p.expertise.heading}
           line={p.expertise.line}
@@ -172,7 +175,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
-      <section className="bk-section is-dark">
+      <section className="bk-section is-dark ai-draft">
         <Lead heading={`Questions for ${p.firstName}`} parallax={false} />
         <div className="lp-wrap bk-faq">
           <div className="bk-drawers">

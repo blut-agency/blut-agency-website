@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import WorkSpot from "@/components/WorkSpot";
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   title: "Strategy – Find out what your sound is really saying | blut",
   description:
     "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences, then construct an action plan to get your brand on the right path.",
+  ...share({
+    title: "Strategy – Find out what your sound is really saying",
+    description: "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences, then construct an action plan to get your brand on the right path.",
+    path: "/strategy",
+    image: { url: "/images/spt/sales-video-poster.jpg", alt: "The Sonic Performance Tracker" },
+  }),
 };
 
 /*

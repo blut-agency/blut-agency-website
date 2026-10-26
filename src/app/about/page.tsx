@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
   title: "About Us – Meet the Team Behind blut’s Sonic Vision",
   description:
     "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
+  ...share({
+    title: "About – Meet the Team Behind blut’s Sonic Vision",
+    description: "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
+    path: "/about",
+  }),
 };
 
 /*

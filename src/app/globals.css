@@ -221,3 +221,30 @@
 .play-toggle.is-pause-button {
   display: none;
 }
+
+/* AI-generated placeholder copy (AiDraftNote.tsx): red, unmissable, until the
+   real copy replaces it. On coloured heroes the text sits on a white box. */
+.ai-draft-note {
+  display: inline-block;
+  margin: 0 0 24px;
+  padding: 8px 16px;
+  border: 2px solid #e00000;
+  background: #fff;
+  color: #e00000;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ai-draft,
+.ai-draft :is(h1, h2, h3, h4, p, li, span, a, div, button) {
+  color: #e00000 !important;
+}
+
+.bk-hero .ai-draft {
+  display: inline;
+  padding: 0 8px;
+  background: #fff;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
