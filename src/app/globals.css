@@ -162,26 +162,40 @@
   inset: 0;
 }
 
-.file-player .play-toggle-big {
+.file-player video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.file-player-cover {
+  position: absolute;
   inset: 0;
   border: 0;
   background: transparent;
-  color: var(--_color---copy-bright);
   cursor: pointer;
 }
 
-.file-player-controls {
+/* One bar along the bottom: Play/Pause pill, progress line, times. */
+.file-player-bar {
   position: absolute;
   inset: auto 0 0;
   display: flex;
-  padding: var(--spacing--l);
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.44));
+  color: var(--_color---copy-bright);
 }
 
-.file-player .play-toggle {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
+.file-player-progress {
+  flex: 1;
+}
+
+.file-player-time {
+  flex: none;
+  font-variant-numeric: tabular-nums;
 }
 
 .video-lightbox-status {

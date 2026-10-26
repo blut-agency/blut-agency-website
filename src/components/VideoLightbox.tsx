@@ -76,7 +76,7 @@ export default function VideoLightbox({
             allowFullScreen
           />
         ) : videoUrl ? (
-          <FilePlayer src={videoUrl} poster={poster} title={title} autoPlay />
+          <FilePlayer src={videoUrl} poster={poster} title={title} autoPlay accent={accent} />
         ) : (
           <>
             <img src={poster} alt="" className="fit-cover-absolute" />
