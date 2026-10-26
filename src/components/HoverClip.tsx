@@ -10,13 +10,14 @@ declare global {
   }
 }
 
-const canPreview = () => window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches;
+const canPreview = () => window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
 
 /**
  * Short silent loop over a spot's still (Work cards, Home rows): plays while
- * the surrounding card (`.hl-row`) is hovered, fades in once it is playing and
- * resets on leave. Loads nothing until the first hover; stays off on touch
- * screens and with reduced motion. Styles: blocks.css (.bk-spot-preview).
+ * the surrounding card (`.hl-row`) is hovered, or on touch screens while it is
+ * the centred card (CenterHover's centerenter / centerleave); fades in once it
+ * is playing and resets on leave. Loads nothing until then; stays off with
+ * reduced motion. Styles: blocks.css (.bk-spot-preview).
  *
  * `src` is a video file; `vimeoId` a Vimeo video, embedded in background mode
  * (muted, looping, no controls) on the first hover, like the case pages' loops.
@@ -59,12 +60,14 @@ export default function HoverClip({ src, vimeoId }: { src?: string; vimeoId?: st
         playerRef.current?.setCurrentTime(0).catch(() => {});
       }
     };
-    spot.addEventListener("mouseenter", start);
-    spot.addEventListener("mouseleave", stop);
-    return () => {
-      spot.removeEventListener("mouseenter", start);
-      spot.removeEventListener("mouseleave", stop);
-    };
+    const events: [string, () => void][] = [
+      ["mouseenter", start],
+      ["mouseleave", stop],
+      ["centerenter", start],
+      ["centerleave", stop],
+    ];
+    events.forEach(([name, fn]) => spot.addEventListener(name, fn));
+    return () => events.forEach(([name, fn]) => spot.removeEventListener(name, fn));
   }, [vimeoId]);
 
   // The 16:9 iframe can't object-fit: size it to cover the media box.

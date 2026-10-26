@@ -1443,3 +1443,48 @@ iframe.bk-spot-preview {
     border-color: var(--bk-btn-accent);
   }
 }
+
+
+/* >>> touch: centred card = hover (generated from the :hover rules above; see CenterHover.tsx) */
+@media (hover: none) {
+  .bk-section.is-dark :is(.lp-case, .bk-spot).is-centered .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .bk-spot.is-centered .bk-spot-play {
+    opacity: 1;
+  }
+
+  .bk-spot.is-centered .bk-spot-client {
+    background: var(--bk-accent);
+  }
+
+  .bk-spot.is-centered .lp-case-tags li {
+    border-color: currentColor;
+  }
+
+  .bk-spot.is-centered .bk-spot-media img {
+    transform: scale(1.03);
+  }
+
+  .bk-spot.is-centered .lp-cta-line {
+    width: 40px;
+  }
+
+  .bk-spot.is-row.is-centered .bk-spot-body:not(.is-light-highlight),
+  .bk-spot.is-row.is-centered .bk-spot-body:not(.is-light-highlight) .bk-spot-text {
+    color: var(--_color---copy-bright);
+  }
+
+  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight,
+  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div) {
+    color: var(--_color---copy-dark);
+  }
+
+  .hl-row.is-centered .bk-btn.is-accent:not(:disabled, .is-disabled) {
+    background: var(--bk-btn-accent);
+    color: var(--bk-btn-accent-fg);
+    border-color: var(--bk-btn-accent);
+  }
+}
+/* <<< touch */

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { share } from "@/lib/share";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
+import CenterHover from "@/components/CenterHover";
 import MotionLayer from "@/components/MotionLayer";
 import "./globals.css";
 import "./landing.css";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <PageTransition />
+        <CenterHover />
         <MotionLayer />
         {children}
         <noscript>
