@@ -10,8 +10,9 @@ export type HomeRowData = {
   cta: string;
   image: string;
   alt: string;
-  /** Short silent loop that plays over the photo on hover. */
+  /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
   preview?: string;
+  previewVimeoId?: string;
 };
 
 /**
@@ -32,7 +33,7 @@ export default function HomeRow({
     <article className={`bk-spot is-split${flipped ? " is-flipped" : ""} lp-hover hl-row`}>
       <div className="bk-spot-media hl-media">
         <img src={row.image} alt={row.alt} loading="lazy" />
-        {row.preview && <HoverClip src={row.preview} />}
+        {(row.preview || row.previewVimeoId) && <HoverClip src={row.preview} vimeoId={row.previewVimeoId} />}
         <Link href={row.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
       </div>
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
