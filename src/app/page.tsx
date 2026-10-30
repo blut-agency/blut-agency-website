@@ -2,20 +2,23 @@ import type { Metadata } from "next";
 import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
-import { CtaLink, TEXT_PARALLAX } from "@/components/Blocks";
-import HomeRow, { type HomeRowData } from "@/components/HomeRow";
-import { themesForImages } from "@/lib/imageTheme";
+import Link from "next/link";
+import AiDraftNote from "@/components/AiDraftNote";
+import CaseCard from "@/components/CaseCard";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
+import HoverClip from "@/components/HoverClip";
+import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
+import { FEATURED_CASES } from "@/content/offers";
+import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { highlightThemes, themesForImages } from "@/lib/imageTheme";
 
-// The three photo + panel features (Figma "Landng v02"). The photo runs from
-// the screen edge across two columns and the panel sits in the third; the
-// middle one is mirrored. Photos come from the Figma board's home mockup.
 /*
-  Home rows as Elliot laid them out (Figma 267-1107), with the board's copy
-  changes: three 50/50 rows with no gaps, photo and black text box swapping
-  sides, the question at the top of the box and its link at the bottom.
-  Styled with the site's system (highlight.css hover, blocks.css .is-split).
+  Home (call with Michael and Timo, 30 Oct 2026): a line that says what blut
+  does as a whole, then the three offers side by side as labelled tiles
+  (Production, Strategy, Post, as in the menu), then featured cases. The
+  tiles use the case cards' parts (landing.css .lp-case) in the staggered
+  three-column grid; Home-only touches live in blocks.css (.bk-offers).
 */
 export const metadata: Metadata = {
   description:
@@ -28,38 +31,61 @@ export const metadata: Metadata = {
   }),
 };
 
-const ROWS: HomeRowData[] = [
+type OfferTile = {
+  offer: string;
+  href: string;
+  copy: string;
+  /** AI-written placeholder copy: shown in red until replaced. */
+  aiDraft?: boolean;
+  cta: string;
+  client: string;
+  image: string;
+  alt: string;
+  /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
+  preview?: string;
+  previewVimeoId?: string;
+};
+
+const OFFER_TILES: OfferTile[] = [
   {
+    offer: "Production",
+    href: "/production",
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    href: "/work",
-    cta: "See us in action",
+    cta: "See our production work",
+    client: "Samsung × Nina Chuba",
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
     preview: "/videos/previews/samsung-nina-chuba.mp4",
   },
   {
-    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
+    offer: "Strategy",
     href: "/strategy",
+    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
     cta: "Get to know our process",
+    client: "Sonic Performance Tracker",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
     preview: "/videos/previews/spt-dashboard.mp4",
   },
   {
-    copy: "Music production, sound design, and 360° sonic strategy.",
-    href: "/case-studies",
-    cta: "View our case studies",
-    image: "/images/home/teaser-cases.jpg",
-    alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    // The loop above "#sogumm #DJ Seinfeld" on the Hyundai case page.
-    previewVimeoId: "1090418649",
+    offer: "Post",
+    href: "/post",
+    copy: "Sound design, mixing and video post that make every spot feel finished.",
+    aiDraft: true,
+    cta: "See our post work",
+    client: "Crazy Wolf",
+    image: "/images/story/crazy-wolf.jpg",
+    alt: "The Crazy Wolf energy drink spot",
+    preview: "/videos/previews/crazy-wolf.mp4",
   },
 ];
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
-  // Each row's hover highlight uses the CMS theme closest to its photo.
-  const themes = await themesForImages(ROWS.map((r) => r.image));
+  // Each tile's hover highlight uses the CMS theme closest to its photo.
+  const themes = await themesForImages(OFFER_TILES.map((t) => t.image));
+  const featured = FEATURED_CASES.map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
+  const caseThemes = await highlightThemes(featured.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
   return (
     <>
@@ -140,21 +166,57 @@ export default async function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    {/* Intro: the claim over two columns, the answer below it, shifted right. */}
+    {/* Intro: what blut does as a whole, the subline naming the three offers.
+        AI-written placeholder copy (Oct 2026): Michael and Karl replace it. */}
     <section className="lp-intro">
       <div className="lp-wrap">
-        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" />
+        <AiDraftNote>AI-generated placeholder line and subline (in red), replace before launch.</AiDraftNote>
+        <div className="ai-draft">
+          <RevealText as="h1" className="lp-heading" text="Music, sound and strategy that get brands heard." />
+        </div>
         <div className="lp-panel">
-          <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
+          <p className="lp-copy ai-draft">blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post.</p>
         </div>
       </div>
     </section>
 
-    <section className="bk-section is-dark">
-      <ul role="list" className="lp-wrap bk-mosaic is-spaced">
-        {ROWS.map((row, i) => (
-          <li key={row.href}>
-            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} pattern={i} />
+    {/* The three offers side by side, each with a clear label. */}
+    <section className="bk-section is-dark bk-offers">
+      <ul role="list" className="lp-wrap lp-case-grid">
+        {OFFER_TILES.map((tile, i) => (
+          <li key={tile.href}>
+            <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: themes[i]?.background ?? "var(--_color---accent-color-2)" }}>
+              <div className="lp-case-media hl-media">
+                <img src={tile.image} alt={tile.alt} loading="lazy" />
+                {(tile.preview || tile.previewVimeoId) && <HoverClip src={tile.preview} vimeoId={tile.previewVimeoId} />}
+                <p className="lp-case-client">{tile.client}</p>
+              </div>
+              <div className={`lp-case-body hl-panel${themes[i]?.lightBackground ? " is-light-highlight" : ""}`}>
+                {themes[i] && (
+                  <div className="lp-case-visual" aria-hidden="true" style={{ backgroundColor: themes[i]!.background, color: themes[i]!.line }}>
+                    <CaseStudyVisual slug={`home-offer-${tile.href.slice(1)}`} {...patternAt(i)} />
+                  </div>
+                )}
+                <h2 className="bk-offer-title">{tile.offer}</h2>
+                <p className={`lp-copy${tile.aiDraft ? " ai-draft" : ""}`}>{tile.copy}</p>
+                <CtaLink href={tile.href} label={tile.cta} />
+              </div>
+              <Link href={tile.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
+            </article>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {/* Featured cases: recent work we're proud of; the full list is on /case-studies. */}
+    <section className="bk-section is-dark bk-featured">
+      <Lead side parallax={false} heading="Featured cases">
+        <CtaLink href="/case-studies" label="View all cases" />
+      </Lead>
+      <ul role="list" className="lp-wrap bk-case-list">
+        {featured.map((cs, i) => (
+          <li key={cs.slug}>
+            <CaseCard cs={cs} theme={caseThemes[i]} formPrefix="home" />
           </li>
         ))}
       </ul>

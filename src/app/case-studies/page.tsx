@@ -3,6 +3,8 @@ import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseCard from "@/components/CaseCard";
+import CaseFilter from "@/components/CaseFilter";
+import { OFFERS, PINNED_CASE, caseOffers, offerSlug } from "@/content/offers";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import { getCaseStudies } from "@/lib/content";
 import { highlightThemes } from "@/lib/imageTheme";
@@ -24,9 +26,17 @@ export const metadata: Metadata = {
   as a full-width card in one stacked list (photo two thirds, text one third), a pointer to the strategy page and
   Michael as the contact. Each card keeps its case's own CMS colour, so the
   hover highlight matches the case page it links to.
+
+  Filter buttons (Production, Strategy, Post) sit above the list; an offer
+  gets a button once at least one case carries it (content/offers.ts). The
+  pinned case leads the list under a "Featured" label.
 */
 export default async function CaseStudiesPage() {
-  const caseStudies = getCaseStudies();
+  const all = getCaseStudies();
+  // The pinned case first, the rest in their CMS order.
+  const caseStudies = [...all.filter((cs) => cs.slug === PINNED_CASE), ...all.filter((cs) => cs.slug !== PINNED_CASE)];
+  const offers = caseStudies.map(caseOffers);
+  const options = OFFERS.filter((o) => offers.some((list) => list.includes(o))).map((o) => ({ slug: offerSlug(o), label: o }));
   const themes = await highlightThemes(caseStudies.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
   return (
@@ -41,13 +51,16 @@ export default async function CaseStudiesPage() {
       <Header variant="start-top" />
 
       <section className="bk-section is-dark">
-        <ul role="list" className="lp-wrap bk-case-list">
-          {caseStudies.map((cs, i) => (
-            <li key={cs.slug}>
-              <CaseCard cs={cs} theme={themes[i]} formPrefix="cases" />
-            </li>
-          ))}
-        </ul>
+        <CaseFilter options={options}>
+          <ul role="list" className="lp-wrap bk-case-list">
+            {caseStudies.map((cs, i) => (
+              <li key={cs.slug} data-offers={offers[i].map(offerSlug).join(" ")} className={cs.slug === PINNED_CASE ? "is-pinned" : undefined}>
+                {cs.slug === PINNED_CASE && <p className="bk-pinned-label">Featured</p>}
+                <CaseCard cs={cs} theme={themes[i]} formPrefix="cases" />
+              </li>
+            ))}
+          </ul>
+        </CaseFilter>
       </section>
 
       <section className="bk-section">

@@ -1488,3 +1488,172 @@ iframe.bk-spot-preview {
   }
 }
 /* <<< touch */
+
+/* ==========================================================================
+   Restructure (call with Michael and Timo, 30 Oct 2026)
+   ========================================================================== */
+
+/* Shorter banners, so the next section already shows on the first screen. */
+.bk-hero {
+  min-height: 512px;
+  padding-block: 48px;
+}
+
+.lp-page .lp-stage .home-stage-wrapper {
+  min-height: 512px;
+  height: 512px;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-hero {
+    min-height: 384px;
+    padding-block: 32px;
+  }
+
+  .lp-page .lp-stage .home-stage-wrapper {
+    min-height: 384px;
+    height: 384px;
+  }
+}
+
+/* Home intro: the draft note across the top, the red headline where the
+   headline sits. */
+.lp-intro .ai-draft-note {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 0;
+}
+
+.lp-intro .lp-wrap > .ai-draft {
+  grid-column: 1 / span 2;
+}
+
+@media screen and (max-width: 767px) {
+  .lp-intro .lp-wrap > .ai-draft {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Home offers: three equal tiles side by side, no stagger, so none reads as
+   less important. The label is the tile's headline. */
+.bk-offers .lp-case-grid > * {
+  padding-top: 0;
+}
+
+.bk-offers .lp-case-body {
+  aspect-ratio: auto;
+  min-height: 320px;
+}
+
+.bk-offer-title {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+@media screen and (max-width: 991px) {
+  .bk-offer-title {
+    font-size: 32px;
+  }
+}
+
+/* Home featured cases follow the offers on the same black: no double gap. */
+.bk-offers + .bk-featured {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.bk-featured .bk-lead {
+  margin-bottom: var(--lp-stack);
+  color: var(--_color---copy-bright);
+}
+
+/* Cases filter: pill buttons above the list; the active one is filled. */
+.bk-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--lp-stack);
+}
+
+.bk-pill {
+  padding: 8px 24px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--_color---copy-bright);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bk-pill[aria-pressed="true"] {
+  background: var(--_color---copy-bright);
+  color: var(--_color---copy-dark);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bk-pill:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .bk-pill[aria-pressed="true"]:hover {
+    background: var(--_color---copy-bright);
+  }
+}
+
+.bk-filtered[data-filter="production"] .bk-case-list > li:not([data-offers~="production"]),
+.bk-filtered[data-filter="strategy"] .bk-case-list > li:not([data-offers~="strategy"]),
+.bk-filtered[data-filter="post"] .bk-case-list > li:not([data-offers~="post"]) {
+  display: none;
+}
+
+/* The pinned case: a small "Featured" label above its card. */
+.bk-pinned-label {
+  margin: 0 0 16px;
+  color: var(--_color---copy-bright);
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.bk-offers .lp-case-grid {
+  margin-inline: auto;
+}
+
+/* Smaller client chip: the tiles are a third of the width. */
+.bk-offers .lp-case-client {
+  font-size: 24px;
+}
+
+/* Equal tile heights, whatever the copy length. */
+.bk-offers .lp-case-grid {
+  align-items: stretch;
+}
+
+.bk-offers .lp-case {
+  height: 100%;
+}
+
+.bk-offers .lp-case-body {
+  flex: 1;
+}
+
+/* Five menu items on phones: tighter gaps, and on very narrow screens the
+   menu scrolls sideways instead of widening the page. */
+@media screen and (max-width: 479px) {
+  .header .navbar-menu-wrapper {
+    gap: 8px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .header .navbar-menu-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+}

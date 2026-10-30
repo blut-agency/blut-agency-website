@@ -8,13 +8,13 @@ import { WORK_ITEMS as ITEMS } from "@/content/work";
 import { themesForImages } from "@/lib/imageTheme";
 
 export const metadata: Metadata = {
-  title: "Work – A 360° Approach to Sonic Storytelling | blut",
+  title: "Production – A 360° Approach to Sonic Storytelling | blut",
   description:
     "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
   ...share({
-    title: "Work – A 360° Approach to Sonic Storytelling",
+    title: "Production – A 360° Approach to Sonic Storytelling",
     description: "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
-    path: "/work",
+    path: "/production",
     image: { url: "/images/story/samsung-nina-chuba.jpg", alt: "Nina Chuba in the Samsung spot" },
   }),
 };
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
 */
 
-export default async function WorkPage() {
+export default async function ProductionPage() {
   const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
 
   return (
@@ -78,7 +78,7 @@ export default async function WorkPage() {
         </Lead>
       </section>
 
-      <ContactBlock person="karl" />
+      <ContactBlock person="michael" />
       <LandingFooter band={{ background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" }} />
     </div>
   );

@@ -151,6 +151,8 @@ export function Lead({
 const PEOPLE = {
   karl: { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara" },
   michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb" },
+  // Address follows the team's first.last pattern; not yet confirmed by Elliot.
+  elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "" },
 } as const;
 
 /** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469). */

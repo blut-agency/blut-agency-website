@@ -109,7 +109,7 @@ export default async function StrategyPage() {
               text: "We orchestrate artist collaborations, branded playlists, cultural partnerships, and live experiences that make your brand part of the conversation — not an outsider shouting from the sidelines.",
             },
           ]}
-          cta={{ href: "/work", label: "See us in action" }}
+          cta={{ href: "/production", label: "See our production work" }}
         />
       </section>
 

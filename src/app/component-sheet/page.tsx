@@ -144,7 +144,7 @@ export default async function ComponentSheetPage() {
   const spotThemes = await themesForImages(spots.map((item) => item.spot.image));
   const homeRow = {
     copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    href: "/work",
+    href: "/production",
     cta: "See us in action",
     image: "/images/home/teaser-story.jpg",
     alt: "",
@@ -243,7 +243,7 @@ export default async function ComponentSheetPage() {
 
         <Label name="CtaLink" used="“— Label” link; line stretches and arrow appears on hover" />
         <div className="lp-wrap">
-          <CtaLink href="/work" label="See us in action" />
+          <CtaLink href="/production" label="See our production work" />
         </div>
 
         <Label name="Service pills (.lp-case-tags)" used="Case cards, Work cards" />
