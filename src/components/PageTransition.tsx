@@ -31,8 +31,7 @@ export default function PageTransition() {
   useEffect(() => {
     function onPageShow(event: PageTransitionEvent) {
       if (!event.persisted) return;
-      const wrapper = document.querySelector(".main-wrapper");
-      wrapper?.classList.remove("is-leaving");
+      document.querySelectorAll(".main-wrapper, #bk-menu").forEach((el) => el.classList.remove("is-leaving"));
     }
     window.addEventListener("pageshow", onPageShow);
     return () => window.removeEventListener("pageshow", onPageShow);
@@ -84,6 +83,8 @@ export default function PageTransition() {
       wrapper.addEventListener("animationend", go, { once: true });
       window.setTimeout(go, FADE_OUT_MS + 150);
       wrapper.classList.add("is-leaving");
+      // The phone menu lives outside the wrapper (Header.tsx); it fades with the page.
+      document.getElementById("bk-menu")?.classList.add("is-leaving");
     }
 
     document.addEventListener("click", onClick, true);

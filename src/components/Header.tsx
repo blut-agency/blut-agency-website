@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 
 const NAV_LINKS = [
   { href: "/production", label: "Production" },
@@ -17,6 +19,118 @@ const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="
   <path d="M10.6348 5.61866C7.82331 5.61866 5.52114 6.91684 4.4821 9.04665H4.46173V0L0 0.709939V19.5943H3.78941L4.40061 16.5923H4.42098C5.46002 18.7424 7.78256 20 10.5941 20C14.9743 20 17.908 17.1602 17.908 12.8195C17.908 8.4787 14.9743 5.61866 10.6348 5.61866ZM8.88271 16.6329C6.15271 16.6329 4.29874 15.0507 4.29874 12.8398C4.29874 10.6288 6.15271 9.04665 8.88271 9.04665C11.6127 9.04665 13.4667 10.6288 13.4667 12.8398C13.4667 15.0507 11.6127 16.6329 8.88271 16.6329Z" fill="currentColor"></path>
   <path d="M56.0874 14.6651C55.1502 15.9633 53.9686 16.6732 52.4202 16.6732C50.8719 16.6732 49.8532 15.7402 49.8532 14.0972V8.70164H56.0874V5.63876H49.8532V1.39941L45.3915 2.10935V5.63876H44.0876L43.5986 8.70164H45.3915L45.4118 14.8883C45.4118 18.0526 47.6325 19.9998 51.3404 19.9998C53.8871 19.9998 56.0263 19.0262 57.3913 17.2209L56.0874 14.6651Z" fill="currentColor"></path>
 </svg>`;
+
+const isCurrentPage = (pathname: string, href: string) => pathname === href || pathname.startsWith(href + "/");
+
+/** Two lines that turn into an X while the menu is open. */
+function BurgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      className={`bk-burger${open ? " is-open" : ""}`}
+      aria-label={open ? "Close menu" : "Open menu"}
+      aria-expanded={open}
+      aria-controls="bk-menu"
+      onClick={onClick}
+    >
+      <span />
+      <span />
+    </button>
+  );
+}
+
+/**
+ * Phones: the links move into a full-screen menu, the logo across the top and
+ * the pages as large links. Rendered into <body> because the sticky header
+ * moves itself (is-tucked), which would carry a fixed overlay with it.
+ * Focus stays inside while open; Escape, the X or a link close it.
+ */
+function MobileMenu({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false);
+  // false while rendering on the server, true in the browser: the portal needs <body>.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const menuRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    root.style.overflow = "hidden";
+    menuRef.current?.querySelector<HTMLElement>("a")?.focus();
+    const onKey = (e: globalThis.KeyboardEvent) => e.key === "Escape" && close();
+    window.addEventListener("keydown", onKey);
+    return () => {
+      root.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  function close() {
+    setOpen(false);
+    burgerRef.current?.querySelector("button")?.focus();
+  }
+
+  // Keep Tab inside the menu: from the last control back to the first and the other way round.
+  function trapTab(e: KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== "Tab") return;
+    const items = menuRef.current?.querySelectorAll<HTMLElement>("a, button");
+    if (!items?.length) return;
+    const first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  return (
+    <div ref={burgerRef} className="bk-burger-slot">
+      <BurgerButton open={open} onClick={() => setOpen(true)} />
+      {mounted &&
+        createPortal(
+          <div
+            ref={menuRef}
+            id="bk-menu"
+            className={`bk-menu${open ? " is-open" : ""}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            inert={!open}
+            data-lenis-prevent=""
+            onKeyDown={trapTab}
+          >
+            <div className="bk-menu-top">
+              <BurgerButton open onClick={close} />
+            </div>
+            <div className="bk-menu-body">
+              <Link href="/" className="bk-menu-logo" aria-label="Go to homepage" onClick={() => setOpen(false)}>
+                <span dangerouslySetInnerHTML={{ __html: LOGO_SVG }} />
+              </Link>
+              <ul role="list" className="bk-menu-list">
+                {NAV_LINKS.map((link) => {
+                  const isCurrent = isCurrentPage(pathname, link.href);
+                  return (
+                    <li key={link.href}>
+                      <Link href={link.href} aria-current={isCurrent ? "page" : undefined} onClick={() => setOpen(false)}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}
 
 export default function Header({ variant = "start-top" }: { variant?: "start-top" | "start-bottom" }) {
   const pathname = usePathname();
@@ -50,7 +164,7 @@ export default function Header({ variant = "start-top" }: { variant?: "start-top
           </Link>
           <nav role="navigation" className="navbar-menu-wrapper w-nav-menu">
             {NAV_LINKS.map((link) => {
-              const isCurrent = pathname === link.href || pathname.startsWith(link.href + "/");
+              const isCurrent = isCurrentPage(pathname, link.href);
               return (
                 <Link
                   key={link.href}
@@ -63,20 +177,8 @@ export default function Header({ variant = "start-top" }: { variant?: "start-top
               );
             })}
           </nav>
-          <div
-            className="navbar-mobile-toggle w-nav-button"
-            style={{ userSelect: "text" }}
-            aria-label="menu"
-            role="button"
-            tabIndex={0}
-            aria-controls="w-nav-overlay-0"
-            aria-haspopup="menu"
-            aria-expanded="false"
-          >
-            <div className="w-icon-nav-menu" />
-          </div>
+          <MobileMenu pathname={pathname} />
         </div>
-        <div className="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0" />
       </div>
     </div>
   );

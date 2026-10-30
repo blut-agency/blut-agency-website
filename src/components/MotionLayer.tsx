@@ -39,10 +39,14 @@ const RISE_SELECTOR = [
   ".bk-spot",
   ".bk-service",
   ".lp-panel",
-  ".bk-service-line",
   ".bk-service-intro",
   ".bk-meta-grid",
   ".bk-contact-person",
+  ".bk-lab-chapter",
+  ".bk-lab-quote",
+  ".bk-lab-loop",
+  ".bk-lab-audio",
+  ".bk-lab-awards",
 ].join(",");
 const IN_SKIP = ".header, .lp-footer, .bk-hero, .lp-stage";
 const IN_STAGGER_MS = 120;
@@ -64,8 +68,13 @@ export default function MotionLayer() {
 
     // Smooth scrolling. Accordions and lazy images change the page height;
     // Lenis watches for that itself.
-    const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.1 });
-    cleanups.push(() => lenis.destroy());
+    // Mouse and trackpad only: touch scrolling is native anyway, and on iOS
+    // Safari Lenis fights the address bar resizing the page, which made the
+    // page slide up and down on its own.
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      const lenis = new Lenis({ autoRaf: true, anchors: true, lerp: 0.1 });
+      cleanups.push(() => lenis.destroy());
+    }
 
     // Scroll reveals. Elements nested inside another target reveal with it.
     // Each one is watched through its parent box, so a block that starts
@@ -173,7 +182,9 @@ export default function MotionLayer() {
   grids stack and moving rows could overlap); MotionLayer already skips
   reduced motion.
 */
-const PARALLAX_SKIP = ".lp-band, .header, .footer, .lp-footer, .section-home-stage, .lp-stage";
+// The home offer tiles move as wholes instead (data-parallax), their photos
+// fixed in the frame.
+const PARALLAX_SKIP = ".lp-band, .header, .footer, .lp-footer, .section-home-stage, .lp-stage, .bk-offers";
 const IMAGE_SHIFT = 0.09;
 const BLOCK_SHIFT = 44;
 
@@ -197,7 +208,7 @@ function startParallax(): () => void {
   // on a transparent ground, so no edge can show and it needs no scaling.
   document.querySelectorAll<HTMLElement>(".main-wrapper .visual-canvas").forEach((canvas) => {
     const frame = canvas.parentElement;
-    if (!frame || canvas.closest(".lp-band, .footer, .lp-footer")) return;
+    if (!frame || canvas.closest(".lp-band, .footer, .lp-footer, .bk-offers")) return;
     items.push({ el: canvas, box: frame, rate: 1, image: true });
   });
   document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {

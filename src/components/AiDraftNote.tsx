@@ -1,6 +1,7 @@
 /**
- * Red flag for placeholder copy written by AI (Oct 2026): sits above it on the
- * page, and the copy itself carries the `ai-draft` class (red text, globals.css).
+ * Note for placeholder copy written by AI (Oct 2026): sits above it on the
+ * page (hidden for now), and the copy itself carries the `ai-draft` class
+ * (an asterisk after it, globals.css).
  * Remove both once the real copy is in.
  */
 export default function AiDraftNote({ children }: { children?: React.ReactNode }) {

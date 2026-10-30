@@ -68,7 +68,7 @@
   height: 720px;
 }
 
-/* Same height as the page banners on every screen (blocks.css .bk-hero). */
+/* Phones: 512px. */
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
     min-height: 512px;
@@ -137,12 +137,12 @@
   color: var(--lp-muted);
 }
 
-/* ---------- "— Label" link: the line stretches on hover; the arrow is in highlight.css ---------- */
+/* ---------- "Label ↗" link: underline draws in, arrow nudges on hover ---------- */
 .lp-cta {
   position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: 16px;
+  align-items: baseline;
+  gap: 8px;
   min-height: 48px;
   color: inherit;
   font-size: var(--lp-text);
@@ -151,12 +151,38 @@
   transition: color 0.3s ease;
 }
 
-.lp-cta-line {
-  width: 24px;
-  height: 1px;
+.lp-cta-text {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--fx-ease, ease);
+}
+
+/* Sits on the baseline (inline-flex, baseline-aligned; an SVG's baseline is
+   its bottom edge), about as tall as a capital. */
+.lp-cta-arrow {
   flex: none;
-  background: currentColor;
-  transition: width 0.5s var(--fx-ease, ease);
+  width: 0.7em;
+  height: 0.7em;
+  overflow: visible;
+  transition: translate 0.5s var(--fx-ease, ease);
+}
+
+.lp-cta:focus-visible .lp-cta-text {
+  background-size: 100% 1px;
+}
+
+/* Inside a box the link spans the row, the arrow at its right end (the
+   box's bottom-right corner) and a little larger. The tap target grows
+   upwards, so the label sits on the box's bottom inset. */
+:is(.lp-panel, .hl-panel, .lp-case-body, .bk-service-media) .lp-cta {
+  width: 100%;
+  min-height: 0;
+  padding-top: 24px;
+}
+
+:is(.lp-panel, .hl-panel, .lp-case-body, .bk-service-media) .lp-cta-arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -170,9 +196,14 @@
     color: var(--_color---copy-bright);
   }
 
-  .lp-cta:hover .lp-cta-line,
-  .lp-hover:hover .lp-cta-line {
-    width: 40px;
+  .lp-cta:hover .lp-cta-text,
+  .lp-hover:hover .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .lp-cta:hover .lp-cta-arrow,
+  .lp-hover:hover .lp-cta-arrow {
+    translate: 4px -4px;
   }
 }
 
@@ -552,13 +583,23 @@
   line-height: 1.35;
 }
 
+/* The CTA links' underline (.lp-cta-text): drawn in from the left on hover
+   and keyboard focus. */
 .lp-footer a {
   color: inherit;
   text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--fx-ease, ease);
 }
 
-.lp-footer a:hover {
-  text-decoration: underline;
+.lp-footer a:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lp-footer a:hover {
+    background-size: 100% 1px;
+  }
 }
 
 /* ---------- Tablets: cases and footer stack ---------- */
@@ -670,8 +711,12 @@
     color: var(--_color---copy-bright);
   }
 
-  .lp-hover.is-centered .lp-cta-line {
-    width: 40px;
+  .lp-hover.is-centered .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .lp-hover.is-centered .lp-cta-arrow {
+    translate: 4px -4px;
   }
 
   .lp-feature-row.is-centered .lp-feature-media img {

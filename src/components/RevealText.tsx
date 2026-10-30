@@ -2,16 +2,17 @@
 
 import { Fragment, useEffect, useRef, type ElementType } from "react";
 
-/** Each letter fades in while rising 0.35em into place. */
+/** Each letter fades in, rises 0.25em into place and comes into focus. The
+ * last frame is the letter's normal state, so nothing (no filter) stays on it. */
 const LETTER_FRAMES: Keyframe[] = [
-  { opacity: 0, transform: "translateY(0.35em)" },
-  { opacity: 1, transform: "none" },
+  { opacity: 0, transform: "translateY(0.25em)", filter: "blur(8px)" },
+  { opacity: 1, transform: "none", filter: "blur(0)" },
 ];
 const LETTER_MS = 600;
 const LETTER_EASING = "cubic-bezier(0.2, 0.7, 0.2, 1)";
 
 /**
- * Headline that reveals letter by letter (fade in + rise) the first time it
+ * Headline that reveals letter by letter (fade in, rise, de-blur) the first time it
  * scrolls into view. Letters are grouped per word so lines still only break
  * between words, and the heading keeps its full text as its accessible name.
  *
@@ -26,6 +27,7 @@ export default function RevealText({
   as: Tag = "h2",
   className,
   stagger = 0.02,
+  after,
   parallax,
 }: {
   text: string | string[];
@@ -33,6 +35,8 @@ export default function RevealText({
   className?: string;
   /** Seconds between one letter starting and the next. */
   stagger?: number;
+  /** The headline this line continues: its letters reveal first, then this line's. */
+  after?: string;
   /** Parallax rate (MotionLayer's data-parallax). */
   parallax?: number;
 }) {
@@ -46,6 +50,7 @@ export default function RevealText({
       return;
     }
 
+    const delay = after ? after.replace(/\s/g, "").length * stagger : 0;
     let animations: Animation[] = [];
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -58,7 +63,7 @@ export default function RevealText({
         animations = Array.from(letters, (letter, i) =>
           letter.animate(LETTER_FRAMES, {
             duration: LETTER_MS,
-            delay: i * stagger * 1000,
+            delay: (delay + i * stagger) * 1000,
             easing: LETTER_EASING,
             fill: "backwards",
           }),
@@ -69,12 +74,13 @@ export default function RevealText({
       // for headlines taller than the viewport.
       { rootMargin: "0px 0px -15% 0px" },
     );
-    observer.observe(el);
+    // A continuing line starts with its headline (the element before it).
+    observer.observe((after && el.previousElementSibling) || el);
     return () => {
       observer.disconnect();
       animations.forEach((animation) => animation.finish());
     };
-  }, [stagger]);
+  }, [stagger, after]);
 
   const lines = (Array.isArray(text) ? text : [text]).map((line) => line.trim());
   const label = lines.filter(Boolean).join(" ");

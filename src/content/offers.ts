@@ -14,7 +14,8 @@ import { workItem, type WorkItem } from "@/content/work";
 export const OFFERS = ["Production", "Strategy", "Post"] as const;
 export type Offer = (typeof OFFERS)[number];
 
-export const offerSlug = (o: Offer) => o.toLowerCase();
+/** URL and attribute form of an offer or service tag ("Sonic Strategy" → "sonic-strategy"). */
+export const tagSlug = (tag: string) => tag.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const FROM_SERVICE: Record<string, Offer> = {
   "Sonic Strategy": "Strategy",

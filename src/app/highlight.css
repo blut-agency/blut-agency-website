@@ -75,9 +75,9 @@
   will-change: translate;
 }
 
-/* CTA row: the "— Label" link on the left, a thin ↗ in the bottom-right
-   corner that fades and slides in when the teaser (or the link) is hovered.
-   Touch screens never show it. */
+/* CTA row: the label on the left and, inside boxes, a thin ↗ in the
+   bottom-right corner that nudges up and right when the box (or the link) is
+   hovered. */
 .cta-row {
   display: flex;
   align-items: flex-end;
@@ -90,17 +90,12 @@
   flex: none;
   width: 32px;
   height: 32px;
-  opacity: 0;
-  translate: -8px 8px;
-  transition:
-    opacity 0.5s var(--fx-ease, ease),
-    translate 0.5s var(--fx-ease, ease);
+  transition: translate 0.5s var(--fx-ease, ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
   :is(.hl-row, .lp-hover, .cta-row):hover .cta-arrow {
-    opacity: 1;
-    translate: 0 0;
+    translate: 4px -4px;
   }
 }
 
@@ -149,8 +144,7 @@
   }
 
   :is(.hl-row, .lp-hover, .cta-row).is-centered .cta-arrow {
-    opacity: 1;
-    translate: 0 0;
+    translate: 4px -4px;
   }
 }
 /* <<< touch */

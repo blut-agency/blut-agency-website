@@ -379,8 +379,12 @@ iframe.bk-spot-preview {
     transform: scale(1.03);
   }
 
-  .bk-spot:hover .lp-cta-line {
-    width: 40px;
+  .bk-spot:hover .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .bk-spot:hover .lp-cta-arrow {
+    translate: 4px -4px;
   }
 }
 
@@ -554,62 +558,55 @@ iframe.bk-spot-preview {
   --bk-rule: #343434;
 }
 
-/* Service head on the thirds: the headline across two thirds with its
-   subline close under it (copy size, full colour), and the body (smaller,
-   muted) in the last third, starting level with the subline. Flipped, the
-   headline group takes the right two thirds and the body the left third. */
+/* Service head: the headline in two thirds with its subline straight under
+   it at the same size, a step greyer, read as one two-tone heading. */
 .bk-service-top {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: var(--lp-gap);
-  align-items: start;
 }
 
-.bk-service-lead {
-  display: contents;
-}
-
-.bk-service-lead .lp-heading {
+.bk-service-top .lp-heading,
+.bk-service-line {
   grid-column: 1 / span 2;
-  grid-row: 1;
   margin: 0;
+  font-size: 64px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   text-wrap: wrap;
 }
 
 .bk-service-line {
-  grid-column: 1 / span 2;
-  grid-row: 2;
-  margin: 32px 0 0;
-}
-
-.bk-service-intro {
-  grid-column: 3;
-  grid-row: 2;
-  margin: 32px 0 0;
-  font-size: 24px;
-  line-height: 1.35;
-  color: var(--lp-muted);
-}
-
-.bk-section:not(.is-dark) .bk-service-intro {
   color: var(--lp-text-secondary);
 }
 
-.bk-service-top.is-flipped .lp-heading,
-.bk-service-top.is-flipped .bk-service-line {
-  grid-column: 2 / span 2;
+.bk-section.is-dark .bk-service-line {
+  color: var(--lp-muted);
 }
 
-.bk-service-top.is-flipped .bk-service-intro {
-  grid-column: 1;
+/* A long question (Production) steps down a size on phones. */
+@media screen and (max-width: 767px) {
+  .bk-service-top.is-long .lp-heading,
+  .bk-service-top.is-long .bk-service-line {
+    font-size: 32px;
+  }
+}
+
+/* No leading trim where the two meet (embeds.css), so the subline sits one
+   line under the headline as if it were its next line. */
+.bk-service-top .lp-heading::after,
+.bk-service-top .bk-service-line::before {
+  content: none;
+}
+
+/* The intro opens the drawer column, in full colour above the drawers. */
+.bk-service-intro {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.35;
 }
 
 @media screen and (max-width: 1279px) {
-  .bk-service-line,
-  .bk-service-intro {
-    margin-top: 24px;
-  }
-
   .bk-service-intro {
     font-size: 16px;
     line-height: 1.55;
@@ -625,7 +622,7 @@ iframe.bk-spot-preview {
 
 .bk-service-media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #111;
 }
@@ -643,11 +640,41 @@ iframe.bk-spot-preview {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--lp-stack);
+  gap: 48px;
 }
 
-/* Mirrored service: headline and drawers in the right two thirds, the intro
-   and photo in the left third. */
+/* The photo runs from the top of the intro to the last drawer, so both
+   columns start and end together. */
+.bk-service-media {
+  align-self: stretch;
+  aspect-ratio: auto;
+}
+
+/* The CTA on the photo: white, bottom left over a dark fade; the whole photo
+   links there (.lp-cover), the visible link stays the keyboard target. */
+.bk-service-media.has-cta::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 50%;
+  background-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.56));
+  pointer-events: none;
+}
+
+.bk-service-media .cta-row {
+  position: absolute;
+  inset: auto 32px 32px;
+  width: auto;
+  z-index: 2;
+  color: var(--_color---copy-bright);
+}
+
+/* Heading and its content belong together: closer than the section rhythm. */
+.bk-section > .bk-service-top + .bk-service {
+  margin-top: 64px;
+}
+
+/* Mirrored drawer row: drawers in the right two thirds, photo in the left third. */
 .bk-service.is-flipped .bk-service-body {
   grid-column: 2 / span 2;
   grid-row: 1;
@@ -751,25 +778,42 @@ iframe.bk-spot-preview {
     row-gap: var(--lp-stack);
   }
 
-  .bk-service-lead .lp-heading,
+  .bk-service-top .lp-heading,
   .bk-service-line,
-  .bk-service-intro,
-  .bk-service-top.is-flipped .lp-heading,
-  .bk-service-top.is-flipped .bk-service-line,
-  .bk-service-top.is-flipped .bk-service-intro,
   .bk-service-body,
   .bk-service.is-flipped .bk-service-body,
   .bk-service.is-flipped .bk-service-media {
     grid-column: 1;
     grid-row: auto;
   }
-}
 
-@media screen and (max-width: 767px) {
+  .bk-service-top .lp-heading,
+  .bk-service-line {
+    font-size: 48px;
+  }
+
+  .bk-service-intro {
+    max-width: 60ch;
+  }
+
+  /* One column: the photo comes before the drawers, not after the CTA. */
+  /* Not stretched here: a stretched box ignores its aspect ratio in Safari
+     and, with only an absolute image inside, collapses to 0px. */
   .bk-service-media {
+    order: -1;
+    align-self: start;
     aspect-ratio: 4 / 3;
   }
+
+  .bk-service-media .cta-row {
+    inset: auto 16px 16px;
+  }
+
+  .bk-section > .bk-service-top + .bk-service {
+    margin-top: 48px;
+  }
 }
+
 
 /* Client labels keep their full line height: embeds.css trims the half-leading
    off every paragraph, which cut the box tight to ascenders and descenders. */
@@ -1151,9 +1195,32 @@ iframe.bk-spot-preview {
   }
 }
 
+/* Phones: photo and text side by side from the heading's left edge, tops
+   level (the trimmed name paragraph starts at its cap height); name 24px,
+   role 16px grey, Mail 16px below. */
 @media screen and (max-width: 767px) {
+  .bk-contact-grid {
+    row-gap: 48px;
+  }
+
+  .bk-contact .bk-contact-person {
+    align-items: flex-start;
+    gap: 24px;
+  }
+
   .bk-contact .bk-contact-photo {
     width: 128px;
+  }
+
+  .bk-contact .bk-contact-person .lp-copy.bk-contact-role {
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  /* 4px plus the half of the 48px tap target above the text: 16px visible. */
+  .bk-contact .bk-contact-person .cta-row {
+    margin-top: 4px;
   }
 }
 
@@ -1231,6 +1298,19 @@ iframe.bk-spot-preview {
     left: auto;
     right: 0;
     padding: 8px var(--lp-pad) 8px 24px;
+  }
+}
+
+/* Production: the client chip sits at the top of the photo instead, on the
+   same side as before (right on flipped rows from 1024px, left otherwise). */
+.bk-mosaic.is-chip-top .bk-spot-client {
+  top: var(--lp-pad);
+  bottom: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-mosaic.is-chip-top .bk-spot-client {
+    top: 16px;
   }
 }
 
@@ -1467,8 +1547,12 @@ iframe.bk-spot-preview {
     transform: scale(1.03);
   }
 
-  .bk-spot.is-centered .lp-cta-line {
-    width: 40px;
+  .bk-spot.is-centered .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .bk-spot.is-centered .lp-cta-arrow {
+    translate: 4px -4px;
   }
 
   .bk-spot.is-row.is-centered .bk-spot-body:not(.is-light-highlight),
@@ -1493,15 +1577,11 @@ iframe.bk-spot-preview {
    Restructure (call with Michael and Timo, 30 Oct 2026)
    ========================================================================== */
 
-/* Shorter banners, so the next section already shows on the first screen. */
+/* Shorter banners, so the next section already shows on the first screen.
+   The landing stage keeps its own height (landing.css). */
 .bk-hero {
   min-height: 512px;
   padding-block: 48px;
-}
-
-.lp-page .lp-stage .home-stage-wrapper {
-  min-height: 512px;
-  height: 512px;
 }
 
 @media screen and (max-width: 767px) {
@@ -1509,10 +1589,37 @@ iframe.bk-spot-preview {
     min-height: 384px;
     padding-block: 32px;
   }
+}
 
-  .lp-page .lp-stage .home-stage-wrapper {
-    min-height: 384px;
-    height: 384px;
+/* The logo never grows taller than the stage: it takes the room left above
+   the player, fills the width when it fits, and is centred when the height
+   is what limits it. It always sits at the top (preserveAspectRatio
+   "xMidYMin meet" on the SVG in page.tsx). */
+.lp-page .lp-stage .home-stage-top {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-page .lp-stage .full-width-logo {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  margin-block: 24px;
+  padding-block: 0;
+}
+
+.lp-page .lp-stage .full-width-logo svg.logo-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .lp-page .lp-stage .full-width-logo {
+    margin-block: 16px;
   }
 }
 
@@ -1534,15 +1641,158 @@ iframe.bk-spot-preview {
   }
 }
 
-/* Home offers: three equal tiles side by side, no stagger, so none reads as
-   less important. The label is the tile's headline. */
-.bk-offers .lp-case-grid > * {
-  padding-top: 0;
+/* Home offers: three equal tiles, staggered like the office cards on About
+   (64 / 24 / 96px from the top), each floating up and down out of step with
+   the others and moving at its own rate on scroll (data-parallax in
+   page.tsx), so none reads as more important; their photos stay put.
+   Hovering a tile stops its float; the others keep moving. The label is the
+   tile's headline. Tighter above and below than a full section (96px
+   desktop, 64px tablet and phone). */
+.bk-offers {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--lp-stack);
 }
 
-.bk-offers .lp-case-body {
+/* Hovering a tile (or, on touch screens, the centred tile) fades its own
+   moving pattern in across the whole section, behind all three tiles; it
+   fades out again when the pointer leaves. On a light colour the headline
+   turns dark. */
+.bk-offers > :not(.bk-offers-backdrop) {
+  position: relative;
+  z-index: 1;
+}
+
+.bk-offers > .bk-offers-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bk-offers-visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.bk-offers .lp-heading {
+  transition: color 0.6s ease;
+}
+
+.bk-offers:has(.lp-case-grid > :nth-child(1) > :is(.bk-offer:hover, .bk-offer.is-centered)) .bk-offers-visual:nth-child(1),
+.bk-offers:has(.lp-case-grid > :nth-child(2) > :is(.bk-offer:hover, .bk-offer.is-centered)) .bk-offers-visual:nth-child(2),
+.bk-offers:has(.lp-case-grid > :nth-child(3) > :is(.bk-offer:hover, .bk-offer.is-centered)) .bk-offers-visual:nth-child(3) {
+  opacity: 1;
+}
+
+.bk-offers:has(.lp-case-grid > [data-light-highlight] > :is(.bk-offer:hover, .bk-offer.is-centered)) .lp-heading {
+  color: var(--_color---copy-dark);
+}
+
+/* Closer to the "What we do" headline than a section's usual 96px: 48px
+   desktop, 32px tablet, 24px phone (--lp-gap), before the stagger. */
+.bk-offers .lp-case-grid {
+  margin-top: var(--lp-gap);
+}
+
+/* The bottom padding makes up the rest of the 96px, so the tiles stay the
+   same height while their tops are staggered. */
+.bk-offers .lp-case-grid > :nth-child(3n + 1) { padding-bottom: 32px; }
+.bk-offers .lp-case-grid > :nth-child(3n + 2) { padding-bottom: 72px; }
+.bk-offers .lp-case-grid > :nth-child(3n) { padding-bottom: 0; }
+
+/* Phones stack the tiles (landing.css drops the top offsets): no gaps
+   below either. */
+@media screen and (max-width: 767px) {
+  .bk-offers .lp-case-grid > * {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* Desktop reads Strategy, Production, Post; stacked, Production leads. */
+@media screen and (max-width: 991px) {
+  .bk-offers .lp-case-grid > :nth-child(2) {
+    order: -1;
+  }
+}
+
+/* Each tile is the photo, edge to edge (portrait), with the offer at the top
+   and a short line plus the arrow at the bottom. The whole tile is the link
+   (.lp-cover); its text is the link's label. Light text on soft shades at
+   the top and bottom of the photo so it reads on any picture. */
+.bk-offer {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #111;
+  color: var(--_color---copy-bright);
+}
+
+.bk-offer .lp-case-media {
+  position: absolute;
+  inset: 0;
   aspect-ratio: auto;
-  min-height: 320px;
+}
+
+.bk-offer .lp-case-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.48) 0%,
+    rgba(0, 0, 0, 0) 32%,
+    rgba(0, 0, 0, 0) 56%,
+    rgba(0, 0, 0, 0.64) 100%
+  );
+  pointer-events: none;
+}
+
+.bk-offer-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  height: 100%;
+  padding: var(--lp-pad);
+  pointer-events: none;
+}
+
+.bk-offer-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bk-offer-copy {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+/* No clearfix box after the copy: it would shift the last line against the
+   arrow. (The AI-draft asterisk, globals.css, still shows.) */
+.bk-offer-copy:not(.ai-draft)::after {
+  content: none;
+}
+
+/* Bottom-aligned with the copy, the arrow sits on the last line's baseline:
+   the baseline is 7px above the copy's bottom at both text sizes, and the
+   drawn arrow ends 8px above the bottom of its box. */
+
+@media screen and (max-width: 1279px) {
+  .bk-offer-copy {
+    font-size: 16px;
+    line-height: 1.5;
+  }
 }
 
 .bk-offer-title {
@@ -1559,28 +1809,57 @@ iframe.bk-spot-preview {
   }
 }
 
-/* Home featured cases follow the offers on the same black: no double gap. */
-.bk-offers + .bk-featured {
-  margin-top: 0;
-  padding-top: 0;
-}
-
+/* Home featured cases: on white, after the black offers. */
 .bk-featured .bk-lead {
   margin-bottom: var(--lp-stack);
-  color: var(--_color---copy-bright);
+}
+
+/* Home: 96px from the last featured case to "Why do you need blut?" (64px on
+   phones), together with .lp-why's own top padding (landing.css). */
+.bk-section.bk-featured {
+  padding-bottom: 32px;
+}
+
+@media screen and (max-width: 1279px) {
+  .bk-section.bk-featured {
+    padding-bottom: 48px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .bk-section.bk-featured {
+    padding-bottom: 16px;
+  }
+}
+
+/* "View all cases" sits flush against the right edge of the content. */
+.bk-featured .bk-lead-text {
+  justify-self: end;
 }
 
 /* Cases filter: pill buttons above the list; the active one is filled. */
+/* Cases: pills close under the banner and 48px above the list. */
+.bk-section.bk-cases-section {
+  padding-top: 96px;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-section.bk-cases-section {
+    padding-top: 64px;
+  }
+}
+
 .bk-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: var(--lp-stack);
+  margin-bottom: 48px;
 }
 
-.bk-pill {
+/* Scoped twice so the Webflow button reset doesn't drop the border. */
+.bk-filter .bk-pill {
   padding: 8px 24px;
-  border: 1px solid currentColor;
+  border: 1px solid var(--_color---copy-bright);
   border-radius: 999px;
   background: transparent;
   color: var(--_color---copy-bright);
@@ -1606,10 +1885,15 @@ iframe.bk-spot-preview {
   }
 }
 
-.bk-filtered[data-filter="production"] .bk-case-list > li:not([data-offers~="production"]),
-.bk-filtered[data-filter="strategy"] .bk-case-list > li:not([data-offers~="strategy"]),
-.bk-filtered[data-filter="post"] .bk-case-list > li:not([data-offers~="post"]) {
-  display: none;
+/* Filter change (CaseFilter): the list fades out, swaps, fades back in, as
+   one piece. */
+.bk-filtered .bk-case-list {
+  transition: opacity 0.3s ease;
+}
+
+.bk-filtered.is-fading .bk-case-list {
+  opacity: 0;
+  transition-duration: 0.2s;
 }
 
 /* The pinned case: a small "Featured" label above its card. */
@@ -1625,35 +1909,534 @@ iframe.bk-spot-preview {
   margin-inline: auto;
 }
 
-/* Smaller client chip: the tiles are a third of the width. */
-.bk-offers .lp-case-client {
-  font-size: 24px;
-}
-
 /* Equal tile heights, whatever the copy length. */
 .bk-offers .lp-case-grid {
   align-items: stretch;
 }
 
-.bk-offers .lp-case {
-  height: 100%;
-}
-
-.bk-offers .lp-case-body {
-  flex: 1;
-}
-
 /* Five menu items on phones: tighter gaps, and on very narrow screens the
    menu scrolls sideways instead of widening the page. */
-@media screen and (max-width: 479px) {
-  .header .navbar-menu-wrapper {
-    gap: 8px;
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+/* ---------- Phones: burger and full-screen menu (Header.tsx) ---------- */
+.bk-burger-slot {
+  display: none;
+}
 
-  .header .navbar-menu-wrapper::-webkit-scrollbar {
+.bk-burger {
+  position: relative;
+  display: block;
+  width: 48px;
+  height: 48px;
+  margin-right: -12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Two 24px lines, 8px apart; open, they cross into an X. */
+.bk-burger span {
+  position: absolute;
+  left: 12px;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  transition: translate 0.3s ease, rotate 0.3s ease;
+}
+
+.bk-burger span:first-child {
+  top: 19px;
+}
+
+.bk-burger span:last-child {
+  top: 27px;
+}
+
+.bk-burger.is-open span:first-child {
+  translate: 0 4px;
+  rotate: 45deg;
+}
+
+.bk-burger.is-open span:last-child {
+  translate: 0 -4px;
+  rotate: -45deg;
+}
+
+/* The same X closes the video lightbox: pinned top-right, white on its dark
+   backdrop (globals.css places it; this keeps the burger's rules off it). */
+.bk-burger.video-lightbox-close {
+  position: fixed;
+  color: var(--_color---copy-bright);
+}
+
+@media screen and (max-width: 767px) {
+  .header .navbar-menu-wrapper {
     display: none;
   }
+
+  .bk-burger-slot {
+    display: block;
+  }
+}
+
+.bk-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 24px calc(48px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  background: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
+  translate: 100% 0;
+  visibility: hidden;
+  transition: translate 0.5s var(--fx-ease, ease), visibility 0s linear 0.5s;
+}
+
+/* Slides in from the right; closing, it slides back out. */
+.bk-menu.is-open {
+  translate: 0 0;
+  visibility: visible;
+  transition: translate 0.5s var(--fx-ease, ease), visibility 0s;
+}
+
+/* A link tapped in the menu: it fades out with the page (PageTransition). */
+.bk-menu.is-leaving {
+  animation: main-wrapper-out 0.4s cubic-bezier(0.4, 0, 0.6, 1) both;
+}
+
+.bk-menu-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Logo at the top, the links left-aligned at the bottom. */
+.bk-menu-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: left;
+}
+
+.bk-menu-logo {
+  display: block;
+  color: inherit;
+}
+
+.bk-menu-logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bk-menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin: auto 0 0;
+  padding: 48px 0 0;
+  list-style: none;
+}
+
+.bk-menu-list a {
+  color: inherit;
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+}
+
+/* The page you're on is underlined. */
+.bk-menu-list a[aria-current="page"] {
+  background-size: 100% 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bk-menu,
+  .bk-menu.is-open,
+  .bk-burger span {
+    transition: none;
+  }
+
+  .bk-menu.is-leaving {
+    animation: none;
+  }
+}
+
+/* ---------- Case lab (/case-lab/[slug]): editorial case page test ---------- */
+/* One step tighter than a full section: 96px top and bottom (64px on phones).
+   Where two blocks on the same ground meet, they share one gap instead of
+   stacking both paddings. */
+.bk-lab > .bk-section {
+  padding-block: 96px;
+}
+
+.bk-lab > .bk-section:not(.is-dark, .bk-lab-quote-section) + .bk-section:not(.is-dark, .bk-lab-quote-section),
+.bk-lab > .bk-section.is-dark + .bk-section.is-dark {
+  padding-top: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-lab > .bk-section {
+    padding-block: 64px;
+  }
+}
+
+/* Banner to the first chapter: 32px under the facts plus the chapter's 96px,
+   128px on every width. */
+.bk-lab > .bk-hero {
+  padding-bottom: 32px;
+}
+
+.bk-lab > .header + .bk-section {
+  padding-top: 96px;
+}
+
+/* Phones: the facts close up under the title, so the banner keeps 384px. */
+@media screen and (max-width: 767px) {
+  .bk-lab > .bk-hero {
+    gap: 16px;
+  }
+}
+
+/* Facts at the foot of the case banner: Client, What we did, Collaborators
+   in the three columns, labels dimmed in the banner's own text colour. */
+.bk-lab-facts {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  margin-block: 0;
+}
+
+.bk-lab-facts dt {
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.64;
+}
+
+.bk-lab-facts dd {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+/* Chapter: stage name over the CMS question as one two-tone heading in two
+   thirds, the text set off to the right below it. */
+.bk-lab-chapter {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+}
+
+.bk-lab-chapter-head {
+  grid-column: 1 / span 2;
+}
+
+.bk-lab-chapter-head .lp-heading,
+.bk-lab-chapter-line {
+  margin: 0;
+  font-size: 64px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.bk-lab-chapter-line {
+  color: var(--lp-text-secondary);
+}
+
+.bk-section.is-dark .bk-lab-chapter-line {
+  color: var(--lp-muted);
+}
+
+/* No leading trim where the two lines meet (embeds.css). */
+.bk-lab-chapter-head .lp-heading::after,
+.bk-lab-chapter-head .bk-lab-chapter-line::before {
+  content: none;
+}
+
+.bk-lab-chapter-body {
+  grid-column: 2 / span 2;
+  margin-top: 48px;
+}
+
+.bk-lab-prose > :first-child {
+  margin-top: 0;
+}
+
+.bk-lab-prose p {
+  margin-bottom: 0;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+/* CMS rich text can hold more headings and pictures: 24px between
+   paragraphs, a heading 48px below what's above it and 16px above its text,
+   pictures full width with 64px (48px on phones) either side. */
+.bk-lab-prose > * + * {
+  margin-top: 24px;
+}
+
+.bk-lab-prose h2,
+.bk-lab-prose h3 {
+  margin: 48px 0 0;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.bk-lab-prose :is(h2, h3) + * {
+  margin-top: 16px;
+}
+
+.bk-lab-prose figure {
+  max-width: none !important;
+  margin: 64px 0;
+}
+
+.bk-lab-prose figure + * {
+  margin-top: 0;
+}
+
+.bk-lab-prose figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bk-lab-chapter-body .cta-row {
+  margin-top: 32px;
+}
+
+/* Quote on the case's colour: the speaker's photo in a third, the words in two. */
+.bk-lab-quote {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+  align-items: end;
+  margin-block: 0;
+  color: var(--_color---copy-dark);
+}
+
+.bk-lab-quote-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.bk-lab-quote-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bk-lab-quote-text {
+  grid-column: 2 / span 2;
+}
+
+.bk-lab-quote.is-on-dark {
+  color: var(--_color---copy-bright);
+}
+
+.bk-lab-quote blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.bk-lab-quote figcaption {
+  margin-top: 24px;
+  text-align: left;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+/* GIF loop on black, its hashtags large in the last third. */
+.bk-lab-loop {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+  align-items: end;
+}
+
+.bk-lab-loop .video-16-9 {
+  grid-column: 1 / span 2;
+}
+
+.bk-lab-tags {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Audio: the case's shape on its colours in a third, title and player in two. */
+.bk-lab-audio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+}
+
+.bk-lab-audio-visual {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.bk-lab-audio-text {
+  grid-column: 2 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bk-lab-audio-title {
+  margin: 0;
+  font-size: 64px;
+  line-height: 1.1;
+  white-space: pre-line;
+}
+
+.bk-lab-audio-text .bk-lab-chapter-line {
+  margin-top: 16px;
+  font-size: 24px;
+}
+
+.bk-lab-audio-bar {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 48px;
+}
+
+/* Videos: the case-page player, full content width. */
+.bk-lab-video {
+  position: relative;
+}
+
+.bk-lab-video + .bk-lab-video {
+  margin-top: 48px;
+}
+
+.bk-lab-awards ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 48px;
+  margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bk-lab-awards img {
+  display: block;
+  height: 64px;
+  width: auto;
+}
+
+@media screen and (max-width: 1279px) {
+  .bk-lab-prose p {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .bk-lab-chapter-head .lp-heading,
+  .bk-lab-chapter-line,
+  .bk-lab-audio-title {
+    font-size: 48px;
+  }
+
+  .bk-lab-quote blockquote,
+  .bk-lab-tags {
+    font-size: 32px;
+  }
+}
+
+/* One column: chapters, quote, loop and audio stack. */
+@media screen and (max-width: 767px) {
+  .bk-lab-chapter,
+  .bk-lab-quote,
+  .bk-lab-loop,
+  .bk-lab-audio {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+  }
+
+  /* Facts stack compactly in the banner. */
+  .bk-lab-facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .bk-lab-facts dt {
+    margin-bottom: 0;
+  }
+
+  .bk-lab-facts dd {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .bk-lab-chapter-head,
+  .bk-lab-chapter-body,
+  .bk-lab-quote-text,
+  .bk-lab-loop .video-16-9,
+  .bk-lab-audio-text {
+    grid-column: 1;
+  }
+
+  .bk-lab-chapter-body {
+    margin-top: 0;
+  }
+
+  .bk-lab-chapter-head .lp-heading,
+  .bk-lab-chapter-line,
+  .bk-lab-audio-title {
+    font-size: 32px;
+  }
+
+  .bk-lab-awards img {
+    height: 48px;
+  }
+
+  .bk-lab-prose figure {
+    margin-block: 48px;
+  }
+
+  .bk-lab-prose h2,
+  .bk-lab-prose h3 {
+    font-size: 24px;
+  }
+}
+
+/* Headline reveal: letters now fade in and come into focus (RevealText), so
+   the old slide-up mask (expressive.css, overflow: clip) would cut off the
+   blur and the lowered start. Its padding and margin stay, so lines don't move. */
+.reveal-text .reveal-word {
+  overflow: visible;
+}
+
+/* Room for the blur and the drop inside each letter's own box (Safari sizes
+   a filtered, animated element's layer to its box and can cut the halo),
+   cancelled by an equal negative margin so the text doesn't move. */
+.reveal-text .reveal-letter {
+  padding: 0.3em 0.15em;
+  margin: -0.3em -0.15em;
+}
+
+/* A chapter question carries its own AI asterisk (project page), so the
+   added one would double it. */
+.ai-draft .bk-lab-chapter-line::after {
+  content: none !important;
 }

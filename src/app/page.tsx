@@ -7,6 +7,7 @@ import Link from "next/link";
 import AiDraftNote from "@/components/AiDraftNote";
 import CaseCard from "@/components/CaseCard";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
+import CtaArrow from "@/components/CtaArrow";
 import HoverClip from "@/components/HoverClip";
 import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
 import { FEATURED_CASES } from "@/content/offers";
@@ -35,10 +36,10 @@ type OfferTile = {
   offer: string;
   href: string;
   copy: string;
-  /** AI-written placeholder copy: shown in red until replaced. */
+  /** AI-written placeholder copy: marked with an asterisk until replaced. */
   aiDraft?: boolean;
+  /** The tile's link text, read out by screen readers (the tile shows only the arrow). */
   cta: string;
-  client: string;
   image: string;
   alt: string;
   /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
@@ -48,24 +49,22 @@ type OfferTile = {
 
 const OFFER_TILES: OfferTile[] = [
   {
-    offer: "Production",
-    href: "/production",
-    copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    cta: "See our production work",
-    client: "Samsung × Nina Chuba",
-    image: "/images/home/teaser-story.jpg",
-    alt: "Nina Chuba in the Samsung spot",
-    preview: "/videos/previews/samsung-nina-chuba.mp4",
-  },
-  {
     offer: "Strategy",
     href: "/strategy",
     copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
     cta: "Get to know our process",
-    client: "Sonic Performance Tracker",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
     preview: "/videos/previews/spt-dashboard.mp4",
+  },
+  {
+    offer: "Production",
+    href: "/production",
+    copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
+    cta: "See our production work",
+    image: "/images/home/teaser-story.jpg",
+    alt: "Nina Chuba in the Samsung spot",
+    preview: "/videos/previews/samsung-nina-chuba.mp4",
   },
   {
     offer: "Post",
@@ -73,7 +72,6 @@ const OFFER_TILES: OfferTile[] = [
     copy: "Sound design, mixing and video post that make every spot feel finished.",
     aiDraft: true,
     cta: "See our post work",
-    client: "Crazy Wolf",
     image: "/images/story/crazy-wolf.jpg",
     alt: "The Crazy Wolf energy drink spot",
     preview: "/videos/previews/crazy-wolf.mp4",
@@ -83,6 +81,7 @@ const OFFER_TILES: OfferTile[] = [
 export default async function HomePage() {
   const homeSound = getHomeSound();
   // Each tile's hover highlight uses the CMS theme closest to its photo.
+  // Each offer's colours, picked from its photo: its pattern fills the section on hover.
   const themes = await themesForImages(OFFER_TILES.map((t) => t.image));
   const featured = FEATURED_CASES.map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
   const caseThemes = await highlightThemes(featured.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
@@ -96,7 +95,7 @@ export default async function HomePage() {
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
                 <div className="full-width-logo">
-                  <div className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" fill="none" class="logo-svg">
+                  <div className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" preserveAspectRatio="xMidYMin meet" fill="none" class="logo-svg">
                       <path d="M25.3035 14.6042L26.7093 5.63867H31.1303L29.8468 13.8131C29.5208 15.7401 30.5191 16.876 32.4342 16.876C34.8382 16.876 36.6514 15.375 37.0181 13.022L38.1998 5.63867H42.6411L40.4205 19.5738H36.6107L36.5088 16.7949H36.4884C35.0827 18.803 32.8212 19.9794 30.132 19.9794C26.6074 19.9997 24.7535 17.951 25.3035 14.6042Z" fill="currentColor"></path>
                       <path d="M19.3342 0.709939V19.574H23.796V0L19.3342 0.709939Z" fill="currentColor"></path>
                       <path d="M10.6348 5.61866C7.82331 5.61866 5.52114 6.91684 4.4821 9.04665H4.46173V0L0 0.709939V19.5943H3.78941L4.40061 16.5923H4.42098C5.46002 18.7424 7.78256 20 10.5941 20C14.9743 20 17.908 17.1602 17.908 12.8195C17.908 8.4787 14.9743 5.61866 10.6348 5.61866ZM8.88271 16.6329C6.15271 16.6329 4.29874 15.0507 4.29874 12.8398C4.29874 10.6288 6.15271 9.04665 8.88271 9.04665C11.6127 9.04665 13.4667 10.6288 13.4667 12.8398C13.4667 15.0507 11.6127 16.6329 8.88271 16.6329Z" fill="currentColor"></path>
@@ -180,36 +179,47 @@ export default async function HomePage() {
       </div>
     </section>
 
-    {/* The three offers side by side, each with a clear label. */}
+    {/* What we do: the three offers side by side, each with a clear label. */}
     <section className="bk-section is-dark bk-offers">
+      <div className="lp-wrap">
+        <RevealText as="h2" className="lp-heading" text="What we do" />
+      </div>
       <ul role="list" className="lp-wrap lp-case-grid">
         {OFFER_TILES.map((tile, i) => (
-          <li key={tile.href}>
-            <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: themes[i]?.background ?? "var(--_color---accent-color-2)" }}>
+          <li key={tile.href} data-parallax={[0.8, 0.4, 1.2][i % 3]} data-light-highlight={themes[i]?.lightBackground || undefined}>
+            <article className="lp-case lp-hover hl-row bk-offer">
               <div className="lp-case-media hl-media">
                 <img src={tile.image} alt={tile.alt} loading="lazy" />
                 {(tile.preview || tile.previewVimeoId) && <HoverClip src={tile.preview} vimeoId={tile.previewVimeoId} />}
-                <p className="lp-case-client">{tile.client}</p>
               </div>
-              <div className={`lp-case-body hl-panel${themes[i]?.lightBackground ? " is-light-highlight" : ""}`}>
-                {themes[i] && (
-                  <div className="lp-case-visual" aria-hidden="true" style={{ backgroundColor: themes[i]!.background, color: themes[i]!.line }}>
-                    <CaseStudyVisual slug={`home-offer-${tile.href.slice(1)}`} {...patternAt(i)} />
-                  </div>
-                )}
+              <div className="bk-offer-body">
                 <h2 className="bk-offer-title">{tile.offer}</h2>
-                <p className={`lp-copy${tile.aiDraft ? " ai-draft" : ""}`}>{tile.copy}</p>
-                <CtaLink href={tile.href} label={tile.cta} />
+                <div className="bk-offer-foot">
+                  <p className={`bk-offer-copy${tile.aiDraft ? " ai-draft" : ""}`}>{tile.copy}</p>
+                  <CtaArrow />
+                </div>
               </div>
-              <Link href={tile.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
+              <Link href={tile.href} className="lp-cover" aria-label={tile.cta} />
             </article>
           </li>
         ))}
       </ul>
+      {/* Behind everything: one layer per offer, shown while its tile is hovered (blocks.css). */}
+      <div className="bk-offers-backdrop" aria-hidden="true">
+        {OFFER_TILES.map((tile, i) =>
+          themes[i] ? (
+            <div key={tile.href} className="lp-case-visual bk-offers-visual" style={{ backgroundColor: themes[i]!.background, color: themes[i]!.line }}>
+              <CaseStudyVisual slug={`home-offer-${tile.href.slice(1)}`} {...patternAt(i)} />
+            </div>
+          ) : (
+            <div key={tile.href} className="bk-offers-visual" />
+          ),
+        )}
+      </div>
     </section>
 
     {/* Featured cases: recent work we're proud of; the full list is on /case-studies. */}
-    <section className="bk-section is-dark bk-featured">
+    <section className="bk-section bk-featured">
       <Lead side parallax={false} heading="Featured cases">
         <CtaLink href="/case-studies" label="View all cases" />
       </Lead>

@@ -3,6 +3,7 @@ import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
+import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
 import { WORK_ITEMS as ITEMS } from "@/content/work";
 import { themesForImages } from "@/lib/imageTheme";
@@ -29,6 +30,8 @@ export const metadata: Metadata = {
   Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
 */
 
+const QUESTION = "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out.";
+
 export default async function ProductionPage() {
   const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
 
@@ -46,13 +49,12 @@ export default async function ProductionPage() {
       {/* The case list's spacing on black, with Elliot's arrangement: the
           cards swap sides from row to row, full-width spots in between. */}
       <section className="bk-section is-dark">
-        <Lead
-          side
-          parallax={false}
-          heading="What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out."
-          text="It’s blut, of course."
-        />
-        <ul role="list" className="lp-wrap bk-mosaic is-spaced">
+        {/* The Strategy service heading: question and answer as one two-tone heading. */}
+        <div className="lp-wrap bk-service-top is-long">
+          <RevealText as="h2" className="lp-heading" text={QUESTION} />
+          <RevealText as="p" className="bk-service-line" text="It’s blut, of course." after={QUESTION} />
+        </div>
+        <ul role="list" className="lp-wrap bk-mosaic is-spaced is-chip-top">
           {ITEMS.map((item, i) => (
             <li key={item.spot.client}>
               <WorkSpot
