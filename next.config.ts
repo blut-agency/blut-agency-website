@@ -16,6 +16,13 @@ const nextConfig: NextConfig = {
         destination: "/strategy",
         permanent: true,
       },
+      // Work became Production (call with Michael and Timo, 30 Oct 2026).
+      // Temporary until the new menu is signed off.
+      {
+        source: "/work",
+        destination: "/production",
+        permanent: false,
+      },
     ];
   },
 };

@@ -33,9 +33,10 @@ export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; the
   // Shape and tempo by the case's place in the list, so neighbours differ.
   const pattern = patternAt(cs.position - 1);
   const accent = theme?.background ?? "var(--_color---accent-color-2)";
+  const accentText = theme && !theme.lightBackground ? "var(--_color---copy-bright)" : "var(--_color---copy-dark)";
   const tags = caseTags(cs);
   return (
-    <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: accent }}>
+    <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: accent, ["--lp-case-accent-text" as string]: accentText }}>
       <div className="lp-case-media hl-media">
         <img src={cs.thumbnail} alt="" loading="lazy" />
         {(cs.previewUrl || cs.previewVimeoId) && <HoverClip src={cs.previewUrl} vimeoId={cs.previewVimeoId} />}

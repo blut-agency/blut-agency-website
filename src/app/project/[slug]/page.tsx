@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { share } from "@/lib/share";
 import AiDraftNote from "@/components/AiDraftNote";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseCard, { listItems } from "@/components/CaseCard";
-import { ContactBlock, PageHero } from "@/components/Blocks";
+import { ContactBlock, CtaLink, PageHero } from "@/components/Blocks";
 import { themeFromColors } from "@/lib/imageTheme";
-import { getCaseStudies, getCaseStudyBySlug, type CaseStudyVideoFile } from "@/lib/content";
+import { getCaseStudies, getCaseStudyBySlug, type CaseStudy, type CaseStudyVideoFile } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
-import Button from "@/components/Button";
 import RevealText from "@/components/RevealText";
+import CaseVideo from "@/components/CaseVideo";
+
+/*
+  Case page (the editorial layout tested on /case-lab, Oct 2026): the case's
+  banner with its facts, then the CMS text sections as three chapters of the
+  process, each headed by a stage name over the CMS question (two-tone
+  heading), with the quote, picture strip, GIF loop, audio, videos and awards
+  between them. Every block is left out when its content is missing. The
+  stage names are AI-written placeholders, marked with an asterisk.
+*/
 
 // Morph durations the live project pages use, per case study.
 // The "next case study" teaser at the foot of the page reuses the audio speed.
@@ -63,11 +72,144 @@ export async function generateMetadata({
   };
 }
 
-export default async function CaseStudyDetailPage({
-  params,
+const STAGES = ["The brief*", "The making*", "The result*"];
+
+/** The CMS section's h2 as the heading, the rest as body HTML. */
+function chapter(html: string) {
+  const m = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);
+  const heading = (m?.[1] ?? "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .trim();
+  // Webflow's placeholder alt text would be read out; the pictures are decorative.
+  const rest = (m ? html.replace(m[0], "") : html).replace(/alt="__wf_reserved_inherit"/g, 'alt=""');
+  return { heading, body: rest };
+}
+
+function Chapter({
+  stage,
+  html,
+  aiDraft = false,
+  note = false,
+  children,
 }: {
-  params: Promise<{ slug: string }>;
+  stage: string;
+  html: string;
+  /** The case's copy is AI-written: shown in red. */
+  aiDraft?: boolean;
+  /** Show the AI note above this chapter (the first one). */
+  note?: boolean;
+  children?: ReactNode;
 }) {
+  const { heading, body } = chapter(html);
+  return (
+    <section className={`bk-section${aiDraft ? " ai-draft" : ""}`}>
+      {note && (
+        <div className="lp-wrap">
+          <AiDraftNote />
+        </div>
+      )}
+      <div className="lp-wrap bk-lab-chapter">
+        <div className="bk-lab-chapter-head">
+          <RevealText as="h2" className="lp-heading" text={stage} />
+          {/* AI copy: the asterisk goes into the text, so it stays on the last word's line. */}
+          {heading && <RevealText as="p" className="bk-lab-chapter-line" text={aiDraft ? `${heading}*` : heading} after={stage} />}
+        </div>
+        <div className="bk-lab-chapter-body">
+          <div className="bk-lab-prose" dangerouslySetInnerHTML={{ __html: body }} />
+          {children}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The case page's full-width picture strip (two rows scrolling sideways), the same markup as /project. */
+function Gallery({ images }: { images: string[] }) {
+  return (
+    <section className="bk-section section-project-gallery">
+      <div className="marquee-component">
+        {[0, 1].map((row) => (
+          <div className="w-dyn-list" key={row}>
+            <div data-marquee="horizontal" role="list" className="marquee-list w-dyn-items">
+              {images.map((src, i) => (
+                <div role="listitem" className="marquee-item w-dyn-item" key={i}>
+                  <img loading="lazy" src={src} alt="" className="marquee-image" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** A case video in the Production spot layout; it opens the spots' lightbox (CaseVideo). */
+function Video({
+  vimeoId,
+  file,
+  label,
+  poster,
+  accent,
+}: {
+  vimeoId?: string;
+  /** A self-hosted video instead of Vimeo. */
+  file?: CaseStudyVideoFile;
+  label: string;
+  poster: string;
+  accent?: { background: string; text: string };
+}) {
+  return (
+    <div className="lp-wrap bk-lab-video">
+      <CaseVideo label={label} vimeoId={vimeoId} videoUrl={file?.url} poster={file?.poster ?? poster} accent={accent} />
+    </div>
+  );
+}
+
+/** Audio: the case's moving shape on its colours beside the title and the player bar. */
+function Audio({ cs, n }: { cs: CaseStudy; n: 1 | 2 }) {
+  const a = n === 1 ? cs.audioPlayer1 : cs.audioPlayer2;
+  const id = `${cs.slug}-audio-${n}`;
+  return (
+    <section className={`bk-section is-dark${cs.aiDraftCopy ? " ai-draft" : ""}`}>
+      <div className="lp-wrap bk-lab-audio">
+        <div className="bk-lab-audio-visual" style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}>
+          <div className="audio-preview-embed hide w-embed w-iframe">
+            {a.url ? (
+              <audio id={id} src={a.url} preload="metadata" />
+            ) : (
+              <iframe id={id} title="" src={vimeoSrc(a.vimeoId)} frameBorder="0" allow="autoplay" allowFullScreen />
+            )}
+          </div>
+          <CaseStudyVisual slug={cs.slug} variant={visualVariant(cs.useVisual)} speed={audioSpeed(cs.slug)} startOnPlay auto={false} playerSlug={id} />
+        </div>
+        <div className="bk-lab-audio-text">
+          <h2 className="lp-heading bk-lab-audio-title">{a.title}</h2>
+          {a.subline && <p className="bk-lab-chapter-line">{a.subline}</p>}
+          <div data-player-file={id} className="audioplayer-controls bk-lab-audio-bar">
+            <div data-player="progress-bar" className="progress-bar">
+              <div className="progress-bar-line" />
+              <div data-player="progress-fill" className="progress-bar-fill" />
+            </div>
+            <div className="progress-time">
+              <div data-player="current-time" className="current-time">
+                0:00
+              </div>
+              <div data-player="duration" className="duration">
+                0:00
+              </div>
+            </div>
+            <PlayerSpinnerButtons size="copy-medium" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default async function CaseStudyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const cs = getCaseStudyBySlug(slug);
   if (!cs) notFound();
@@ -75,17 +217,25 @@ export default async function CaseStudyDetailPage({
   const nextCase = getCaseStudyBySlug(cs.nextCaseStudySlug);
   const theme = cs.color ? themeFromColors(cs.color) : null;
   const nextTheme = nextCase?.color ? themeFromColors(nextCase.color) : null;
-  const services = listItems(cs.whatWeDidHtml);
-  const collaborators = listItems(cs.collaboratorsHtml ?? "");
+  // The quote sits on the main colour: dark text on a light one, white on a dark one.
+  const quoteOnDark = cs.color ? !themeFromColors({ ...cs.color, secondary: cs.color.main })?.lightBackground : false;
+  const facts = [
+    { label: "Client", items: listItems(cs.clientListHtml) },
+    { label: "What we did", items: listItems(cs.whatWeDidHtml) },
+    { label: "Collaborators", items: listItems(cs.collaboratorsHtml ?? "") },
+  ].filter((f) => f.items.length > 0);
+  // The play pill takes the case's colour on hover, as a spot's does on Production.
+  const playAccent = theme
+    ? { background: theme.background, text: theme.lightBackground ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)" }
+    : undefined;
+  const hashtags = cs.gifVideoHashtags.split(/\s(?=#)/).filter(Boolean);
+  const videos = [
+    ...[cs.video1VimeoId, cs.video2VimeoId, cs.video3VimeoId].filter(Boolean).map((vimeoId) => ({ vimeoId, file: undefined })),
+    ...(cs.videoFiles ?? []).map((file) => ({ vimeoId: undefined, file })),
+  ];
 
   return (
     <>
-      {/*
-        Every player on a case study page is tinted with that case's secondary
-        colour — the play/pause text, the timecodes and the progress bar. All
-        the player slugs on this page start with the case slug, so one prefix
-        selector covers the quote video, both audio players and the videos.
-      */}
       {cs.color && (
         <style
           dangerouslySetInnerHTML={{
@@ -96,519 +246,122 @@ export default async function CaseStudyDetailPage({
           }}
         />
       )}
-      <div className="main-wrapper lp-page bk-page bk-legacy">
-        {/* The case's own colours, its moving shape and title; the nav sits under it. */}
+      <div className="main-wrapper lp-page bk-page bk-legacy bk-lab">
+        {/* The facts sit at the foot of the case's banner, in its text colour. */}
         <PageHero
           form={cs.slug}
           heading={cs.title}
-          line={listItems(cs.clientListHtml).join(" · ")}
           background={cs.color?.secondary ?? "var(--_color---accent-color-2)"}
           lineColor={cs.color?.main ?? "var(--_color---accent-color-1)"}
           dark={theme?.lightBackground ?? true}
           variant={visualVariant(cs.useVisual)}
           speed={stageSpeed(cs.slug)}
           visualizationJson={cs.visualizationJson}
-        />
+        >
+          {facts.length > 0 && (
+            <dl className="lp-wrap bk-lab-facts">
+              {facts.map((f) => (
+                <div key={f.label}>
+                  <dt>{f.label}</dt>
+                  {f.items.map((item) => (
+                    <dd key={item}>{item}</dd>
+                  ))}
+                </div>
+              ))}
+            </dl>
+          )}
+        </PageHero>
         <Header variant="start-top" />
 
-        {(services.length > 0 || collaborators.length > 0) && (
-          <section className="bk-meta">
-            <div className="lp-wrap bk-meta-grid">
-              {services.length > 0 && (
-                <div>
-                  <p className="bk-meta-label">What we did</p>
-                  <ul className="lp-case-tags">
-                    {services.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {collaborators.length > 0 && (
-                <div>
-                  <p className="bk-meta-label">Collaborators</p>
-                  <ul className="lp-case-tags">
-                    {collaborators.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
+        {cs.introTextHtml && <Chapter stage={STAGES[0]} html={cs.introTextHtml} aiDraft={cs.aiDraftCopy} note={cs.aiDraftCopy} />}
 
         {cs.quote && (
-          <section className="section-project-quote">
-            <div className="_2-column-grid">
-              <div className="grid-item is-media">
-                {cs.quoteImage && <img src={cs.quoteImage} loading="lazy" alt="" className="fit-cover-absolute" />}
-              </div>
-              <div className="grid-item">
-                <div
-                  className="grid-item-background-color"
-                  style={cs.color ? { backgroundColor: cs.color.main } : undefined}
-                />
-                <div className="item-inner is-case-study">
-                  <div className="item-bottom is-quote">
-                    <div className="container-tiny align-left">
-                      <p className="heading-style-h2 text-color-black">{cs.quote}</p>
-                      <div
-                        data-wf--spacer--variant="md"
-                        className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
-                      />
-                      <div className="heading-style-h2 text-color-bright">{cs.quoteName}</div>
-                    </div>
-                  </div>
+          <section className="bk-section bk-lab-quote-section" style={cs.color ? { backgroundColor: cs.color.main } : undefined}>
+            <figure className={`lp-wrap bk-lab-quote${quoteOnDark ? " is-on-dark" : ""}`}>
+              {cs.quoteImage && (
+                <div className="bk-lab-quote-photo">
+                  <img src={cs.quoteImage} alt="" loading="lazy" />
                 </div>
+              )}
+              <div className="bk-lab-quote-text">
+                <blockquote>{cs.quote}</blockquote>
+                <figcaption>{cs.quoteName.replace(/^[–-]\s*/, "")}</figcaption>
               </div>
-            </div>
-          </section>
-        )}
-
-        {cs.introTextHtml && (
-          <section className={`section-project-intro${cs.aiDraftCopy ? " ai-draft" : ""}`}>
-            <div className="page-padding">
-              <div className="container-medium">
-                <div className="spacer-xxl-start spacer-xxl-end">
-                  {cs.aiDraftCopy && <AiDraftNote />}
-                  <div
-                    className="rich-text-custom h2-is-h1-size w-richtext"
-                    dangerouslySetInnerHTML={{ __html: cs.introTextHtml }}
-                  />
-                </div>
-              </div>
-            </div>
+            </figure>
           </section>
         )}
 
         {cs.videoUnderQuoteVimeoId && (
-          <section className="section-project-video-after-quote">
-            <div className="video-16-9 w-embed w-iframe">
-              <iframe
-                id={`${cs.slug}-video-quote`}
-                title=""
-                src={vimeoSrc(cs.videoUnderQuoteVimeoId)}
-                frameBorder="0"
-                allow="autoplay"
-                allowFullScreen
-                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}
-              />
-            </div>
-            <button
-              data-player="play-button-big"
-              data-player-target={`${cs.slug}-video-quote`}
-              aria-label="play and pause button"
-              className="play-toggle-big"
-            >
-              <div data-player="play-text" className="text-block">
-                Play
-              </div>
-            </button>
-            <div className="project-video-controls">
-              <div data-player-file={`${cs.slug}-video-quote`} className="audioplayer-controls">
-                <div data-player="progress-bar" className="progress-bar">
-                  <div className="progress-bar-line" />
-                  <div data-player="progress-fill" className="progress-bar-fill" />
-                </div>
-                <div className="progress-time">
-                  <div data-player="current-time" className="current-time">
-                    0:00
-                  </div>
-                  <div data-player="duration" className="duration">
-                    0:00
-                  </div>
-                </div>
-                <PlayerSpinnerButtons size="copy-medium" />
-              </div>
-            </div>
+          <section className="bk-section">
+            <Video vimeoId={cs.videoUnderQuoteVimeoId} label={`${cs.teaserClient} film`} poster={cs.thumbnail} accent={playAccent} />
           </section>
         )}
 
-        {cs.gallery1.length > 0 && (
-          <section className="section-project-gallery">
-            <div className="marquee-component">
-              {[0, 1].map((row) => (
-                <div className="w-dyn-list" key={row}>
-                  <div data-marquee="horizontal" role="list" className="marquee-list w-dyn-items">
-                    {cs.gallery1.map((src, i) => (
-                      <div role="listitem" className="marquee-item w-dyn-item" key={i}>
-                        <img loading="lazy" src={src} alt="" className="marquee-image" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {cs.gallery1.length > 0 && <Gallery images={cs.gallery1} />}
 
-        {cs.textAfterGalleryHtml && (
-          <section className="section-project-text">
-            <div className="page-padding">
-              <div className="container-medium">
-                <div className="spacer-xxl-start spacer-xxl-end">
-                  <div
-                    className="rich-text-custom h2-is-h1-size w-richtext"
-                    dangerouslySetInnerHTML={{ __html: cs.textAfterGalleryHtml }}
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        {cs.textAfterGalleryHtml && <Chapter stage={STAGES[1]} html={cs.textAfterGalleryHtml} aiDraft={cs.aiDraftCopy} />}
 
         {cs.gifVideoVimeoId && (
-          <section
-            className="section-project-gif-video"
-            style={cs.color ? { backgroundColor: cs.color.main } : undefined}
-          >
-            <div className="page-padding">
-              <div className="container-small">
-                <div className="spacer-xl-start spacer-xl-end">
-                  <div className="video-16-9 w-embed w-iframe">
-                    <iframe
-                      id="gif-video"
-                      title=""
-                      src={vimeoSrc(cs.gifVideoVimeoId, "autoplay=1&loop=1&controls=0&dnt=1&muted=1")}
-                      frameBorder="0"
-                      allow="autoplay"
-                      allowFullScreen
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  </div>
-                  {cs.gifVideoHashtags && (
-                    <div className="spacer-l-start">
-                      <div className="heading-style-h2">{cs.gifVideoHashtags}</div>
-                    </div>
-                  )}
-                </div>
+          <section className="bk-section is-dark">
+            <div className="lp-wrap bk-lab-loop">
+              <div className="video-16-9 w-embed w-iframe">
+                <iframe
+                  title={`${cs.teaserCampaign}, silent loop`}
+                  src={vimeoSrc(cs.gifVideoVimeoId, "autoplay=1&loop=1&controls=0&dnt=1&muted=1")}
+                  frameBorder="0"
+                  allow="autoplay"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+                />
               </div>
+              {hashtags.length > 0 && (
+                <ul role="list" className="bk-lab-tags">
+                  {hashtags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              )}
             </div>
           </section>
         )}
 
-        {(cs.audioPlayer1.vimeoId || cs.audioPlayer1.url) && (
-          <section className={`section-project-audio-player-1${cs.aiDraftCopy ? " ai-draft" : ""}`}>
-            <div className="_2-column-grid">
-              <div className="grid-item is-media">
-                <div className="audio-preview-embed hide w-embed w-iframe">
-                  {cs.audioPlayer1.url ? (
-                    <audio id={`${cs.slug}-audio-1`} src={cs.audioPlayer1.url} preload="metadata" />
-                  ) : (
-                    <iframe
-                      id={`${cs.slug}-audio-1`}
-                      title=""
-                      src={vimeoSrc(cs.audioPlayer1.vimeoId)}
-                      frameBorder="0"
-                      allow="autoplay"
-                      allowFullScreen
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-                </div>
-                <div
-                  className="audio-preview-visual-wrapper"
-                  style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
-                >
-                  <CaseStudyVisual
-                    slug={cs.slug}
-                    variant={visualVariant(cs.useVisual)}
-                    speed={audioSpeed(cs.slug)}
-                    startOnPlay
-                    auto={false}
-                    playerSlug={`${cs.slug}-audio-1`}
-                  />
-                </div>
-              </div>
-              <div className="grid-item is-player">
-                <div className="grid-item-background-color" />
-                <div className="text-color-grey">
-                  <div className="item-inner is-case-study">
-                    <div className="item-top is-case-study">
-                      <div className="heading-style-h2" style={cs.color ? { color: cs.color.secondary } : undefined}>{cs.audioPlayer1.title}</div>
-                      <div
-                        data-wf--spacer--variant="l"
-                        className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                      />
-                      <h2 className="copy-medium" style={cs.color ? { color: cs.color.secondary } : undefined}>
-                        {cs.audioPlayer1.subline}
-                      </h2>
-                    </div>
-                    <div className="item-bottom">
-                      <div data-player-file={`${cs.slug}-audio-1`} className="audioplayer-controls">
-                        <div data-player="progress-bar" className="progress-bar">
-                          <div className="progress-bar-line" />
-                          <div data-player="progress-fill" className="progress-bar-fill" />
-                        </div>
-                        <div className="progress-time">
-                          <div data-player="current-time" className="current-time">
-                            0:00
-                          </div>
-                          <div data-player="duration" className="duration">
-                            0:00
-                          </div>
-                        </div>
-                        <PlayerSpinnerButtons size="heading-style-h2" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {(cs.audioPlayer2.vimeoId || cs.audioPlayer2.url) && (
-          <section className={`section-project-audio-player-2${cs.aiDraftCopy ? " ai-draft" : ""}`}>
-            <div className="_2-column-grid">
-              <div className="grid-item is-player">
-                <div className="grid-item-background-color" />
-                <div className="text-color-grey">
-                  <div className="item-inner is-case-study">
-                    <div className="item-top is-case-study">
-                      <div className="heading-style-h2" style={cs.color ? { color: cs.color.secondary } : undefined}>{cs.audioPlayer2.title}</div>
-                      <div
-                        data-wf--spacer--variant="l"
-                        className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                      />
-                      <h2 className="copy-medium" style={cs.color ? { color: cs.color.secondary } : undefined}>
-                        {cs.audioPlayer2.subline}
-                      </h2>
-                    </div>
-                    <div className="item-bottom">
-                      <div data-player-file={`${cs.slug}-audio-2`} className="audioplayer-controls">
-                        <div data-player="progress-bar" className="progress-bar">
-                          <div className="progress-bar-line" />
-                          <div data-player="progress-fill" className="progress-bar-fill" />
-                        </div>
-                        <div className="progress-time">
-                          <div data-player="current-time" className="current-time">
-                            0:00
-                          </div>
-                          <div data-player="duration" className="duration">
-                            0:00
-                          </div>
-                        </div>
-                        <PlayerSpinnerButtons size="heading-style-h2" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="grid-item is-media">
-                <div className="audio-preview-embed hide w-embed w-iframe">
-                  {cs.audioPlayer2.url ? (
-                    <audio id={`${cs.slug}-audio-2`} src={cs.audioPlayer2.url} preload="metadata" />
-                  ) : (
-                    <iframe
-                      id={`${cs.slug}-audio-2`}
-                      title=""
-                      src={vimeoSrc(cs.audioPlayer2.vimeoId)}
-                      frameBorder="0"
-                      allow="autoplay"
-                      allowFullScreen
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-                </div>
-                <div
-                  className="audio-preview-visual-wrapper is-player-2"
-                  style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}
-                >
-                  <CaseStudyVisual
-                    slug={cs.slug}
-                    variant={visualVariant(cs.useVisual)}
-                    speed={audioSpeed(cs.slug)}
-                    startOnPlay
-                    auto={false}
-                    playerSlug={`${cs.slug}-audio-2`}
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        {(cs.audioPlayer1.vimeoId || cs.audioPlayer1.url) && <Audio cs={cs} n={1} />}
+        {(cs.audioPlayer2.vimeoId || cs.audioPlayer2.url) && <Audio cs={cs} n={2} />}
 
         {cs.textAfterAudioPlayerHtml && (
-          <section className={`section-project-cta-text${cs.aiDraftCopy ? " ai-draft" : ""}`}>
-            <div className="page-padding">
-              <div className="container-medium">
-                <div className="spacer-xxl-start spacer-xxl-end">
-                  <div
-                    className="rich-text-custom h2-is-h1-size w-richtext"
-                    dangerouslySetInnerHTML={{ __html: cs.textAfterAudioPlayerHtml }}
-                  />
-                  <div
-                    data-wf--spacer--variant="l"
-                    className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                  />
-                  <Button
-                    href="/strategy"
-                    icon="arrow-right"
-                    accent={
-                      theme
-                        ? {
-                            background: theme.background,
-                            text: theme.lightBackground ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)",
-                          }
-                        : undefined
-                    }
-                  >
-                    Want to know more about how we work?
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </section>
+          <Chapter stage={STAGES[2]} html={cs.textAfterAudioPlayerHtml} aiDraft={cs.aiDraftCopy}>
+            <CtaLink href="/strategy" label="Want to know more about how we work?" />
+          </Chapter>
         )}
 
-        {[
-          ...[cs.video1VimeoId, cs.video2VimeoId, cs.video3VimeoId]
-            .filter(Boolean)
-            .map((vimeoId) => ({ vimeoId, file: undefined as CaseStudyVideoFile | undefined })),
-          ...(cs.videoFiles ?? []).map((file) => ({ vimeoId: "", file })),
-        ].map(
-          ({ vimeoId, file }, i) => (
-              <section className={`section-project-video-${i + 1}`} key={i}>
-                {i > 0 && (
-                  <div
-                    data-wf--spacer--variant="md"
-                    className="spacer-component w-variant-26d428b4-eedf-8573-45ef-f4ea471bd58b"
-                  />
-                )}
-                <div className="video-16-9 w-embed w-iframe">
-                  {file ? (
-                    <video
-                      id={`${cs.slug}-video-${i + 1}`}
-                      src={file.url}
-                      poster={file.poster}
-                      preload="none"
-                      playsInline
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <iframe
-                      id={`${cs.slug}-video-${i + 1}`}
-                      title=""
-                      src={vimeoSrc(vimeoId)}
-                      frameBorder="0"
-                      allow="autoplay"
-                      allowFullScreen
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  )}
-                </div>
-                <button
-                  data-player="play-button-big"
-                  data-player-target={`${cs.slug}-video-${i + 1}`}
-                  aria-label="play and pause button"
-                  className="play-toggle-big"
-                >
-                  <div data-player="play-text" className="text-block">
-                    Play
-                  </div>
-                </button>
-                <div className="project-video-controls">
-                  <div data-player-file={`${cs.slug}-video-${i + 1}`} className="audioplayer-controls">
-                    <div data-player="progress-bar" className="progress-bar">
-                      <div className="progress-bar-line" />
-                      <div data-player="progress-fill" className="progress-bar-fill" />
-                    </div>
-                    <div className="progress-time">
-                      <div data-player="current-time" className="current-time">
-                        0:00
-                      </div>
-                      <div data-player="duration" className="duration">
-                        0:00
-                      </div>
-                    </div>
-                    <PlayerSpinnerButtons size="copy-medium" />
-                  </div>
-                </div>
-              </section>
-            )
+        {videos.length > 0 && (
+          <section className="bk-section bk-lab-videos">
+            {videos.map(({ vimeoId, file }, i) => (
+              <Video
+                key={vimeoId ?? file?.url}
+                vimeoId={vimeoId}
+                file={file}
+                label={`${cs.teaserClient} film ${i + 1}`}
+                poster={cs.thumbnail}
+                accent={playAccent}
+              />
+            ))}
+          </section>
         )}
 
         {cs.awards.length > 0 && (
-          <section
-            className="section-project-awrads"
-            style={cs.color ? { backgroundColor: cs.color.secondary } : undefined}
-          >
-            <div className="page-padding">
-              <div className="spacer-xl-start spacer-xl-end">
-                <h2 className="copy-medium">Awarded at</h2>
-                <div
-                  data-wf--spacer--variant="l"
-                  className="spacer-component w-variant-8c123a48-ff1f-5886-993b-c2bccb3f4e38"
-                />
-                <div className="w-dyn-list">
-                  <div role="list" className="awrads-list w-dyn-items">
-                    {cs.awards.map((award) => (
-                      <div role="listitem" className="w-dyn-item" key={award.slug}>
-                        {award.image && <img src={award.image} loading="lazy" alt={award.name} className="awards-image" />}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+          <section className="bk-section">
+            <div className="lp-wrap bk-lab-awards">
+              <h2 className="lp-heading">Awarded at</h2>
+              <ul role="list">
+                {cs.awards.map((award) => (
+                  <li key={award.slug}>{award.image ? <img src={award.image} alt={award.name} loading="lazy" /> : award.name}</li>
+                ))}
+              </ul>
             </div>
           </section>
         )}
 
-        {cs.gallery2.length > 0 && (
-          <section className="section-project-gallery-2">
-            <div className="marquee-component">
-              {[0, 1].map((row) => (
-                <div className="w-dyn-list" key={row}>
-                  <div data-marquee="horizontal" role="list" className="marquee-list w-dyn-items">
-                    {cs.gallery2.map((src, i) => (
-                      <div role="listitem" className="marquee-item w-dyn-item" key={i}>
-                        <img loading="lazy" src={src} alt="" className="marquee-image" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {cs.gallery2.length > 0 && <Gallery images={cs.gallery2} />}
 
         {nextCase && (
           <section className="bk-section bk-next">
@@ -619,7 +372,7 @@ export default async function CaseStudyDetailPage({
           </section>
         )}
 
-        <ContactBlock person="michael" />
+        <ContactBlock />
         <LandingFooter
           band={{
             background: cs.color?.secondary ?? "var(--_color---accent-color-2)",

@@ -63,8 +63,9 @@ type Rgb = [number, number, number];
 
 /** OKLab chroma at or below this reads as grey. */
 const NEUTRAL = 0.04;
-/** Relative luminance above this takes dark text. */
-const LIGHT = 0.5;
+/** Relative luminance above this takes dark text: where black text starts to
+    contrast more than white (so orange #ff6004 gets black, 6.9:1 instead of 3:1). */
+const LIGHT = 0.179;
 
 const dominantCache = new Map<string, Promise<Rgb | null>>();
 

@@ -2,20 +2,23 @@ import type { Metadata } from "next";
 import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
-import { getHomeSound } from "@/lib/content";
 import RevealText from "@/components/RevealText";
-import { CtaLink, TEXT_PARALLAX } from "@/components/Blocks";
-import HomeRow, { type HomeRowData } from "@/components/HomeRow";
-import { themesForImages } from "@/lib/imageTheme";
+import Link from "next/link";
+import CaseCard from "@/components/CaseCard";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
+import CtaArrow from "@/components/CtaArrow";
+import HoverClip from "@/components/HoverClip";
+import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
+import { FEATURED_CASES } from "@/content/offers";
+import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { highlightThemes, themesForImages } from "@/lib/imageTheme";
 
-// The three photo + panel features (Figma "Landng v02"). The photo runs from
-// the screen edge across two columns and the panel sits in the third; the
-// middle one is mirrored. Photos come from the Figma board's home mockup.
 /*
-  Home rows as Elliot laid them out (Figma 267-1107), with the board's copy
-  changes: three 50/50 rows with no gaps, photo and black text box swapping
-  sides, the question at the top of the box and its link at the bottom.
-  Styled with the site's system (highlight.css hover, blocks.css .is-split).
+  Home (call with Michael and Timo, 30 Oct 2026): a line that says what blut
+  does as a whole, then the three offers side by side as labelled tiles
+  (Production, Strategy, Post, as in the menu), then featured cases. The
+  tiles use the case cards' parts (landing.css .lp-case) in the staggered
+  three-column grid; Home-only touches live in blocks.css (.bk-offers).
 */
 export const metadata: Metadata = {
   description:
@@ -28,38 +31,59 @@ export const metadata: Metadata = {
   }),
 };
 
-const ROWS: HomeRowData[] = [
+type OfferTile = {
+  offer: string;
+  href: string;
+  copy: string;
+  /** AI-written placeholder copy: marked with an asterisk until replaced. */
+  aiDraft?: boolean;
+  /** The tile's link text, read out by screen readers (the tile shows only the arrow). */
+  cta: string;
+  image: string;
+  alt: string;
+  /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
+  preview?: string;
+  previewVimeoId?: string;
+};
+
+const OFFER_TILES: OfferTile[] = [
   {
-    copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    href: "/work",
-    cta: "See us in action",
-    image: "/images/home/teaser-story.jpg",
-    alt: "Nina Chuba in the Samsung spot",
-    preview: "/videos/previews/samsung-nina-chuba.mp4",
-  },
-  {
-    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
+    offer: "Strategy",
     href: "/strategy",
+    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
     cta: "Get to know our process",
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
     preview: "/videos/previews/spt-dashboard.mp4",
   },
   {
-    copy: "Music production, sound design, and 360° sonic strategy.",
-    href: "/case-studies",
-    cta: "View our case studies",
-    image: "/images/home/teaser-cases.jpg",
-    alt: "DJ Seinfeld and sogumm with the Hyundai Inster",
-    // The loop above "#sogumm #DJ Seinfeld" on the Hyundai case page.
-    previewVimeoId: "1090418649",
+    offer: "Production",
+    href: "/production",
+    copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
+    cta: "See our production work",
+    image: "/images/home/teaser-story.jpg",
+    alt: "Nina Chuba in the Samsung spot",
+    preview: "/videos/previews/samsung-nina-chuba.mp4",
+  },
+  {
+    offer: "Post",
+    href: "/post",
+    copy: "Sound design, mixing and video post that make every spot feel finished.",
+    aiDraft: true,
+    cta: "See our post work",
+    image: "/images/story/crazy-wolf.jpg",
+    alt: "The Crazy Wolf energy drink spot",
+    preview: "/videos/previews/crazy-wolf.mp4",
   },
 ];
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
-  // Each row's hover highlight uses the CMS theme closest to its photo.
-  const themes = await themesForImages(ROWS.map((r) => r.image));
+  // Each tile's hover highlight uses the CMS theme closest to its photo.
+  // Each offer's colours, picked from its photo: its pattern fills the section on hover.
+  const themes = await themesForImages(OFFER_TILES.map((t) => t.image));
+  const featured = FEATURED_CASES.map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
+  const caseThemes = await highlightThemes(featured.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
   return (
     <>
@@ -69,14 +93,18 @@ export default async function HomePage() {
     <section className="section-home-stage lp-stage">
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
-                <div className="full-width-logo">
-                  <div className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" fill="none" class="logo-svg">
+                {/* The wordmark is the page's title. */}
+                <h1 className="full-width-logo">
+                  <span className="sr-only">blut</span>
+                  <span className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" preserveAspectRatio="xMinYMin meet" fill="none" aria-hidden="true" class="logo-svg">
                       <path d="M25.3035 14.6042L26.7093 5.63867H31.1303L29.8468 13.8131C29.5208 15.7401 30.5191 16.876 32.4342 16.876C34.8382 16.876 36.6514 15.375 37.0181 13.022L38.1998 5.63867H42.6411L40.4205 19.5738H36.6107L36.5088 16.7949H36.4884C35.0827 18.803 32.8212 19.9794 30.132 19.9794C26.6074 19.9997 24.7535 17.951 25.3035 14.6042Z" fill="currentColor"></path>
                       <path d="M19.3342 0.709939V19.574H23.796V0L19.3342 0.709939Z" fill="currentColor"></path>
                       <path d="M10.6348 5.61866C7.82331 5.61866 5.52114 6.91684 4.4821 9.04665H4.46173V0L0 0.709939V19.5943H3.78941L4.40061 16.5923H4.42098C5.46002 18.7424 7.78256 20 10.5941 20C14.9743 20 17.908 17.1602 17.908 12.8195C17.908 8.4787 14.9743 5.61866 10.6348 5.61866ZM8.88271 16.6329C6.15271 16.6329 4.29874 15.0507 4.29874 12.8398C4.29874 10.6288 6.15271 9.04665 8.88271 9.04665C11.6127 9.04665 13.4667 10.6288 13.4667 12.8398C13.4667 15.0507 11.6127 16.6329 8.88271 16.6329Z" fill="currentColor"></path>
                       <path d="M56.0874 14.6651C55.1502 15.9633 53.9686 16.6732 52.4202 16.6732C50.8719 16.6732 49.8532 15.7402 49.8532 14.0972V8.70164H56.0874V5.63876H49.8532V1.39941L45.3915 2.10935V5.63876H44.0876L43.5986 8.70164H45.3915L45.4118 14.8883C45.4118 18.0526 47.6325 19.9998 51.3404 19.9998C53.8871 19.9998 56.0263 19.0262 57.3913 17.2209L56.0874 14.6651Z" fill="currentColor"></path>
-                    </svg>` }} /></div>
-                </div>
+                    </svg>` }} /></span>
+                </h1>
+                {/* AI-written placeholder line (Oct 2026): Michael and Karl replace it. */}
+                <RevealText as="p" className="lp-stage-line ai-draft" text="We help brands find their sound, and make sure people hear it." />
               </div>
               <div className="home-stage-bottom">
                 <div data-player-file="home-stage-sound" className="audioplayer-controls">
@@ -140,21 +168,67 @@ export default async function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    {/* Intro: the claim over two columns, the answer below it, shifted right. */}
-    <section className="lp-intro">
-      <div className="lp-wrap">
-        <RevealText as="h1" className="lp-heading" text="Do you even know if your music strategy works?" />
-        <div className="lp-panel">
-          <p className="lp-copy">blut creates unique music strategies and makes their impact measurable. We not only develop striking music identities, we also provide data-driven analysis to prove their effectiveness and enhance their impact on your target audience.</p>
+    {/* What we do: the three offers side by side, each with a clear label. */}
+    <section className="bk-section is-dark bk-offers">
+      {/* The heading, and what blut is beside it in the last third, in the
+          tiles' copy style (Nic, 31 Oct). AI-written placeholder copy (Oct
+          2026): Michael and Karl replace it. */}
+      <div className="lp-wrap bk-lead is-side">
+        <RevealText as="h2" className="lp-heading bk-lead-heading" text="What we do" />
+        <div className="bk-lead-text">
+          {/* Letters in after the heading's, quicker: it's a long line. */}
+          <RevealText
+            as="p"
+            className="bk-offer-copy ai-draft"
+            text="blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post."
+            after="What we do"
+            stagger={0.008}
+          />
         </div>
+      </div>
+      <ul role="list" className="lp-wrap lp-case-grid">
+        {OFFER_TILES.map((tile, i) => (
+          <li key={tile.href} data-parallax={[0.8, 0.4, 1.2][i % 3]} data-light-highlight={themes[i]?.lightBackground || undefined}>
+            <article className="lp-case lp-hover hl-row bk-offer">
+              <div className="lp-case-media hl-media">
+                <img src={tile.image} alt={tile.alt} loading="lazy" />
+                {(tile.preview || tile.previewVimeoId) && <HoverClip src={tile.preview} vimeoId={tile.previewVimeoId} />}
+              </div>
+              <div className="bk-offer-body">
+                <h2 className="bk-offer-title">{tile.offer}</h2>
+                <div className="bk-offer-foot">
+                  <p className={`bk-offer-copy${tile.aiDraft ? " ai-draft" : ""}`}>{tile.copy}</p>
+                  <CtaArrow />
+                </div>
+              </div>
+              <Link href={tile.href} className="lp-cover" aria-label={tile.cta} />
+            </article>
+          </li>
+        ))}
+      </ul>
+      {/* Behind everything: one layer per offer, shown while its tile is hovered (blocks.css). */}
+      <div className="bk-offers-backdrop" aria-hidden="true">
+        {OFFER_TILES.map((tile, i) =>
+          themes[i] ? (
+            <div key={tile.href} className="lp-case-visual bk-offers-visual" style={{ backgroundColor: themes[i]!.background, color: themes[i]!.line }}>
+              <CaseStudyVisual slug={`home-offer-${tile.href.slice(1)}`} {...patternAt(i)} />
+            </div>
+          ) : (
+            <div key={tile.href} className="bk-offers-visual" />
+          ),
+        )}
       </div>
     </section>
 
-    <section className="bk-section is-dark">
-      <ul role="list" className="lp-wrap bk-mosaic is-spaced">
-        {ROWS.map((row, i) => (
-          <li key={row.href}>
-            <HomeRow row={row} theme={themes[i]} flipped={i % 2 === 1} pattern={i} />
+    {/* Featured cases: recent work we're proud of; the full list is on /case-studies. */}
+    <section className="bk-section bk-featured">
+      <Lead side parallax={false} heading="Featured cases">
+        <CtaLink href="/case-studies" label="View all cases" />
+      </Lead>
+      <ul role="list" className="lp-wrap bk-case-list">
+        {featured.map((cs, i) => (
+          <li key={cs.slug}>
+            <CaseCard cs={cs} theme={caseThemes[i]} formPrefix="home" />
           </li>
         ))}
       </ul>

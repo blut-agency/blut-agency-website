@@ -17,11 +17,13 @@
      64, 96, 128, …), never fluid in-between values: three steps (desktop
      from 1280px, tablet, phone), set here and below. In px because the
      Webflow root font size is fluid. Roomier than the Figma frames (Nic,
-     19 Oct): sections 160px apart, headline → content 96px on desktop. */
+     19 Oct). Tightened 31 Oct: sections 128px apart, headline → content
+     64px on desktop. */
   --lp-gap: 48px;
   --lp-gutter: max(24px, (100% - var(--lp-max)) / 2);
-  --lp-space: 160px;
-  --lp-stack: 96px;
+  --lp-space: 128px;
+  --lp-space-edge: 64px; /* each side of a change of ground (blocks.css) */
+  --lp-stack: 64px;
   --lp-pad: 32px;
   --lp-heading: 96px;
   --lp-hero: 128px;
@@ -32,7 +34,7 @@
   --lp-panel-dark: #212121;
   --lp-text-secondary: #424242;
   --lp-muted: #a3a3a3;
-  --lp-band: 80px;
+  --lp-band: 64px;
   background: var(--_color---white);
   color: var(--_color---copy-dark);
 }
@@ -41,14 +43,15 @@
 @media screen and (max-width: 1279px) {
   .lp-page {
     --lp-gap: 32px;
-    --lp-space: 128px;
-    --lp-stack: 64px;
+    --lp-space: 96px;
+    --lp-space-edge: 48px;
+    --lp-stack: 48px;
     --lp-pad: 24px;
     --lp-heading: 64px;
     --lp-hero: 96px;
     --lp-copy: 24px;
     --lp-client: 32px;
-    --lp-band: 64px;
+    --lp-band: 48px;
   }
 }
 
@@ -57,30 +60,18 @@
   margin-inline: auto;
 }
 
-/* ---------- Landing: the red logo stage is 720px tall, as drawn ---------- */
+/* ---------- Landing: the red logo stage (sizes in blocks.css) ---------- */
 .lp-page .lp-stage {
   padding-bottom: 0;
   overflow: clip;
 }
 
-.lp-page .lp-stage .home-stage-wrapper {
-  min-height: 720px;
-  height: 720px;
-}
-
-/* Same height as the page banners on every screen (blocks.css .bk-hero). */
-@media screen and (max-width: 767px) {
-  .lp-page .lp-stage .home-stage-wrapper {
-    min-height: 512px;
-    height: 512px;
-  }
-}
-
-/* The nav sits under the stage, then sticks to the top and stays there. */
+/* The nav is fixed at the top of every page and takes the colours of the
+   area under it (Header.tsx sets --nav-bg and --nav-ink): clear, with the
+   banner's own text colour, over a banner (Nic, 31 Oct). */
 .lp-page .header {
-  position: sticky;
-  top: 0;
-  inset: 0 auto auto;
+  position: fixed;
+  inset: 0 0 auto;
 }
 
 .lp-page .header.is-tucked {
@@ -88,10 +79,29 @@
 }
 
 .lp-page .navbar {
-  background-color: var(--_color---white);
+  background-color: var(--nav-bg, var(--_color---white));
+  color: var(--nav-ink, var(--_color---copy-dark));
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.lp-page .navbar :is(.nav-logo-link, .navbar-link) {
+  color: inherit;
+}
+
+/* On Home the big logo is the logo: the small one waits until the stage has gone. */
+.lp-page .header.is-over-stage .nav-logo-link {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lp-page .nav-logo-link {
+  transition: opacity 0.3s ease;
+}
+
+/* Home's stage starts at the very top: its logo stands beside the nav links
+   (and, on phones, the menu button), the small nav logo hidden meanwhile. */
 
 /* ---------- Type ---------- */
 .lp-heading {
@@ -106,7 +116,7 @@
 .lp-copy {
   margin: 0;
   font-size: var(--lp-copy);
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 /* ---------- Panels: grey on white, #212121 on black ---------- */
@@ -137,26 +147,52 @@
   color: var(--lp-muted);
 }
 
-/* ---------- "— Label" link: the line stretches on hover; the arrow is in highlight.css ---------- */
+/* ---------- "Label ↗" link: underline draws in, arrow nudges on hover ---------- */
 .lp-cta {
   position: relative;
   display: inline-flex;
-  align-items: center;
-  gap: 16px;
+  align-items: baseline;
+  gap: 8px;
   min-height: 48px;
   color: inherit;
   font-size: var(--lp-text);
-  line-height: 1.55;
+  line-height: 1.5;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.lp-cta-line {
-  width: 24px;
-  height: 1px;
+.lp-cta-text {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--fx-ease, ease);
+}
+
+/* Sits on the baseline (inline-flex, baseline-aligned; an SVG's baseline is
+   its bottom edge), about as tall as a capital. */
+.lp-cta-arrow {
   flex: none;
-  background: currentColor;
-  transition: width 0.5s var(--fx-ease, ease);
+  width: 0.7em;
+  height: 0.7em;
+  overflow: visible;
+  transition: translate 0.5s var(--fx-ease, ease);
+}
+
+.lp-cta:focus-visible .lp-cta-text {
+  background-size: 100% 1px;
+}
+
+/* Inside a box the link spans the row, the arrow at its right end (the
+   box's bottom-right corner) and a little larger. The tap target grows
+   upwards, so the label sits on the box's bottom inset. */
+:is(.lp-panel, .hl-panel, .lp-case-body, .bk-service-media) .lp-cta {
+  width: 100%;
+  min-height: 0;
+  padding-top: 24px;
+}
+
+:is(.lp-panel, .hl-panel, .lp-case-body, .bk-service-media) .lp-cta-arrow {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -170,9 +206,14 @@
     color: var(--_color---copy-bright);
   }
 
-  .lp-cta:hover .lp-cta-line,
-  .lp-hover:hover .lp-cta-line {
-    width: 40px;
+  .lp-cta:hover .lp-cta-text,
+  .lp-hover:hover .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .lp-cta:hover .lp-cta-arrow,
+  .lp-hover:hover .lp-cta-arrow {
+    translate: 4px -4px;
   }
 }
 
@@ -183,37 +224,16 @@
   z-index: 1;
 }
 
-/* ---------- Intro and "Why blut" (white) ---------- */
+/* ---------- "Why blut" (white) ---------- */
 /* Compact: less space above and below than a full section. */
-.lp-intro,
 .lp-why {
   --lp-section-pad: 64px;
 }
 
 @media screen and (max-width: 1279px) {
-  .lp-intro,
   .lp-why {
     --lp-section-pad: 48px;
   }
-}
-
-.lp-intro {
-  padding-block: var(--lp-section-pad);
-}
-
-.lp-intro .lp-wrap {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: var(--lp-gap);
-  row-gap: var(--lp-gap);
-}
-
-.lp-intro .lp-heading {
-  grid-column: 1 / span 2;
-}
-
-.lp-intro .lp-panel {
-  grid-column: 2 / span 2;
 }
 
 .lp-why {
@@ -371,8 +391,8 @@
   background: var(--_color---white);
   color: var(--_color---copy-dark);
   font-size: var(--lp-client);
-  line-height: 1.15;
-  transition: background-color 0.5s ease;
+  line-height: 1.1;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .lp-case-body {
@@ -391,7 +411,7 @@
   margin: 0;
   font-size: var(--lp-copy);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .lp-case-tags {
@@ -408,7 +428,7 @@
   border: 1px solid #eee;
   border-radius: 999px;
   font-size: 16px;
-  line-height: 1.15;
+  line-height: 1.1;
   transition: border-color 0.5s ease;
 }
 
@@ -445,8 +465,11 @@
     border-color: currentColor;
   }
 
+  /* The label takes the case colour, its text whichever of black or white
+     reads on it (CaseCard sets both). */
   .lp-case:hover .lp-case-client {
     background: var(--lp-case-accent);
+    color: var(--lp-case-accent-text, var(--_color---copy-dark));
   }
 
   .lp-case:hover .lp-case-media img {
@@ -549,16 +572,26 @@
   align-items: flex-start;
   gap: 8px;
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
+/* The CTA links' underline (.lp-cta-text): drawn in from the left on hover
+   and keyboard focus. */
 .lp-footer a {
   color: inherit;
   text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--fx-ease, ease);
 }
 
-.lp-footer a:hover {
-  text-decoration: underline;
+.lp-footer a:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lp-footer a:hover {
+    background-size: 100% 1px;
+  }
 }
 
 /* ---------- Tablets: cases and footer stack ---------- */
@@ -593,8 +626,9 @@
 @media screen and (max-width: 767px) {
   .lp-page {
     --lp-gap: 24px;
-    --lp-space: 96px;
-    --lp-stack: 64px;
+    --lp-space: 64px;
+    --lp-space-edge: 48px;
+    --lp-stack: 48px;
     --lp-pad: 24px;
     --lp-heading: 48px;
     --lp-hero: 48px;
@@ -604,16 +638,11 @@
   }
 
   .lp-heading.is-long-word {
-    font-size: 40px;
+    font-size: 32px;
   }
 
   .lp-case-client {
     padding: 8px 16px;
-  }
-
-  .lp-intro .lp-heading,
-  .lp-intro .lp-panel {
-    grid-column: 1 / -1;
   }
 
   .lp-why .lp-panel {
@@ -670,8 +699,12 @@
     color: var(--_color---copy-bright);
   }
 
-  .lp-hover.is-centered .lp-cta-line {
-    width: 40px;
+  .lp-hover.is-centered .lp-cta-text {
+    background-size: 100% 1px;
+  }
+
+  .lp-hover.is-centered .lp-cta-arrow {
+    translate: 4px -4px;
   }
 
   .lp-feature-row.is-centered .lp-feature-media img {
@@ -688,6 +721,7 @@
 
   .lp-case.is-centered .lp-case-client {
     background: var(--lp-case-accent);
+    color: var(--lp-case-accent-text, var(--_color---copy-dark));
   }
 
   .lp-case.is-centered .lp-case-media img {

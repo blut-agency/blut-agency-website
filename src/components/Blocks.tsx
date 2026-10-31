@@ -2,7 +2,6 @@ import Link from "next/link";
 import AiDraftNote from "@/components/AiDraftNote";
 import type { ReactNode } from "react";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
-import CtaArrow from "@/components/CtaArrow";
 import Drawer from "@/components/Drawer";
 import RevealText from "@/components/RevealText";
 
@@ -21,13 +20,28 @@ export const TEXT_PARALLAX = { heading: 0.3, text: 0.9 } as const;
 /** A word this long doesn't fit a phone at the normal headline size. */
 const hasLongWord = (text: string) => /[^\s]{11,}/.test(text);
 
-/** "— Label" link (the line stretches on hover) with the corner arrow. */
+/** "Label ↗" link: an underline draws in under the label on hover and the
+ * arrow nudges up and right. Free-standing, the arrow follows the label;
+ * inside a box the link spans the row and the arrow sits at its right end
+ * (landing.css), on the label's line either way. */
 export function CtaLink({ href, label }: { href: string; label: string }) {
   const external = /^(mailto:|https?:)/.test(href);
   const inner = (
     <>
-      <span className="lp-cta-line" aria-hidden="true" />
       <span className="lp-cta-text">{label}</span>
+      {/* Cropped to the drawn arrow, so 0.7em is about the cap height. */}
+      <svg
+        className="lp-cta-arrow"
+        aria-hidden="true"
+        viewBox="0 0 14 14"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M1 13 13 1M3 1h10v10" />
+      </svg>
     </>
   );
   return (
@@ -41,7 +55,6 @@ export function CtaLink({ href, label }: { href: string; label: string }) {
           {inner}
         </Link>
       )}
-      <CtaArrow />
     </div>
   );
 }
@@ -63,6 +76,7 @@ export function PageHero({
   speed = 10,
   visualizationJson,
   lineAiDraft = false,
+  children,
 }: {
   /** One string, or one string per line. */
   heading: string | string[];
@@ -79,6 +93,8 @@ export function PageHero({
   visualizationJson?: string;
   /** The line is AI-written placeholder copy: shown in red with a note. */
   lineAiDraft?: boolean;
+  /** Extra content at the foot of the banner (e.g. a case's facts). */
+  children?: ReactNode;
 }) {
   return (
     <section className={`bk-hero${dark ? " is-dark-text" : ""}`} style={{ background }}>
@@ -100,6 +116,7 @@ export function PageHero({
           </div>
         </div>
       )}
+      {children}
     </section>
   );
 }
@@ -151,10 +168,28 @@ export function Lead({
 const PEOPLE = {
   karl: { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara" },
   michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb" },
+  // Address follows the team's first.last pattern; not yet confirmed by Elliot.
+  elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "" },
 } as const;
 
-/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469). */
-export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
+/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); without a person, the general address. */
+export function ContactBlock({ person }: { person?: keyof typeof PEOPLE }) {
+  if (!person) {
+    return (
+      <section className="bk-section is-dark bk-contact">
+        <div className="lp-wrap bk-contact-grid">
+          <div className="bk-contact-heading">
+            <p className="lp-heading">Sound good?</p>
+            <p className="lp-heading">Get in touch!</p>
+          </div>
+          <div className="bk-contact-person is-general">
+            <p className="lp-copy bk-contact-name">contact@blut.agency</p>
+            <CtaLink href="mailto:contact@blut.agency" label="Mail" />
+          </div>
+        </div>
+      </section>
+    );
+  }
   const p = PEOPLE[person];
   return (
     <section className="bk-section is-dark bk-contact">
@@ -186,10 +221,10 @@ export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
 }
 
 /**
- * A service (Strategy, Figma 250:1130): headline, subline and intro stacked in
- * two thirds (headline → subline → muted body); then
- * the tools as FAQ-style drawers in two thirds and a static photo in the last
- * third. Drawers: see Drawer.tsx. `flipped` mirrors both rows, for the
+ * A service (Strategy, Figma 250:1130): headline with its subline under it
+ * at the same size in grey, then a row with the intro above the tools
+ * (FAQ-style drawers) in two thirds and a static photo in the last third; the
+ * CTA sits on the photo, which links there as a whole. Drawers: see Drawer.tsx. `flipped` mirrors the drawer row, for the
  * left-right-left arrangement down a page.
  */
 export function ServiceDrawers({
@@ -202,7 +237,7 @@ export function ServiceDrawers({
   cta,
   flipped = false,
 }: {
-  /** Mirrored: headline and drawers on the right, intro and photo on the left. */
+  /** Mirrored drawer row: drawers on the right, photo on the left. */
   flipped?: boolean;
   heading: string;
   line: string;
@@ -214,28 +249,31 @@ export function ServiceDrawers({
 }) {
   return (
     <>
-      <div className={`lp-wrap bk-service-top${flipped ? " is-flipped" : ""}`}>
-        <div className="bk-service-lead">
-          <RevealText
-            as="h2"
-            className={`lp-heading${hasLongWord(heading) ? " is-long-word" : ""}`}
-            text={heading}
-          />
-          <p className="lp-copy bk-service-line">{line}</p>
-          <p className="bk-service-intro">{intro}</p>
-        </div>
+      <div className="lp-wrap bk-service-top">
+        <RevealText
+          as="h2"
+          className={`lp-heading${hasLongWord(heading) ? " is-long-word" : ""}`}
+          text={heading}
+        />
+        <RevealText as="p" className="bk-service-line" text={line} after={heading} />
       </div>
       <div className={`lp-wrap bk-service${flipped ? " is-flipped" : ""}`}>
         <div className="bk-service-body">
+          <p className="bk-service-intro">{intro}</p>
           <div className="bk-drawers">
             {items.map((item) => (
               <Drawer key={item.name} name={item.name} text={item.text} />
             ))}
           </div>
-          {cta && <CtaLink href={cta.href} label={cta.label} />}
         </div>
-        <div className="bk-service-media">
+        <div className={`bk-service-media${cta ? " lp-hover has-cta" : ""}`}>
           <img src={image} alt={alt} loading="lazy" />
+          {cta && (
+            <>
+              <Link href={cta.href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
+              <CtaLink href={cta.href} label={cta.label} />
+            </>
+          )}
         </div>
       </div>
     </>

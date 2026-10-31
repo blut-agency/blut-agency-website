@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import Button from "@/components/Button";
 import FilePlayer from "@/components/FilePlayer";
 
 /**
@@ -57,16 +56,11 @@ export default function VideoLightbox({
 
   return createPortal(
     <div className="video-lightbox" role="dialog" aria-modal="true" aria-label={title} onClick={onClose}>
-      <Button
-        ref={closeRef}
-        variant="outline"
-        icon="close"
-        onDark
-        accent={accent}
-        className="video-lightbox-close"
-        aria-label="Close video"
-        onClick={onClose}
-      />
+      {/* The burger menu's X (Header.tsx, .bk-burger): two crossed lines, no background. */}
+      <button ref={closeRef} type="button" className="bk-burger is-open video-lightbox-close" aria-label="Close video" onClick={onClose}>
+        <span />
+        <span />
+      </button>
       <div className="video-lightbox-frame" onClick={(event) => event.stopPropagation()}>
         {vimeoId ? (
           <iframe

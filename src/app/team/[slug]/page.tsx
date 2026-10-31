@@ -171,7 +171,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
           </ul>
         )}
         <div className="lp-wrap">
-          <CtaLink href={spots.length ? "/work" : "/case-studies"} label={spots.length ? "See all our work" : "View all case studies"} />
+          <CtaLink href={spots.length ? "/production" : "/case-studies"} label={spots.length ? "See all our work" : "View all case studies"} />
         </div>
       </section>
 
