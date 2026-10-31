@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import RevealText from "@/components/RevealText";
 import Link from "next/link";
-import AiDraftNote from "@/components/AiDraftNote";
 import CaseCard from "@/components/CaseCard";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import CtaArrow from "@/components/CtaArrow";
@@ -94,14 +93,18 @@ export default async function HomePage() {
     <section className="section-home-stage lp-stage">
       <div className="home-stage-wrapper">
               <div className="home-stage-top">
-                <div className="full-width-logo">
-                  <div className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" preserveAspectRatio="xMidYMin meet" fill="none" class="logo-svg">
+                {/* The wordmark is the page's title. */}
+                <h1 className="full-width-logo">
+                  <span className="sr-only">blut</span>
+                  <span className="logo-component"><span className="logo-svg" style={{ display: "contents" }} dangerouslySetInnerHTML={{ __html: `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewbox="0 0 58 20" preserveAspectRatio="xMinYMin meet" fill="none" aria-hidden="true" class="logo-svg">
                       <path d="M25.3035 14.6042L26.7093 5.63867H31.1303L29.8468 13.8131C29.5208 15.7401 30.5191 16.876 32.4342 16.876C34.8382 16.876 36.6514 15.375 37.0181 13.022L38.1998 5.63867H42.6411L40.4205 19.5738H36.6107L36.5088 16.7949H36.4884C35.0827 18.803 32.8212 19.9794 30.132 19.9794C26.6074 19.9997 24.7535 17.951 25.3035 14.6042Z" fill="currentColor"></path>
                       <path d="M19.3342 0.709939V19.574H23.796V0L19.3342 0.709939Z" fill="currentColor"></path>
                       <path d="M10.6348 5.61866C7.82331 5.61866 5.52114 6.91684 4.4821 9.04665H4.46173V0L0 0.709939V19.5943H3.78941L4.40061 16.5923H4.42098C5.46002 18.7424 7.78256 20 10.5941 20C14.9743 20 17.908 17.1602 17.908 12.8195C17.908 8.4787 14.9743 5.61866 10.6348 5.61866ZM8.88271 16.6329C6.15271 16.6329 4.29874 15.0507 4.29874 12.8398C4.29874 10.6288 6.15271 9.04665 8.88271 9.04665C11.6127 9.04665 13.4667 10.6288 13.4667 12.8398C13.4667 15.0507 11.6127 16.6329 8.88271 16.6329Z" fill="currentColor"></path>
                       <path d="M56.0874 14.6651C55.1502 15.9633 53.9686 16.6732 52.4202 16.6732C50.8719 16.6732 49.8532 15.7402 49.8532 14.0972V8.70164H56.0874V5.63876H49.8532V1.39941L45.3915 2.10935V5.63876H44.0876L43.5986 8.70164H45.3915L45.4118 14.8883C45.4118 18.0526 47.6325 19.9998 51.3404 19.9998C53.8871 19.9998 56.0263 19.0262 57.3913 17.2209L56.0874 14.6651Z" fill="currentColor"></path>
-                    </svg>` }} /></div>
-                </div>
+                    </svg>` }} /></span>
+                </h1>
+                {/* AI-written placeholder line (Oct 2026): Michael and Karl replace it. */}
+                <RevealText as="p" className="lp-stage-line ai-draft" text="We help brands find their sound, and make sure people hear it." />
               </div>
               <div className="home-stage-bottom">
                 <div data-player-file="home-stage-sound" className="audioplayer-controls">
@@ -165,24 +168,23 @@ export default async function HomePage() {
     </section>
     <Header variant="start-top" />
 
-    {/* Intro: what blut does as a whole, the subline naming the three offers.
-        AI-written placeholder copy (Oct 2026): Michael and Karl replace it. */}
-    <section className="lp-intro">
-      <div className="lp-wrap">
-        <AiDraftNote>AI-generated placeholder line and subline (in red), replace before launch.</AiDraftNote>
-        <div className="ai-draft">
-          <RevealText as="h1" className="lp-heading" text="Music, sound and strategy that get brands heard." />
-        </div>
-        <div className="lp-panel">
-          <p className="lp-copy ai-draft">blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post.</p>
-        </div>
-      </div>
-    </section>
-
     {/* What we do: the three offers side by side, each with a clear label. */}
     <section className="bk-section is-dark bk-offers">
-      <div className="lp-wrap">
-        <RevealText as="h2" className="lp-heading" text="What we do" />
+      {/* The heading, and what blut is beside it in the last third, in the
+          tiles' copy style (Nic, 31 Oct). AI-written placeholder copy (Oct
+          2026): Michael and Karl replace it. */}
+      <div className="lp-wrap bk-lead is-side">
+        <RevealText as="h2" className="lp-heading bk-lead-heading" text="What we do" />
+        <div className="bk-lead-text">
+          {/* Letters in after the heading's, quicker: it's a long line. */}
+          <RevealText
+            as="p"
+            className="bk-offer-copy ai-draft"
+            text="blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post."
+            after="What we do"
+            stagger={0.008}
+          />
+        </div>
       </div>
       <ul role="list" className="lp-wrap lp-case-grid">
         {OFFER_TILES.map((tile, i) => (

@@ -89,10 +89,11 @@ export default function RevealText({
     <Tag
       ref={ref}
       className={className ? `${className} reveal-text` : "reveal-text"}
-      aria-label={label}
       data-parallax={parallax}
       data-reveal="hidden"
     >
+      {/* The full text for screen readers (aria-label isn't allowed on a p or span). */}
+      <span className="sr-only">{label}</span>
       {lines.map((line, lineIndex) => {
         const words = line ? line.split(/\s+/) : [];
         return (

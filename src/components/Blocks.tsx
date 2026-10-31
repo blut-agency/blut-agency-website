@@ -172,8 +172,24 @@ const PEOPLE = {
   elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "" },
 } as const;
 
-/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469). */
-export function ContactBlock({ person }: { person: keyof typeof PEOPLE }) {
+/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); without a person, the general address. */
+export function ContactBlock({ person }: { person?: keyof typeof PEOPLE }) {
+  if (!person) {
+    return (
+      <section className="bk-section is-dark bk-contact">
+        <div className="lp-wrap bk-contact-grid">
+          <div className="bk-contact-heading">
+            <p className="lp-heading">Sound good?</p>
+            <p className="lp-heading">Get in touch!</p>
+          </div>
+          <div className="bk-contact-person is-general">
+            <p className="lp-copy bk-contact-name">contact@blut.agency</p>
+            <CtaLink href="mailto:contact@blut.agency" label="Mail" />
+          </div>
+        </div>
+      </section>
+    );
+  }
   const p = PEOPLE[person];
   return (
     <section className="bk-section is-dark bk-contact">

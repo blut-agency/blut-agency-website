@@ -71,6 +71,19 @@
   color: var(--_color---copy-bright);
 }
 
+/* Wherever the ground changes (white and black, a banner above, the logo
+   band below), the change itself separates the parts: each side keeps less
+   space (64 / 48 / 48px) instead of the full section spacing (Nic, 31 Oct).
+   Low specificity, so sections with their own padding keep it. The nav
+   (.header) sits right after each banner in the markup. */
+.bk-section:where(:not(.is-dark):has(+ .bk-section.is-dark), .is-dark:has(+ .bk-section:not(.is-dark)), :has(+ .lp-band)) {
+  padding-bottom: var(--lp-space-edge);
+}
+
+.bk-section:where(.bk-section:not(.is-dark) + .is-dark, .bk-section.is-dark + :not(.is-dark), .header + *) {
+  padding-top: var(--lp-space-edge);
+}
+
 .bk-section > * + * {
   margin-top: var(--lp-stack);
 }
@@ -282,7 +295,7 @@ iframe.bk-spot-preview {
   background: var(--_color---white);
   color: var(--_color---copy-dark);
   font-size: var(--lp-client);
-  line-height: 1.15;
+  line-height: 1.1;
   transition: background-color 0.5s ease;
 }
 
@@ -341,18 +354,18 @@ iframe.bk-spot-preview {
   margin: 0;
   font-size: var(--lp-copy);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .bk-spot-text {
   margin: 0;
   font-size: 24px;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .bk-spot.is-card .bk-spot-text {
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 /* Buttons that look like the "— Label" link and the invisible click areas. */
@@ -411,6 +424,12 @@ iframe.bk-spot-preview {
 
 .bk-contact-person .lp-copy + .lp-copy {
   margin-bottom: 8px;
+}
+
+/* The general address: level with the bottom of the heading. */
+.bk-contact-person.is-general {
+  justify-content: flex-end;
+  gap: 0;
 }
 
 .bk-contact-role {
@@ -505,7 +524,7 @@ iframe.bk-spot-preview {
 .bk-meta-label {
   margin: 0 0 16px;
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
   color: var(--lp-text-secondary);
 }
 
@@ -570,7 +589,7 @@ iframe.bk-spot-preview {
 .bk-service-line {
   grid-column: 1 / span 2;
   margin: 0;
-  font-size: 64px;
+  font-size: 48px;
   line-height: 1.1;
   letter-spacing: -0.03em;
   text-wrap: wrap;
@@ -603,13 +622,13 @@ iframe.bk-spot-preview {
 .bk-service-intro {
   margin: 0;
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 @media screen and (max-width: 1279px) {
   .bk-service-intro {
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 }
 
@@ -701,7 +720,7 @@ iframe.bk-spot-preview {
   gap: 24px;
   padding-block: var(--lp-pad);
   font-size: var(--lp-copy);
-  line-height: 1.15;
+  line-height: 1.1;
   list-style: none;
   cursor: pointer;
 }
@@ -743,7 +762,7 @@ iframe.bk-spot-preview {
   max-width: 640px;
   padding-bottom: var(--lp-pad);
   font-size: 24px;
-  line-height: 1.4;
+  line-height: 1.25;
 }
 
 .bk-section:not(.is-dark) .bk-drawer-body p {
@@ -824,30 +843,25 @@ iframe.bk-spot-preview {
   content: none;
 }
 
-/* ---------- About: team circling the middle (TeamOrbit) ---------- */
+/* ---------- About: "We are blut." left, the team in a row below (TeamGrid) ---------- */
 .bk-team {
-  position: relative;
-  width: min(800px, 100%);
-  aspect-ratio: 800 / 620;
-  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lp-stack);
 }
 
-.bk-team-center {
-  position: absolute;
-  inset: 0;
+/* Both texts share one cell and cross-fade, so the grid below never moves. */
+.bk-team-top {
   display: grid;
-  place-items: center;
-  pointer-events: none;
 }
 
 .bk-team-text {
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  max-width: 640px;
-  text-align: center;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 832px;
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -858,30 +872,37 @@ iframe.bk-spot-preview {
 
 .bk-team-text .lp-heading {
   margin: 0;
-  white-space: nowrap;
 }
 
 .bk-team-intro {
   margin: 0;
   font-size: var(--lp-copy);
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .bk-team-role {
   margin: 0;
-  font-size: 24px;
-  line-height: 1.35;
+  font-size: var(--lp-copy);
+  line-height: 1.1;
+  color: var(--lp-text-secondary);
+}
+
+.bk-team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--lp-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .bk-team-face {
-  position: absolute;
-  z-index: 1;
-  width: 20%;
+  display: block;
+  width: 100%;
   aspect-ratio: 1;
   padding: 0;
   border: 0;
   background: #eee;
-  translate: -50% -50%;
   cursor: pointer;
   overflow: hidden;
 }
@@ -924,37 +945,12 @@ iframe.bk-spot-preview {
 .bk-office-address {
   margin: 0;
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 @media screen and (max-width: 767px) {
-  .bk-team {
-    aspect-ratio: 3 / 4;
-  }
-
-  .bk-team-face {
-    width: 28%;
-  }
-
-  /* Keep the role clear of the faces passing by. */
-  .bk-team-text {
-    z-index: 2;
-  }
-
-  .bk-team-text {
-    max-width: 64%;
-  }
-
-  .bk-team-text .lp-heading {
-    white-space: normal;
-  }
-
-  .bk-team-intro {
-    font-size: 16px;
-  }
-
-  .bk-team-role {
-    font-size: 16px;
+  .bk-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -995,14 +991,14 @@ iframe.bk-spot-preview {
 
 .bk-spot.is-row .bk-spot-text {
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
   color: var(--lp-text-secondary);
 }
 
 @media screen and (max-width: 767px) {
   .bk-spot.is-row .bk-spot-text {
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 }
 
@@ -1011,7 +1007,7 @@ iframe.bk-spot-preview {
 @media screen and (min-width: 1024px) and (max-width: 1279px) {
   .bk-spot.is-row .bk-spot-text {
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 }
 
@@ -1154,7 +1150,7 @@ iframe.bk-spot-preview {
    the dark-section colours above would otherwise keep the text white. */
 @media (hover: hover) and (pointer: fine) {
   .bk-section.is-dark .bk-spot.hl-row:hover .bk-spot-body.is-light-highlight,
-  .bk-section.is-dark .bk-spot.hl-row:hover .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div) {
+  .bk-section.is-dark .bk-spot.hl-row:hover .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div):not(:is(.lp-case-visual, .hl-visual) *) {
     color: var(--_color---copy-dark);
   }
 }
@@ -1215,7 +1211,7 @@ iframe.bk-spot-preview {
   .bk-contact .bk-contact-person .lp-copy.bk-contact-role {
     margin-bottom: 0;
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   /* 4px plus the half of the 48px tap target above the text: 16px visible. */
@@ -1561,7 +1557,7 @@ iframe.bk-spot-preview {
   }
 
   .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight,
-  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div) {
+  .bk-section.is-dark .bk-spot.hl-row.is-centered .bk-spot-body.is-light-highlight :is(h3, p, li, a, span, div):not(:is(.lp-case-visual, .hl-visual) *) {
     color: var(--_color---copy-dark);
   }
 
@@ -1577,36 +1573,46 @@ iframe.bk-spot-preview {
    Restructure (call with Michael and Timo, 30 Oct 2026)
    ========================================================================== */
 
-/* Shorter banners, so the next section already shows on the first screen.
-   The landing stage keeps its own height (landing.css). */
+/* Shorter banners, so the next section already shows on the first screen
+   (Elliot, 31 Oct: smaller again). The landing stage sets its own height
+   (landing.css). */
 .bk-hero {
-  min-height: 512px;
-  padding-block: 48px;
+  min-height: 384px;
+  /* 48px plus the fixed nav, which lies on top of the banner. */
+  padding-block: calc(var(--_project---nav-height) + 48px) 48px;
 }
 
 @media screen and (max-width: 767px) {
   .bk-hero {
-    min-height: 384px;
-    padding-block: 32px;
+    min-height: 256px;
+    padding-block: calc(var(--_project---nav-height) + 32px) 32px;
   }
 }
 
-/* The logo never grows taller than the stage: it takes the room left above
-   the player, fills the width when it fits, and is centred when the height
-   is what limits it. It always sits at the top (preserveAspectRatio
-   "xMidYMin meet" on the SVG in page.tsx). */
-.lp-page .lp-stage .home-stage-top {
-  flex: 1 1 0;
+/* Home stage: the logo across two thirds from the very top; under it the
+   sound control, and in the last third the intro line, its foot level with
+   the sound control's (Nic, 31 Oct). One grid for the stage (its two rows'
+   wrappers step aside); it is as tall as these need. */
+.lp-page .lp-stage .home-stage-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+  align-items: end;
+  height: auto;
   min-height: 0;
-  display: flex;
-  flex-direction: column;
+  padding-block: 24px var(--lp-pad);
+}
+
+.lp-page .lp-stage :is(.home-stage-top, .home-stage-bottom) {
+  display: contents;
 }
 
 .lp-page .lp-stage .full-width-logo {
   position: relative;
-  flex: 1 1 0;
-  min-height: 0;
-  margin-block: 24px;
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  aspect-ratio: 58 / 20;
+  margin: 0 0 var(--lp-stack);
   padding-block: 0;
 }
 
@@ -1617,27 +1623,42 @@ iframe.bk-spot-preview {
   height: 100%;
 }
 
-@media screen and (max-width: 767px) {
-  .lp-page .lp-stage .full-width-logo {
-    margin-block: 16px;
-  }
+.lp-page .lp-stage .audioplayer-controls {
+  grid-column: 1;
+  grid-row: 2;
 }
 
-/* Home intro: the draft note across the top, the red headline where the
-   headline sits. */
-.lp-intro .ai-draft-note {
-  grid-column: 1 / -1;
-  justify-self: start;
+.lp-stage-line {
+  grid-column: 3;
+  grid-row: 1 / span 2;
   margin: 0;
-}
-
-.lp-intro .lp-wrap > .ai-draft {
-  grid-column: 1 / span 2;
+  color: var(--_color---copy-bright);
+  font-size: var(--lp-copy);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 @media screen and (max-width: 767px) {
-  .lp-intro .lp-wrap > .ai-draft {
-    grid-column: 1 / -1;
+  .lp-page .lp-stage .home-stage-wrapper {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--lp-pad);
+    padding-top: 16px;
+  }
+
+  /* Clear of the menu button in the top right corner. */
+  .lp-page .lp-stage .full-width-logo {
+    grid-column: 1;
+    width: calc(100% - 64px);
+    margin-bottom: 0;
+  }
+
+  .lp-stage-line {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .lp-page .lp-stage .audioplayer-controls {
+    grid-row: 3;
   }
 }
 
@@ -1663,6 +1684,17 @@ iframe.bk-spot-preview {
   z-index: 1;
 }
 
+/* Hovering a tile (on touch screens, the centred one) turns the other two
+   black and white at 35% (Nic, 31 Oct). */
+.bk-offers .lp-case-grid > li {
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.bk-offers .lp-case-grid:has(.bk-offer:is(:hover, .is-centered)) > li:not(:has(.bk-offer:is(:hover, .is-centered))) {
+  filter: grayscale(1);
+  opacity: 0.35;
+}
+
 .bk-offers > .bk-offers-backdrop {
   position: absolute;
   inset: 0;
@@ -1680,7 +1712,7 @@ iframe.bk-spot-preview {
   transition: opacity 0.6s ease;
 }
 
-.bk-offers .lp-heading {
+.bk-offers :is(.lp-heading, .bk-lead-text) {
   transition: color 0.6s ease;
 }
 
@@ -1690,7 +1722,8 @@ iframe.bk-spot-preview {
   opacity: 1;
 }
 
-.bk-offers:has(.lp-case-grid > [data-light-highlight] > :is(.bk-offer:hover, .bk-offer.is-centered)) .lp-heading {
+/* The line beside the headline turns with it. */
+.bk-offers:has(.lp-case-grid > [data-light-highlight] > :is(.bk-offer:hover, .bk-offer.is-centered)) :is(.lp-heading, .bk-lead-text) {
   color: var(--_color---copy-dark);
 }
 
@@ -1703,7 +1736,7 @@ iframe.bk-spot-preview {
 /* The bottom padding makes up the rest of the 96px, so the tiles stay the
    same height while their tops are staggered. */
 .bk-offers .lp-case-grid > :nth-child(3n + 1) { padding-bottom: 32px; }
-.bk-offers .lp-case-grid > :nth-child(3n + 2) { padding-bottom: 72px; }
+.bk-offers .lp-case-grid > :nth-child(3n + 2) { padding-bottom: 64px; }
 .bk-offers .lp-case-grid > :nth-child(3n) { padding-bottom: 0; }
 
 /* Phones stack the tiles (landing.css drops the top offsets): no gaps
@@ -1799,7 +1832,7 @@ iframe.bk-spot-preview {
   margin: 0;
   font-size: 48px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
@@ -1840,7 +1873,7 @@ iframe.bk-spot-preview {
 /* Cases filter: pill buttons above the list; the active one is filled. */
 /* Cases: pills close under the banner and 48px above the list. */
 .bk-section.bk-cases-section {
-  padding-top: 96px;
+  padding-top: 64px;
 }
 
 @media screen and (max-width: 767px) {
@@ -2122,7 +2155,7 @@ iframe.bk-spot-preview {
 .bk-lab-facts dd {
   margin: 0;
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 /* Chapter: stage name over the CMS question as one two-tone heading in two
@@ -2140,7 +2173,7 @@ iframe.bk-spot-preview {
 .bk-lab-chapter-head .lp-heading,
 .bk-lab-chapter-line {
   margin: 0;
-  font-size: 64px;
+  font-size: 48px;
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
@@ -2171,7 +2204,7 @@ iframe.bk-spot-preview {
 .bk-lab-prose p {
   margin-bottom: 0;
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 /* CMS rich text can hold more headings and pictures: 24px between
@@ -2258,7 +2291,7 @@ iframe.bk-spot-preview {
   margin-top: 24px;
   text-align: left;
   font-size: 24px;
-  line-height: 1.35;
+  line-height: 1.25;
 }
 
 /* GIF loop on black, its hashtags large in the last third. */
@@ -2304,7 +2337,7 @@ iframe.bk-spot-preview {
 
 .bk-lab-audio-title {
   margin: 0;
-  font-size: 64px;
+  font-size: 48px;
   line-height: 1.1;
   white-space: pre-line;
 }
@@ -2348,7 +2381,7 @@ iframe.bk-spot-preview {
 @media screen and (max-width: 1279px) {
   .bk-lab-prose p {
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
   .bk-lab-chapter-head .lp-heading,

@@ -54,8 +54,9 @@
     opacity: 1;
   }
 
+  /* Dark text on a light highlight; the moving lines keep the case colour. */
   .hl-row:hover .hl-panel.is-light-highlight,
-  .hl-row:hover .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div) {
+  .hl-row:hover .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div):not(:is(.lp-case-visual, .hl-visual) *) {
     color: var(--_color---copy-dark);
   }
 
@@ -135,7 +136,7 @@
   }
 
   .hl-row.is-centered .hl-panel.is-light-highlight,
-  .hl-row.is-centered .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div) {
+  .hl-row.is-centered .hl-panel.is-light-highlight :is(h1, h2, h3, h4, p, li, a, span, div):not(:is(.lp-case-visual, .hl-visual) *) {
     color: var(--_color---copy-dark);
   }
 

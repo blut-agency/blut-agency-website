@@ -241,6 +241,20 @@
 }
 
 /* Revealed headlines: hidden with the letters until the reveal starts. */
-.w-mod-js .ai-draft .reveal-text[data-reveal="hidden"]::after {
+.w-mod-js .ai-draft .reveal-text[data-reveal="hidden"]::after,
+.w-mod-js .reveal-text.ai-draft[data-reveal="hidden"]::after {
   opacity: 0;
+}
+
+/* Read out, not shown. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

@@ -3,7 +3,7 @@ import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
-import TeamOrbit from "@/components/TeamOrbit";
+import TeamGrid from "@/components/TeamGrid";
 import RevealText from "@/components/RevealText";
 import { CtaLink, PageHero } from "@/components/Blocks";
 import { getLocations } from "@/lib/content";
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 /*
   About in the new design (Figma "About", node 249:1747): the red banner with
-  the mission statement, the team circling "We are blut." (TeamOrbit), then
+  the mission statement, "We are blut." over the team (TeamGrid), then
   the three offices as staggered cards on black, the band and the footer.
 */
 
@@ -57,7 +57,7 @@ export default function AboutPage() {
 
       <section className="bk-section">
         <div className="lp-wrap">
-          <TeamOrbit intro="A next generation creative agency for the modern era. We believe there’s a better way to integrate music into brand communication." />
+          <TeamGrid intro="A next generation creative agency for the modern era. We believe there’s a better way to integrate music into brand communication." />
         </div>
       </section>
 

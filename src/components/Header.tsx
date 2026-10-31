@@ -132,11 +132,68 @@ function MobileMenu({ pathname }: { pathname: string }) {
   );
 }
 
+const isClear = (color: string) => color === "transparent" || /^rgba\(.*,\s*0\)$/.test(color);
+
+/**
+ * The fixed bar takes the colours of what lies under it: over a banner it is
+ * clear and takes the banner's text colour, elsewhere the first background
+ * found under its middle (left edge, where the section's own ground shows)
+ * and that area's text colour. Repainted on scroll and resize.
+ */
+function useMatchArea(pathname: string) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const header = ref.current;
+    if (!header) return;
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      const y = header.getBoundingClientRect().height / 2;
+      const hit = document.elementsFromPoint(2, y).find((el) => !header.contains(el));
+      const banner = hit?.closest<HTMLElement>(".bk-hero, .lp-stage");
+      let bg = "";
+      let ink = "";
+      if (banner) {
+        bg = "transparent";
+        // Home's stage sets its text colour one level down.
+        ink = getComputedStyle(banner.querySelector(".home-stage-wrapper") ?? banner).color;
+      } else {
+        for (let el = hit ?? null; el; el = el.parentElement) {
+          const style = getComputedStyle(el);
+          if (isClear(style.backgroundColor)) continue;
+          bg = style.backgroundColor;
+          ink = style.color;
+          break;
+        }
+      }
+      header.style.setProperty("--nav-bg", bg || null);
+      header.style.setProperty("--nav-ink", ink || null);
+      header.classList.toggle("is-over-stage", !!banner?.classList.contains("lp-stage"));
+    };
+    const queue = () => {
+      frame ||= requestAnimationFrame(paint);
+    };
+    paint();
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
+    };
+  }, [pathname]);
+
+  return ref;
+}
+
 export default function Header({ variant = "start-top" }: { variant?: "start-top" | "start-bottom" }) {
   const pathname = usePathname();
+  const ref = useMatchArea(pathname);
 
   return (
     <div
+      ref={ref}
       data-sticky-on-scroll="navigation"
       data-wf--header--variant={variant}
       className={variant === "start-bottom" ? "header w-variant-c250e457-0eed-d5a6-c281-222d78605d03" : "header"}

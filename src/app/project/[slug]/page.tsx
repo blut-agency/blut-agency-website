@@ -306,7 +306,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
             <div className="lp-wrap bk-lab-loop">
               <div className="video-16-9 w-embed w-iframe">
                 <iframe
-                  title=""
+                  title={`${cs.teaserCampaign}, silent loop`}
                   src={vimeoSrc(cs.gifVideoVimeoId, "autoplay=1&loop=1&controls=0&dnt=1&muted=1")}
                   frameBorder="0"
                   allow="autoplay"
@@ -372,7 +372,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
           </section>
         )}
 
-        <ContactBlock person="michael" />
+        <ContactBlock />
         <LandingFooter
           band={{
             background: cs.color?.secondary ?? "var(--_color---accent-color-2)",

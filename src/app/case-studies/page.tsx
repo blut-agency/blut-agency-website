@@ -58,6 +58,7 @@ export default async function CaseStudiesPage() {
       <Header variant="start-top" />
 
       <section className="bk-section is-dark bk-cases-section">
+        <h2 className="sr-only">All cases</h2>
         <CaseFilter options={options}>
           <ul role="list" className="lp-wrap bk-case-list">
             {caseStudies.map((cs, i) => (
@@ -76,7 +77,8 @@ export default async function CaseStudiesPage() {
         </Lead>
       </section>
 
-      <ContactBlock person="michael" />
+      {/* The general address, not a person (Elliot, 31 Oct). */}
+      <ContactBlock />
       <LandingFooter band={{ background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" }} />
     </div>
   );

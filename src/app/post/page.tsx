@@ -3,6 +3,7 @@ import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
+import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
 import { POST_ITEMS as ITEMS } from "@/content/offers";
 import { themesForImages } from "@/lib/imageTheme";
@@ -25,6 +26,10 @@ export const metadata: Metadata = {
   Elliot (video post) is the contact; add the audio post lead once confirmed.
 */
 
+// Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
+const QUESTION = "What’s the difference between a good spot and one you can’t forget?";
+const ANSWER = "The last ten percent. That’s ours.";
+
 export default async function PostPage() {
   const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
 
@@ -43,6 +48,11 @@ export default async function PostPage() {
       <Header variant="start-top" />
 
       <section className="bk-section is-dark">
+        {/* The question, then blut's answer in grey, as one two-tone heading. */}
+        <div className="lp-wrap bk-service-top is-long ai-draft">
+          <RevealText as="h2" className="lp-heading" text={QUESTION} />
+          <RevealText as="p" className="bk-service-line" text={ANSWER} after={QUESTION} />
+        </div>
         <ul role="list" className="lp-wrap bk-mosaic is-spaced">
           {ITEMS.map((item, i) => (
             <li key={item.spot.client}>

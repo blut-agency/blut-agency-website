@@ -7,7 +7,7 @@ import WorkSpot from "@/components/WorkSpot";
 import HomeRow from "@/components/HomeRow";
 import Drawer from "@/components/Drawer";
 import ReplayReveal from "./ReplayReveal";
-import TeamOrbit from "@/components/TeamOrbit";
+import TeamGrid from "@/components/TeamGrid";
 import Button from "@/components/Button";
 import Icon, { ICON_NAMES } from "@/components/Icon";
 import { ContactBlock, CtaLink, Lead, PageHero, ServiceDrawers } from "@/components/Blocks";
@@ -368,9 +368,9 @@ export default async function ComponentSheetPage() {
           ))}
         </div>
 
-        <Label name="TeamOrbit" used="About" />
+        <Label name="TeamGrid" used="About" />
         <div className="lp-wrap">
-          <TeamOrbit intro="A next generation creative agency for the modern era." />
+          <TeamGrid intro="A next generation creative agency for the modern era." />
         </div>
       </section>
 

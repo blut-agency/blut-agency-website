@@ -47,6 +47,8 @@ const RISE_SELECTOR = [
   ".bk-lab-loop",
   ".bk-lab-audio",
   ".bk-lab-awards",
+  ".bk-team-intro",
+  ".bk-team-grid > li",
 ].join(",");
 const IN_SKIP = ".header, .lp-footer, .bk-hero, .lp-stage";
 const IN_STAGGER_MS = 120;
