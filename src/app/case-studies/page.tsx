@@ -4,9 +4,9 @@ import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseCard, { caseTags } from "@/components/CaseCard";
 import CaseFilter from "@/components/CaseFilter";
-import { OFFERS, PINNED_CASE, caseOffers, tagSlug } from "@/content/offers";
+import { FEATURED_CASES, OFFERS, PINNED_CASE, caseOffers, tagSlug } from "@/content/offers";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
-import { getCaseStudies } from "@/lib/content";
+import { getCaseStudies, getCasesSettings } from "@/lib/content";
 import { highlightThemes } from "@/lib/imageTheme";
 
 export const metadata: Metadata = {
@@ -32,9 +32,10 @@ export const metadata: Metadata = {
   the most used first. The pinned case leads the list under a "Featured" label.
 */
 export default async function CaseStudiesPage() {
-  const all = getCaseStudies();
+  const all = await getCaseStudies();
+  const { pinnedCase } = await getCasesSettings({ pinnedCase: PINNED_CASE, featuredCases: FEATURED_CASES });
   // The pinned case first, the rest in their CMS order.
-  const caseStudies = [...all.filter((cs) => cs.slug === PINNED_CASE), ...all.filter((cs) => cs.slug !== PINNED_CASE)];
+  const caseStudies = [...all.filter((cs) => cs.slug === pinnedCase), ...all.filter((cs) => cs.slug !== pinnedCase)];
   const offers = caseStudies.map(caseOffers);
   const tags = caseStudies.map(caseTags);
   const count = (tag: string) => tags.filter((list) => list.includes(tag)).length;
@@ -62,8 +63,8 @@ export default async function CaseStudiesPage() {
         <CaseFilter options={options}>
           <ul role="list" className="lp-wrap bk-case-list">
             {caseStudies.map((cs, i) => (
-              <li key={cs.slug} data-tags={[...offers[i], ...tags[i]].map(tagSlug).join(" ")} className={cs.slug === PINNED_CASE ? "is-pinned" : undefined}>
-                {cs.slug === PINNED_CASE && <p className="bk-pinned-label">Featured</p>}
+              <li key={cs.slug} data-tags={[...offers[i], ...tags[i]].map(tagSlug).join(" ")} className={cs.slug === pinnedCase ? "is-pinned" : undefined}>
+                {cs.slug === pinnedCase && <p className="bk-pinned-label">Featured</p>}
                 <CaseCard cs={cs} theme={themes[i]} formPrefix="cases" />
               </li>
             ))}

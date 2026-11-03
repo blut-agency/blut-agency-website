@@ -1,4 +1,7 @@
+import { cache } from "react";
 import cms from "@/content/cms-content.json";
+import { getSanityContent } from "@/sanity/fetch";
+import { projectId } from "@/sanity/env";
 
 export interface CaseStudyAward {
   name: string;
@@ -95,7 +98,7 @@ export interface HomeSound {
   visualizationJson: string;
 }
 
-interface CmsContent {
+export interface CmsContent {
   caseStudies: CaseStudy[];
   locations: Location[];
   colors: Color[];
@@ -103,32 +106,66 @@ interface CmsContent {
   homeSound: HomeSound | null;
 }
 
-const content = cms as unknown as CmsContent;
-
-export function getCaseStudies(): CaseStudy[] {
-  return content.caseStudies;
+export interface CasesSettings {
+  /** Slug of the case pinned to the top of /case-studies. */
+  pinnedCase: string;
+  /** Slugs of the cases under "Featured cases" on Home, in order. */
+  featuredCases: string[];
 }
 
-export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
-  return content.caseStudies.find((c) => c.slug === slug);
+
+const json = cms as unknown as CmsContent;
+
+/*
+  Where content comes from: Sanity (the studio) when a project ID is set,
+  otherwise src/content/cms-content.json, the old Webflow export.
+  Cases, colour themes, awards and the cases settings live in Sanity.
+  Locations and the home sound stay in the JSON file.
+  Sanity content is cached and refreshed at most once a minute, so a
+  published change shows on the site within about a minute.
+*/
+const load = cache(async (): Promise<{ content: CmsContent; settings: CasesSettings | null }> => {
+  if (!projectId) return { content: json, settings: null };
+  const sanity = await getSanityContent();
+  return {
+    content: { ...json, caseStudies: sanity.caseStudies, colors: sanity.colors, awards: sanity.awards },
+    settings: sanity.settings,
+  };
+});
+
+export async function getCaseStudies(): Promise<CaseStudy[]> {
+  return (await load()).content.caseStudies;
 }
 
-export function getHomepageCaseStudies(): CaseStudy[] {
-  return content.caseStudies.filter((c) => c.showOnHomepage);
+export async function getCaseStudyBySlug(slug: string): Promise<CaseStudy | undefined> {
+  return (await getCaseStudies()).find((c) => c.slug === slug);
+}
+
+export async function getHomepageCaseStudies(): Promise<CaseStudy[]> {
+  return (await getCaseStudies()).filter((c) => c.showOnHomepage);
+}
+
+export async function getColors(): Promise<Color[]> {
+  return (await load()).content.colors;
+}
+
+export async function getAwards(): Promise<Award[]> {
+  return (await load()).content.awards;
+}
+
+/** Pinned and featured cases: from Sanity's "Cases settings", else the given defaults. */
+export async function getCasesSettings(defaults: CasesSettings): Promise<CasesSettings> {
+  const settings = (await load()).settings;
+  return {
+    pinnedCase: settings?.pinnedCase || defaults.pinnedCase,
+    featuredCases: settings?.featuredCases?.length ? settings.featuredCases : defaults.featuredCases,
+  };
 }
 
 export function getLocations(): Location[] {
-  return content.locations;
-}
-
-export function getColors(): Color[] {
-  return content.colors;
-}
-
-export function getAwards(): Award[] {
-  return content.awards;
+  return json.locations;
 }
 
 export function getHomeSound(): HomeSound | null {
-  return content.homeSound;
+  return json.homeSound;
 }

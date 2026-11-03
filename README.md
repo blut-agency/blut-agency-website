@@ -42,3 +42,16 @@ This site was ported from a Webflow export rather than rebuilt from scratch, to 
 ## Deployment
 
 The site deploys to Vercel. Pushes to `main` deploy to production; other branches get preview deployments.
+
+## Editing cases (Sanity)
+
+Cases, colour themes, awards and the pinned/featured cases live in Sanity.
+Without `NEXT_PUBLIC_SANITY_PROJECT_ID` the site falls back to
+`src/content/cms-content.json`.
+
+- `npm run studio`: the studio at localhost:3333.
+- `npm run studio:deploy`: puts the studio online at blut-agency.sanity.studio.
+- `npm run sanity:import`: one-off copy of the JSON cases and images into Sanity (after `npx sanity login`).
+- Published changes show on the site within about a minute.
+
+Settings go in `.env.local` (see `.env.example`) and in Vercel's environment variables.

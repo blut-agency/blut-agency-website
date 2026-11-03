@@ -138,7 +138,8 @@ function ButtonSet({ shape }: { shape: "rect" | "pill" }) {
 }
 
 export default async function ComponentSheetPage() {
-  const cases = getCaseStudies();
+  const cases = await getCaseStudies();
+  const colors = await getColors();
   const caseThemes = await highlightThemes(cases.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
   const spots = [WORK_ITEMS[0], WORK_ITEMS[1], WORK_ITEMS[2]];
   const spotThemes = await themesForImages(spots.map((item) => item.spot.image));
@@ -178,7 +179,7 @@ export default async function ComponentSheetPage() {
 
         <Label name="CMS colour themes" used="Case pages, hover highlights (secondary = background, main = line)" />
         <div className="lp-wrap cs-swatches">
-          {getColors().map((c) => (
+          {colors.map((c) => (
             <div key={c.slug} className="cs-swatch">
               <div className="cs-swatch-chip cs-theme" style={{ background: c.secondary }}>
                 <span style={{ background: c.main }} />

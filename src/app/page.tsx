@@ -9,8 +9,8 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import CtaArrow from "@/components/CtaArrow";
 import HoverClip from "@/components/HoverClip";
 import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
-import { FEATURED_CASES } from "@/content/offers";
-import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { FEATURED_CASES, PINNED_CASE } from "@/content/offers";
+import { getCaseStudyBySlug, getCasesSettings, getHomeSound, type CaseStudy } from "@/lib/content";
 import { highlightThemes, themesForImages } from "@/lib/imageTheme";
 
 /*
@@ -82,7 +82,8 @@ export default async function HomePage() {
   // Each tile's hover highlight uses the CMS theme closest to its photo.
   // Each offer's colours, picked from its photo: its pattern fills the section on hover.
   const themes = await themesForImages(OFFER_TILES.map((t) => t.image));
-  const featured = FEATURED_CASES.map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
+  const { featuredCases } = await getCasesSettings({ pinnedCase: PINNED_CASE, featuredCases: FEATURED_CASES });
+  const featured = (await Promise.all(featuredCases.map(getCaseStudyBySlug))).filter((cs): cs is CaseStudy => Boolean(cs));
   const caseThemes = await highlightThemes(featured.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
   return (

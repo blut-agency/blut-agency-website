@@ -71,7 +71,7 @@ const dominantCache = new Map<string, Promise<Rgb | null>>();
 
 export async function themesForImages(srcs: string[]): Promise<(ImageTheme | null)[]> {
   const dominants = await Promise.all(srcs.map(dominantOf));
-  const themes = getColors()
+  const themes = (await getColors())
     .map((color) => ({ color, bg: parseColor(color.secondary), line: parseColor(color.main) }))
     .filter((t): t is { color: Color; bg: Rgb; line: Rgb } => Boolean(t.bg && t.line));
 
@@ -121,7 +121,9 @@ function dominantOf(src: string): Promise<Rgb | null> {
 
 async function readImage(src: string): Promise<string | Buffer> {
   if (!/^https?:\/\//.test(src)) return path.join(process.cwd(), "public", src);
-  const res = await fetch(src, { signal: AbortSignal.timeout(8000) });
+  // Sanity images: ask the CDN for a small copy, since only 48×48 is needed.
+  const url = src.startsWith("https://cdn.sanity.io/") && !src.includes("?") ? `${src}?w=96&h=96&fit=crop` : src;
+  const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error(`${res.status} ${src}`);
   return Buffer.from(await res.arrayBuffer());
 }

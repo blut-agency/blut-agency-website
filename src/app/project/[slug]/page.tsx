@@ -42,8 +42,8 @@ const AUDIO_SPEED: Record<string, number> = {
 const stageSpeed = (slug: string) => STAGE_SPEED[slug] ?? 10;
 const audioSpeed = (slug: string) => AUDIO_SPEED[slug] ?? 8;
 
-export function generateStaticParams() {
-  return getCaseStudies().map((cs) => ({ slug: cs.slug }));
+export async function generateStaticParams() {
+  return (await getCaseStudies()).map((cs) => ({ slug: cs.slug }));
 }
 
 export async function generateMetadata({
@@ -52,7 +52,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const cs = getCaseStudyBySlug(slug);
+  const cs = await getCaseStudyBySlug(slug);
   if (!cs) return {};
   // Mirrors the live site's description pattern:
   // "<quote> <name> | Full-Service Music Agency | Strategy & Identity | <track> | Project Case Study"
@@ -211,10 +211,10 @@ function Audio({ cs, n }: { cs: CaseStudy; n: 1 | 2 }) {
 
 export default async function CaseStudyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cs = getCaseStudyBySlug(slug);
+  const cs = await getCaseStudyBySlug(slug);
   if (!cs) notFound();
 
-  const nextCase = getCaseStudyBySlug(cs.nextCaseStudySlug);
+  const nextCase = await getCaseStudyBySlug(cs.nextCaseStudySlug);
   const theme = cs.color ? themeFromColors(cs.color) : null;
   const nextTheme = nextCase?.color ? themeFromColors(nextCase.color) : null;
   // The quote sits on the main colour: dark text on a light one, white on a dark one.
