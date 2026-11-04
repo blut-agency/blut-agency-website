@@ -55,6 +55,7 @@
       "teaserClient": "Hyundai Insterstudios",
       "teaserCampaign": "Inster EV Launch",
       "thumbnail": "/images/home/teaser-cases.jpg",
+      "thumbnailPosition": "50% 10%",
       "previewVimeoId": "1090418649"
     },
     {
@@ -114,7 +115,7 @@
       "teaserClient": "Devil’s Advocate",
       "teaserCampaign": "Brand Launch",
       "thumbnail": "/images/cms/685e7946dbb7efe126e47bf0_devils_advocate01.webp",
-      "previewVimeoId": "1096889748"
+      "previewVimeoId": "1095934281"
     },
     {
       "slug": "feel-the-vibe",
@@ -123,7 +124,7 @@
       "position": 3,
       "showOnHomepage": false,
       "clientListHtml": "<ul><li>Rockstar Energy</li></ul>",
-      "whatWeDidHtml": "<ul><li>Content coming soon</li></ul>",
+      "whatWeDidHtml": "<ul><li>Content Production</li><li>Artist Partnership</li></ul>",
       "collaboratorsHtml": "",
       "color": {
         "main": "#02b7fd",
@@ -165,7 +166,7 @@
       "nextCaseStudySlug": "all-purpose-sound",
       "teaserClient": "Rockstar Energy",
       "teaserCampaign": "SSIO Sound Experience",
-      "thumbnail": "/images/cases/rockstar.jpg"
+      "thumbnail": "/images/cases/rockstar-ssio.jpg"
     },
     {
       "slug": "all-purpose-sound",

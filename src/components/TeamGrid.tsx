@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import RevealText from "@/components/RevealText";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 
 /*
   About: the team (Elliot, 31 Oct). "We are blut." and the description sit
@@ -10,13 +11,18 @@ import RevealText from "@/components/RevealText";
   the text at the top for that person's name and role. Moving off (or
   tapping anywhere else) brings the description back. The order is shuffled
   on every visit, so nobody comes first (Nic, 31 Oct).
+
+  The picked face (Elliot's idea, 3 Nov): the photo fades out and the person,
+  cut out, stands in front of one of the site's moving patterns, each in
+  their own colours. One cross-fade, nothing moves.
 */
 
+// Pattern colours from the service banners: background, then the moving line.
 const PEOPLE = [
-  { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl" },
-  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo" },
-  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot" },
-  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael" },
+  { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", background: "#7a3bff", line: "#02b7fd" },
+  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
+  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
+  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
 ];
 
 /** Fisher–Yates, once per page load (pages are full loads, see PageTransition). */
@@ -103,13 +109,11 @@ export default function TeamGrid({ intro }: { intro: string }) {
                 setActive((cur) => (cur === i ? null : i));
               }}
             >
-              <img
-                src={`/images/${p.file}-p-500.jpg`}
-                srcSet={`/images/${p.file}-p-500.jpg 500w, /images/${p.file}-p-800.jpg 800w`}
-                sizes="(max-width: 767px) 50vw, 25vw"
-                alt=""
-                loading="lazy"
-              />
+              <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>
+                <CaseStudyVisual slug={`team-${p.file.toLowerCase()}`} {...patternAt(PEOPLE.indexOf(p))} />
+              </span>
+              <img className="bk-team-photo" src={`/images/team/${p.file}.webp`} alt="" loading="lazy" />
+              <img className="bk-team-cutout" src={`/images/team/${p.file}-cutout.webp`} alt="" loading="lazy" />
             </button>
           </li>
         ))}

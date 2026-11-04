@@ -51,7 +51,7 @@ export default async function PostPage() {
         {/* The question, then blut's answer in grey, as one two-tone heading. */}
         <div className="lp-wrap bk-service-top is-long ai-draft">
           <RevealText as="h2" className="lp-heading" text={QUESTION} />
-          <RevealText as="p" className="bk-service-line" text={ANSWER} after={QUESTION} />
+          <RevealText as="p" className="bk-service-line is-blue" text={ANSWER} after={QUESTION} />
         </div>
         <ul role="list" className="lp-wrap bk-mosaic is-spaced">
           {ITEMS.map((item, i) => (

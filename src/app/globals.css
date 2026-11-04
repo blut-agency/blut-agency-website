@@ -189,6 +189,23 @@
   color: var(--_color---copy-bright);
 }
 
+/* A playing video's controls fade out after a moment (FilePlayer,
+   embeds.js idleControls); pause, a mouse move or a tap brings them back. */
+.file-player-bar,
+.project-video-controls,
+.bk-spot-controls {
+  transition: opacity 0.4s ease;
+}
+
+.is-idle :is(.file-player-bar, .project-video-controls, .bk-spot-controls) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.is-idle {
+  cursor: none;
+}
+
 .file-player-progress {
   flex: 1;
 }

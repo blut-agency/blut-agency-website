@@ -55,6 +55,14 @@
   }
 }
 
+/* Three-line headline (About): the section heading size, so it fits the
+   banner's fixed height. Phones keep their own sizes. */
+@media screen and (min-width: 768px) {
+  .bk-hero-heading.is-small {
+    font-size: var(--lp-heading);
+  }
+}
+
 .bk-hero.is-dark-text {
   color: var(--_color---copy-dark);
 }
@@ -603,6 +611,15 @@ iframe.bk-spot-preview {
   color: var(--lp-muted);
 }
 
+/* The answer in a brand colour so it pops (Elliot, Nov 2026). */
+.bk-section .bk-service-line.is-red {
+  color: var(--_color---accent-color-3);
+}
+
+.bk-section .bk-service-line.is-blue {
+  color: var(--_color---accent-color-1);
+}
+
 /* A long question (Production) steps down a size on phones. */
 @media screen and (max-width: 767px) {
   .bk-service-top.is-long .lp-heading,
@@ -837,9 +854,7 @@ iframe.bk-spot-preview {
 /* Client labels keep their full line height: embeds.css trims the half-leading
    off every paragraph, which cut the box tight to ascenders and descenders. */
 .bk-spot .bk-spot-client::before,
-.bk-spot .bk-spot-client::after,
-.lp-case .lp-case-client::before,
-.lp-case .lp-case-client::after {
+.bk-spot .bk-spot-client::after {
   content: none;
 }
 
@@ -855,15 +870,38 @@ iframe.bk-spot-preview {
   display: grid;
 }
 
+/* Headline in the first two thirds, the line in the last third, level with
+   the headline's last line (Nic, 3 Nov; as .bk-lead.is-side). The name and
+   role that swap in take the same places. */
 .bk-team-text {
   grid-area: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-  max-width: 832px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--lp-gap);
+  row-gap: 24px;
+  align-items: end;
   opacity: 0;
   transition: opacity 0.4s ease;
+}
+
+.bk-team-text > :first-child {
+  grid-column: 1 / span 2;
+}
+
+.bk-team-text > :last-child {
+  grid-column: 3;
+}
+
+@media screen and (max-width: 767px) {
+  .bk-team-text {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .bk-team-text > :first-child,
+  .bk-team-text > :last-child {
+    grid-column: 1;
+  }
 }
 
 .bk-team-text.is-shown {
@@ -897,6 +935,7 @@ iframe.bk-spot-preview {
 }
 
 .bk-team-face {
+  position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 1;
@@ -912,11 +951,29 @@ iframe.bk-spot-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.4s ease, opacity 0.4s ease;
+  transition: filter 0.4s ease, opacity 0.6s ease;
+}
+
+/* Pattern and cut-out lie over the photo, hidden until the face is picked. */
+.bk-team-face .bk-team-cutout,
+.bk-team-visual {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.bk-team-face.is-active .bk-team-photo {
+  opacity: 0;
+}
+
+.bk-team-face.is-active .bk-team-cutout,
+.bk-team-face.is-active .bk-team-visual {
+  opacity: 1;
 }
 
 /* One face picked: the others go grey and pale. */
-.bk-team.has-active .bk-team-face:not(.is-active) img {
+.bk-team.has-active .bk-team-face:not(.is-active) .bk-team-photo {
   filter: grayscale(1);
   opacity: 0.35;
 }
@@ -926,8 +983,8 @@ iframe.bk-spot-preview {
   outline-offset: 4px;
 }
 
-/* ---------- About: offices ---------- */
-.bk-office-visual {
+/* The picked face's moving pattern (CaseStudyVisual). */
+.bk-team-visual {
   position: absolute;
   inset: 0;
   display: flex;
@@ -937,15 +994,9 @@ iframe.bk-spot-preview {
   font-size: var(--_project---blur-half-width);
 }
 
-.bk-office-visual .visual-canvas {
+.bk-team-visual .visual-canvas {
   width: 160%;
   flex: none;
-}
-
-.bk-office-address {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
 }
 
 @media screen and (max-width: 767px) {
@@ -1180,6 +1231,23 @@ iframe.bk-spot-preview {
   font-size: 24px;
 }
 
+/* No photo (the general address): the address with Mail straight under it,
+   level with the bottom of the heading, not a row beside it. */
+.bk-contact .bk-contact-person.is-general {
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: end;
+  gap: 0;
+}
+
+/* Beside the heading: Mail's 48px tap target reaches 16px under its text;
+   let it hang so the text, not the target, lines up with "Get in touch!". */
+@media screen and (min-width: 1280px) {
+  .bk-contact .bk-contact-person.is-general {
+    margin-bottom: -16px;
+  }
+}
+
 @media screen and (max-width: 1279px) {
   .bk-contact-heading {
     grid-column: 1 / -1;
@@ -1251,8 +1319,7 @@ iframe.bk-spot-preview {
 /* Phones: small client chips, close to the corner, so they don't cover the
    photo (16px text, see --lp-client). */
 @media screen and (max-width: 767px) {
-  .bk-spot-client,
-  .lp-case-client {
+  .bk-spot-client {
     bottom: 16px;
     padding: 8px 16px;
   }
@@ -1496,6 +1563,19 @@ iframe.bk-spot-preview {
     border-color 0.3s ease;
 }
 
+/* Phones: just the play icon in the round button, no label (Nic, 3 Nov). The
+   buttons carry an aria-label, so screen readers still hear "Play video". */
+@media screen and (max-width: 767px) {
+  .bk-btn.bk-spot-play {
+    padding: 0;
+    aspect-ratio: 1;
+  }
+
+  .bk-spot-play .bk-btn-label {
+    display: none;
+  }
+}
+
 /* Accent buttons (Button `accent`): hover takes the colour of the content
    around them, e.g. a spot's highlight or a case's colour. In a hover teaser
    the button changes with the rest of it, while the teaser is hovered. */
@@ -1574,17 +1654,18 @@ iframe.bk-spot-preview {
    ========================================================================== */
 
 /* Shorter banners, so the next section already shows on the first screen
-   (Elliot, 31 Oct: smaller again). The landing stage sets its own height
-   (landing.css). */
+   (Elliot, 31 Oct: smaller again). One height for every banner (Nic, 3 Nov):
+   512px fits the tallest service banner, so their lines must stay short.
+   The landing stage sets its own height (landing.css). */
 .bk-hero {
-  min-height: 384px;
+  min-height: 512px;
   /* 48px plus the fixed nav, which lies on top of the banner. */
   padding-block: calc(var(--_project---nav-height) + 48px) 48px;
 }
 
 @media screen and (max-width: 767px) {
   .bk-hero {
-    min-height: 256px;
+    min-height: 384px;
     padding-block: calc(var(--_project---nav-height) + 32px) 32px;
   }
 }
@@ -1882,15 +1963,27 @@ iframe.bk-spot-preview {
   }
 }
 
-.bk-filter {
+/* One line of pills that scrolls sideways (Nic, 3 Nov): it starts at the
+   content's left edge and runs off the page's right edge. */
+.bk-filter.lp-wrap {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
   margin-bottom: 48px;
+  padding-inline: max(24px, (100% - var(--lp-max)) / 2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.bk-filter::-webkit-scrollbar {
+  display: none;
 }
 
 /* Scoped twice so the Webflow button reset doesn't drop the border. */
 .bk-filter .bk-pill {
+  flex: none;
+  white-space: nowrap;
   padding: 8px 24px;
   border: 1px solid var(--_color---copy-bright);
   border-radius: 999px;
@@ -1927,15 +2020,6 @@ iframe.bk-spot-preview {
 .bk-filtered.is-fading .bk-case-list {
   opacity: 0;
   transition-duration: 0.2s;
-}
-
-/* The pinned case: a small "Featured" label above its card. */
-.bk-pinned-label {
-  margin: 0 0 16px;
-  color: var(--_color---copy-bright);
-  font-size: 16px;
-  line-height: 1.5;
-  text-align: left;
 }
 
 .bk-offers .lp-case-grid {
@@ -2472,4 +2556,9 @@ iframe.bk-spot-preview {
    added one would double it. */
 .ai-draft .bk-lab-chapter-line::after {
   content: none !important;
+}
+
+/* Strategy: the intro line above the sales video. */
+.bk-strategy-intro {
+  margin-bottom: var(--lp-stack);
 }

@@ -175,6 +175,7 @@ async function main() {
       teaserClient: c.teaserClient || undefined,
       teaserCampaign: c.teaserCampaign || undefined,
       thumbnail: await image(c.thumbnail),
+      thumbnailPosition: c.thumbnailPosition || undefined,
       previewVimeoId: c.previewVimeoId || undefined,
       previewUrl: c.previewUrl || undefined,
       clients: listItems(c.clientListHtml),

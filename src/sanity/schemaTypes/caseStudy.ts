@@ -64,6 +64,13 @@ export const caseStudy = defineType({
     defineField({ name: "teaserClient", title: "Card: client line", type: "string", group: "card" }),
     defineField({ name: "teaserCampaign", title: "Card: campaign line", type: "string", group: "card" }),
     defineField({ name: "thumbnail", title: "Card: photo", type: "image", group: "card", options: { hotspot: true } }),
+    defineField({
+      name: "thumbnailPosition",
+      title: "Card: photo focus",
+      type: "string",
+      group: "card",
+      description: "Where the crop centres, e.g. 50% 10% keeps the top. Leave empty to use the photo's hotspot or the centre.",
+    }),
     defineField({ name: "previewVimeoId", title: "Card: hover loop (Vimeo ID)", type: "string", group: "card", description: "Short silent loop that plays when the card is hovered." }),
     defineField({ name: "previewUrl", title: "Card: hover loop (video path on the site)", type: "string", group: "card", description: "Used instead of a Vimeo loop, e.g. /videos/previews/vw-beats.mp4" }),
 

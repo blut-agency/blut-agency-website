@@ -52,7 +52,7 @@ export default async function ProductionPage() {
         {/* The Strategy service heading: question and answer as one two-tone heading. */}
         <div className="lp-wrap bk-service-top is-long">
           <RevealText as="h2" className="lp-heading" text={QUESTION} />
-          <RevealText as="p" className="bk-service-line" text="It’s blut, of course." after={QUESTION} />
+          <RevealText as="p" className="bk-service-line is-red" text="It’s blut, of course." after={QUESTION} />
         </div>
         <ul role="list" className="lp-wrap bk-mosaic is-spaced is-chip-top">
           {ITEMS.map((item, i) => (

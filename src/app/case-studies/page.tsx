@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
   Filter buttons sit above the list: the offers (Production, Strategy, Post;
   one shows once a case carries it), then one per service tag on the cards,
-  the most used first. The pinned case leads the list under a "Featured" label.
+  the most used first. The pinned case leads the list.
 */
 export default async function CaseStudiesPage() {
   const all = await getCaseStudies();
@@ -63,8 +63,7 @@ export default async function CaseStudiesPage() {
         <CaseFilter options={options}>
           <ul role="list" className="lp-wrap bk-case-list">
             {caseStudies.map((cs, i) => (
-              <li key={cs.slug} data-tags={[...offers[i], ...tags[i]].map(tagSlug).join(" ")} className={cs.slug === pinnedCase ? "is-pinned" : undefined}>
-                {cs.slug === pinnedCase && <p className="bk-pinned-label">Featured</p>}
+              <li key={cs.slug} data-tags={[...offers[i], ...tags[i]].map(tagSlug).join(" ")}>
                 <CaseCard cs={cs} theme={themes[i]} formPrefix="cases" />
               </li>
             ))}

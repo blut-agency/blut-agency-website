@@ -37,7 +37,11 @@ const QUERY = `{
     "gallery2": gallery2[].${IMAGE},
     "awards": awards[]->{ name, "slug": slug.current, "image": image.${IMAGE} },
     "nextCaseStudySlug": nextCaseStudy->slug.current,
-    teaserClient, teaserCampaign, "thumbnail": thumbnail.${IMAGE}
+    teaserClient, teaserCampaign, "thumbnail": thumbnail.${IMAGE},
+    "thumbnailPosition": coalesce(
+      thumbnailPosition,
+      select(defined(thumbnail.hotspot) => string(round(thumbnail.hotspot.x * 100)) + "% " + string(round(thumbnail.hotspot.y * 100)) + "%")
+    )
   },
   "colors": *[_type == "colorTheme"] | order(coalesce(order, 999) asc, name asc) { name, "slug": slug.current, main, secondary },
   "awards": *[_type == "award"] | order(name asc) { name, "slug": slug.current, "image": image.${IMAGE} },
@@ -122,6 +126,7 @@ function toCaseStudy(raw: RawCase): CaseStudy {
     teaserClient: raw.teaserClient ?? "",
     teaserCampaign: raw.teaserCampaign ?? "",
     thumbnail: raw.thumbnail ?? "",
+    thumbnailPosition: raw.thumbnailPosition || undefined,
   };
 }
 

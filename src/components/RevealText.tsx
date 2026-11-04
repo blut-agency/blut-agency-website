@@ -101,13 +101,19 @@ export default function RevealText({
             {lineIndex > 0 && <br />}
             {words.map((word, w) => (
               <span key={w}>
-                <span className="reveal-word" aria-hidden="true">
-                  {Array.from(word).map((letter, l) => (
-                    <span key={l} className="reveal-letter">
-                      {letter}
+                {/* After a hyphen the word may break ("Post-Production"): each word box is nowrap. */}
+                {word.split(/(?<=-)(?=.)/).map((part, p) => (
+                  <Fragment key={p}>
+                    {p > 0 && <wbr />}
+                    <span className="reveal-word" aria-hidden="true">
+                      {Array.from(part).map((letter, l) => (
+                        <span key={l} className="reveal-letter">
+                          {letter}
+                        </span>
+                      ))}
                     </span>
-                  ))}
-                </span>
+                  </Fragment>
+                ))}
                 {w < words.length - 1 ? " " : null}
               </span>
             ))}

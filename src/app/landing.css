@@ -379,22 +379,6 @@
   transition: transform 1.2s var(--fx-ease, ease);
 }
 
-/* Client name at the bottom left of the photo, inset from the bottom by the
-   same distance it used to have from the top. */
-.lp-case-client {
-  position: absolute;
-  bottom: var(--lp-pad);
-  left: 0;
-  z-index: 1;
-  margin: 0;
-  padding: 8px 24px 8px var(--lp-pad);
-  background: var(--_color---white);
-  color: var(--_color---copy-dark);
-  font-size: var(--lp-client);
-  line-height: 1.1;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
-
 .lp-case-body {
   position: relative;
   isolation: isolate;
@@ -412,6 +396,32 @@
   font-size: var(--lp-copy);
   font-weight: 400;
   line-height: 1.1;
+}
+
+/* Case cards: client and campaign as one two-tone heading, like the service
+   heading (blocks.css .bk-service-top): the campaign straight under, greyed. */
+.lp-case-kicker,
+.lp-case-head .lp-case-title {
+  margin: 0;
+  font-size: var(--lp-copy);
+  /* More air than the 1.1 headline leading: two tones, two lines (Nic, 3 Nov). */
+  line-height: 1.25;
+}
+
+.lp-case-head .lp-case-title {
+  color: var(--lp-muted);
+}
+
+/* No leading trim where the two meet (embeds.css), so the campaign sits one
+   line under the client as if it were its next line. */
+.lp-case-head .lp-case-kicker::after,
+.lp-case-head .lp-case-title::before {
+  content: none;
+}
+
+/* Over the hover highlight both lines take the panel's text colour. */
+.hl-row:is(:hover, .is-centered) .lp-case-head .lp-case-title {
+  color: inherit;
 }
 
 .lp-case-tags {
@@ -463,13 +473,6 @@
 
   .lp-case:hover .lp-case-tags li {
     border-color: currentColor;
-  }
-
-  /* The label takes the case colour, its text whichever of black or white
-     reads on it (CaseCard sets both). */
-  .lp-case:hover .lp-case-client {
-    background: var(--lp-case-accent);
-    color: var(--lp-case-accent-text, var(--_color---copy-dark));
   }
 
   .lp-case:hover .lp-case-media img {
@@ -641,10 +644,6 @@
     font-size: 32px;
   }
 
-  .lp-case-client {
-    padding: 8px 16px;
-  }
-
   .lp-why .lp-panel {
     margin-left: 0;
   }
@@ -717,11 +716,6 @@
 
   .lp-case.is-centered .lp-case-tags li {
     border-color: currentColor;
-  }
-
-  .lp-case.is-centered .lp-case-client {
-    background: var(--lp-case-accent);
-    color: var(--lp-case-accent-text, var(--_color---copy-dark));
   }
 
   .lp-case.is-centered .lp-case-media img {
