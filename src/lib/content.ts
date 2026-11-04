@@ -67,6 +67,8 @@ export interface CaseStudy {
   teaserClient: string;
   teaserCampaign: string;
   thumbnail: string;
+  /** The thumbnail's focus point (CSS object-position) where the centre crop cuts a face. */
+  thumbnailPosition?: string;
 }
 
 export interface Location {

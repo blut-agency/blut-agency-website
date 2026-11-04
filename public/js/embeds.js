@@ -62,6 +62,27 @@ function __onReady(fn) {
       },
     };
   }
+  // Hide a playing video's controls (.is-idle, globals.css) 2.5s after the
+  // last mouse move; pause, a mouse move or a tap brings them back. On touch,
+  // the tap that wakes them doesn't also pause the video.
+  function idleControls(stage, player) {
+    let playing = false, timer, pointer = 'mouse';
+    const wake = () => {
+      stage.classList.remove('is-idle');
+      clearTimeout(timer);
+      if (playing) timer = setTimeout(() => stage.classList.add('is-idle'), 2500);
+    };
+    player.on('play', () => { playing = true; wake(); });
+    player.on('pause', () => { playing = false; wake(); });
+    stage.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') wake(); });
+    stage.addEventListener('pointerdown', e => { pointer = e.pointerType; }, true);
+    stage.addEventListener('click', e => {
+      if (pointer === 'mouse' || !stage.classList.contains('is-idle')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      wake();
+    }, true);
+  }
   document.querySelectorAll('[data-player-file]').forEach(container => {
     const slug = container.getAttribute('data-player-file');
     const iframe = document.getElementById(slug);
@@ -81,6 +102,9 @@ function __onReady(fn) {
     const durEl = container.querySelector('[data-player="duration"]');
     const spinner = container.querySelector('.player-loading-spinner');
     if (bigPlay && playBtn) playBtn.style.display = 'none';
+    // Video players: the control bar fades out while playing (Nic, 3 Nov).
+    const stage = bigPlay && container.closest('.project-video-controls, .bk-spot-controls') ? bigPlay.parentElement : null;
+    if (stage) idleControls(stage, player);
     if (pauseBtn) pauseBtn.style.display = 'none';
     if (spinner) spinner.style.display = 'none';
     player.ready().then(() => {

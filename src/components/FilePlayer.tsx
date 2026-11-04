@@ -33,6 +33,16 @@ export default function FilePlayer({
   const [waiting, setWaiting] = useState(autoPlay);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  // While playing, the bar fades out 2.5s after the last mouse move (globals.css .is-idle).
+  const [idle, setIdle] = useState(false);
+  const idleTimer = useRef<number | undefined>(undefined);
+  const pointer = useRef("mouse");
+  const wake = (isPlaying = playing) => {
+    setIdle(false);
+    window.clearTimeout(idleTimer.current);
+    if (isPlaying) idleTimer.current = window.setTimeout(() => setIdle(true), 2500);
+  };
+  useEffect(() => () => window.clearTimeout(idleTimer.current), []);
 
   // Start on open; if the browser blocks it, fall back to the Play state.
   useEffect(() => {
@@ -60,7 +70,19 @@ export default function FilePlayer({
   };
 
   return (
-    <div className="file-player">
+    <div
+      className={`file-player${idle ? " is-idle" : ""}`}
+      onPointerMove={(e) => e.pointerType === "mouse" && wake()}
+      onPointerDownCapture={(e) => {
+        pointer.current = e.pointerType;
+      }}
+      onClickCapture={(e) => {
+        // On touch, the tap that brings the bar back doesn't also pause.
+        if (!idle || pointer.current === "mouse") return;
+        e.stopPropagation();
+        wake();
+      }}
+    >
       <video
         ref={videoRef}
         src={src}
@@ -73,12 +95,17 @@ export default function FilePlayer({
         onPlaying={() => {
           setPlaying(true);
           setWaiting(false);
+          wake(true);
         }}
         onPause={() => {
           setPlaying(false);
           setWaiting(false);
+          wake(false);
         }}
-        onEnded={() => setPlaying(false)}
+        onEnded={() => {
+          setPlaying(false);
+          wake(false);
+        }}
         onWaiting={() => setWaiting(true)}
       />
       <button type="button" className="file-player-cover" aria-hidden="true" tabIndex={-1} onClick={toggle} />

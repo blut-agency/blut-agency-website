@@ -24,23 +24,20 @@ export function caseTags(cs: CaseStudy): string[] {
 }
 
 /**
- * Case teaser card (landing "Check out some more", /case-studies): photo with
- * the client label, then campaign, services and "Read more" over the case's
+ * Case teaser card (landing "Check out some more", /case-studies): photo,
+ * then client over campaign, services and "Read more" over the case's
  * highlight on hover. Styles: landing.css (.lp-case) and highlight.css.
  */
 export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; theme: ImageTheme | null; formPrefix: string }) {
   const href = `/project/${cs.slug}`;
   // Shape and tempo by the case's place in the list, so neighbours differ.
   const pattern = patternAt(cs.position - 1);
-  const accent = theme?.background ?? "var(--_color---accent-color-2)";
-  const accentText = theme && !theme.lightBackground ? "var(--_color---copy-bright)" : "var(--_color---copy-dark)";
   const tags = caseTags(cs);
   return (
-    <article className="lp-case lp-hover hl-row" style={{ ["--lp-case-accent" as string]: accent, ["--lp-case-accent-text" as string]: accentText }}>
+    <article className="lp-case lp-hover hl-row">
       <div className="lp-case-media hl-media">
-        <img src={cs.thumbnail} alt="" loading="lazy" />
+        <img src={cs.thumbnail} alt="" loading="lazy" style={cs.thumbnailPosition ? { objectPosition: cs.thumbnailPosition } : undefined} />
         {(cs.previewUrl || cs.previewVimeoId) && <HoverClip src={cs.previewUrl} vimeoId={cs.previewVimeoId} />}
-        <p className="lp-case-client">{cs.teaserClient}</p>
       </div>
       <div className={`lp-case-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         <div
@@ -50,7 +47,11 @@ export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; the
         >
           <CaseStudyVisual slug={`${formPrefix}-${cs.slug}`} {...pattern} />
         </div>
-        <h3 className="lp-case-title">{cs.teaserCampaign}</h3>
+        {/* Client and campaign as one unit, not the client on the photo (Nic, 3 Nov). */}
+        <div className="lp-case-head">
+          <p className="lp-case-kicker">{cs.teaserClient}</p>
+          <h3 className="lp-case-title">{cs.teaserCampaign}</h3>
+        </div>
         {tags.length > 0 && (
           <ul className="lp-case-tags" aria-label="Services">
             {tags.map((tag) => (

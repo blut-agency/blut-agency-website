@@ -17,8 +17,8 @@ import RevealText from "@/components/RevealText";
  */
 export const TEXT_PARALLAX = { heading: 0.3, text: 0.9 } as const;
 
-/** A word this long doesn't fit a phone at the normal headline size. */
-const hasLongWord = (text: string) => /[^\s]{11,}/.test(text);
+/** A word this long doesn't fit a phone at the normal headline size. Hyphenated words break after the hyphen (RevealText), so only their parts count. */
+const hasLongWord = (text: string) => /[^\s-]{11,}/.test(text);
 
 /** "Label ↗" link: an underline draws in under the label on hover and the
  * arrow nudges up and right. Free-standing, the arrow follows the label;
@@ -76,6 +76,7 @@ export function PageHero({
   speed = 10,
   visualizationJson,
   lineAiDraft = false,
+  small = false,
   children,
 }: {
   /** One string, or one string per line. */
@@ -93,6 +94,8 @@ export function PageHero({
   visualizationJson?: string;
   /** The line is AI-written placeholder copy: shown in red with a note. */
   lineAiDraft?: boolean;
+  /** The section heading size instead of the banner's, for a headline too tall for the fixed height (About). */
+  small?: boolean;
   /** Extra content at the foot of the banner (e.g. a case's facts). */
   children?: ReactNode;
 }) {
@@ -104,7 +107,7 @@ export function PageHero({
       <div className="lp-wrap bk-hero-top">
         <RevealText
           as="h1"
-          className={`lp-heading bk-hero-heading${hasLongWord([heading].flat().join(" ")) ? " is-long-word" : ""}`}
+          className={`lp-heading bk-hero-heading${small ? " is-small" : ""}${hasLongWord([heading].flat().join(" ")) ? " is-long-word" : ""}`}
           text={heading}
         />
       </div>

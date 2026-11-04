@@ -38,7 +38,9 @@ export default async function StrategyPage() {
       <PageHero
         form="strategy-hero"
         heading="Find out what your sound is really saying."
-        line="We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences to identify what’s working, what’s missing and where value is being lost. Then we construct an action plan to get your brand on the right path."
+        // AI-written placeholder line (Nov 2026), short enough for the fixed banner height: replace, then drop lineAiDraft
+        lineAiDraft
+        line="We map how your brand sounds today, then build the plan to make it work harder."
         background="#7a3bff"
         lineColor="#02b7fd"
       />
@@ -47,6 +49,12 @@ export default async function StrategyPage() {
       {/* The Sonic Performance Tracker sales video, full width (board node 85:2362),
           as the Work page's wide spot. Self-hosted for now (Nic's cutdown, Oct 2026). */}
       <section className="bk-section">
+        {/* The full intro, under the banner: in it, Strategy's banner was taller than the other service pages' (Elliot, Nov 2026). */}
+        <div className="lp-wrap bk-lead bk-strategy-intro">
+          <div className="bk-lead-text">
+            <p className="lp-copy">We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences to identify what’s working, what’s missing and where value is being lost. Then we construct an action plan to get your brand on the right path.</p>
+          </div>
+        </div>
         <div className="lp-wrap">
           <WorkSpot
             variant="wide"

@@ -39,7 +39,7 @@ export function caseOffers(cs: CaseStudy): Offer[] {
 export const PINNED_CASE = "hyundai-are-you-in";
 
 /** Cases under "Featured cases" on Home, in order (Hyundai further down, as agreed). */
-export const FEATURED_CASES = ["volkswagen-bringing-it-all-back-home", "devils-advocate-brand-launch", "hyundai-are-you-in"];
+export const FEATURED_CASES = ["hyundai-are-you-in", "volkswagen-bringing-it-all-back-home", "devils-advocate-brand-launch"];
 
 /*
   The Post page: sound design and mixing from the Work spots until there is

@@ -68,8 +68,7 @@ const OFFER_TILES: OfferTile[] = [
   {
     offer: "Post",
     href: "/post",
-    copy: "Sound design, mixing and video post that make every spot feel finished.",
-    aiDraft: true,
+    copy: "Sound design, mixing, and video post. Everything your spot needs to reach the finish line.",
     cta: "See our post work",
     image: "/images/story/crazy-wolf.jpg",
     alt: "The Crazy Wolf energy drink spot",
