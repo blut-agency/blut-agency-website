@@ -54,28 +54,6 @@ html {
 }
 
 /*
-  16:9 video slot (MediaFrame). Bright text over the dark scrim that the case
-  study video controls already use; the "coming soon" label never takes clicks.
-  Full width so it also fills the centred media column of the two-column grid.
-*/
-.media-frame {
-  position: relative;
-  width: 100%;
-  color: var(--_color---copy-bright);
-  background-color: var(--_color---background-dark-1);
-}
-
-/*
-  The case study player bar drops below the video on small screens. The
-  "coming soon" label has nothing to control, so it stays over the still.
-*/
-.media-frame .media-frame-status {
-  position: absolute;
-  inset: auto 0% 0%;
-  pointer-events: none;
-}
-
-/*
   Headline letter reveal (RevealText). Letters are hidden from the first paint
   (only with JavaScript on: .w-mod-js is set before the page renders) and
   RevealText plays one Web Animation per letter when the headline scrolls

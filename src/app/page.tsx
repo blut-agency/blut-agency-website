@@ -41,9 +41,8 @@ type OfferTile = {
   cta: string;
   image: string;
   alt: string;
-  /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
+  /** Short silent loop that plays over the photo on hover. */
   preview?: string;
-  previewVimeoId?: string;
   /** Hover colours: the offer's page banner, as hex so the text colour can be worked out. */
   color: { slug: string; main: string; secondary: string };
 };
@@ -124,7 +123,7 @@ export default async function HomePage() {
                     </button>
                   </div>
                 </div>
-                <div className="audio-preview-embed hide w-embed w-iframe"><iframe className="" id="home-stage-sound" title="Play sound of blut" src={`https://player.vimeo.com/video/${homeSound?.vimeoId ?? ""}?api=1&controls=0&loop=1&background=0&dnt=1`} frameBorder="0" allow="autoplay" allowFullScreen style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', pointerEvents: 'none'}}></iframe></div><textarea data-visual-json="home-stage" data-visual-player="home-stage" className="visualization-json" defaultValue={homeSound?.visualizationJson ?? ""} />
+                <div className="audio-preview-embed hide w-embed w-iframe"><audio id="home-stage-sound" src={homeSound?.url} preload="metadata" loop /></div><textarea data-visual-json="home-stage" data-visual-player="home-stage" className="visualization-json" defaultValue={homeSound?.visualizationJson ?? ""} />
               </div>
             </div>
             <div className="home-stage-visual-wrapper">
@@ -195,7 +194,7 @@ export default async function HomePage() {
             <article className="lp-case lp-hover hl-row bk-offer">
               <div className="lp-case-media hl-media">
                 <img src={tile.image} alt={tile.alt} loading="lazy" />
-                {(tile.preview || tile.previewVimeoId) && <HoverClip src={tile.preview} vimeoId={tile.previewVimeoId} />}
+                {tile.preview && <HoverClip src={tile.preview} />}
               </div>
               <div className="bk-offer-body">
                 <h2 className="bk-offer-title">{tile.offer}</h2>

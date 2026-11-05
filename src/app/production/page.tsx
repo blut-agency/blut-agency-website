@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   board (node 85:2285) word for word and in board order. Three full-width
   spots break up rows of still (2/3) + text box (1/3) that alternate sides.
   Built from the site's parts (Blocks.tsx, WorkSpot.tsx); stills act as
-  posters until the team sends Vimeo links: set `vimeoId` to make one play.
+  posters until the team sends the films: set `videoUrl` to make one play.
 
   Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
 */

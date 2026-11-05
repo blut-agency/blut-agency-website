@@ -25,7 +25,6 @@ import "lenis/dist/lenis.css";
 const MEDIA_SELECTOR = [
   ".grid-item.is-media",
   ".network-image",
-  ".media-frame",
   ".office-visual",
 ].join(",");
 

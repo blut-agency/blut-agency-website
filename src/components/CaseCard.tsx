@@ -37,7 +37,7 @@ export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; the
     <article className="lp-case lp-hover hl-row">
       <div className="lp-case-media hl-media">
         <img src={cs.thumbnail} alt="" loading="lazy" style={cs.thumbnailPosition ? { objectPosition: cs.thumbnailPosition } : undefined} />
-        {(cs.previewUrl || cs.previewVimeoId) && <HoverClip src={cs.previewUrl} vimeoId={cs.previewVimeoId} />}
+        {cs.previewUrl && <HoverClip src={cs.previewUrl} />}
       </div>
       <div className={`lp-case-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         <div
