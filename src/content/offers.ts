@@ -1,4 +1,4 @@
-import type { CaseStudy } from "@/lib/content";
+import { getCasesSettings, type CaseStudy } from "@/lib/content";
 import { caseTags } from "@/components/CaseCard";
 import { workItem, type WorkItem } from "@/content/work";
 
@@ -35,11 +35,11 @@ export function caseOffers(cs: CaseStudy): Offer[] {
   return OFFERS.filter((o) => found.has(o));
 }
 
-/** The case pinned to the top of /case-studies. */
-export const PINNED_CASE = "hyundai-are-you-in";
+/** The case pinned to the top of /case-studies (Sanity: Cases settings). */
+export const PINNED_CASE = getCasesSettings().pinned;
 
-/** Cases under "Featured cases" on Home, in order (Hyundai further down, as agreed). */
-export const FEATURED_CASES = ["hyundai-are-you-in", "volkswagen-bringing-it-all-back-home", "devils-advocate-brand-launch"];
+/** Cases under "Featured cases" on Home, in order (Sanity: Cases settings). */
+export const FEATURED_CASES = getCasesSettings().featured;
 
 /*
   The Post page: sound design and mixing from the Work spots, their copy as on

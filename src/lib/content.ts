@@ -91,14 +91,26 @@ export interface HomeSound {
   visualizationJson: string;
 }
 
+/** The case pinned on /case-studies and the featured cases on Home, in order. */
+export interface CasesSettings {
+  pinned: string;
+  featured: string[];
+}
+
 interface CmsContent {
   caseStudies: CaseStudy[];
   locations: Location[];
   colors: Color[];
   awards: Award[];
   homeSound: HomeSound | null;
+  casesSettings: CasesSettings;
 }
 
+/*
+  The content comes from Sanity: scripts/sanity-sync.mjs writes it into
+  cms-content.json before each build. The JSON in the repo is the last synced
+  copy, so the site also builds without Sanity.
+*/
 const content = cms as unknown as CmsContent;
 
 export function getCaseStudies(): CaseStudy[] {
@@ -127,4 +139,8 @@ export function getAwards(): Award[] {
 
 export function getHomeSound(): HomeSound | null {
   return content.homeSound;
+}
+
+export function getCasesSettings(): CasesSettings {
+  return content.casesSettings;
 }

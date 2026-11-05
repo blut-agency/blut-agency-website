@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/sanity-sync.mjs && next build",
+    "sanity:sync": "node scripts/sanity-sync.mjs",
     "start": "next start",
     "lint": "eslint"
   },
