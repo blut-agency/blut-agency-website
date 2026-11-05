@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AiDraftNote from "@/components/AiDraftNote";
 import type { ReactNode } from "react";
-import CaseStudyVisual from "@/components/CaseStudyVisual";
+import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import Drawer from "@/components/Drawer";
 import RevealText from "@/components/RevealText";
 
@@ -169,14 +169,20 @@ export function Lead({
 }
 
 const PEOPLE = {
-  karl: { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara" },
-  michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb" },
+  karl: { name: "Karl Jawara", role: "Head of Strategy", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara", background: "#7a3bff", line: "#02b7fd", pattern: 0 },
+  michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)", pattern: 3 },
   // Address follows the team's first.last pattern; not yet confirmed by Elliot.
-  elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "" },
+  elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)", pattern: 2 },
 } as const;
 
-/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); without a person, the general address. */
-export function ContactBlock({ person }: { person?: keyof typeof PEOPLE }) {
+/** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); two people sit under the heading in the last two thirds; without a person, the general address beside a pattern square in the page's colours. */
+export function ContactBlock({
+  person,
+  pattern = { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
+}: {
+  person?: keyof typeof PEOPLE | (keyof typeof PEOPLE)[];
+  pattern?: { background: string; line: string };
+}) {
   if (!person) {
     return (
       <section className="bk-section is-dark bk-contact">
@@ -185,39 +191,47 @@ export function ContactBlock({ person }: { person?: keyof typeof PEOPLE }) {
             <p className="lp-heading">Sound good?</p>
             <p className="lp-heading">Get in touch!</p>
           </div>
-          <div className="bk-contact-person is-general">
-            <p className="lp-copy bk-contact-name">contact@blut.agency</p>
-            <CtaLink href="mailto:contact@blut.agency" label="Mail" />
+          <div className="bk-contact-person">
+            <div className="bk-contact-photo" aria-hidden="true" style={{ background: pattern.background }}>
+              <div className="bk-hero-visual" style={{ color: pattern.line }}>
+                <CaseStudyVisual slug="contact-pattern" variant={3} speed={10} />
+              </div>
+            </div>
+            <div>
+              <p className="lp-copy bk-contact-name">contact@<wbr />blut.agency</p>
+              <CtaLink href="mailto:contact@blut.agency" label="Mail" />
+            </div>
           </div>
         </div>
       </section>
     );
   }
-  const p = PEOPLE[person];
+  const people = [person].flat().map((key) => PEOPLE[key]);
   return (
     <section className="bk-section is-dark bk-contact">
-      <div className="lp-wrap bk-contact-grid">
+      <div className={`lp-wrap bk-contact-grid${people.length > 1 ? " is-pair" : ""}`}>
         <div className="bk-contact-heading">
           <p className="lp-heading">Sound good?</p>
           <p className="lp-heading">Get in touch!</p>
         </div>
-        <div className="bk-contact-person">
-          <div className="bk-contact-photo">
-            <img
-              src={`/images/${p.file}.jpg`}
-              srcSet={`/images/${p.file}-p-500.jpg 500w, /images/${p.file}-p-800.jpg 800w, /images/${p.file}-p-1080.jpg 1080w, /images/${p.file}.jpg 1200w`}
-              sizes="(max-width: 767px) 100vw, 30vw"
-              alt={p.name}
-              loading="lazy"
-            />
+        {people.map((p) => (
+          <div key={p.name} className="bk-contact-person">
+            {/* The portrait mails the person; on hover it swaps to their cut-out and pattern, as on About. */}
+            <a href={`mailto:${p.mail}`} className="bk-contact-photo bk-team-face" aria-label={`Email ${p.name}`}>
+              <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>
+                <CaseStudyVisual slug={`contact-${p.file.toLowerCase()}`} {...patternAt(p.pattern)} />
+              </span>
+              <img className="bk-team-photo" src={`/images/team/${p.file}.webp`} alt="" loading="lazy" />
+              <img className="bk-team-cutout" src={`/images/team/${p.file}-cutout.webp`} alt="" loading="lazy" />
+            </a>
+            <div>
+              {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
+              <p className="lp-copy bk-contact-name">{p.name}</p>
+              <p className="lp-copy bk-contact-role">{p.role}</p>
+              <CtaLink href={`mailto:${p.mail}`} label="Mail" />
+            </div>
           </div>
-          <div>
-            {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
-            <p className="lp-copy bk-contact-name">{p.name}</p>
-            <p className="lp-copy bk-contact-role">{p.role}</p>
-            <CtaLink href={`mailto:${p.mail}`} label="Mail" />
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );

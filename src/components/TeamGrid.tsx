@@ -10,7 +10,8 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
   touch screens, or focusing it by keyboard) greys out the others and swaps
   the text at the top for that person's name and role. Moving off (or
   tapping anywhere else) brings the description back. The order is shuffled
-  on every visit, so nobody comes first (Nic, 31 Oct).
+  on every visit, so nobody comes first (Nic, 31 Oct). A click mails the
+  person; on touch the first tap picks the face and the second one mails.
 
   The picked face (Elliot's idea, 3 Nov): the photo fades out and the person,
   cut out, stands in front of one of the site's moving patterns, each in
@@ -19,10 +20,10 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 
 // Pattern colours from the service banners: background, then the moving line.
 const PEOPLE = [
-  { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", background: "#7a3bff", line: "#02b7fd" },
-  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
-  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
-  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
+  { name: "Karl Jawara", role: "Head of Strategy", file: "Karl", mail: "karl.jawara@blut.agency", background: "#7a3bff", line: "#02b7fd" },
+  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", mail: "timo.blunck@blut.agency", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
+  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
+  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
 ];
 
 /** Fisher–Yates, once per page load (pages are full loads, see PageTransition). */
@@ -77,13 +78,13 @@ export default function TeamGrid({ intro }: { intro: string }) {
           <p className="bk-team-role">{person?.role ?? " "}</p>
         </div>
       </div>
-      <ul role="list" className="bk-team-grid">
+      <ul role="list" className={`bk-team-grid${people === PEOPLE ? "" : " is-shuffled"}`}>
         {people.map((p, i) => (
           <li key={p.file}>
             <button
               type="button"
               className={`bk-team-face${active === i ? " is-active" : ""}`}
-              aria-label={`${p.name}, ${p.role}`}
+              aria-label={`${p.name}, ${p.role}${p.mail ? ": email" : ""}`}
               aria-pressed={active === i}
               onPointerDown={(e) => {
                 lastPointer.current = e.pointerType;
@@ -104,9 +105,13 @@ export default function TeamGrid({ intro }: { intro: string }) {
                 setActive(null);
               }}
               onClick={() => {
+                const mouse = lastPointer.current === "mouse";
+                if (p.mail && (mouse || active === i)) {
+                  window.location.href = `mailto:${p.mail}`;
+                  return;
+                }
                 // Mouse users already picked by hovering; taps toggle.
-                if (lastPointer.current === "mouse") return;
-                setActive((cur) => (cur === i ? null : i));
+                if (!mouse) setActive((cur) => (cur === i ? null : i));
               }}
             >
               <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>

@@ -33,8 +33,12 @@
   pointer-events: none;
 }
 
+/* Taller than the banner: the parallax shifts it up to 9%, and in Safari its
+   top edge would otherwise show as a pale strip across the banner. */
 .bk-hero-visual .visual-canvas {
+  top: -15%;
   width: 120%;
+  height: 130%;
   flex: none;
 }
 
@@ -434,10 +438,15 @@ iframe.bk-spot-preview {
   margin-bottom: 8px;
 }
 
-/* The general address: level with the bottom of the heading. */
-.bk-contact-person.is-general {
-  justify-content: flex-end;
-  gap: 0;
+/* Two people: the heading across the full width, the people in the last two thirds. */
+.bk-contact-grid.is-pair .bk-contact-heading {
+  grid-column: 1 / -1;
+}
+
+@media screen and (min-width: 768px) {
+  .bk-contact-grid.is-pair .bk-contact-heading + .bk-contact-person {
+    grid-column: 2;
+  }
 }
 
 .bk-contact-role {
@@ -445,6 +454,7 @@ iframe.bk-spot-preview {
 }
 
 .bk-contact-photo {
+  position: relative;
   aspect-ratio: 1;
   overflow: hidden;
   background: var(--_color---white);
@@ -454,6 +464,11 @@ iframe.bk-spot-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* The pattern square in place of a photo: a small visual takes the finer blur. */
+.bk-contact-photo .bk-hero-visual {
+  font-size: var(--_project---blur-half-width);
 }
 
 .bk-contact-heading {
@@ -925,6 +940,11 @@ iframe.bk-spot-preview {
   color: var(--lp-text-secondary);
 }
 
+/* Hidden until this visit's order is in, so the faces never visibly swap places. */
+.w-mod-js .bk-team-grid:not(.is-shuffled) {
+  visibility: hidden;
+}
+
 .bk-team-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -963,13 +983,28 @@ iframe.bk-spot-preview {
   transition: opacity 0.6s ease;
 }
 
-.bk-team-face.is-active .bk-team-photo {
+.bk-team-face.is-active .bk-team-photo,
+a.bk-team-face:focus-visible .bk-team-photo {
   opacity: 0;
 }
 
 .bk-team-face.is-active .bk-team-cutout,
-.bk-team-face.is-active .bk-team-visual {
+.bk-team-face.is-active .bk-team-visual,
+a.bk-team-face:focus-visible .bk-team-cutout,
+a.bk-team-face:focus-visible .bk-team-visual {
   opacity: 1;
+}
+
+/* The contact block's portraits have no script: plain hover. */
+@media (hover: hover) and (pointer: fine) {
+  a.bk-team-face:hover .bk-team-photo {
+    opacity: 0;
+  }
+
+  a.bk-team-face:hover .bk-team-cutout,
+  a.bk-team-face:hover .bk-team-visual {
+    opacity: 1;
+  }
 }
 
 /* One face picked: the others go grey and pale. */
@@ -981,6 +1016,10 @@ iframe.bk-spot-preview {
 .bk-team-face:focus-visible {
   outline: 2px solid var(--_color---copy-dark);
   outline-offset: 4px;
+}
+
+.bk-section.is-dark .bk-team-face:focus-visible {
+  outline-color: var(--_color---copy-bright);
 }
 
 /* The picked face's moving pattern (CaseStudyVisual). */
@@ -1229,23 +1268,6 @@ iframe.bk-spot-preview {
 
 .bk-contact .bk-contact-person .lp-copy {
   font-size: 24px;
-}
-
-/* No photo (the general address): the address with Mail straight under it,
-   level with the bottom of the heading, not a row beside it. */
-.bk-contact .bk-contact-person.is-general {
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: end;
-  gap: 0;
-}
-
-/* Beside the heading: Mail's 48px tap target reaches 16px under its text;
-   let it hang so the text, not the target, lines up with "Get in touch!". */
-@media screen and (min-width: 1280px) {
-  .bk-contact .bk-contact-person.is-general {
-    margin-bottom: -16px;
-  }
 }
 
 @media screen and (max-width: 1279px) {

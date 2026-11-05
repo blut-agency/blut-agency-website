@@ -372,7 +372,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
           </section>
         )}
 
-        <ContactBlock />
+        <ContactBlock pattern={cs.color ? { background: cs.color.secondary, line: cs.color.main } : undefined} />
         <LandingFooter
           band={{
             background: cs.color?.secondary ?? "var(--_color---accent-color-2)",

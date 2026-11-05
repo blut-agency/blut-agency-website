@@ -47,6 +47,12 @@
   }
 }
 
+/* Safari's scroll anchoring pins the page to an element on screen; when that
+   is a morphing pattern, the page floats with it and then jumps. */
+html {
+  overflow-anchor: none;
+}
+
 /*
   16:9 video slot (MediaFrame). Bright text over the dark scrim that the case
   study video controls already use; the "coming soon" label never takes clicks.

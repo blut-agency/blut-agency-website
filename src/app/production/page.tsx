@@ -43,6 +43,8 @@ export default async function ProductionPage() {
         // AI-written placeholder line (Oct 2026): replace, then drop lineAiDraft
         lineAiDraft
         line="Music production, sound design and everything around it, from the first idea to the final mix."
+        background="#7a3bff"
+        lineColor="#02b7fd"
       />
       <Header variant="start-top" />
 
@@ -81,7 +83,7 @@ export default async function ProductionPage() {
       </section>
 
       <ContactBlock person="michael" />
-      <LandingFooter band={{ background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" }} />
+      <LandingFooter band={{ background: "#7a3bff", line: "#02b7fd" }} />
     </div>
   );
 }

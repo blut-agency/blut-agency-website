@@ -366,9 +366,9 @@
       "whatWeDidHtml": "<ul><li>Content Production</li><li>Artist Partnership</li></ul>",
       "collaboratorsHtml": "<ul><li>Grabarz &amp; Partner / doity</li></ul>",
       "color": {
-        "main": "hsla(266.0869565217391, 0.00%, 31.33%, 1.00)",
-        "secondary": "#9747ff",
-        "slug": "purple"
+        "main": "#6183ff",
+        "secondary": "#ee1c1c",
+        "slug": "blue-red"
       },
       "useVisual": [
         false,

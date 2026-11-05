@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   Post (call with Michael and Timo, 30 Oct 2026): laid out like Production,
   a film with a short text per piece; they don't need to be full cases. Audio
   and video post share one page until there is enough video to split them.
-  Elliot (video post) is the contact; add the audio post lead once confirmed.
+  Michael (audio) and Elliot (video post) are the contacts.
 */
 
 // Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
@@ -79,8 +79,8 @@ export default async function PostPage() {
         </Lead>
       </section>
 
-      <ContactBlock person="elliot" />
-      <LandingFooter band={{ background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" }} />
+      <ContactBlock person={["michael", "elliot"]} />
+      <LandingFooter band={{ background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)", light: true }} />
     </div>
   );
 }

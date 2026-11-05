@@ -52,8 +52,9 @@ export default async function CaseStudiesPage() {
         form="cases-hero"
         heading="Case Studies"
         line="Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work."
-        background="var(--_color---accent-color-1)"
-        lineColor="var(--_color---accent-color-3)"
+        background="#ff6004"
+        lineColor="#e2e2e2"
+        dark
       />
       <Header variant="start-top" />
 
@@ -77,8 +78,8 @@ export default async function CaseStudiesPage() {
       </section>
 
       {/* The general address, not a person (Elliot, 31 Oct). */}
-      <ContactBlock />
-      <LandingFooter band={{ background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" }} />
+      <ContactBlock pattern={{ background: "#ff6004", line: "#e2e2e2" }} />
+      <LandingFooter band={{ background: "#ff6004", line: "#e2e2e2", light: true }} />
     </div>
   );
 }

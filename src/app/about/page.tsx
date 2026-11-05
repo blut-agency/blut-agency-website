@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 /*
-  About in the new design (Figma "About", node 249:1747): the red banner with
+  About in the new design (Figma "About", node 249:1747): the pink banner with
   the mission statement, "We are blut." over the team (TeamGrid), then the
   band and the footer. The offices section is gone (Elliot, Nov 2026); a
   Hamburg office photo may come back later.
@@ -30,6 +30,9 @@ export default function AboutPage() {
         form="about-hero"
         heading={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]}
         small
+        background="#edd4eb"
+        lineColor="#871631"
+        dark
       />
       <Header variant="start-top" />
 
@@ -39,7 +42,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <LandingFooter band={{ background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" }} />
+      <LandingFooter band={{ background: "#edd4eb", line: "#871631", light: true }} />
     </div>
   );
 }

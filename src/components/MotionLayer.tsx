@@ -185,8 +185,9 @@ export default function MotionLayer() {
   reduced motion.
 */
 // The home offer tiles move as wholes instead (data-parallax), their photos
-// fixed in the frame.
-const PARALLAX_SKIP = ".lp-band, .header, .footer, .lp-footer, .section-home-stage, .lp-stage, .bk-offers";
+// fixed in the frame. Portraits stay put: a face sliding in its frame reads as a glitch.
+const PORTRAITS = ".bk-team-face, .bk-contact-photo";
+const PARALLAX_SKIP = `.lp-band, .header, .footer, .lp-footer, .section-home-stage, .lp-stage, .bk-offers, ${PORTRAITS}`;
 const IMAGE_SHIFT = 0.09;
 const BLOCK_SHIFT = 44;
 
@@ -210,7 +211,7 @@ function startParallax(): () => void {
   // on a transparent ground, so no edge can show and it needs no scaling.
   document.querySelectorAll<HTMLElement>(".main-wrapper .visual-canvas").forEach((canvas) => {
     const frame = canvas.parentElement;
-    if (!frame || canvas.closest(".lp-band, .footer, .lp-footer, .bk-offers")) return;
+    if (!frame || canvas.closest(`.lp-band, .footer, .lp-footer, .bk-offers, ${PORTRAITS}`)) return;
     items.push({ el: canvas, box: frame, rate: 1, image: true });
   });
   document.querySelectorAll<HTMLElement>("[data-parallax]").forEach((el) => {

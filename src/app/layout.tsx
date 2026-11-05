@@ -30,6 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Ready before first paint, so text doesn't rewrap and shift the page when the font swaps in. */}
+        <link rel="preload" href="/fonts/PPAgrandir-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
         <link href="/css/webflow.css" rel="stylesheet" type="text/css" />
         <link href="/css/blut-dev.webflow.css" rel="stylesheet" type="text/css" />
