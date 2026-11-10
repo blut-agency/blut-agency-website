@@ -18,6 +18,11 @@ const projectId = process.env.SANITY_PROJECT_ID;
 const dataset = process.env.SANITY_DATASET || "site";
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const JSON_FILE = path.join(ROOT, "src/content/cms-content.json");
+const PAGES_FILE = path.join(ROOT, "src/content/pages.json");
+const SITE_FILE = path.join(ROOT, "src/content/site.json");
+const TEAM_FILE = path.join(ROOT, "src/content/team.json");
+/** The page documents (one each, id = type name), as in the studio's PAGE_TYPES. */
+const PAGE_IDS = ["homePage", "productionPage", "strategyPage", "postPage", "casesPage", "aboutPage", "imprintPage", "privacyPage", "siteSettings"];
 const IMAGE_DIR = path.join(ROOT, "public/images/cms");
 const IMAGE_URL = "/images/cms";
 
@@ -41,11 +46,14 @@ const QUERY = `{
   },
   "colors": *[_type == "colorTheme" && photoMatch != false] | order(coalesce(sortOrder, 999) asc, name asc) { name, "slug": slug.current, main, secondary },
   "awards": *[_type == "award"] | order(coalesce(sortOrder, 999) asc, name asc) { name, "slug": slug.current, "image": image${img} },
-  "settings": *[_id == "casesSettings"][0]{ "pinned": pinnedCase->slug.current, "featured": featuredCases[]->slug.current }
+  "settings": *[_id == "casesSettings"][0]{ "pinned": pinnedCase->slug.current, "featured": featuredCases[]->slug.current },
+  "pages": *[_id in ${JSON.stringify(PAGE_IDS)}],
+  "team": *[_type == "teamMember"] | order(coalesce(sortOrder, 999) asc, name asc),
+  "caseSlugs": *[_type == "caseStudy"]{ _id, "slug": slug.current }
 }`;
 
-async function query() {
-  const url = `https://${projectId}.apicdn.sanity.io/v2025-01-01/data/query/${dataset}?query=${encodeURIComponent(QUERY)}&perspective=published`;
+async function query(q = QUERY) {
+  const url = `https://${projectId}.apicdn.sanity.io/v2025-01-01/data/query/${dataset}?query=${encodeURIComponent(q)}&perspective=published`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Sanity answered ${res.status}: ${await res.text()}`);
   return (await res.json()).result;
@@ -97,39 +105,56 @@ const attr = (s) => esc(s).replace(/"/g, "&quot;");
 /** ["A", "B"] → "<ul><li>A</li><li>B</li></ul>"; an empty list → "". */
 const list = (items) => (items?.length ? `<ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : "");
 
-/** Sanity text blocks → the HTML the case pages render. */
-function html(blocks) {
-  if (!blocks?.length) return "";
-  return blocks
-    .map((b) => {
-      if (b._type === "image") {
-        const src = picture(b);
-        return src
-          ? `<figure class="w-richtext-figure-type-image w-richtext-align-fullwidth" data-rt-type="image" data-rt-align="fullwidth"><div><img src="${attr(src)}" alt="${attr(b.alt ?? "")}" loading="lazy"></div></figure>`
-          : "";
+/** One text block's words with bold, italics and links. */
+function inline(b) {
+  const links = Object.fromEntries((b.markDefs ?? []).map((m) => [m._key, m]));
+  return (b.children ?? [])
+    .map((s) => {
+      let t = esc(s.text).replace(/\n/g, "<br>");
+      const marks = s.marks ?? [];
+      if (marks.includes("em")) t = `<em>${t}</em>`;
+      if (marks.includes("strong")) t = `<strong>${t}</strong>`;
+      // Links wrap the bold, as in the original Webflow HTML.
+      for (const m of marks) {
+        if (links[m]?.href) {
+          const href = links[m].href;
+          const external = /^https?:/.test(href);
+          t = `<a href="${attr(href)}"${external ? ' target="_blank" rel="noopener"' : ""}>${t}</a>`;
+        }
       }
-      if (b._type !== "block") return "";
-      const links = Object.fromEntries((b.markDefs ?? []).map((m) => [m._key, m]));
-      const inner = (b.children ?? [])
-        .map((s) => {
-          let t = esc(s.text).replace(/\n/g, "<br>");
-          const marks = s.marks ?? [];
-          if (marks.includes("strong")) t = `<strong>${t}</strong>`;
-          // Links wrap the bold, as in the original Webflow HTML.
-          for (const m of marks) {
-            if (links[m]?.href) {
-              const href = links[m].href;
-              const external = /^https?:/.test(href);
-              t = `<a href="${attr(href)}"${external ? ' target="_blank" rel="noopener"' : ""}>${t}</a>`;
-            }
-          }
-          return t;
-        })
-        .join("");
-      const tag = b.style === "h2" ? "h2" : "p";
-      return `<${tag}>${inner}</${tag}>`;
+      return t;
     })
     .join("");
+}
+
+/** Sanity text blocks → the HTML the pages render (paragraphs, h1–h4, bullet lists, pictures). */
+function html(blocks) {
+  if (!blocks?.length) return "";
+  let out = "";
+  let inList = false;
+  for (const b of blocks) {
+    const isItem = b._type === "block" && b.listItem;
+    if (inList && !isItem) {
+      out += "</ul>";
+      inList = false;
+    }
+    if (b._type === "image") {
+      const src = picture(b);
+      if (src) out += `<figure class="w-richtext-figure-type-image w-richtext-align-fullwidth" data-rt-type="image" data-rt-align="fullwidth"><div><img src="${attr(src)}" alt="${attr(b.alt ?? "")}" loading="lazy"></div></figure>`;
+      continue;
+    }
+    if (b._type !== "block") continue;
+    if (isItem) {
+      if (!inList) out += "<ul>";
+      inList = true;
+      out += `<li>${inline(b)}</li>`;
+      continue;
+    }
+    const tag = /^h[1-4]$/.test(b.style) ? b.style : "p";
+    out += `<${tag}>${inline(b)}</${tag}>`;
+  }
+  if (inList) out += "</ul>";
+  return out;
 }
 
 const media = (m) => {
@@ -186,6 +211,48 @@ const caseStudies = data.cases.map((c) => {
   return out;
 });
 
+// ---- Pages, team, menu and footer ------------------------------------------
+
+/** Every picture the pages and team use, by asset id. */
+const assetIds = new Set();
+const findAssets = (v) => {
+  if (Array.isArray(v)) v.forEach(findAssets);
+  else if (v && typeof v === "object") {
+    if (v._type === "image" && v.asset?._ref) assetIds.add(v.asset._ref);
+    Object.values(v).forEach(findAssets);
+  }
+};
+findAssets([data.pages, data.team]);
+const assets = assetIds.size
+  ? Object.fromEntries(
+      (await query(`*[_type == "sanity.imageAsset" && _id in ${JSON.stringify([...assetIds])}]{ "url": url, "name": originalFilename, "id": _id, "size": size }`)).map((a) => [a.id, a]),
+    )
+  : {};
+const caseSlug = Object.fromEntries(data.caseSlugs.map((c) => [c._id, c.slug]));
+const isText = (v) => Array.isArray(v) && v.length > 0 && v.every((b) => b?._type === "block" || b?._type === "image") && v.some((b) => b._type === "block");
+
+/** A Sanity value → the site's JSON: pictures become paths, text blocks HTML, case links slugs. */
+function plain(v) {
+  if (Array.isArray(v)) return isText(v) ? html(v.map((b) => (b._type === "image" ? { ...b, ...assets[b.asset?._ref] } : b))) : v.map(plain);
+  if (!v || typeof v !== "object") return v;
+  if (v._type === "image") return v.asset?._ref ? picture(assets[v.asset._ref]) : "";
+  if (v._type === "reference") return caseSlug[v._ref] ?? "";
+  if (v._type === "slug") return v.current;
+  const out = {};
+  for (const [k, val] of Object.entries(v)) if (!k.startsWith("_")) out[k] = plain(val);
+  return out;
+}
+
+const pagesJson = JSON.parse(fs.readFileSync(PAGES_FILE, "utf8"));
+let siteJson = JSON.parse(fs.readFileSync(SITE_FILE, "utf8"));
+for (const doc of data.pages) {
+  if (doc._id === "siteSettings") siteJson = plain(doc);
+  else pagesJson[doc._id] = plain(doc);
+}
+const teamJson = data.team.length
+  ? { members: data.team.map((m) => { const { sortOrder: _order, ...rest } = plain(m); return rest; }) }
+  : JSON.parse(fs.readFileSync(TEAM_FILE, "utf8"));
+
 const current = JSON.parse(fs.readFileSync(JSON_FILE, "utf8"));
 const next = {
   ...current,
@@ -196,4 +263,7 @@ const next = {
 };
 const count = await downloadAll();
 fs.writeFileSync(JSON_FILE, JSON.stringify(next, null, 2) + "\n");
-console.log(`sanity-sync: ${caseStudies.length} cases, ${data.colors.length} colour themes, ${data.awards.length} awards, ${count} pictures from ${projectId}/${dataset}.`);
+fs.writeFileSync(PAGES_FILE, JSON.stringify(pagesJson, null, 2) + "\n");
+fs.writeFileSync(SITE_FILE, JSON.stringify(siteJson, null, 2) + "\n");
+fs.writeFileSync(TEAM_FILE, JSON.stringify(teamJson, null, 2) + "\n");
+console.log(`sanity-sync: ${data.pages.length} pages, ${teamJson.members.length} team members, ${caseStudies.length} cases, ${data.colors.length} colour themes, ${data.awards.length} awards, ${count} pictures from ${projectId}/${dataset}.`);

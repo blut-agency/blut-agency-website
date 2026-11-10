@@ -206,7 +206,7 @@ export function ContactBlock({
               </div>
             </div>
             <div>
-              <p className="lp-copy bk-contact-name">{SITE.contactEmail.split("@")[0]}@<wbr />{SITE.contactEmail.split("@")[1]}</p>
+              <p className="lp-copy bk-contact-name">{`${SITE.contactEmail.split("@")[0]}@`}<wbr />{SITE.contactEmail.split("@")[1]}</p>
               <CtaLink href={`mailto:${SITE.contactEmail}`} label={SITE.mailLabel} />
             </div>
           </div>

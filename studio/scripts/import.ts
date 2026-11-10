@@ -12,6 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { getCliClient } from "sanity/cli";
 import { JSDOM } from "jsdom";
+import { PAGE_TYPES, schemaTypes } from "../schemaTypes";
 
 const client = getCliClient({ apiVersion: "2025-01-01" });
 const SITE = path.resolve(process.cwd(), "..");
@@ -83,6 +84,50 @@ function list(html: unknown): string[] {
 
 // HTML text section → Sanity text blocks (paragraphs, h2, bold, links, pictures).
 type Span = { _type: "span"; _key: string; text: string; marks: string[] };
+/** One paragraph, heading or list item → a Sanity text block with bold, italic and links. */
+function textBlock(el: Element, style: string, extra: Record<string, unknown> = {}) {
+  const children: Span[] = [];
+  const markDefs: { _type: "link"; _key: string; href: string }[] = [];
+  const walk = (node: Node, marks: string[]) => {
+    if (node.nodeType === 3) {
+      children.push({ _type: "span", _key: key(), text: node.textContent ?? "", marks });
+      return;
+    }
+    if (node.nodeType !== 1) return;
+    const e = node as Element;
+    const t = e.tagName.toLowerCase();
+    if (t === "br") {
+      children.push({ _type: "span", _key: key(), text: "\n", marks });
+      return;
+    }
+    let next = marks;
+    if (t === "strong" || t === "b") next = [...marks, "strong"];
+    if (t === "em" || t === "i") next = [...marks, "em"];
+    if (t === "a") {
+      const k = key();
+      markDefs.push({ _type: "link", _key: k, href: e.getAttribute("href") ?? "" });
+      next = [...marks, k];
+    }
+    e.childNodes.forEach((c) => walk(c, next));
+  };
+  el.childNodes.forEach((c) => walk(c, []));
+  // Join neighbouring spans with the same marks.
+  const merged: Span[] = [];
+  for (const s of children) {
+    const last = merged[merged.length - 1];
+    if (last && last.marks.join() === s.marks.join()) last.text += s.text;
+    else merged.push(s);
+  }
+  return {
+    _type: "block",
+    _key: key(),
+    style,
+    ...extra,
+    markDefs,
+    children: merged.length ? merged : [{ _type: "span", _key: key(), text: "", marks: [] }],
+  };
+}
+
 async function blocks(html: unknown) {
   if (!html) return undefined;
   const doc = new JSDOM(String(html)).window.document;
@@ -96,44 +141,11 @@ async function blocks(html: unknown) {
       if (id) out.push({ _type: "image", _key: key(), asset: ref1(id), ...(alt && !alt.startsWith("__wf") ? { alt } : {}) });
       continue;
     }
-    const children: Span[] = [];
-    const markDefs: { _type: "link"; _key: string; href: string }[] = [];
-    const walk = (node: Node, marks: string[]) => {
-      if (node.nodeType === 3) {
-        children.push({ _type: "span", _key: key(), text: node.textContent ?? "", marks });
-        return;
-      }
-      if (node.nodeType !== 1) return;
-      const e = node as Element;
-      const t = e.tagName.toLowerCase();
-      if (t === "br") {
-        children.push({ _type: "span", _key: key(), text: "\n", marks });
-        return;
-      }
-      let next = marks;
-      if (t === "strong" || t === "b") next = [...marks, "strong"];
-      if (t === "a") {
-        const k = key();
-        markDefs.push({ _type: "link", _key: k, href: e.getAttribute("href") ?? "" });
-        next = [...marks, k];
-      }
-      e.childNodes.forEach((c) => walk(c, next));
-    };
-    el.childNodes.forEach((c) => walk(c, []));
-    // Join neighbouring spans with the same marks.
-    const merged: Span[] = [];
-    for (const s of children) {
-      const last = merged[merged.length - 1];
-      if (last && last.marks.join() === s.marks.join()) last.text += s.text;
-      else merged.push(s);
+    if (tag === "ul" || tag === "ol") {
+      for (const li of [...el.children]) out.push(textBlock(li, "normal", { listItem: "bullet", level: 1 }));
+      continue;
     }
-    out.push({
-      _type: "block",
-      _key: key(),
-      style: tag === "h2" ? "h2" : "normal",
-      markDefs,
-      children: merged.length ? merged : [{ _type: "span", _key: key(), text: "", marks: [] }],
-    });
+    out.push(textBlock(el, /^h[1-4]$/.test(tag) ? tag : "normal"));
   }
   return out;
 }
@@ -147,7 +159,80 @@ const player = (m: Media) => ({
   url: m?.url ?? "",
 });
 
+// ---- Pages, team, menu and footer: converted field by field from the schema ----
+
+type Def = { name?: string; type: string; fields?: Def[]; of?: Def[]; to?: { type: string }[] };
+const NAMED = new Map<string, Def>(schemaTypes.map((t) => [t.name, t as unknown as Def]));
+const TEXT_TYPES = new Set(["richText", "legalText"]);
+
+/** A site value (from the JSON files) → the Sanity value for a field of this type. */
+async function toSanity(value: unknown, def: Def): Promise<unknown> {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (TEXT_TYPES.has(def.type)) return blocks(value);
+  const named = NAMED.get(def.type);
+  if (named && def.type !== def.name) return toSanity(value, { ...named, name: def.type });
+  switch (def.type) {
+    case "image":
+      return image(String(value));
+    case "reference":
+      // References in the JSON are case slugs.
+      return ref1(`case-${value}`);
+    case "object":
+    case "document": {
+      const out: Record<string, unknown> = {};
+      const v = value as Record<string, unknown>;
+      for (const f of def.fields ?? []) {
+        const converted = await toSanity(v[f.name!], f);
+        if (converted !== undefined) out[f.name!] = converted;
+      }
+      return out;
+    }
+    case "array": {
+      const member = def.of?.[0];
+      if (!member) return value;
+      const items = [];
+      for (const item of value as unknown[]) {
+        const converted = await toSanity(item, member);
+        if (converted === undefined) continue;
+        if (typeof converted === "object") {
+          const typeName = NAMED.has(member.type) ? member.type : member.name ?? member.type;
+          items.push({ _key: key(), ...(member.type === "reference" ? {} : { _type: typeName }), ...(converted as object) });
+        } else items.push(converted);
+      }
+      return items;
+    }
+    default:
+      return value;
+  }
+}
+
+async function importPages(tx: ReturnType<typeof client.transaction>) {
+  const pages = JSON.parse(fs.readFileSync(path.join(SITE, "src/content/pages.json"), "utf8"));
+  pages.siteSettings = JSON.parse(fs.readFileSync(path.join(SITE, "src/content/site.json"), "utf8"));
+  let count = 0;
+  for (const type of PAGE_TYPES) {
+    if (!pages[type.name]) continue;
+    const doc = (await toSanity(pages[type.name], type as unknown as Def)) as Record<string, unknown>;
+    tx.createOrReplace({ ...doc, _id: type.name, _type: type.name });
+    count++;
+  }
+  const team = JSON.parse(fs.readFileSync(path.join(SITE, "src/content/team.json"), "utf8")).members as Record<string, unknown>[];
+  const memberType = NAMED.get("teamMember")!;
+  for (const [i, m] of team.entries()) {
+    const doc = (await toSanity({ ...m, sortOrder: i }, { ...memberType, type: "document" })) as Record<string, unknown>;
+    tx.createOrReplace({ ...doc, _id: `team-${m.key}`, _type: "teamMember" });
+  }
+  return { pages: count, team: team.length };
+}
+
 async function main() {
+  if (process.env.PAGES_ONLY === "1") {
+    const tx = client.transaction();
+    const extra = await importPages(tx);
+    await tx.commit({ visibility: "async" });
+    console.log(`Done: ${extra.pages} pages, ${extra.team} team members, ${uploaded.size} pictures. Cases left as they are.`);
+    return;
+  }
   const existing: number = await client.fetch(`count(*[_type == "caseStudy"])`);
   if (existing && !force) {
     console.log(`The dataset already has ${existing} cases. Nothing imported. Run "npm run import:force" to overwrite them.`);
@@ -221,8 +306,10 @@ async function main() {
     featuredCases: featured.map((s) => ref(`case-${s}`)),
   });
 
+  const extra = await importPages(tx);
+
   await tx.commit({ visibility: "async" });
-  console.log(`Done: ${cms.caseStudies.length} cases, ${colors.length} colour themes, ${cms.awards.length} awards, ${uploaded.size} pictures.`);
+  console.log(`Done: ${extra.pages} pages, ${extra.team} team members, ${cms.caseStudies.length} cases, ${colors.length} colour themes, ${cms.awards.length} awards, ${uploaded.size} pictures.`);
 }
 
 main().catch((err) => {
