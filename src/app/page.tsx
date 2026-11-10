@@ -59,8 +59,10 @@ export default async function HomePage() {
                       <path d="M56.0874 14.6651C55.1502 15.9633 53.9686 16.6732 52.4202 16.6732C50.8719 16.6732 49.8532 15.7402 49.8532 14.0972V8.70164H56.0874V5.63876H49.8532V1.39941L45.3915 2.10935V5.63876H44.0876L43.5986 8.70164H45.3915L45.4118 14.8883C45.4118 18.0526 47.6325 19.9998 51.3404 19.9998C53.8871 19.9998 56.0263 19.0262 57.3913 17.2209L56.0874 14.6651Z" fill="currentColor"></path>
                     </svg>` }} /></span>
                 </h1>
-                {/* AI-written placeholder line (Oct 2026): Michael and Karl replace it. */}
-                <RevealText as="p" className={`lp-stage-line${page.stageLinePlaceholder ? " ai-draft" : ""}`} text={page.stageLine} />
+                {/* No line beside the big "blut" for now (Timo, 10 Nov); it shows again when the field has text. */}
+                {page.stageLine && (
+                  <RevealText as="p" className={`lp-stage-line${page.stageLinePlaceholder ? " ai-draft" : ""}`} text={page.stageLine} />
+                )}
               </div>
               <div className="home-stage-bottom">
                 <div data-player-file="home-stage-sound" className="audioplayer-controls">
@@ -127,8 +129,7 @@ export default async function HomePage() {
     {/* What we do: the three offers side by side, each with a clear label. */}
     <section className="bk-section is-dark bk-offers">
       {/* The heading, and what blut is beside it in the last third, in the
-          tiles' copy style (Nic, 31 Oct). AI-written placeholder copy (Oct
-          2026): Michael and Karl replace it. */}
+          tiles' copy style (Nic, 31 Oct). Text from Timo and Michael (10 Nov). */}
       <div className="lp-wrap bk-lead is-side">
         <RevealText as="h2" className="lp-heading bk-lead-heading" text={page.offersHeading} />
         <div className="bk-lead-text">
@@ -136,7 +137,7 @@ export default async function HomePage() {
           <RevealText
             as="p"
             className={`bk-offer-copy${page.offersTextPlaceholder ? " ai-draft" : ""}`}
-            text={page.offersText}
+            text={page.offersText.split("\n")}
             after={page.offersHeading}
             stagger={0.008}
           />

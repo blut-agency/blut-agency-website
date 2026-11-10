@@ -219,7 +219,7 @@
         }
       ],
       "previewUrl": "/videos/previews/postbank-regentropfen.mp4",
-      "aiDraftCopy": true
+      "aiDraftCopy": false
     },
     {
       "slug": "reinventing-a-classic",
@@ -276,7 +276,7 @@
         }
       ],
       "previewUrl": "/videos/previews/geramont-sommerregen.mp4",
-      "aiDraftCopy": true
+      "aiDraftCopy": false
     },
     {
       "slug": "wdr---re-arranging-perceptions",
