@@ -11,6 +11,7 @@ import { PEOPLE, getPerson } from "@/content/people";
 import { workItem } from "@/content/work";
 import { getCaseStudyBySlug, type CaseStudy } from "@/lib/content";
 import { highlightThemes, themesForImages } from "@/lib/imageTheme";
+import { SITE } from "@/lib/siteUrl";
 
 /*
   Team pages, written for search: the person's name and role in the title,
@@ -19,8 +20,6 @@ import { highlightThemes, themesForImages } from "@/lib/imageTheme";
   search engines can show them as a person working at blut. Content:
   src/content/people.ts.
 */
-
-const SITE = "https://www.blut.agency";
 
 export function generateStaticParams() {
   return PEOPLE.map((p) => ({ slug: p.slug }));

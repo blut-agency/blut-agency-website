@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { share } from "@/lib/share";
+import { SITE } from "@/lib/siteUrl";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
 import CenterHover from "@/components/CenterHover";
@@ -11,7 +12,7 @@ import "./highlight.css";
 import "./blocks.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.blut.agency"),
+  metadataBase: new URL(SITE),
   title: "blut – Music Strategies with Measurable Impact | Sonic Branding Agency",
   description:
     "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
