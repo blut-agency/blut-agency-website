@@ -6,8 +6,8 @@ import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent }
 import { createPortal } from "react-dom";
 
 const NAV_LINKS = [
-  { href: "/production", label: "Production" },
   { href: "/strategy", label: "Strategy" },
+  { href: "/production", label: "Production" },
   { href: "/post", label: "Post" },
   { href: "/case-studies", label: "Cases" },
   { href: "/about", label: "About" },

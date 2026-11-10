@@ -6,7 +6,7 @@ import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
 import { POST_ITEMS as ITEMS } from "@/content/offers";
-import { themesForImages } from "@/lib/imageTheme";
+import { themeFromColors } from "@/lib/imageTheme";
 
 export const metadata: Metadata = {
   title: "Post-Production – Sound Design, Mixing and Video Post | blut",
@@ -26,12 +26,14 @@ export const metadata: Metadata = {
   Michael (audio) and Elliot (video post) are the contacts.
 */
 
+// Every spot's hover takes the banner's colours, not one picked from its photo (Elliot, Nov 2026).
+const POST_THEME = themeFromColors({ slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" });
+
 // Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
 const QUESTION = "What’s the difference between a good spot and one you can’t forget?";
 const ANSWER = "The last ten percent. That’s ours.";
 
 export default async function PostPage() {
-  const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
 
   return (
     <div className="main-wrapper lp-page bk-page">
@@ -58,7 +60,7 @@ export default async function PostPage() {
             <li key={item.spot.client}>
               <WorkSpot
                 spot={item.spot}
-                theme={themes[i]}
+                theme={POST_THEME}
                 variant={item.layout === "wide" ? "wide" : "row"}
                 flipped={item.layout === "row-flipped"}
                 formId={`post-${i}`}
