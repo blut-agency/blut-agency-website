@@ -3,6 +3,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { dataset, projectId } from "./env";
 import { PAGE_TYPES, schemaTypes, SINGLETONS } from "./schemaTypes";
+import { BlutFonts, BlutLogo, blutTheme } from "./theme";
 
 /*
   The blut Studio: where the team edits the website.
@@ -15,6 +16,18 @@ export default defineConfig({
   title: "blut",
   projectId,
   dataset,
+  theme: blutTheme,
+  icon: BlutLogo,
+  studio: {
+    components: {
+      layout: (props) => (
+        <>
+          <BlutFonts />
+          {props.renderDefault(props)}
+        </>
+      ),
+    },
+  },
   schema: {
     types: schemaTypes,
     templates: (templates) => templates.filter((t) => !SINGLETONS.includes(t.schemaType)),
