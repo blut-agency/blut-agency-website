@@ -3,7 +3,7 @@
   src/content/cms-content.json into the studio's dataset, with their pictures.
 
   Run from the studio folder:  npm run import
-  (uses your Sanity login; add -- --force to overwrite cases that exist)
+  (uses your Sanity login; `npm run import:force` overwrites cases that exist)
 
   The text sections are HTML in the JSON. They become Sanity text blocks here,
   and the site's sync script turns them back into the same HTML.
@@ -15,7 +15,7 @@ import { JSDOM } from "jsdom";
 
 const client = getCliClient({ apiVersion: "2025-01-01" });
 const SITE = path.resolve(process.cwd(), "..");
-const force = process.argv.includes("--force");
+const force = process.argv.includes("--force") || process.env.FORCE === "1";
 
 type Media = { url?: string; title?: string; subline?: string };
 type Video = { url: string; poster?: string };
@@ -150,7 +150,7 @@ const player = (m: Media) => ({
 async function main() {
   const existing: number = await client.fetch(`count(*[_type == "caseStudy"])`);
   if (existing && !force) {
-    console.log(`The dataset already has ${existing} cases. Nothing imported. Add -- --force to overwrite them.`);
+    console.log(`The dataset already has ${existing} cases. Nothing imported. Run "npm run import:force" to overwrite them.`);
     return;
   }
   console.log(`Importing into ${client.config().projectId} / ${client.config().dataset}`);
