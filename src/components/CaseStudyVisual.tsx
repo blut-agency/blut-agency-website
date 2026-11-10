@@ -137,7 +137,7 @@ export default function CaseStudyVisual({
   startOnPlay?: boolean;
   /** False when the shape should stay still until playback starts. */
   auto?: boolean;
-  /** `data-player-file` slug of the Vimeo player to follow, when startOnPlay is set. */
+  /** `data-player-file` slug of the player to follow, when startOnPlay is set. */
   playerSlug?: string;
   /**
    * Per-track amplitude samples. embeds.js scales the shapes frame by frame from

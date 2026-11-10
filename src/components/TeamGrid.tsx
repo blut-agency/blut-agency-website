@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import RevealText from "@/components/RevealText";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
+import MailPopup from "@/components/MailPopup";
 
 /*
   About: the team (Elliot, 31 Oct). "We are blut." and the description sit
@@ -10,7 +11,8 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
   touch screens, or focusing it by keyboard) greys out the others and swaps
   the text at the top for that person's name and role. Moving off (or
   tapping anywhere else) brings the description back. The order is shuffled
-  on every visit, so nobody comes first (Nic, 31 Oct).
+  on every visit, so nobody comes first (Nic, 31 Oct). A click opens the
+  person's mail panel; on touch the first tap picks the face, the second opens it.
 
   The picked face (Elliot's idea, 3 Nov): the photo fades out and the person,
   cut out, stands in front of one of the site's moving patterns, each in
@@ -19,10 +21,10 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 
 // Pattern colours from the service banners: background, then the moving line.
 const PEOPLE = [
-  { name: "Karl Jawara", role: "Creative Product & Campaign Lead", file: "Karl", background: "#7a3bff", line: "#02b7fd" },
-  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
-  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
-  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
+  { name: "Karl Jawara", role: "Head of Strategy", file: "Karl", mail: "karl.jawara@blut.agency", background: "#7a3bff", line: "#02b7fd" },
+  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", mail: "timo.blunck@blut.agency", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
+  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
+  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
 ];
 
 /** Fisher–Yates, once per page load (pages are full loads, see PageTransition). */
@@ -41,6 +43,8 @@ const subscribeNever = () => () => {};
 
 export default function TeamGrid({ intro }: { intro: string }) {
   const [active, setActive] = useState<number | null>(null);
+  const [mailOpen, setMailOpen] = useState<number | null>(null);
+  const closeMail = useCallback(() => setMailOpen(null), []);
   // The server renders the fixed order; the browser switches to this visit's shuffle.
   const people = useSyncExternalStore(subscribeNever, shuffledPeople, () => PEOPLE);
   // Safari's click events carry no pointer type, so remember it from pointerdown.
@@ -77,13 +81,14 @@ export default function TeamGrid({ intro }: { intro: string }) {
           <p className="bk-team-role">{person?.role ?? " "}</p>
         </div>
       </div>
-      <ul role="list" className="bk-team-grid">
+      <ul role="list" className={`bk-team-grid${people === PEOPLE ? "" : " is-shuffled"}`}>
         {people.map((p, i) => (
           <li key={p.file}>
             <button
               type="button"
               className={`bk-team-face${active === i ? " is-active" : ""}`}
-              aria-label={`${p.name}, ${p.role}`}
+              aria-label={`${p.name}, ${p.role}: email`}
+              aria-expanded={mailOpen === i}
               aria-pressed={active === i}
               onPointerDown={(e) => {
                 lastPointer.current = e.pointerType;
@@ -104,9 +109,13 @@ export default function TeamGrid({ intro }: { intro: string }) {
                 setActive(null);
               }}
               onClick={() => {
+                const mouse = lastPointer.current === "mouse";
+                if (mouse || active === i) {
+                  setMailOpen((cur) => (cur === i ? null : i));
+                  return;
+                }
                 // Mouse users already picked by hovering; taps toggle.
-                if (lastPointer.current === "mouse") return;
-                setActive((cur) => (cur === i ? null : i));
+                if (!mouse) setActive((cur) => (cur === i ? null : i));
               }}
             >
               <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>
@@ -115,6 +124,7 @@ export default function TeamGrid({ intro }: { intro: string }) {
               <img className="bk-team-photo" src={`/images/team/${p.file}.webp`} alt="" loading="lazy" />
               <img className="bk-team-cutout" src={`/images/team/${p.file}-cutout.webp`} alt="" loading="lazy" />
             </button>
+            {mailOpen === i && <MailPopup mail={p.mail} onClose={closeMail} />}
           </li>
         ))}
       </ul>

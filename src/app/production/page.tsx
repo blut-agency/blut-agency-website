@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   board (node 85:2285) word for word and in board order. Three full-width
   spots break up rows of still (2/3) + text box (1/3) that alternate sides.
   Built from the site's parts (Blocks.tsx, WorkSpot.tsx); stills act as
-  posters until the team sends Vimeo links: set `vimeoId` to make one play.
+  posters until the team sends the films: set `videoUrl` to make one play.
 
   Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
 */
@@ -43,6 +43,8 @@ export default async function ProductionPage() {
         // AI-written placeholder line (Oct 2026): replace, then drop lineAiDraft
         lineAiDraft
         line="Music production, sound design and everything around it, from the first idea to the final mix."
+        background="#7a3bff"
+        lineColor="#02b7fd"
       />
       <Header variant="start-top" />
 
@@ -81,7 +83,7 @@ export default async function ProductionPage() {
       </section>
 
       <ContactBlock person="michael" />
-      <LandingFooter band={{ background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" }} />
+      <LandingFooter band={{ background: "#7a3bff", line: "#02b7fd" }} />
     </div>
   );
 }

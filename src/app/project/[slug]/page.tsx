@@ -10,7 +10,7 @@ import { ContactBlock, CtaLink, PageHero } from "@/components/Blocks";
 import { themeFromColors } from "@/lib/imageTheme";
 import { getCaseStudies, getCaseStudyBySlug, type CaseStudy, type CaseStudyVideoFile } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
-import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
+import { PlayerSpinnerButtons } from "@/components/MediaFrame";
 import RevealText from "@/components/RevealText";
 import CaseVideo from "@/components/CaseVideo";
 
@@ -148,22 +148,17 @@ function Gallery({ images }: { images: string[] }) {
 
 /** A case video in the Production spot layout; it opens the spots' lightbox (CaseVideo). */
 function Video({
-  vimeoId,
   file,
   label,
-  poster,
   accent,
 }: {
-  vimeoId?: string;
-  /** A self-hosted video instead of Vimeo. */
-  file?: CaseStudyVideoFile;
+  file: CaseStudyVideoFile;
   label: string;
-  poster: string;
   accent?: { background: string; text: string };
 }) {
   return (
     <div className="lp-wrap bk-lab-video">
-      <CaseVideo label={label} vimeoId={vimeoId} videoUrl={file?.url} poster={file?.poster ?? poster} accent={accent} />
+      <CaseVideo label={label} videoUrl={file.url} poster={file.poster} accent={accent} />
     </div>
   );
 }
@@ -177,11 +172,7 @@ function Audio({ cs, n }: { cs: CaseStudy; n: 1 | 2 }) {
       <div className="lp-wrap bk-lab-audio">
         <div className="bk-lab-audio-visual" style={cs.color ? { backgroundColor: cs.color.secondary, color: cs.color.main } : undefined}>
           <div className="audio-preview-embed hide w-embed w-iframe">
-            {a.url ? (
-              <audio id={id} src={a.url} preload="metadata" />
-            ) : (
-              <iframe id={id} title="" src={vimeoSrc(a.vimeoId)} frameBorder="0" allow="autoplay" allowFullScreen />
-            )}
+            <audio id={id} src={a.url} preload="metadata" />
           </div>
           <CaseStudyVisual slug={cs.slug} variant={visualVariant(cs.useVisual)} speed={audioSpeed(cs.slug)} startOnPlay auto={false} playerSlug={id} />
         </div>
@@ -229,10 +220,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
     ? { background: theme.background, text: theme.lightBackground ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)" }
     : undefined;
   const hashtags = cs.gifVideoHashtags.split(/\s(?=#)/).filter(Boolean);
-  const videos = [
-    ...[cs.video1VimeoId, cs.video2VimeoId, cs.video3VimeoId].filter(Boolean).map((vimeoId) => ({ vimeoId, file: undefined })),
-    ...(cs.videoFiles ?? []).map((file) => ({ vimeoId: undefined, file })),
-  ];
+  const videos = cs.videoFiles ?? [];
 
   return (
     <>
@@ -291,9 +279,9 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
           </section>
         )}
 
-        {cs.videoUnderQuoteVimeoId && (
+        {cs.videoUnderQuote && (
           <section className="bk-section">
-            <Video vimeoId={cs.videoUnderQuoteVimeoId} label={`${cs.teaserClient} film`} poster={cs.thumbnail} accent={playAccent} />
+            <Video file={cs.videoUnderQuote} label={`${cs.teaserClient} film`} accent={playAccent} />
           </section>
         )}
 
@@ -301,16 +289,18 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
 
         {cs.textAfterGalleryHtml && <Chapter stage={STAGES[1]} html={cs.textAfterGalleryHtml} aiDraft={cs.aiDraftCopy} />}
 
-        {cs.gifVideoVimeoId && (
+        {cs.loopUrl && (
           <section className="bk-section is-dark">
             <div className="lp-wrap bk-lab-loop">
-              <div className="video-16-9 w-embed w-iframe">
-                <iframe
-                  title={`${cs.teaserCampaign}, silent loop`}
-                  src={vimeoSrc(cs.gifVideoVimeoId, "autoplay=1&loop=1&controls=0&dnt=1&muted=1")}
-                  frameBorder="0"
-                  allow="autoplay"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+              <div className="video-16-9">
+                <video
+                  src={cs.loopUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-hidden="true"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
               {hashtags.length > 0 && (
@@ -324,8 +314,8 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
           </section>
         )}
 
-        {(cs.audioPlayer1.vimeoId || cs.audioPlayer1.url) && <Audio cs={cs} n={1} />}
-        {(cs.audioPlayer2.vimeoId || cs.audioPlayer2.url) && <Audio cs={cs} n={2} />}
+        {cs.audioPlayer1.url && <Audio cs={cs} n={1} />}
+        {cs.audioPlayer2.url && <Audio cs={cs} n={2} />}
 
         {cs.textAfterAudioPlayerHtml && (
           <Chapter stage={STAGES[2]} html={cs.textAfterAudioPlayerHtml} aiDraft={cs.aiDraftCopy}>
@@ -335,15 +325,8 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
 
         {videos.length > 0 && (
           <section className="bk-section bk-lab-videos">
-            {videos.map(({ vimeoId, file }, i) => (
-              <Video
-                key={vimeoId ?? file?.url}
-                vimeoId={vimeoId}
-                file={file}
-                label={`${cs.teaserClient} film ${i + 1}`}
-                poster={cs.thumbnail}
-                accent={playAccent}
-              />
+            {videos.map((file, i) => (
+              <Video key={file.url} file={file} label={`${cs.teaserClient} film ${i + 1}`} accent={playAccent} />
             ))}
           </section>
         )}
@@ -372,7 +355,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
           </section>
         )}
 
-        <ContactBlock />
+        <ContactBlock pattern={cs.color ? { background: cs.color.secondary, line: cs.color.main } : undefined} />
         <LandingFooter
           band={{
             background: cs.color?.secondary ?? "var(--_color---accent-color-2)",

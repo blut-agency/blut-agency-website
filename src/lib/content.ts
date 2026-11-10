@@ -13,14 +13,13 @@ export interface CaseStudyColor {
 }
 
 export interface CaseStudyMedia {
-  vimeoId: string;
-  /** Self-hosted audio file (mp3), used when there is no Vimeo ID. */
+  /** Audio file. */
   url?: string;
   title: string;
   subline: string;
 }
 
-/** Self-hosted video file with its poster still, used when there is no Vimeo ID. */
+/** Video file with its poster still. */
 export interface CaseStudyVideoFile {
   url: string;
   poster: string;
@@ -41,25 +40,21 @@ export interface CaseStudy {
   quoteImage: string;
   quote: string;
   quoteName: string;
-  videoUnderQuoteVimeoId: string;
+  videoUnderQuote?: CaseStudyVideoFile;
   introTextHtml: string;
   gallery1: string[];
   textAfterGalleryHtml: string;
-  gifVideoVimeoId: string;
+  /** Short silent loop on the case page. */
+  loopUrl?: string;
   gifVideoHashtags: string;
   audioPlayer1: CaseStudyMedia;
   audioPlayer2: CaseStudyMedia;
   textAfterAudioPlayerHtml: string;
-  video1VimeoId: string;
-  video2VimeoId: string;
-  video3VimeoId: string;
-  /** Self-hosted videos, shown after the Vimeo ones in the same layout. */
   videoFiles?: CaseStudyVideoFile[];
   /** The page's copy is AI-written placeholder text: shown in red with a note. */
   aiDraftCopy?: boolean;
-  /** Short silent hover loop on the case's card: a video file, or a Vimeo ID. */
+  /** Short silent hover loop on the case's card. */
   previewUrl?: string;
-  previewVimeoId?: string;
   gallery2: string[];
   awards: CaseStudyAward[];
   nextCaseStudySlug: string;
@@ -75,7 +70,6 @@ export interface Location {
   name: string;
   slug: string;
   contentHtml: string;
-  vimeoId: string;
   visualizationJson: string;
 }
 
@@ -93,7 +87,7 @@ export interface Award {
 }
 
 export interface HomeSound {
-  vimeoId: string;
+  url: string;
   visualizationJson: string;
 }
 

@@ -11,7 +11,7 @@ import HoverClip from "@/components/HoverClip";
 import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
 import { FEATURED_CASES } from "@/content/offers";
 import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
-import { highlightThemes, themesForImages } from "@/lib/imageTheme";
+import { highlightThemes, themeFromColors } from "@/lib/imageTheme";
 
 /*
   Home (call with Michael and Timo, 30 Oct 2026): a line that says what blut
@@ -41,9 +41,10 @@ type OfferTile = {
   cta: string;
   image: string;
   alt: string;
-  /** Short silent loop that plays over the photo on hover: a video file, or a Vimeo ID. */
+  /** Short silent loop that plays over the photo on hover. */
   preview?: string;
-  previewVimeoId?: string;
+  /** Hover colours: the offer's page banner, as hex so the text colour can be worked out. */
+  color: { slug: string; main: string; secondary: string };
 };
 
 const OFFER_TILES: OfferTile[] = [
@@ -55,6 +56,7 @@ const OFFER_TILES: OfferTile[] = [
     image: "/images/home/teaser-spt.jpg",
     alt: "The Sonic Performance Tracker dashboard on a laptop",
     preview: "/videos/previews/spt-dashboard.mp4",
+    color: { slug: "blue-red", main: "#fe0000", secondary: "#6183ff" },
   },
   {
     offer: "Production",
@@ -64,6 +66,7 @@ const OFFER_TILES: OfferTile[] = [
     image: "/images/home/teaser-story.jpg",
     alt: "Nina Chuba in the Samsung spot",
     preview: "/videos/previews/samsung-nina-chuba.mp4",
+    color: { slug: "blue-violet", main: "#02b7fd", secondary: "#7a3bff" },
   },
   {
     offer: "Post",
@@ -73,14 +76,14 @@ const OFFER_TILES: OfferTile[] = [
     image: "/images/story/crazy-wolf.jpg",
     alt: "The Crazy Wolf energy drink spot",
     preview: "/videos/previews/crazy-wolf.mp4",
+    color: { slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" },
   },
 ];
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
-  // Each tile's hover highlight uses the CMS theme closest to its photo.
-  // Each offer's colours, picked from its photo: its pattern fills the section on hover.
-  const themes = await themesForImages(OFFER_TILES.map((t) => t.image));
+  // Each offer's colours: its pattern fills the section on hover.
+  const themes = OFFER_TILES.map((t) => themeFromColors(t.color));
   const featured = FEATURED_CASES.map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
   const caseThemes = await highlightThemes(featured.map((cs) => ({ image: cs.thumbnail, color: cs.color })));
 
@@ -120,7 +123,7 @@ export default async function HomePage() {
                     </button>
                   </div>
                 </div>
-                <div className="audio-preview-embed hide w-embed w-iframe"><iframe className="" id="home-stage-sound" title="Play sound of blut" src={`https://player.vimeo.com/video/${homeSound?.vimeoId ?? ""}?api=1&controls=0&loop=1&background=0&dnt=1`} frameBorder="0" allow="autoplay" allowFullScreen style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', pointerEvents: 'none'}}></iframe></div><textarea data-visual-json="home-stage" data-visual-player="home-stage" className="visualization-json" defaultValue={homeSound?.visualizationJson ?? ""} />
+                <div className="audio-preview-embed hide w-embed w-iframe"><audio id="home-stage-sound" src={homeSound?.url} preload="metadata" loop /></div><textarea data-visual-json="home-stage" data-visual-player="home-stage" className="visualization-json" defaultValue={homeSound?.visualizationJson ?? ""} />
               </div>
             </div>
             <div className="home-stage-visual-wrapper">
@@ -191,7 +194,7 @@ export default async function HomePage() {
             <article className="lp-case lp-hover hl-row bk-offer">
               <div className="lp-case-media hl-media">
                 <img src={tile.image} alt={tile.alt} loading="lazy" />
-                {(tile.preview || tile.previewVimeoId) && <HoverClip src={tile.preview} vimeoId={tile.previewVimeoId} />}
+                {tile.preview && <HoverClip src={tile.preview} />}
               </div>
               <div className="bk-offer-body">
                 <h2 className="bk-offer-title">{tile.offer}</h2>

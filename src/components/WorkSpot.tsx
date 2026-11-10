@@ -4,7 +4,6 @@ import { useCallback, useRef, useState } from "react";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import VideoLightbox from "@/components/VideoLightbox";
 import HoverClip from "@/components/HoverClip";
-import { PlayerSpinnerButtons, vimeoSrc } from "@/components/MediaFrame";
 import { CtaLink } from "@/components/Blocks";
 import Button from "@/components/Button";
 import type { ImageTheme } from "@/lib/imageTheme";
@@ -16,8 +15,7 @@ export type WorkSpotData = {
   /** Card title; wide spots have none. */
   title?: string;
   tags?: string[];
-  vimeoId?: string;
-  /** Self-hosted mp4, played in the lightbox when there is no Vimeo ID. */
+  /** Self-hosted mp4, played in the lightbox. */
   videoUrl?: string;
   /** Short silent loop that plays over the still while the spot is hovered. */
   preview?: string;
@@ -35,10 +33,8 @@ export type WorkSpotData = {
  * - "row": still in two thirds (client chip on it), text box in the last
  *   third, sides alternating via `flipped` (Work, Figma 264:1110).
  *
- * Video: "Play video ▶" on the still. With a Vimeo ID the spot plays right
- * there with the case pages' player (progress bar and times, driven by
- * public/js/embeds.js); without one, Play (or a click anywhere on the still or
- * box) opens the lightbox.
+ * Video: "Play video ▶" on the still. Play (or a click anywhere on the still
+ * or box) opens the lightbox.
  */
 export default function WorkSpot({
   spot,
@@ -74,13 +70,7 @@ export default function WorkSpot({
     background: accent,
     text: theme && !theme.lightBackground ? "var(--_color---copy-bright)" : "var(--_color---copy-dark)",
   };
-  // With a Vimeo ID the spot plays inline with the case pages' player
-  // (embeds.js); without one, the big Play opens the lightbox.
-  const inline = Boolean(spot.vimeoId);
-  const playerId = `${formId}-video`;
-  const cover = inline ? null : (
-    <button type="button" className="lp-cover bk-cover" aria-hidden="true" tabIndex={-1} onClick={play} />
-  );
+  const cover = <button type="button" className="lp-cover bk-cover" aria-hidden="true" tabIndex={-1} onClick={play} />;
 
   return (
     <article
@@ -91,66 +81,20 @@ export default function WorkSpot({
         <img src={spot.image} alt="" loading="lazy" />
         {spot.preview && <HoverClip src={spot.preview} />}
         <p className="bk-spot-client">{spot.client}</p>
-        {inline ? (
-          <>
-            <iframe
-              id={playerId}
-              title={`${spot.client} spot`}
-              src={vimeoSrc(spot.vimeoId!)}
-              frameBorder="0"
-              allow="autoplay"
-              allowFullScreen
-              className="bk-spot-iframe"
-            />
-            <Button
-              shape="pill"
-              icon="play"
-              iconFirst
-              onDark
-              accent={buttonAccent}
-              data-player="play-button-big"
-              data-player-target={playerId}
-              aria-label={`Play and pause: ${spot.client}`}
-              className="bk-spot-play"
-            >
-              <span data-player="play-text">Play video</span>
-            </Button>
-            <div className="project-video-controls bk-spot-controls">
-              <div data-player-file={playerId} className="audioplayer-controls">
-                <div data-player="progress-bar" className="progress-bar">
-                  <div className="progress-bar-line" />
-                  <div data-player="progress-fill" className="progress-bar-fill" />
-                </div>
-                <div className="progress-time">
-                  <div data-player="current-time" className="current-time">
-                    0:00
-                  </div>
-                  <div data-player="duration" className="duration">
-                    0:00
-                  </div>
-                </div>
-                <PlayerSpinnerButtons size="copy-medium" />
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
             {cover}
-            <Button
-              ref={buttonRef}
-              shape="pill"
-              icon="play"
-              iconFirst
-              onDark
-              accent={buttonAccent}
-              className="bk-spot-play"
-              onClick={play}
-              aria-label={`Play video: ${spot.client}`}
-            >
-              Play video
-            </Button>
-          </>
-        )}
+        <Button
+          ref={buttonRef}
+          shape="pill"
+          icon="play"
+          iconFirst
+          onDark
+          accent={buttonAccent}
+          className="bk-spot-play"
+          onClick={play}
+          aria-label={`Play video: ${spot.client}`}
+        >
+          Play video
+        </Button>
       </div>
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
         {theme && (
@@ -174,17 +118,14 @@ export default function WorkSpot({
         )}
         {cover}
       </div>
-      {!inline && (
-        <VideoLightbox
-          open={open}
-          onClose={close}
-          title={`${spot.client} spot`}
-          vimeoId={spot.vimeoId}
-          videoUrl={spot.videoUrl}
-          poster={spot.image}
-          accent={buttonAccent}
-        />
-      )}
+      <VideoLightbox
+        open={open}
+        onClose={close}
+        title={`${spot.client} spot`}
+        videoUrl={spot.videoUrl}
+        poster={spot.image}
+        accent={buttonAccent}
+      />
     </article>
   );
 }

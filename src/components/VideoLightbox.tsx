@@ -11,14 +11,13 @@ import FilePlayer from "@/components/FilePlayer";
  * to itself in onClose (a clicked button isn't focused in every browser).
  *
  * Rendered into <body> so it sits above the header and the page transition
- * wrapper. Plays a Vimeo ID or, failing that, a video file; with neither it
- * shows the still with "Video coming soon".
+ * wrapper. Plays a video file; without one it shows the still with "Video
+ * coming soon".
  */
 export default function VideoLightbox({
   open,
   onClose,
   title,
-  vimeoId,
   videoUrl,
   poster,
   accent,
@@ -26,8 +25,7 @@ export default function VideoLightbox({
   open: boolean;
   onClose: () => void;
   title: string;
-  vimeoId?: string;
-  /** Direct video file (mp4), used when there is no Vimeo ID. */
+  /** Direct video file (mp4). */
   videoUrl?: string;
   poster: string;
   /** Hover colours for the close button, from the spot that opened it. */
@@ -62,14 +60,7 @@ export default function VideoLightbox({
         <span />
       </button>
       <div className="video-lightbox-frame" onClick={(event) => event.stopPropagation()}>
-        {vimeoId ? (
-          <iframe
-            src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1&dnt=1`}
-            title={title}
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-          />
-        ) : videoUrl ? (
+        {videoUrl ? (
           <FilePlayer src={videoUrl} poster={poster} title={title} autoPlay accent={accent} />
         ) : (
           <>

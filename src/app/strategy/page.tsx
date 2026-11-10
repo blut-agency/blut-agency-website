@@ -41,14 +41,15 @@ export default async function StrategyPage() {
         // AI-written placeholder line (Nov 2026), short enough for the fixed banner height: replace, then drop lineAiDraft
         lineAiDraft
         line="We map how your brand sounds today, then build the plan to make it work harder."
-        background="#7a3bff"
-        lineColor="#02b7fd"
+        background="var(--_color---accent-color-1)"
+        lineColor="var(--_color---accent-color-3)"
+        dark
       />
       <Header variant="start-top" />
 
       {/* The Sonic Performance Tracker sales video, full width (board node 85:2362),
           as the Work page's wide spot. Self-hosted for now (Nic's cutdown, Oct 2026). */}
-      <section className="bk-section">
+      <section className="bk-section is-dark">
         {/* The full intro, under the banner: in it, Strategy's banner was taller than the other service pages' (Elliot, Nov 2026). */}
         <div className="lp-wrap bk-lead bk-strategy-intro">
           <div className="bk-lead-text">
@@ -95,7 +96,7 @@ export default async function StrategyPage() {
         />
       </section>
 
-      <section className="bk-section" id="content-production">
+      <section className="bk-section is-dark" id="content-production">
         <ServiceDrawers
           flipped
           heading="Content Production"
@@ -157,7 +158,7 @@ export default async function StrategyPage() {
       </section>
 
       <ContactBlock person="karl" />
-      <LandingFooter band={{ background: "#7a3bff", line: "#02b7fd" }} />
+      <LandingFooter band={{ background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)", light: true }} />
     </div>
   );
 }

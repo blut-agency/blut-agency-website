@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
+// Videos and audio live in blut's Nextcloud (Hetzner Storage Share, a public
+// read-only folder); everything on the site links to /media/<file>.
+const MEDIA_URL = "https://cloud.blut.agency/public.php/dav/files/7ax7TLoEpTWKzq6";
+
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      { source: "/media/:file*", destination: `${MEDIA_URL}/:file*`, permanent: false },
       // Case study details live at /project/<slug> to match the Webflow site.
       // This catches the /case-studies/<slug> paths used earlier in the port.
       {

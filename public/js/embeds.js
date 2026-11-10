@@ -38,9 +38,9 @@ function __onReady(fn) {
 
 
 (function(){
-  // --- 1) Vimeo-Player UI ---
-  window._VimeoPlayers = {};
-  // Self-hosted <video>/<audio> files get the same promise-based surface as Vimeo.Player.
+  // --- 1) Player UI ---
+  window._players = {};
+  // <video>/<audio> files behind one promise-based surface.
   function mediaPlayer(el) {
     const ev = { play: 'play', pause: 'pause', seeked: 'seeked', error: 'error' };
     return {
@@ -87,10 +87,8 @@ function __onReady(fn) {
     const slug = container.getAttribute('data-player-file');
     const iframe = document.getElementById(slug);
     if (!iframe) return;
-    const isFile = iframe.tagName === 'VIDEO' || iframe.tagName === 'AUDIO';
-    if (!isFile && !window.Vimeo) return;
-    const player = isFile ? mediaPlayer(iframe) : new Vimeo.Player(iframe);
-    window._VimeoPlayers[slug] = player;
+    const player = mediaPlayer(iframe);
+    window._players[slug] = player;
     // Finde den play-button-big direkt über data-player-target
     const bigPlay = document.querySelector(`[data-player-target="${slug}"][data-player="play-button-big"]`);
     const playText = bigPlay ? bigPlay.querySelector('[data-player="play-text"]') : null;
@@ -109,7 +107,7 @@ function __onReady(fn) {
     if (spinner) spinner.style.display = 'none';
     player.ready().then(() => {
       player.on('play', () => {
-        Object.entries(window._VimeoPlayers).forEach(([other,p])=>{
+        Object.entries(window._players).forEach(([other,p])=>{
           if (other!==slug && p.pause) p.pause();
         });
         if (spinner) spinner.style.display = 'none';
@@ -120,7 +118,7 @@ function __onReady(fn) {
           player.getPaused().then(paused => {
             if (paused) {
               player.play().catch(e => {
-                console.warn('Vimeo play error', e);
+                console.warn('Player play error', e);
                 if (spinner) spinner.style.display = 'none';
               });
               if (playText) playText.style.display = 'none';
@@ -131,7 +129,7 @@ function __onReady(fn) {
               if (spinner) spinner.style.display = 'none';
             }
           }).catch(e => {
-            console.warn('Vimeo getPaused error', e);
+            console.warn('Player getPaused error', e);
             if (spinner) spinner.style.display = 'none';
           });
         });
@@ -140,7 +138,7 @@ function __onReady(fn) {
         playBtn.addEventListener('click', () => {
           if (spinner) spinner.style.display = 'block';
           player.play().catch(e => {
-            console.warn('Vimeo play error', e);
+            console.warn('Player play error', e);
             if (spinner) spinner.style.display = 'none';
           });
         });
@@ -158,13 +156,13 @@ function __onReady(fn) {
           player.getDuration().then(dur =>
             player.setCurrentTime(pct*dur).then(() => {
               player.play().catch(e => {
-                console.warn('Vimeo play error after seek', e);
+                console.warn('Player play error after seek', e);
               });
             }).catch(e => {
-              console.warn('Vimeo setCurrentTime error', e);
+              console.warn('Player setCurrentTime error', e);
             })
           ).catch(e => {
-            console.warn('Vimeo getDuration error', e);
+            console.warn('Player getDuration error', e);
           });
         });
       }
@@ -196,10 +194,10 @@ function __onReady(fn) {
         if (spinner) spinner.style.display = 'none';
       });
       player.on('error', e => {
-        console.warn('Vimeo player error', e);
+        console.warn('Player player error', e);
         if (spinner) spinner.style.display = 'none';
       });
-    }).catch(e => console.warn('Vimeo ready error', e));
+    }).catch(e => console.warn('Player ready error', e));
   });
   // --- 2) JSON-basierte Visualisierung (SOFORT START + Player-Sync) ---
   document.querySelectorAll('[data-visual-form]').forEach(form => {
@@ -222,7 +220,7 @@ function __onReady(fn) {
     const svgHigh = form.querySelectorAll('[data-visual-sound="high"]');
     const player = (() => {
       const ps = form.getAttribute('data-visual-player') || '';
-      return ps.split(',').map(s => s.trim()).map(s => window._VimeoPlayers[s]).find(p => p) || null;
+      return ps.split(',').map(s => s.trim()).map(s => window._players[s]).find(p => p) || null;
     })();
     let rafId;
     let isPlayerSync = false;
@@ -268,7 +266,7 @@ function __onReady(fn) {
           isPlayerSync = true;
           player.getCurrentTime().then(drawLoop);
         });
-      }).catch(e => console.warn('Vimeo player ready error', e));
+      }).catch(e => console.warn('Player player ready error', e));
     }
   });
   // --- 3) GSAP-Morphing & Form-Animation ---
@@ -314,7 +312,7 @@ function __onReady(fn) {
       });
       if (startOnPlay && masterTl){
         const pSlug = div.getAttribute('data-visual-player');
-        const p = pSlug ? window._VimeoPlayers[pSlug] : null;
+        const p = pSlug ? window._players[pSlug] : null;
         if (p){
           p.on('play', ()=>masterTl.play());
           p.on('pause', ()=>masterTl.pause());

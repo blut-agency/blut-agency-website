@@ -42,12 +42,22 @@ export const PINNED_CASE = "hyundai-are-you-in";
 export const FEATURED_CASES = ["hyundai-are-you-in", "volkswagen-bringing-it-all-back-home", "devils-advocate-brand-launch"];
 
 /*
-  The Post page: sound design and mixing from the Work spots until there is
-  enough video post to show. Their copy stays as it is on Production.
+  The Post page: sound design and mixing from the Work spots, their copy as on
+  Production, then Finstral, the first video post piece.
 */
 export const POST_ITEMS: WorkItem[] = [
   { ...workItem("Crazy Wolf"), layout: "wide" },
   { ...workItem("Gore-Tex"), layout: "row" },
   { ...workItem("McDonald’s"), layout: "row-flipped" },
   { ...workItem("Adidas"), layout: "row" },
+  {
+    layout: "wide",
+    spot: {
+      client: "Finstral",
+      image: "/images/story/finstral.jpg",
+      videoUrl: "/videos/work/finstral.mp4",
+      preview: "/videos/previews/finstral.mp4",
+      text: "What would sound be without some nice visuals? For Finstral’s colorful campaign, we created the brand song, brand voice and handled post-production in-house; editing and grading the films for both online and TVC.",
+    },
+  },
 ];
