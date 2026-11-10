@@ -50,8 +50,8 @@ export default async function CaseStudiesPage() {
         heading={heroHeading(page.hero)}
         lineAiDraft={page.hero.placeholder}
         line={page.hero.line}
-        background="#ff6004"
-        lineColor="#e2e2e2"
+        background="#ed7034"
+        lineColor="#c0bfbe"
         dark
       />
       <Header variant="start-top" />
@@ -76,8 +76,8 @@ export default async function CaseStudiesPage() {
       </section>
 
       {/* The general address, not a person (Elliot, 31 Oct). */}
-      <ContactBlock pattern={{ background: "#ff6004", line: "#e2e2e2" }} />
-      <LandingFooter band={{ background: "#ff6004", line: "#e2e2e2", light: true }} />
+      <ContactBlock pattern={{ background: "#ed7034", line: "#c0bfbe" }} />
+      <LandingFooter band={{ background: "#ed7034", line: "#c0bfbe", light: true }} />
     </div>
   );
 }

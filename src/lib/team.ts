@@ -40,7 +40,7 @@ export interface TeamMember {
 export const TEAM_COLORS: Record<string, { background: string; line: string; dark?: boolean }> = {
   karl: { background: "#7a3bff", line: "#02b7fd" },
   timo: { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
-  elliot: { background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
+  elliot: { background: "#dfe5ac", line: "var(--_color---accent-color-1)" },
   michael: { background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
 };
 export const DEFAULT_TEAM_COLOR = { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" };

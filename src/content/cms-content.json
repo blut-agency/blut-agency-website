@@ -69,8 +69,8 @@
       "whatWeDidHtml": "<ul id=\"\"><li id=\"\">Sonic Strategy</li><li id=\"\">Content Production&nbsp;</li></ul>",
       "collaboratorsHtml": "<ul id=\"\"><li id=\"\">GUDBERG&nbsp;NERGER</li></ul>",
       "color": {
-        "main": "hsla(0, 0.00%, 88.67%, 1.00)",
-        "secondary": "#ff6004",
+        "main": "#c0bfbe",
+        "secondary": "#ed7034",
         "slug": "orange-grey"
       },
       "useVisual": [
@@ -170,8 +170,8 @@
       "whatWeDidHtml": "<ul><li>Sonic Strategy</li><li>Sonic Branding</li></ul>",
       "collaboratorsHtml": "",
       "color": {
-        "main": "#3f7fd9",
-        "secondary": "#e9f27a",
+        "main": "#6183ff",
+        "secondary": "#e7f639",
         "slug": "sky-chartreuse"
       },
       "useVisual": [
@@ -229,7 +229,7 @@
       "collaboratorsHtml": "",
       "color": {
         "main": "#6183ff",
-        "secondary": "#ee1c1c",
+        "secondary": "#fe0000",
         "slug": "blue-red"
       },
       "useVisual": [
@@ -284,8 +284,8 @@
       "whatWeDidHtml": "<ul id=\"\"><li id=\"\">Sonic Strategy</li><li id=\"\">Artist Partnership</li></ul>",
       "collaboratorsHtml": "<ul id=\"\"><li id=\"\">WDR</li></ul>",
       "color": {
-        "main": "#871631",
-        "secondary": "#edd4eb",
+        "main": "#c66274",
+        "secondary": "#e5d2e5",
         "slug": "red-pink"
       },
       "useVisual": [
@@ -345,7 +345,7 @@
       "collaboratorsHtml": "<ul><li>Grabarz &amp; Partner / doity</li></ul>",
       "color": {
         "main": "#6183ff",
-        "secondary": "#ee1c1c",
+        "secondary": "#fe0000",
         "slug": "blue-red"
       },
       "useVisual": [
@@ -419,7 +419,7 @@
       "whatWeDidHtml": "<ul><li>Sonic Branding</li></ul>",
       "collaboratorsHtml": "<ul><li>Peter Schmidt Group</li><li>27km</li></ul>",
       "color": {
-        "main": "#82685b",
+        "main": "#977e72",
         "secondary": "#e7f639",
         "slug": "brown-yellow"
       },
@@ -523,12 +523,12 @@
       "name": "Blue + Purple",
       "slug": "blue-purple",
       "main": "#02b7fd",
-      "secondary": "#944dff"
+      "secondary": "#7a3bff"
     },
     {
       "name": "Brown + Yellow ",
       "slug": "brown-yellow",
-      "main": "#82685b",
+      "main": "#977e72",
       "secondary": "#e7f639"
     },
     {
@@ -540,20 +540,20 @@
     {
       "name": "Grey + Purple ",
       "slug": "purple",
-      "main": "hsla(266.0869565217391, 0.00%, 31.33%, 1.00)",
-      "secondary": "#9747ff"
+      "main": "#343434",
+      "secondary": "#7a3bff"
     },
     {
       "name": "Orange + Grey",
       "slug": "orange-grey",
-      "main": "hsla(0, 0.00%, 88.67%, 1.00)",
-      "secondary": "#ff6004"
+      "main": "#c0bfbe",
+      "secondary": "#ed7034"
     },
     {
       "name": "Red + Pink",
       "slug": "red-pink",
-      "main": "#871631",
-      "secondary": "#edd4eb"
+      "main": "#c66274",
+      "secondary": "#e5d2e5"
     },
     {
       "name": "Blue + Violet",
@@ -564,14 +564,14 @@
     {
       "name": "Sky + Chartreuse",
       "slug": "sky-chartreuse",
-      "main": "#3f7fd9",
-      "secondary": "#e9f27a"
+      "main": "#6183ff",
+      "secondary": "#e7f639"
     },
     {
       "name": "Red + Sky",
       "slug": "red-sky",
-      "main": "#ee1c1c",
-      "secondary": "#bcd9f2"
+      "main": "#fe0000",
+      "secondary": "#a88dc4"
     }
   ],
   "awards": [
