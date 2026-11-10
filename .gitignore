@@ -33,9 +33,6 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# videos and audio, served from storage (MEDIA_URL in next.config.ts)
-/public/media
-
 # vercel
 .vercel
 
