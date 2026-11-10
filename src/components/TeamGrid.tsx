@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import RevealText from "@/components/RevealText";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
-import MailPopup from "@/components/MailPopup";
 import { DEFAULT_TEAM_COLOR, TEAM_COLORS, getTeam } from "@/lib/team";
 
 /*
@@ -12,8 +11,8 @@ import { DEFAULT_TEAM_COLOR, TEAM_COLORS, getTeam } from "@/lib/team";
   touch screens, or focusing it by keyboard) greys out the others and swaps
   the text at the top for that person's name and role. Moving off (or
   tapping anywhere else) brings the description back. The order is shuffled
-  on every visit, so nobody comes first (Nic, 31 Oct). A click opens the
-  person's mail panel; on touch the first tap picks the face, the second opens it.
+  on every visit, so nobody comes first (Nic, 31 Oct). A click or tap on a
+  face opens a new email to that person in the default mail app (Nic, 10 Nov).
 
   The picked face (Elliot's idea, 3 Nov): the photo fades out and the person,
   cut out, stands in front of one of the site's moving patterns, each in
@@ -41,12 +40,8 @@ const subscribeNever = () => () => {};
 
 export default function TeamGrid({ intro }: { intro: string }) {
   const [active, setActive] = useState<number | null>(null);
-  const [mailOpen, setMailOpen] = useState<number | null>(null);
-  const closeMail = useCallback(() => setMailOpen(null), []);
   // The server renders the fixed order; the browser switches to this visit's shuffle.
   const people = useSyncExternalStore(subscribeNever, shuffledPeople, () => PEOPLE);
-  // Safari's click events carry no pointer type, so remember it from pointerdown.
-  const lastPointer = useRef<string>("mouse");
   const keyboardFocus = useRef(false);
 
   // Touch: a tap anywhere outside the faces brings the description back.
@@ -82,15 +77,12 @@ export default function TeamGrid({ intro }: { intro: string }) {
       <ul role="list" className={`bk-team-grid${people === PEOPLE ? "" : " is-shuffled"}`}>
         {people.map((p, i) => (
           <li key={p.file}>
-            <button
-              type="button"
+            <a
+              href={`mailto:${p.mail}`}
               className={`bk-team-face${active === i ? " is-active" : ""}`}
-              aria-label={`${p.name}, ${p.role}: email`}
-              aria-expanded={mailOpen === i}
-              aria-pressed={active === i}
-              onPointerDown={(e) => {
-                lastPointer.current = e.pointerType;
-              }}
+              aria-label={`Email ${p.name}, ${p.role}`}
+              // Touch: the tap shows the person's name while the mail app opens.
+              onPointerDown={(e) => e.pointerType !== "mouse" && setActive(i)}
               onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
               onPointerLeave={(e) =>
                 e.pointerType === "mouse" && setActive(null)
@@ -106,23 +98,13 @@ export default function TeamGrid({ intro }: { intro: string }) {
                 keyboardFocus.current = false;
                 setActive(null);
               }}
-              onClick={() => {
-                const mouse = lastPointer.current === "mouse";
-                if (mouse || active === i) {
-                  setMailOpen((cur) => (cur === i ? null : i));
-                  return;
-                }
-                // Mouse users already picked by hovering; taps toggle.
-                if (!mouse) setActive((cur) => (cur === i ? null : i));
-              }}
             >
               <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>
                 <CaseStudyVisual slug={`team-${p.file.toLowerCase()}`} {...patternAt(PEOPLE.indexOf(p))} />
               </span>
               <img className="bk-team-photo" src={`/images/team/${p.file}.webp`} alt="" loading="lazy" />
               <img className="bk-team-cutout" src={`/images/team/${p.file}-cutout.webp`} alt="" loading="lazy" />
-            </button>
-            {mailOpen === i && <MailPopup mail={p.mail} onClose={closeMail} />}
+            </a>
           </li>
         ))}
       </ul>
