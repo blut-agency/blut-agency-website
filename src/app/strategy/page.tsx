@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getPage, heroHeading, pageMetadata } from "@/lib/pages";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
+import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
 import { themesForImages } from "@/lib/imageTheme";
 import { ContactBlock, CtaLink, Lead, PageHero, ServiceDrawers } from "@/components/Blocks";
@@ -40,11 +41,11 @@ export default async function StrategyPage() {
       {/* The Sonic Performance Tracker sales video, full width (board node 85:2362),
           as the Work page's wide spot. Self-hosted for now (Nic's cutdown, Oct 2026). */}
       <section className="bk-section is-dark">
-        {/* The full intro, under the banner: in it, Strategy's banner was taller than the other service pages' (Elliot, Nov 2026). */}
-        <div className="lp-wrap bk-lead bk-strategy-intro">
-          <div className="bk-lead-text">
-            <p className="lp-copy">{page.intro}</p>
-          </div>
+        {/* The full intro, under the banner (in it, Strategy's banner was taller than the
+            other service pages', Elliot, Nov 2026). Large on the left, in the slot and style
+            of the question on Production and Post (Nic, 10 Nov). */}
+        <div className="lp-wrap bk-service-top is-long">
+          <RevealText as="h2" className="lp-heading" text={page.intro} />
         </div>
         <div className="lp-wrap">
           <WorkSpot
