@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { share } from "@/lib/share";
+import { getPage, heroHeading, pageMetadata } from "@/lib/pages";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import CaseCard, { caseTags } from "@/components/CaseCard";
@@ -9,17 +9,14 @@ import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import { getCaseStudies } from "@/lib/content";
 import { highlightThemes } from "@/lib/imageTheme";
 
-export const metadata: Metadata = {
-  title: "Case Studies | blut",
-  description:
-    "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
-  ...share({
-    title: "Case Studies",
-    description: "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
-    path: "/case-studies",
-    image: { url: "/images/open-graph-image-1.png", width: 1800, height: 945, alt: "DJ Seinfeld and sogumm recording in the Hyundai Inster" },
-  }),
-};
+const page = getPage("casesPage");
+
+export const metadata: Metadata = pageMetadata(page.seo, "/case-studies", {
+  url: "/images/open-graph-image-1.png",
+  width: 1800,
+  height: 945,
+  alt: "DJ Seinfeld and sogumm recording in the Hyundai Inster",
+});
 
 /*
   Case index in the new design (Work v02 building blocks): banner, every case
@@ -50,8 +47,9 @@ export default async function CaseStudiesPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="cases-hero"
-        heading="Case Studies"
-        line="Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work."
+        heading={heroHeading(page.hero)}
+        lineAiDraft={page.hero.placeholder}
+        line={page.hero.line}
         background="#ff6004"
         lineColor="#e2e2e2"
         dark
@@ -72,8 +70,8 @@ export default async function CaseStudiesPage() {
       </section>
 
       <section className="bk-section">
-        <Lead boxed heading="It’s not just music, it’s everything around it." text="Our music production and data-driven sonic strategies work hand-in-hand to create memorable campaigns that genuinely connect with audiences.">
-          <CtaLink href="/strategy" label="Get to know our process" />
+        <Lead boxed heading={page.lead.heading} text={page.lead.text}>
+          <CtaLink href={page.lead.link.href} label={page.lead.link.label} />
         </Lead>
       </section>
 

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { share } from "@/lib/share";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import RevealText from "@/components/RevealText";
@@ -11,6 +10,7 @@ import HoverClip from "@/components/HoverClip";
 import { CtaLink, Lead, TEXT_PARALLAX } from "@/components/Blocks";
 import { FEATURED_CASES } from "@/content/offers";
 import { getCaseStudyBySlug, getHomeSound, type CaseStudy } from "@/lib/content";
+import { getPage, pageMetadata, type OfferName } from "@/lib/pages";
 import { highlightThemes, themeFromColors } from "@/lib/imageTheme";
 
 /*
@@ -20,65 +20,19 @@ import { highlightThemes, themeFromColors } from "@/lib/imageTheme";
   tiles use the case cards' parts (landing.css .lp-case) in the staggered
   three-column grid; Home-only touches live in blocks.css (.bk-offers).
 */
-export const metadata: Metadata = {
-  description:
-    "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
-  ...share({
-    title: "blut – Music Strategies with Measurable Impact",
-    description:
-      "Music production, sound design and 360° sonic strategy: blut is a music-led creative agency from Hamburg, Berlin and Munich.",
-    path: "/",
-  }),
+const page = getPage("homePage");
+
+export const metadata: Metadata = pageMetadata(page.seo, "/");
+
+/** Each offer's link and hover colours (its page banner, as hex so the text colour can be worked out). */
+const OFFER_STYLE: Record<OfferName, { href: string; color: { slug: string; main: string; secondary: string } }> = {
+  Strategy: { href: "/strategy", color: { slug: "blue-red", main: "#fe0000", secondary: "#6183ff" } },
+  Production: { href: "/production", color: { slug: "blue-violet", main: "#02b7fd", secondary: "#7a3bff" } },
+  Post: { href: "/post", color: { slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" } },
 };
 
-type OfferTile = {
-  offer: string;
-  href: string;
-  copy: string;
-  /** AI-written placeholder copy: marked with an asterisk until replaced. */
-  aiDraft?: boolean;
-  /** The tile's link text, read out by screen readers (the tile shows only the arrow). */
-  cta: string;
-  image: string;
-  alt: string;
-  /** Short silent loop that plays over the photo on hover. */
-  preview?: string;
-  /** Hover colours: the offer's page banner, as hex so the text colour can be worked out. */
-  color: { slug: string; main: string; secondary: string };
-};
-
-const OFFER_TILES: OfferTile[] = [
-  {
-    offer: "Strategy",
-    href: "/strategy",
-    copy: "Find out what your sound is really saying, and how our strategy could take it to the next level.",
-    cta: "Get to know our process",
-    image: "/images/home/teaser-spt.jpg",
-    alt: "The Sonic Performance Tracker dashboard on a laptop",
-    preview: "/videos/previews/spt-dashboard.mp4",
-    color: { slug: "blue-red", main: "#fe0000", secondary: "#6183ff" },
-  },
-  {
-    offer: "Production",
-    href: "/production",
-    copy: "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
-    cta: "See our production work",
-    image: "/images/home/teaser-story.jpg",
-    alt: "Nina Chuba in the Samsung spot",
-    preview: "/videos/previews/samsung-nina-chuba.mp4",
-    color: { slug: "blue-violet", main: "#02b7fd", secondary: "#7a3bff" },
-  },
-  {
-    offer: "Post",
-    href: "/post",
-    copy: "Sound design, mixing, and video post. Everything your spot needs to reach the finish line.",
-    cta: "See our post work",
-    image: "/images/story/crazy-wolf.jpg",
-    alt: "The Crazy Wolf energy drink spot",
-    preview: "/videos/previews/crazy-wolf.mp4",
-    color: { slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" },
-  },
-];
+/** The offer tiles: words and photos from Sanity (pages.json), link and colours from OFFER_STYLE. */
+const OFFER_TILES = page.offers.map((t) => ({ ...t, offer: t.page, ...OFFER_STYLE[t.page] }));
 
 export default async function HomePage() {
   const homeSound = getHomeSound();
@@ -106,7 +60,7 @@ export default async function HomePage() {
                     </svg>` }} /></span>
                 </h1>
                 {/* AI-written placeholder line (Oct 2026): Michael and Karl replace it. */}
-                <RevealText as="p" className="lp-stage-line ai-draft" text="We help brands find their sound, and make sure people hear it." />
+                <RevealText as="p" className={`lp-stage-line${page.stageLinePlaceholder ? " ai-draft" : ""}`} text={page.stageLine} />
               </div>
               <div className="home-stage-bottom">
                 <div data-player-file="home-stage-sound" className="audioplayer-controls">
@@ -117,9 +71,9 @@ export default async function HomePage() {
                           <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>` }} /></div>
                     </div><button data-player="play-button" className="play-toggle">
-                      <div className="play-toggle-text heading-style-h3">Click for sound</div>
+                      <div className="play-toggle-text heading-style-h3">{page.soundLabel}</div>
                     </button><button data-player="pause-button" className="play-toggle is-pause-button">
-                      <div className="play-toggle-text heading-style-h3">Pause</div>
+                      <div className="play-toggle-text heading-style-h3">{page.pauseLabel}</div>
                     </button>
                   </div>
                 </div>
@@ -176,14 +130,14 @@ export default async function HomePage() {
           tiles' copy style (Nic, 31 Oct). AI-written placeholder copy (Oct
           2026): Michael and Karl replace it. */}
       <div className="lp-wrap bk-lead is-side">
-        <RevealText as="h2" className="lp-heading bk-lead-heading" text="What we do" />
+        <RevealText as="h2" className="lp-heading bk-lead-heading" text={page.offersHeading} />
         <div className="bk-lead-text">
           {/* Letters in after the heading's, quicker: it's a long line. */}
           <RevealText
             as="p"
-            className="bk-offer-copy ai-draft"
-            text="blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post."
-            after="What we do"
+            className={`bk-offer-copy${page.offersTextPlaceholder ? " ai-draft" : ""}`}
+            text={page.offersText}
+            after={page.offersHeading}
             stagger={0.008}
           />
         </div>
@@ -199,11 +153,11 @@ export default async function HomePage() {
               <div className="bk-offer-body">
                 <h2 className="bk-offer-title">{tile.offer}</h2>
                 <div className="bk-offer-foot">
-                  <p className={`bk-offer-copy${tile.aiDraft ? " ai-draft" : ""}`}>{tile.copy}</p>
+                  <p className={`bk-offer-copy${tile.placeholder ? " ai-draft" : ""}`}>{tile.text}</p>
                   <CtaArrow />
                 </div>
               </div>
-              <Link href={tile.href} className="lp-cover" aria-label={tile.cta} />
+              <Link href={tile.href} className="lp-cover" aria-label={tile.linkLabel} />
             </article>
           </li>
         ))}
@@ -224,8 +178,8 @@ export default async function HomePage() {
 
     {/* Featured cases: recent work we're proud of; the full list is on /case-studies. */}
     <section className="bk-section bk-featured">
-      <Lead side parallax={false} heading="Featured cases">
-        <CtaLink href="/case-studies" label="View all cases" />
+      <Lead side parallax={false} heading={page.casesHeading}>
+        <CtaLink href={page.casesLink.href} label={page.casesLink.label} />
       </Lead>
       <ul role="list" className="lp-wrap bk-case-list">
         {featured.map((cs, i) => (
@@ -239,10 +193,10 @@ export default async function HomePage() {
     {/* Why blut: the question on the left half, the answer lower on the right. */}
     <section className="lp-why">
       <div className="lp-wrap">
-        <RevealText className="lp-heading" text="Why do you need blut?" parallax={TEXT_PARALLAX.heading} />
+        <RevealText className="lp-heading" text={page.whyHeading} parallax={TEXT_PARALLAX.heading} />
         <div className="lp-panel" data-parallax={TEXT_PARALLAX.text}>
-          <p className="lp-copy">We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll know you’ve made the right call.</p>
-          <CtaLink href="/about" label="Get to know us" />
+          <p className="lp-copy">{page.whyText}</p>
+          <CtaLink href={page.whyLink.href} label={page.whyLink.label} />
         </div>
       </div>
     </section>

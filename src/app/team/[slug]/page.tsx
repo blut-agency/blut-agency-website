@@ -52,7 +52,7 @@ export default async function TeamPage({ params }: { params: Promise<{ slug: str
   const p = getPerson((await params).slug);
   if (!p) notFound();
 
-  const spots = (p.work.spots ?? []).map(workItem);
+  const spots = (p.work.spots ?? []).map(workItem).filter((item) => item !== undefined);
   const cases = (p.work.cases ?? []).map(getCaseStudyBySlug).filter((cs): cs is CaseStudy => Boolean(cs));
   const [spotThemes, caseThemes] = await Promise.all([
     themesForImages(spots.map((s) => s.spot.image)),

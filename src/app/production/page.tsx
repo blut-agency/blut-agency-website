@@ -1,24 +1,16 @@
 import type { Metadata } from "next";
-import { share } from "@/lib/share";
+import { getPage, heroHeading, pageMetadata } from "@/lib/pages";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
-import { WORK_ITEMS as ITEMS } from "@/content/work";
 import { themesForImages } from "@/lib/imageTheme";
 
-export const metadata: Metadata = {
-  title: "Production – A 360° Approach to Sonic Storytelling | blut",
-  description:
-    "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
-  ...share({
-    title: "Production – A 360° Approach to Sonic Storytelling",
-    description: "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
-    path: "/production",
-    image: { url: "/images/story/samsung-nina-chuba.jpg", alt: "Nina Chuba in the Samsung spot" },
-  }),
-};
+const page = getPage("productionPage");
+const ITEMS = page.spots.map(({ layout, ...spot }) => ({ layout, spot }));
+
+export const metadata: Metadata = pageMetadata(page.seo, "/production", { url: "/images/story/samsung-nina-chuba.jpg", alt: "Nina Chuba in the Samsung spot" });
 
 /*
   Layout: the Work spots (Figma 264:1110) in the case list’s layout, with the copy of the "Website v2"
@@ -30,7 +22,7 @@ export const metadata: Metadata = {
   Left out: Nivea / Serenia, whose copy on the board is still lorem ipsum.
 */
 
-const QUESTION = "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out.";
+const QUESTION = page.intro.question;
 
 export default async function ProductionPage() {
   const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
@@ -39,10 +31,9 @@ export default async function ProductionPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="work-hero"
-        heading="A 360° Approach to Sonic Storytelling"
-        // AI-written placeholder line (Oct 2026): replace, then drop lineAiDraft
-        lineAiDraft
-        line="Music production, sound design and everything around it, from the first idea to the final mix."
+        heading={heroHeading(page.hero)}
+        lineAiDraft={page.hero.placeholder}
+        line={page.hero.line}
         background="#7a3bff"
         lineColor="#02b7fd"
       />
@@ -52,9 +43,9 @@ export default async function ProductionPage() {
           cards swap sides from row to row, full-width spots in between. */}
       <section className="bk-section is-dark">
         {/* The Strategy service heading: question and answer as one two-tone heading. */}
-        <div className="lp-wrap bk-service-top is-long">
+        <div className={`lp-wrap bk-service-top is-long${page.intro.placeholder ? " ai-draft" : ""}`}>
           <RevealText as="h2" className="lp-heading" text={QUESTION} />
-          <RevealText as="p" className="bk-service-line is-red" text="It’s blut, of course." after={QUESTION} />
+          <RevealText as="p" className="bk-service-line is-red" text={page.intro.answer} after={QUESTION} />
         </div>
         <ul role="list" className="lp-wrap bk-mosaic is-spaced is-chip-top">
           {ITEMS.map((item, i) => (
@@ -75,10 +66,10 @@ export default async function ProductionPage() {
       <section className="bk-section">
         <Lead
           boxed
-          heading="It’s not just music, it’s everything around it."
-          text="We specialize in assessing brands and creating bespoke sonic strategies"
+          heading={page.lead.heading}
+          text={page.lead.text}
         >
-          <CtaLink href="/strategy" label="Get to know our process" />
+          <CtaLink href={page.lead.link.href} label={page.lead.link.label} />
         </Lead>
       </section>
 
