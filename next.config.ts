@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 // Videos and audio live in blut's Nextcloud (Hetzner Storage Share, a public
 // read-only folder); everything on the site links to /media/<file>.
-const MEDIA_URL = "https://cloud.blut.agency/public.php/dav/files/cRjnSbzPkzKiNP2";
+const MEDIA_URL = "https://cloud.blut.agency/public.php/dav/files/7ax7TLoEpTWKzq6";
 
 const nextConfig: NextConfig = {
   async redirects() {
