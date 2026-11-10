@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import RevealText from "@/components/RevealText";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import MailPopup from "@/components/MailPopup";
+import { DEFAULT_TEAM_COLOR, TEAM_COLORS, getTeam } from "@/lib/team";
 
 /*
   About: the team (Elliot, 31 Oct). "We are blut." and the description sit
@@ -20,12 +21,9 @@ import MailPopup from "@/components/MailPopup";
 */
 
 // Pattern colours from the service banners: background, then the moving line.
-const PEOPLE = [
-  { name: "Karl Jawara", role: "Head of Strategy", file: "Karl", mail: "karl.jawara@blut.agency", background: "#7a3bff", line: "#02b7fd" },
-  { name: "Timo Blunck", role: "CEO & Founder", file: "Timo", mail: "timo.blunck@blut.agency", background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
-  { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)" },
-  { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
-];
+const PEOPLE = getTeam()
+  .filter((m) => m.showOnAbout)
+  .map((m) => ({ name: m.name, role: m.role, file: m.file, mail: m.email, ...(TEAM_COLORS[m.key] ?? DEFAULT_TEAM_COLOR) }));
 
 /** Fisher–Yates, once per page load (pages are full loads, see PageTransition). */
 function shuffle<T>(list: readonly T[]): T[] {

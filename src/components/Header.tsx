@@ -4,14 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
+import { getSite } from "@/lib/site";
 
-const NAV_LINKS = [
-  { href: "/strategy", label: "Strategy" },
-  { href: "/production", label: "Production" },
-  { href: "/post", label: "Post" },
-  { href: "/case-studies", label: "Cases" },
-  { href: "/about", label: "About" },
-];
+const NAV_LINKS = getSite().menu;
 
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 58 20" fill="none" class="logo-svg">
   <path d="M25.3035 14.6042L26.7093 5.63867H31.1303L29.8468 13.8131C29.5208 15.7401 30.5191 16.876 32.4342 16.876C34.8382 16.876 36.6514 15.375 37.0181 13.022L38.1998 5.63867H42.6411L40.4205 19.5738H36.6107L36.5088 16.7949H36.4884C35.0827 18.803 32.8212 19.9794 30.132 19.9794C26.6074 19.9997 24.7535 17.951 25.3035 14.6042Z" fill="currentColor"></path>

@@ -1,0 +1,54 @@
+{
+  "menu": [
+    {
+      "label": "Strategy",
+      "href": "/strategy"
+    },
+    {
+      "label": "Production",
+      "href": "/production"
+    },
+    {
+      "label": "Post",
+      "href": "/post"
+    },
+    {
+      "label": "Cases",
+      "href": "/case-studies"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    }
+  ],
+  "contactHeading": "Sound good?\nGet in touch!",
+  "contactEmail": "contact@blut.agency",
+  "mailLabel": "Mail",
+  "footerContact": [
+    "blut.agency",
+    "contact@blut.agency",
+    "Timo Blunck: +49 151 58884464",
+    "Michael Robb: +49 177 6233941",
+    "Poolstraße 42\n20355 Hamburg"
+  ],
+  "footerLegal": [
+    {
+      "label": "Imprint",
+      "href": "/imprint"
+    },
+    {
+      "label": "Privacy Policy",
+      "href": "/privacy-policy"
+    }
+  ],
+  "footerSocial": [
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/blut.agency/"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/company/blut-gmbh/"
+    }
+  ]
+}

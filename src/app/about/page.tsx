@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
-import { share } from "@/lib/share";
+import { getPage, heroHeading, pageMetadata } from "@/lib/pages";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import TeamGrid from "@/components/TeamGrid";
 import { PageHero } from "@/components/Blocks";
 
-export const metadata: Metadata = {
-  title: "About Us – Meet the Team Behind blut’s Sonic Vision",
-  description:
-    "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
-  ...share({
-    title: "About – Meet the Team Behind blut’s Sonic Vision",
-    description: "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
-    path: "/about",
-  }),
-};
+const page = getPage("aboutPage");
+
+export const metadata: Metadata = pageMetadata(page.seo, "/about");
 
 /*
   About in the new design (Figma "About", node 249:1747): the pink banner with
@@ -28,7 +21,9 @@ export default function AboutPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="about-hero"
-        heading={["Born out of Creativity.", "Rooted in Insight.", "Embedded in Music Culture."]}
+        heading={heroHeading(page.hero)}
+        line={page.hero.line || undefined}
+        lineAiDraft={page.hero.placeholder}
         small
         background="#edd4eb"
         lineColor="#871631"
@@ -38,7 +33,7 @@ export default function AboutPage() {
 
       <section className="bk-section">
         <div className="lp-wrap">
-          <TeamGrid intro="A next generation creative agency for the modern era. We believe there’s a better way to integrate music into brand communication." />
+          <TeamGrid intro={page.teamIntro} />
         </div>
       </section>
 

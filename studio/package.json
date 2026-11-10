@@ -1,0 +1,27 @@
+{
+  "name": "blut-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "The blut Sanity Studio: where the team edits the website's content.",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "import": "sanity exec scripts/import.ts --with-user-token",
+    "import:force": "FORCE=1 sanity exec scripts/import.ts --with-user-token",
+    "import:pages": "PAGES_ONLY=1 sanity exec scripts/import.ts --with-user-token"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.22.0",
+    "jsdom": "^26.1.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.22.0",
+    "styled-components": "^6.6.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.7",
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

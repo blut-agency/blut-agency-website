@@ -1,0 +1,385 @@
+{
+  "homePage": {
+    "stageLine": "We help brands find their sound, and make sure people hear it.",
+    "stageLinePlaceholder": true,
+    "soundLabel": "Click for sound",
+    "pauseLabel": "Pause",
+    "offersHeading": "What we do",
+    "offersText": "blut is a music-led creative agency. We produce music and sound for campaigns, build sonic strategies with measurable impact, and finish every project in post.",
+    "offersTextPlaceholder": true,
+    "offers": [
+      {
+        "page": "Strategy",
+        "text": "Find out what your sound is really saying, and how our strategy could take it to the next level.",
+        "placeholder": false,
+        "linkLabel": "Get to know our process",
+        "image": "/images/home/teaser-spt.jpg",
+        "alt": "The Sonic Performance Tracker dashboard on a laptop",
+        "preview": "/videos/previews/spt-dashboard.mp4"
+      },
+      {
+        "page": "Production",
+        "text": "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common?",
+        "placeholder": false,
+        "linkLabel": "See our production work",
+        "image": "/images/home/teaser-story.jpg",
+        "alt": "Nina Chuba in the Samsung spot",
+        "preview": "/videos/previews/samsung-nina-chuba.mp4"
+      },
+      {
+        "page": "Post",
+        "text": "Sound design, mixing, and video post. Everything your spot needs to reach the finish line.",
+        "placeholder": false,
+        "linkLabel": "See our post work",
+        "image": "/images/story/crazy-wolf.jpg",
+        "alt": "The Crazy Wolf energy drink spot",
+        "preview": "/videos/previews/crazy-wolf.mp4"
+      }
+    ],
+    "casesHeading": "Featured cases",
+    "casesLink": {
+      "label": "View all cases",
+      "href": "/case-studies"
+    },
+    "whyHeading": "Why do you need blut?",
+    "whyText": "We’re a full-service, music-led creative agency - from strategy to music production, artist collaborations to content creation - we do it all… and we measure the success of our work so you’ll know you’ve made the right call.",
+    "whyLink": {
+      "label": "Get to know us",
+      "href": "/about"
+    },
+    "seo": {
+      "title": "",
+      "shareTitle": "blut – Music Strategies with Measurable Impact",
+      "description": "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
+      "shareDescription": "Music production, sound design and 360° sonic strategy: blut is a music-led creative agency from Hamburg, Berlin and Munich."
+    }
+  },
+  "productionPage": {
+    "hero": {
+      "heading": "A 360° Approach to Sonic Storytelling",
+      "line": "Music production, sound design and everything around it, from the first idea to the final mix.",
+      "placeholder": true
+    },
+    "intro": {
+      "question": "What do Nina Chuba, The Backstreet Boys and a secret lab in the Alps have in common? Let’s find out.",
+      "answer": "It’s blut, of course.",
+      "placeholder": false
+    },
+    "spots": [
+      {
+        "client": "Samsung / Nina Chuba",
+        "layout": "wide",
+        "image": "/images/story/samsung-nina-chuba.jpg",
+        "text": "Some projects call for all-round production, like when we worked with Nina Chuba on this Samsung spot. We took her voice recordings from the film set and created a fitting soundtrack for the visuals, some subtle SFX to support the movement of the spot and an overall natural yet hi-end mix to round out the project.",
+        "videoUrl": "/videos/work/samsung-nina-chuba.mp4",
+        "preview": "/videos/previews/samsung-nina-chuba.mp4"
+      },
+      {
+        "client": "Schwarzkopf",
+        "layout": "row",
+        "image": "/images/story/schwarzkopf.jpg",
+        "text": "But the talent doesn’t always have to be musical. For the relaunch of the Schwarzkopf brand, we composed a brand song with changing arrangements to suit a variety of celebrities and influencers including Diane Kruger, Collien Fernandes, Sofia Vergara, Ana Ivanović and Alli Neumann to name a few (oh wait, Alli actually is a musician, but you get the drift). Here’s the hero version.",
+        "videoUrl": "/videos/work/schwarzkopf.mp4",
+        "preview": "/videos/previews/schwarzkopf.mp4"
+      },
+      {
+        "client": "Volkswagen",
+        "layout": "row-flipped",
+        "image": "/images/story/volkswagen.jpg",
+        "text": "Sometimes the artist is in the spotlight, but for this VW campaign, the talent was hiding in the background. For the launch of the VW e-up! we created this fresh beat and had UK Grime legend Che Lingo work his magic on it. “They never thought we were good enough, now we’re pullin’ up…”",
+        "videoUrl": "/videos/work/volkswagen.mp4",
+        "preview": "/videos/previews/volkswagen.mp4"
+      },
+      {
+        "client": "Gore-Tex",
+        "layout": "row",
+        "image": "/images/story/gore-tex.jpg",
+        "text": "A song doesn’t always have to be the main focus though. For this Gore-Tex campaign we went into their secret testing facility in the Bavarian Alps and recorded all of their weird and wonderful all-weather testing machines, turning them into this epic adventure in sound design.",
+        "videoUrl": "/videos/work/gore-tex.mp4",
+        "preview": "/videos/previews/gore-tex.mp4"
+      },
+      {
+        "client": "Crazy Wolf",
+        "layout": "wide",
+        "image": "/images/story/crazy-wolf.jpg",
+        "text": "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
+        "videoUrl": "/videos/work/crazy-wolf.mp4",
+        "preview": "/videos/previews/crazy-wolf.mp4"
+      },
+      {
+        "client": "McDonald’s",
+        "layout": "row-flipped",
+        "image": "/images/story/mcdonalds.jpg",
+        "text": "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
+        "videoUrl": "/videos/work/mcdonalds.mp4",
+        "preview": "/videos/previews/mcdonalds.mp4"
+      },
+      {
+        "client": "Targobank",
+        "layout": "row",
+        "image": "/images/story/targobank.jpg",
+        "text": "Earlier we remade the Backstreet Boys, now we’re remaking Michael Sembello’s 80s classic, Maniac. From licensing, to recreating those legendary 80s synth sounds to casting a singer who can hit the (very) high notes like it’s the most normal thing in the world, we had it “covered” from start to finish.",
+        "videoUrl": "/videos/work/targobank.mp4",
+        "preview": "/videos/previews/targobank.mp4"
+      },
+      {
+        "client": "Dr. Oetker",
+        "layout": "row-flipped",
+        "image": "/images/story/dr-oetker.jpg",
+        "text": "Phew… need to calm down a little after that one. How about a lovely little heart-warming, nostalgic, acoustic ballad to bring down the pulse and remind us of the sweeter moments in life?",
+        "videoUrl": "/videos/work/dr-oetker.mp4",
+        "preview": "/videos/previews/dr-oetker.mp4"
+      },
+      {
+        "client": "Adidas",
+        "layout": "row",
+        "image": "/images/story/adidas-originals.jpg",
+        "text": "We do like to get more artistic too from time to time, like in this cinematic Adidas Superstar spot featuring rapper Jugo Ürdens and shot on 16mm. The music sounds like a film score from yesteryear and we felt nostalgic recording brass, woodwinds and grand piano for it, before creating the sound design and final mix.",
+        "videoUrl": "/videos/work/adidas-originals.mp4",
+        "preview": "/videos/previews/adidas-originals.mp4"
+      },
+      {
+        "client": "Hardmade",
+        "layout": "wide",
+        "image": "/images/story/hardmade.jpg",
+        "text": "To sum it all up… we love all things music and all things audio. Here’s one last spot with lots of different styles and sounds in it, because you can combine metal with salsa and trap if you want to.",
+        "videoUrl": "/videos/work/hardmade.mp4",
+        "preview": "/videos/previews/hardmade.mp4"
+      }
+    ],
+    "lead": {
+      "heading": "It’s not just music, it’s everything around it.",
+      "text": "We specialize in assessing brands and creating bespoke sonic strategies",
+      "link": {
+        "label": "Get to know our process",
+        "href": "/strategy"
+      }
+    },
+    "seo": {
+      "title": "Production – A 360° Approach to Sonic Storytelling | blut",
+      "shareTitle": "Production – A 360° Approach to Sonic Storytelling",
+      "description": "What do Nina Chuba, the Backstreet Boys and a secret lab in the Alps have in common? Let’s find out. It’s blut, of course.",
+      "shareDescription": ""
+    }
+  },
+  "postPage": {
+    "hero": {
+      "heading": "Post-Production",
+      "line": "Sound design, mixing and video post: the finishing touches that make a spot feel complete.",
+      "placeholder": true
+    },
+    "intro": {
+      "question": "What’s the difference between a good spot and one you can’t forget?",
+      "answer": "The last ten percent. That’s ours.",
+      "placeholder": true
+    },
+    "spots": [
+      {
+        "client": "Crazy Wolf",
+        "layout": "wide",
+        "image": "/images/story/crazy-wolf.jpg",
+        "text": "Sound design can be adventurous, sound design can be subtle and sound design can also be insane, like when you’re hyped up on too many energy drinks.",
+        "videoUrl": "/videos/work/crazy-wolf.mp4",
+        "preview": "/videos/previews/crazy-wolf.mp4"
+      },
+      {
+        "client": "Gore-Tex",
+        "layout": "row",
+        "image": "/images/story/gore-tex.jpg",
+        "text": "A song doesn’t always have to be the main focus though. For this Gore-Tex campaign we went into their secret testing facility in the Bavarian Alps and recorded all of their weird and wonderful all-weather testing machines, turning them into this epic adventure in sound design.",
+        "videoUrl": "/videos/work/gore-tex.mp4",
+        "preview": "/videos/previews/gore-tex.mp4"
+      },
+      {
+        "client": "McDonald’s",
+        "layout": "row-flipped",
+        "image": "/images/story/mcdonalds.jpg",
+        "text": "We didn’t write this song (obviously), but instead remade this Backstreet Boys classic with a group of “singers” who should maybe stick to acting. But that was part of the fun, as was creating the overall sound design and mix of the spot.",
+        "videoUrl": "/videos/work/mcdonalds.mp4",
+        "preview": "/videos/previews/mcdonalds.mp4"
+      },
+      {
+        "client": "Adidas",
+        "layout": "row",
+        "image": "/images/story/adidas-originals.jpg",
+        "text": "We do like to get more artistic too from time to time, like in this cinematic Adidas Superstar spot featuring rapper Jugo Ürdens and shot on 16mm. The music sounds like a film score from yesteryear and we felt nostalgic recording brass, woodwinds and grand piano for it, before creating the sound design and final mix.",
+        "videoUrl": "/videos/work/adidas-originals.mp4",
+        "preview": "/videos/previews/adidas-originals.mp4"
+      },
+      {
+        "client": "Finstral",
+        "layout": "wide",
+        "image": "/images/story/finstral.jpg",
+        "text": "What would sound be without some nice visuals? For Finstral’s colorful campaign, we created the brand song, brand voice and handled post-production in-house; editing and grading the films for both online and TVC.",
+        "videoUrl": "/videos/work/finstral.mp4",
+        "preview": "/videos/previews/finstral.mp4"
+      }
+    ],
+    "lead": {
+      "heading": "It’s not just music, it’s everything around it.",
+      "text": "Our music production and data-driven sonic strategies work hand-in-hand to create memorable campaigns that genuinely connect with audiences.",
+      "link": {
+        "label": "View our case studies",
+        "href": "/case-studies"
+      }
+    },
+    "seo": {
+      "title": "Post-Production – Sound Design, Mixing and Video Post | blut",
+      "shareTitle": "Post-Production",
+      "description": "Sound design, mixing and video post from blut, the music-led creative agency from Hamburg, Berlin and Munich.",
+      "shareDescription": ""
+    }
+  },
+  "strategyPage": {
+    "hero": {
+      "heading": "Find out what your sound is really saying.",
+      "line": "We map how your brand sounds today, then build the plan to make it work harder.",
+      "placeholder": true
+    },
+    "intro": "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences to identify what’s working, what’s missing and where value is being lost. Then we construct an action plan to get your brand on the right path.",
+    "film": {
+      "client": "Sonic Performance Tracker",
+      "layout": "wide",
+      "image": "/images/spt/sales-video-poster.jpg",
+      "videoUrl": "/videos/spt-sales.mp4",
+      "preview": "/videos/previews/spt-dashboard.mp4",
+      "text": "See how the Sonic Performance Tracker shows what your sound is really saying."
+    },
+    "services": [
+      {
+        "heading": "Sonic Strategy",
+        "line": "Your brand needs a Sonic Identity – but which one?",
+        "intro": "We analyze your brand, its cultural context, the sounds of the market, and the habits of your target audience to define your perfect sonic identity. These are our tools:",
+        "image": "/images/spt/dashboard-zoom-1.jpg",
+        "alt": "The Sonic Performance Tracker dashboard",
+        "items": [
+          {
+            "name": "Sonic Sweetspot",
+            "text": "With our Sonic Sweetspot service, we provide a robust brand and competitor analysis that identifies the distinctive musical space a brand can claim for itself within the market."
+          },
+          {
+            "name": "Sonic Trend Radar",
+            "text": "Our Sonic Trend Radar service gathers information on emerging sonic trends relevant to your brand, and suggests creative ways in which you can capitalize on their cultural impact."
+          },
+          {
+            "name": "ArtistMatch",
+            "text": "Our ArtistMatch service uses both data-based research alongside qualitative factors to ensure the artist partnerships we recommend are not only creatively inspired but feel authentic and make strategic sense."
+          }
+        ]
+      },
+      {
+        "heading": "Content Production",
+        "line": "How do we bring your sonic identity to life?",
+        "intro": "From strategy to real life. Informed by our analytical insights, we craft all kinds of assets shaped by music culture - from sound and film to events, merch, digital content, and immersive experiences - to power your communication across every touchpoint.",
+        "image": "/images/spt/slideshow-poster.jpg",
+        "alt": "On set with Hyundai Inster",
+        "items": [
+          {
+            "name": "Sonic Branding & Identity",
+            "text": "We don’t create jingles. We build sonic identities that become cultural signatures. Your sound is not decoration. It’s your brand’s heartbeat — recognizable, emotional, unforgettable."
+          },
+          {
+            "name": "Content & Campaign Production",
+            "text": "We design campaigns, social content, films, and brand experiences that don’t just grab attention — they earn emotional loyalty. Every piece of content starts with your sonic DNA and turns it into real-world resonance."
+          },
+          {
+            "name": "Cultural Activation & Experiences",
+            "text": "We orchestrate artist collaborations, branded playlists, cultural partnerships, and live experiences that make your brand part of the conversation — not an outsider shouting from the sidelines."
+          }
+        ],
+        "link": {
+          "label": "See our production work",
+          "href": "/production"
+        }
+      },
+      {
+        "heading": "Performance & Measurement",
+        "line": "Not just music - measurable impact.",
+        "intro": "Keen insights and extraordinary craft are only part of the story. None of it means anything if we can’t measure the impact of our actions. We provide reporting, market research and data analytics to empirically prove the efficacy of our sonic strategies.",
+        "image": "/images/spt/dashboard-zoom-2.jpg",
+        "alt": "Sonic Strategy Score in the Sonic Performance Tracker dashboard",
+        "items": [
+          {
+            "name": "Direct Response Tracking",
+            "text": "We measure what matters immediately: engagement rates, shares, searches, and audience reactions across platforms. No assumptions. Just clear signals that your sound is being heard — and felt."
+          },
+          {
+            "name": "Cultural Resonance Analysis",
+            "text": "We track how your activations resonate emotionally and culturally — across demographics, subcultures, and digital spaces. Because cultural relevance isn’t built on views. It’s built on meaning."
+          },
+          {
+            "name": "Strategic Impact Scoring",
+            "text": "Our Cultural Relevance Score and Strategy Score reveal how music drives brand loyalty, emotional equity, and market leadership. Finally, creativity you can manage — and monetize."
+          }
+        ]
+      }
+    ],
+    "lead": {
+      "heading": "Want to see strategy at work?",
+      "text": "Our music production and data-driven sonic strategies work hand-in-hand to create memorable campaigns that genuinely connect with audiences.",
+      "link": {
+        "label": "View our case studies",
+        "href": "/case-studies"
+      }
+    },
+    "seo": {
+      "title": "Strategy – Find out what your sound is really saying | blut",
+      "shareTitle": "Strategy – Find out what your sound is really saying",
+      "description": "We assess your existing sonic ecosystem across campaigns, channels, partnerships and experiences, then construct an action plan to get your brand on the right path.",
+      "shareDescription": ""
+    }
+  },
+  "casesPage": {
+    "hero": {
+      "heading": "Case Studies",
+      "line": "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
+      "placeholder": false
+    },
+    "lead": {
+      "heading": "It’s not just music, it’s everything around it.",
+      "text": "Our music production and data-driven sonic strategies work hand-in-hand to create memorable campaigns that genuinely connect with audiences.",
+      "link": {
+        "label": "Get to know our process",
+        "href": "/strategy"
+      }
+    },
+    "seo": {
+      "title": "Case Studies | blut",
+      "shareTitle": "Case Studies",
+      "description": "Take a more in-depth look at how strategy and music production come together with a selection of some of our most exciting work.",
+      "shareDescription": ""
+    }
+  },
+  "aboutPage": {
+    "hero": {
+      "heading": "Born out of Creativity.\nRooted in Insight.\nEmbedded in Music Culture.",
+      "line": "",
+      "placeholder": false
+    },
+    "teamIntro": "A next generation creative agency for the modern era. We believe there’s a better way to integrate music into brand communication.",
+    "seo": {
+      "title": "About Us – Meet the Team Behind blut’s Sonic Vision",
+      "shareTitle": "About – Meet the Team Behind blut’s Sonic Vision",
+      "description": "Meet blut – a next-gen, full-service music agency redefining how brands use sound. Strategy, creativity, and measurable impact from a collective of sonic experts.",
+      "shareDescription": ""
+    }
+  },
+  "imprintPage": {
+    "body": "<h1>Imprint</h1><h4>Angaben gemäß § 5 DDG</h4><p>BLUT GmbH<br/>Poolstraße 42<br/>20355 Hamburg</p><h4>Vertreten durch</h4><p>Timo Blunck</p><h4>Kontakt</h4><p>Timo Blunck: +49 151 58884464<br/>Michael Robb: +49 177 6233941<br/>E-Mail: <a href=\"mailto:contact@blut.agency\">contact@blut.agency</a></p><h4>Registereintrag</h4><p>Registergericht: Amtsgericht Hamburg<br/>Registernummer: HRB 138213</p><h4>Umsatzsteuer-ID</h4><p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE301604095</p><h4>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h4><p>Timo Blunck<br/>Poolstraße 42<br/>20355 Hamburg</p><h4>Verbraucherstreitbeilegung</h4><p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p><h4>Konzept &amp; Design</h4><p><a href=\"http://gudbergnerger.com\" target=\"_blank\" rel=\"noopener noreferrer\">GUDBERG NERGER</a></p><h4>Webdesign</h4><p>Nicolas Blunck</p>",
+    "seo": {
+      "title": "Imprint",
+      "shareTitle": "",
+      "description": "",
+      "shareDescription": ""
+    }
+  },
+  "privacyPage": {
+    "body": "<h1>Privacy Policy</h1>\n<h2>1. Datenschutz auf einen Blick</h2>\n<h3>Allgemeine Hinweise</h3>\n<p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.</p>\n<h3>Datenerfassung auf dieser Website</h3>\n<h4>Wer ist verantwortlich für die Datenerfassung auf dieser Website?</h4>\n<p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Abschnitt „Hinweis zur Verantwortlichen Stelle“ in dieser Datenschutzerklärung entnehmen.</p>\n<h4>Wie erfassen wir Ihre Daten?</h4>\n<p>Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen, z. B. per E-Mail oder Telefon.</p>\n<p>Andere Daten werden beim Besuch der Website automatisch durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z. B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs). Die Erfassung dieser Daten erfolgt automatisch, sobald Sie diese Website betreten.</p>\n<h4>Wofür nutzen wir Ihre Daten?</h4>\n<p>Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gewährleisten.</p>\n<h4>Welche Rechte haben Sie bezüglich Ihrer Daten?</h4>\n<p>Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, können Sie diese Einwilligung jederzeit für die Zukunft widerrufen. Außerdem haben Sie das Recht, unter bestimmten Umständen die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>\n<p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit an uns wenden.</p>\n<h3>Keine Analyse-Tools und keine Inhalte von Drittanbietern</h3>\n<p>Diese Website verwendet keine Analyse- oder Tracking-Tools. Sie bindet keine Inhalte von Drittanbietern ein, etwa Videoplattformen oder Social-Media-Plugins.</p>\n<h2>2. Hosting</h2>\n<h3>Vercel</h3>\n<p>Wir hosten diese Website bei der Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, USA (nachfolgend „Vercel“).</p>\n<p>Wenn Sie unsere Website besuchen, verarbeitet Vercel technische Daten in Server-Logfiles. Dazu gehören Ihre IP-Adresse, Datum und Uhrzeit des Abrufs, die aufgerufene Seite sowie Browser und Betriebssystem. Diese Daten sind technisch nötig, um die Website auszuliefern und vor Angriffen zu schützen.</p>\n<p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse an einer zuverlässigen und sicheren Bereitstellung unserer Website.</p>\n<p>Vercel kann Daten in die USA übertragen. Vercel ist nach dem EU-US Data Privacy Framework (DPF) zertifiziert. Details finden Sie in der Datenschutzerklärung von Vercel: <a href=\"https://vercel.com/legal/privacy-policy\" target=\"_blank\" rel=\"noopener noreferrer\">https://vercel.com/legal/privacy-policy</a>.</p>\n<h3>Videos und Audiodateien</h3>\n<p>Videos und Audiodateien auf dieser Website laden wir von unserem eigenen Cloud-Speicher (cloud.blut.agency). Diesen betreibt für uns die Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen. Die Server stehen in der Europäischen Union.</p>\n<p>Beim Abspielen verbindet sich Ihr Browser mit diesem Server. Dabei erhält Hetzner Ihre IP-Adresse und technische Daten wie Browser und Uhrzeit. Wir nutzen diese Daten nicht für Analysen.</p>\n<p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir haben ein berechtigtes Interesse daran, unsere Arbeiten ohne externe Videoplattformen zu zeigen. Details finden Sie in der Datenschutzerklärung von Hetzner: <a href=\"https://www.hetzner.com/de/legal/privacy-policy\" target=\"_blank\" rel=\"noopener noreferrer\">https://www.hetzner.com/de/legal/privacy-policy</a>.</p>\n<h3>Schriftarten</h3>\n<p>Die Schriftarten auf dieser Website sind lokal eingebunden. Beim Laden der Seite besteht keine Verbindung zu Servern von Drittanbietern wie Google Fonts.</p>\n<h2>3. Allgemeine Hinweise und Pflicht­informationen</h2>\n<h3>Datenschutz</h3>\n<p>Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>\n<p>Wir weisen darauf hin, dass die Datenübertragung im Internet (z. B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.</p>\n<h3>Hinweis zur verantwortlichen Stelle</h3>\n<p>Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>\n<p>BLUT GmbH<br>Poolstraße 42<br>20355 Hamburg</p>\n<p>E-Mail: <a href=\"mailto:contact@blut.agency\">contact@blut.agency</a></p>\n<p>Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten (z. B. Namen, E-Mail-Adressen o. Ä.) entscheidet.</p>\n<h3>Speicherdauer</h3>\n<p>Soweit innerhalb dieser Datenschutzerklärung keine speziellere Speicherdauer genannt wurde, verbleiben Ihre personenbezogenen Daten bei uns, bis der Zweck für die Datenverarbeitung entfällt. Wenn Sie ein berechtigtes Löschersuchen geltend machen oder eine Einwilligung zur Datenverarbeitung widerrufen, werden Ihre Daten gelöscht, sofern wir keine anderen rechtlich zulässigen Gründe für die Speicherung Ihrer personenbezogenen Daten haben (z. B. steuer- oder handelsrechtliche Aufbewahrungsfristen); im letztgenannten Fall erfolgt die Löschung nach Fortfall dieser Gründe.</p>\n<h3>Allgemeine Hinweise zu den Rechtsgrundlagen der Datenverarbeitung auf dieser Website</h3>\n<p>Sofern Sie in die Datenverarbeitung eingewilligt haben, verarbeiten wir Ihre personenbezogenen Daten auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO bzw. Art. 9 Abs. 2 lit. a DSGVO, sofern besondere Datenkategorien nach Art. 9 Abs. 1 DSGVO verarbeitet werden. Im Falle einer ausdrücklichen Einwilligung in die Übertragung personenbezogener Daten in Drittstaaten erfolgt die Datenverarbeitung außerdem auf Grundlage von Art. 49 Abs. 1 lit. a DSGVO. Sofern Sie in die Speicherung von Cookies oder in den Zugriff auf Informationen in Ihr Endgerät (z. B. via Device-Fingerprinting) eingewilligt haben, erfolgt die Datenverarbeitung zusätzlich auf Grundlage von § 25 Abs. 1 TDDDG. Die Einwilligung ist jederzeit widerrufbar. Sind Ihre Daten zur Vertragserfüllung oder zur Durchführung vorvertraglicher Maßnahmen erforderlich, verarbeiten wir Ihre Daten auf Grundlage des Art. 6 Abs. 1 lit. b DSGVO. Des Weiteren verarbeiten wir Ihre Daten, sofern diese zur Erfüllung einer rechtlichen Verpflichtung erforderlich sind auf Grundlage von Art. 6 Abs. 1 lit. c DSGVO. Die Datenverarbeitung kann ferner auf Grundlage unseres berechtigten Interesses nach Art. 6 Abs. 1 lit. f DSGVO erfolgen. Über die jeweils im Einzelfall einschlägigen Rechtsgrundlagen wird in den folgenden Absätzen dieser Datenschutzerklärung informiert.</p>\n<h3>Empfänger von personenbezogenen Daten</h3>\n<p>Im Rahmen unserer Geschäftstätigkeit arbeiten wir mit verschiedenen externen Stellen zusammen. Dabei ist teilweise auch eine Übermittlung von personenbezogenen Daten an diese externen Stellen erforderlich. Wir geben personenbezogene Daten nur dann an externe Stellen weiter, wenn dies im Rahmen einer Vertragserfüllung erforderlich ist, wenn wir gesetzlich hierzu verpflichtet sind (z. B. Weitergabe von Daten an Steuerbehörden), wenn wir ein berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO an der Weitergabe haben oder wenn eine sonstige Rechtsgrundlage die Datenweitergabe erlaubt. Beim Einsatz von Auftragsverarbeitern geben wir personenbezogene Daten unserer Kunden nur auf Grundlage eines gültigen Vertrags über Auftragsverarbeitung weiter. Im Falle einer gemeinsamen Verarbeitung wird ein Vertrag über gemeinsame Verarbeitung geschlossen.</p>\n<h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3>\n<p>Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>\n<h3>Widerspruchsrecht gegen die Datenerhebung in besonderen Fällen sowie gegen Direktwerbung (Art. 21 DSGVO)</h3>\n<p>WENN DIE DATENVERARBEITUNG AUF GRUNDLAGE VON ART. 6 ABS. 1 LIT. E ODER F DSGVO ERFOLGT, HABEN SIE JEDERZEIT DAS RECHT, AUS GRÜNDEN, DIE SICH AUS IHRER BESONDEREN SITUATION ERGEBEN, GEGEN DIE VERARBEITUNG IHRER PERSONENBEZOGENEN DATEN WIDERSPRUCH EINZULEGEN; DIES GILT AUCH FÜR EIN AUF DIESE BESTIMMUNGEN GESTÜTZTES PROFILING. DIE JEWEILIGE RECHTSGRUNDLAGE, AUF DENEN EINE VERARBEITUNG BERUHT, ENTNEHMEN SIE DIESER DATENSCHUTZERKLÄRUNG. WENN SIE WIDERSPRUCH EINLEGEN, WERDEN WIR IHRE BETROFFENEN PERSONENBEZOGENEN DATEN NICHT MEHR VERARBEITEN, ES SEI DENN, WIR KÖNNEN ZWINGENDE SCHUTZWÜRDIGE GRÜNDE FÜR DIE VERARBEITUNG NACHWEISEN, DIE IHRE INTERESSEN, RECHTE UND FREIHEITEN ÜBERWIEGEN ODER DIE VERARBEITUNG DIENT DER GELTENDMACHUNG, AUSÜBUNG ODER VERTEIDIGUNG VON RECHTSANSPRÜCHEN (WIDERSPRUCH NACH ART. 21 ABS. 1 DSGVO).</p>\n<p>WERDEN IHRE PERSONENBEZOGENEN DATEN VERARBEITET, UM DIREKTWERBUNG ZU BETREIBEN, SO HABEN SIE DAS RECHT, JEDERZEIT WIDERSPRUCH GEGEN DIE VERARBEITUNG SIE BETREFFENDER PERSONENBEZOGENER DATEN ZUM ZWECKE DERARTIGER WERBUNG EINZULEGEN; DIES GILT AUCH FÜR DAS PROFILING, SOWEIT ES MIT SOLCHER DIREKTWERBUNG IN VERBINDUNG STEHT. WENN SIE WIDERSPRECHEN, WERDEN IHRE PERSONENBEZOGENEN DATEN ANSCHLIESSEND NICHT MEHR ZUM ZWECKE DER DIREKTWERBUNG VERWENDET (WIDERSPRUCH NACH ART. 21 ABS. 2 DSGVO).</p>\n<h3>Beschwerde­recht bei der zuständigen Aufsichts­behörde</h3>\n<p>Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes zu. Das Beschwerderecht besteht unbeschadet anderweitiger verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.</p>\n<p>Zuständige Aufsichtsbehörde ist der Hamburgische Beauftragte für Datenschutz und Informationsfreiheit.</p>\n<h3>Recht auf Daten­übertrag­barkeit</h3>\n<p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem gängigen, maschinenlesbaren Format aushändigen zu lassen. Sofern Sie die direkte Übertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch machbar ist.</p>\n<h3>Auskunft, Berichtigung und Löschung</h3>\n<p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder Löschung dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema personenbezogene Daten können Sie sich jederzeit an uns wenden.</p>\n<h3>Recht auf Einschränkung der Verarbeitung</h3>\n<p>Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu können Sie sich jederzeit an uns wenden. Das Recht auf Einschränkung der Verarbeitung besteht in folgenden Fällen:</p>\n<ul role=\"list\">\n  <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, benötigen wir in der Regel Zeit, um dies zu überprüfen. Für die Dauer der Prüfung haben Sie das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li>\n  <li>Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtmäßig geschah/geschieht, können Sie statt der Löschung die Einschränkung der Datenverarbeitung verlangen.</li>\n  <li>Wenn wir Ihre personenbezogenen Daten nicht mehr benötigen, Sie sie jedoch zur Ausübung, Verteidigung oder Geltendmachung von Rechtsansprüchen benötigen, haben Sie das Recht, statt der Löschung die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li>\n  <li>Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO eingelegt haben, muss eine Abwägung zwischen Ihren und unseren Interessen vorgenommen werden. Solange noch nicht feststeht, wessen Interessen überwiegen, haben Sie das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li>\n</ul>\n<p>Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten eingeschränkt haben, dürfen diese Daten – von ihrer Speicherung abgesehen – nur mit Ihrer Einwilligung oder zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen oder zum Schutz der Rechte einer anderen natürlichen oder juristischen Person oder aus Gründen eines wichtigen öffentlichen Interesses der Europäischen Union oder eines Mitgliedstaats verarbeitet werden.</p>\n<h3>SSL- bzw. TLS-Verschlüsselung</h3>\n<p>Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://“ auf „https://“ wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.</p>\n<p>Wenn die SSL- bzw. TLS-Verschlüsselung aktiviert ist, können die Daten, die Sie an uns übermitteln, nicht von Dritten mitgelesen werden.</p>\n<h2>4. Datenerfassung auf dieser Website</h2>\n<h3>Anfrage per E-Mail oder Telefon</h3>\n<p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, wird Ihre Anfrage inklusive aller daraus hervorgehenden personenbezogenen Daten (Name, Anfrage) zum Zwecke der Bearbeitung Ihres Anliegens bei uns gespeichert und verarbeitet. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>\n<p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist. In allen übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde; die Einwilligung ist jederzeit widerrufbar.</p>\n<p>Die von Ihnen an uns per Kontaktanfragen übersandten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihres Anliegens). Zwingende gesetzliche Bestimmungen – insbesondere gesetzliche Aufbewahrungsfristen – bleiben unberührt.</p>\n<h3>Links zu anderen Websites</h3>\n<p>Unsere Website enthält Links zu LinkedIn, Instagram, Spotify und Google Maps. Erst wenn Sie einen Link anklicken, verbinden Sie sich mit dem jeweiligen Anbieter. Dann gilt dessen Datenschutzerklärung.</p>\n<p>Stand: November 2026</p>\n",
+    "seo": {
+      "title": "Privacy Policy",
+      "shareTitle": "",
+      "description": "",
+      "shareDescription": ""
+    }
+  }
+}

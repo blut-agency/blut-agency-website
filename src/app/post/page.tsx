@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
-import { share } from "@/lib/share";
+import { getPage, heroHeading, pageMetadata } from "@/lib/pages";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
-import { POST_ITEMS as ITEMS } from "@/content/offers";
 import { themeFromColors } from "@/lib/imageTheme";
 
-export const metadata: Metadata = {
-  title: "Post-Production – Sound Design, Mixing and Video Post | blut",
-  description: "Sound design, mixing and video post from blut, the music-led creative agency from Hamburg, Berlin and Munich.",
-  ...share({
-    title: "Post-Production",
-    description: "Sound design, mixing and video post from blut, the music-led creative agency from Hamburg, Berlin and Munich.",
-    path: "/post",
-    image: { url: "/images/story/crazy-wolf.jpg", alt: "The Crazy Wolf energy drink spot" },
-  }),
-};
+const page = getPage("postPage");
+const ITEMS = page.spots.map(({ layout, ...spot }) => ({ layout, spot }));
+
+export const metadata: Metadata = pageMetadata(page.seo, "/post", { url: "/images/story/crazy-wolf.jpg", alt: "The Crazy Wolf energy drink spot" });
 
 /*
   Post (call with Michael and Timo, 30 Oct 2026): laid out like Production,
@@ -30,8 +23,8 @@ export const metadata: Metadata = {
 const POST_THEME = themeFromColors({ slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" });
 
 // Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
-const QUESTION = "What’s the difference between a good spot and one you can’t forget?";
-const ANSWER = "The last ten percent. That’s ours.";
+const QUESTION = page.intro.question;
+const ANSWER = page.intro.answer;
 
 export default async function PostPage() {
 
@@ -39,10 +32,9 @@ export default async function PostPage() {
     <div className="main-wrapper lp-page bk-page">
       <PageHero
         form="post-hero"
-        heading="Post-Production"
-        // AI-written placeholder line (Oct 2026): replace, then drop lineAiDraft
-        lineAiDraft
-        line="Sound design, mixing and video post: the finishing touches that make a spot feel complete."
+        heading={heroHeading(page.hero)}
+        lineAiDraft={page.hero.placeholder}
+        line={page.hero.line}
         background="var(--_color---accent-color-2)"
         lineColor="var(--_color---accent-color-1)"
         dark
@@ -51,7 +43,7 @@ export default async function PostPage() {
 
       <section className="bk-section is-dark">
         {/* The question, then blut's answer in grey, as one two-tone heading. */}
-        <div className="lp-wrap bk-service-top is-long ai-draft">
+        <div className={`lp-wrap bk-service-top is-long${page.intro.placeholder ? " ai-draft" : ""}`}>
           <RevealText as="h2" className="lp-heading" text={QUESTION} />
           <RevealText as="p" className="bk-service-line is-blue" text={ANSWER} after={QUESTION} />
         </div>
@@ -74,10 +66,10 @@ export default async function PostPage() {
       <section className="bk-section">
         <Lead
           boxed
-          heading="It’s not just music, it’s everything around it."
-          text="Our music production and data-driven sonic strategies work hand-in-hand to create memorable campaigns that genuinely connect with audiences."
+          heading={page.lead.heading}
+          text={page.lead.text}
         >
-          <CtaLink href="/case-studies" label="View our case studies" />
+          <CtaLink href={page.lead.link.href} label={page.lead.link.label} />
         </Lead>
       </section>
 
