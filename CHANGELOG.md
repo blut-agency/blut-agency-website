@@ -3,20 +3,29 @@
 Every release of the blut website, newest first.
 Copy marked with * on the site is still placeholder text.
 
-## v2.0.0 (unreleased)
+## v2.0.0 (10 Nov 2026)
 
 The new blut website.
 
 ### New
-- New menu: Production, Strategy, Post, Cases and About.
+- New menu: Strategy, Production, Post, Cases and About.
 - Post: a new page for sound design, mixing and video post.
 - Cases: filters for Production, Strategy and every service. Hyundai sits on top.
 - Case pages: a new editorial layout with the facts in the banner.
 - About: the team portraits. On hover, the photo background fades into a coloured pattern.
 - Phones: a burger menu that opens full screen.
 - A new favicon and new link preview images.
+- An editing studio at /admin for cases, page texts, the team, the menu and the footer.
+- New imprint and privacy policy texts.
+- A welcome card with the blut recap film on the first visit. Links with ?recap=1 always show it.
+- Studio: a case builder, where editors put a case page together from sections and reorder them.
 
 ### Changed
+- Colours follow Elliot's styleguide v2.1.
+- Every page has its own banner, tile and band colours. The Home tiles match their pages.
+- Each case picks its colour from its photo.
+- Portraits on About and in the contact blocks open a small panel to send or copy the email address.
+- Films and audio now play from blut's own storage instead of Vimeo.
 - Home: featured cases now lead with Hyundai.
 - Home: the Devil's Advocate hover clip plays the Devil's Advocate film.
 - Home and Cases: the Hyundai thumbnail shows DJ Seinfeld's face.
