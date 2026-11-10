@@ -3,7 +3,8 @@
   src/content/cms-content.json into the studio's dataset, with their pictures.
 
   Run from the studio folder:  npm run import
-  (uses your Sanity login; `npm run import:force` overwrites cases that exist)
+  (uses your Sanity login; `npm run import:force` overwrites cases that exist;
+  `npm run import:sections` only adds page sections to cases that have none)
 
   The text sections are HTML in the JSON. They become Sanity text blocks here,
   and the site's sync script turns them back into the same HTML.
@@ -13,6 +14,7 @@ import path from "node:path";
 import { getCliClient } from "sanity/cli";
 import { JSDOM } from "jsdom";
 import { PAGE_TYPES, schemaTypes } from "../schemaTypes";
+import { legacySections, type CaseSection, type LegacyCase } from "../../src/lib/caseSections";
 
 const client = getCliClient({ apiVersion: "2025-01-01" });
 const SITE = path.resolve(process.cwd(), "..");
@@ -159,6 +161,38 @@ const player = (m: Media) => ({
   url: m?.url ?? "",
 });
 
+/** The case builder's sections (from the old fixed fields) → Sanity objects. */
+async function sanitySections(list: CaseSection[]) {
+  const out: Record<string, unknown>[] = [];
+  for (const s of list) {
+    const base = { _type: s.type, _key: key() };
+    switch (s.type) {
+      case "caseChapter":
+        out.push({ ...base, stage: s.stage, line: s.line || undefined, body: await blocks(s.body), cta: Boolean(s.cta) });
+        break;
+      case "caseQuote":
+        out.push({ ...base, quote: s.quote, name: s.name ?? "", photo: await image(s.photo ?? "") });
+        break;
+      case "caseVideos":
+        out.push({ ...base, videos: s.videos.map((v) => ({ ...video(v), ...(v.label ? { label: v.label } : {}), _key: key() })) });
+        break;
+      case "caseGallery":
+        out.push({ ...base, images: await images(s.images) });
+        break;
+      case "caseLoop":
+        out.push({ ...base, url: s.url, hashtags: s.hashtags ?? "" });
+        break;
+      case "caseAudio":
+        out.push({ ...base, title: s.title ?? "", subline: s.subline ?? "", url: s.url });
+        break;
+      case "caseAwards":
+        out.push({ ...base, heading: s.heading ?? "Awarded at" });
+        break;
+    }
+  }
+  return out;
+}
+
 // ---- Pages, team, menu and footer: converted field by field from the schema ----
 
 type Def = { name?: string; type: string; fields?: Def[]; of?: Def[]; to?: { type: string }[] };
@@ -226,6 +260,21 @@ async function importPages(tx: ReturnType<typeof client.transaction>) {
 }
 
 async function main() {
+  if (process.env.SECTIONS_ONLY === "1") {
+    // Adds page sections to cases that have none yet; every other field stays as it is.
+    const tx = client.transaction();
+    let count = 0;
+    for (const c of cms.caseStudies) {
+      const id = `case-${c.slug}`;
+      const has: boolean = await client.fetch(`defined(*[_id == $id][0].sections)`, { id });
+      if (has) continue;
+      tx.patch(id, { set: { sections: await sanitySections(legacySections(c as unknown as LegacyCase)) } });
+      count++;
+    }
+    await tx.commit({ visibility: "async" });
+    console.log(`Done: page sections added to ${count} cases, ${uploaded.size} pictures.`);
+    return;
+  }
   if (process.env.PAGES_ONLY === "1") {
     const tx = client.transaction();
     const extra = await importPages(tx);
@@ -296,6 +345,7 @@ async function main() {
       color: c.color ? ref1(`color-${c.color.slug}`) : undefined,
       visual: visual >= 0 ? visual + 1 : 1,
       visualizationJson: c.visualizationJson ?? "",
+      sections: await sanitySections(legacySections(c as unknown as LegacyCase)),
     });
   }
 

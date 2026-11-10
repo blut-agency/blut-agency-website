@@ -12,15 +12,16 @@ import { getCaseStudies, getCaseStudyBySlug, type CaseStudy, type CaseStudyVideo
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons } from "@/components/MediaFrame";
 import RevealText from "@/components/RevealText";
+import { caseSections, type CaseSection } from "@/lib/caseSections";
 import CaseVideo from "@/components/CaseVideo";
 
 /*
   Case page (the editorial layout tested on /case-lab, Oct 2026): the case's
-  banner with its facts, then the CMS text sections as three chapters of the
-  process, each headed by a stage name over the CMS question (two-tone
-  heading), with the quote, picture strip, GIF loop, audio, videos and awards
-  between them. Every block is left out when its content is missing. The
-  stage names are AI-written placeholders, marked with an asterisk.
+  banner with its facts, then the case's sections in the order the studio's
+  case builder sets (chapters, quote, videos, picture strips, loop, audio,
+  awards; see lib/caseSections.ts), then the next case, contact and footer.
+  A chapter is headed by a stage name over its question line (two-tone
+  heading). The placeholder stage names are marked with an asterisk.
 */
 
 // Morph durations the live project pages use, per case study.
@@ -56,53 +57,45 @@ export async function generateMetadata({
   if (!cs) return {};
   // Mirrors the live site's description pattern:
   // "<quote> <name> | Full-Service Music Agency | Strategy & Identity | <track> | Project Case Study"
-  const track = cs.audioPlayer1.title.replace(/\s+/g, " ").trim();
-  const description = cs.quote
-    ? `${cs.quote} ${cs.quoteName} | Full-Service Music Agency | Strategy & Identity | ${track} | Project Case Study`
+  const sections = cs.sections;
+  const q = sections ? sections.find((x) => x.type === "caseQuote") : { quote: cs.quote, name: cs.quoteName };
+  const quote = q?.quote ?? "";
+  const quoteName = q?.name ?? "";
+  const audio = sections ? sections.find((x) => x.type === "caseAudio") : cs.audioPlayer1;
+  const track = (audio?.title ?? "").replace(/\s+/g, " ").trim();
+  const description = quote
+    ? `${quote} ${quoteName} | Full-Service Music Agency | Strategy & Identity | ${track} | Project Case Study`
     : `${cs.teaserClient}: ${cs.teaserCampaign}. A blut case study in music, sound and sonic strategy.`;
   return {
     title: `${cs.title} | blut | Case Study | Music Strategy`,
     description,
     ...share({
       title: `${cs.teaserClient} – ${cs.title}`,
-      description: cs.quote ? `${cs.quote} ${cs.quoteName}` : description,
+      description: quote ? `${quote} ${quoteName}` : description,
       path: `/project/${cs.slug}`,
       image: { url: cs.thumbnail, alt: `${cs.teaserClient} – ${cs.teaserCampaign}` },
     }),
   };
 }
 
-const STAGES = ["The brief*", "The making*", "The result*"];
-
-/** The CMS section's h2 as the heading, the rest as body HTML. */
-function chapter(html: string) {
-  const m = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/);
-  const heading = (m?.[1] ?? "")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .trim();
-  // Webflow's placeholder alt text would be read out; the pictures are decorative.
-  const rest = (m ? html.replace(m[0], "") : html).replace(/alt="__wf_reserved_inherit"/g, 'alt=""');
-  return { heading, body: rest };
-}
-
 function Chapter({
   stage,
-  html,
+  heading,
+  body,
   aiDraft = false,
   note = false,
   children,
 }: {
   stage: string;
-  html: string;
+  heading?: string;
+  /** HTML. */
+  body?: string;
   /** The case's copy is AI-written: shown in red. */
   aiDraft?: boolean;
   /** Show the AI note above this chapter (the first one). */
   note?: boolean;
   children?: ReactNode;
 }) {
-  const { heading, body } = chapter(html);
   return (
     <section className={`bk-section${aiDraft ? " ai-draft" : ""}`}>
       {note && (
@@ -117,7 +110,7 @@ function Chapter({
           {heading && <RevealText as="p" className="bk-lab-chapter-line" text={aiDraft ? `${heading}*` : heading} after={stage} />}
         </div>
         <div className="bk-lab-chapter-body">
-          <div className="bk-lab-prose" dangerouslySetInnerHTML={{ __html: body }} />
+          <div className="bk-lab-prose" dangerouslySetInnerHTML={{ __html: body ?? "" }} />
           {children}
         </div>
       </div>
@@ -164,8 +157,7 @@ function Video({
 }
 
 /** Audio: the case's moving shape on its colours beside the title and the player bar. */
-function Audio({ cs, n }: { cs: CaseStudy; n: 1 | 2 }) {
-  const a = n === 1 ? cs.audioPlayer1 : cs.audioPlayer2;
+function Audio({ cs, a, n }: { cs: CaseStudy; a: { title?: string; subline?: string; url: string }; n: number }) {
   const id = `${cs.slug}-audio-${n}`;
   return (
     <section className={`bk-section is-dark${cs.aiDraftCopy ? " ai-draft" : ""}`}>
@@ -219,8 +211,103 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
   const playAccent = theme
     ? { background: theme.background, text: theme.lightBackground ? "var(--_color---copy-dark)" : "var(--_color---copy-bright)" }
     : undefined;
-  const hashtags = cs.gifVideoHashtags.split(/\s(?=#)/).filter(Boolean);
-  const videos = cs.videoFiles ?? [];
+  const sections = caseSections(cs);
+  const firstChapter = sections.findIndex((x) => x.type === "caseChapter");
+  // Audio players are numbered in page order (their ids link player bar and audio).
+  const audioNumber = new Map<number, number>();
+  sections.forEach((x, i) => {
+    if (x.type === "caseAudio" && x.url) audioNumber.set(i, audioNumber.size + 1);
+  });
+
+  /** One builder section; empty ones render nothing. */
+  const renderSection = (section: CaseSection, i: number): ReactNode => {
+    switch (section.type) {
+      case "caseChapter":
+        if (!section.line && !section.body && !section.stage) return null;
+        return (
+          <Chapter key={i} stage={section.stage} heading={section.line} body={section.body} aiDraft={cs.aiDraftCopy} note={cs.aiDraftCopy && i === firstChapter}>
+            {section.cta && <CtaLink href="/strategy" label="Want to know more about how we work?" />}
+          </Chapter>
+        );
+      case "caseQuote":
+        if (!section.quote) return null;
+        return (
+          <section key={i} className="bk-section bk-lab-quote-section" style={cs.color ? { backgroundColor: cs.color.main } : undefined}>
+            <figure className={`lp-wrap bk-lab-quote${quoteOnDark ? " is-on-dark" : ""}`}>
+              {section.photo && (
+                <div className="bk-lab-quote-photo">
+                  <img src={section.photo} alt="" loading="lazy" />
+                </div>
+              )}
+              <div className="bk-lab-quote-text">
+                <blockquote>{section.quote}</blockquote>
+                <figcaption>{(section.name ?? "").replace(/^[–-]\s*/, "")}</figcaption>
+              </div>
+            </figure>
+          </section>
+        );
+      case "caseVideos": {
+        const videos = (section.videos ?? []).filter((v) => v?.url);
+        if (!videos.length) return null;
+        return (
+          <section key={i} className="bk-section bk-lab-videos">
+            {videos.map((file, n) => (
+              <Video key={file.url} file={file} label={file.label || `${cs.teaserClient} film${videos.length > 1 ? ` ${n + 1}` : ""}`} accent={playAccent} />
+            ))}
+          </section>
+        );
+      }
+      case "caseGallery":
+        return section.images?.length ? <Gallery key={i} images={section.images} /> : null;
+      case "caseLoop": {
+        if (!section.url) return null;
+        const hashtags = (section.hashtags ?? "").split(/\s(?=#)/).filter(Boolean);
+        return (
+          <section key={i} className="bk-section is-dark">
+            <div className="lp-wrap bk-lab-loop">
+              <div className="video-16-9">
+                <video
+                  src={section.url}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-hidden="true"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+              {hashtags.length > 0 && (
+                <ul role="list" className="bk-lab-tags">
+                  {hashtags.map((tag) => (
+                    <li key={tag}>{tag}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+        );
+      }
+      case "caseAudio":
+        if (!section.url) return null;
+        return <Audio key={i} cs={cs} a={section} n={audioNumber.get(i)!} />;
+      case "caseAwards":
+        if (!cs.awards.length) return null;
+        return (
+          <section key={i} className="bk-section">
+            <div className="lp-wrap bk-lab-awards">
+              <h2 className="lp-heading">{section.heading || "Awarded at"}</h2>
+              <ul role="list">
+                {cs.awards.map((award) => (
+                  <li key={award.slug}>{award.image ? <img src={award.image} alt={award.name} loading="lazy" /> : award.name}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <>
@@ -261,90 +348,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
         </PageHero>
         <Header variant="start-top" />
 
-        {cs.introTextHtml && <Chapter stage={STAGES[0]} html={cs.introTextHtml} aiDraft={cs.aiDraftCopy} note={cs.aiDraftCopy} />}
-
-        {cs.quote && (
-          <section className="bk-section bk-lab-quote-section" style={cs.color ? { backgroundColor: cs.color.main } : undefined}>
-            <figure className={`lp-wrap bk-lab-quote${quoteOnDark ? " is-on-dark" : ""}`}>
-              {cs.quoteImage && (
-                <div className="bk-lab-quote-photo">
-                  <img src={cs.quoteImage} alt="" loading="lazy" />
-                </div>
-              )}
-              <div className="bk-lab-quote-text">
-                <blockquote>{cs.quote}</blockquote>
-                <figcaption>{cs.quoteName.replace(/^[–-]\s*/, "")}</figcaption>
-              </div>
-            </figure>
-          </section>
-        )}
-
-        {cs.videoUnderQuote && (
-          <section className="bk-section">
-            <Video file={cs.videoUnderQuote} label={`${cs.teaserClient} film`} accent={playAccent} />
-          </section>
-        )}
-
-        {cs.gallery1.length > 0 && <Gallery images={cs.gallery1} />}
-
-        {cs.textAfterGalleryHtml && <Chapter stage={STAGES[1]} html={cs.textAfterGalleryHtml} aiDraft={cs.aiDraftCopy} />}
-
-        {cs.loopUrl && (
-          <section className="bk-section is-dark">
-            <div className="lp-wrap bk-lab-loop">
-              <div className="video-16-9">
-                <video
-                  src={cs.loopUrl}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-hidden="true"
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-              {hashtags.length > 0 && (
-                <ul role="list" className="bk-lab-tags">
-                  {hashtags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </section>
-        )}
-
-        {cs.audioPlayer1.url && <Audio cs={cs} n={1} />}
-        {cs.audioPlayer2.url && <Audio cs={cs} n={2} />}
-
-        {cs.textAfterAudioPlayerHtml && (
-          <Chapter stage={STAGES[2]} html={cs.textAfterAudioPlayerHtml} aiDraft={cs.aiDraftCopy}>
-            <CtaLink href="/strategy" label="Want to know more about how we work?" />
-          </Chapter>
-        )}
-
-        {videos.length > 0 && (
-          <section className="bk-section bk-lab-videos">
-            {videos.map((file, i) => (
-              <Video key={file.url} file={file} label={`${cs.teaserClient} film ${i + 1}`} accent={playAccent} />
-            ))}
-          </section>
-        )}
-
-        {cs.awards.length > 0 && (
-          <section className="bk-section">
-            <div className="lp-wrap bk-lab-awards">
-              <h2 className="lp-heading">Awarded at</h2>
-              <ul role="list">
-                {cs.awards.map((award) => (
-                  <li key={award.slug}>{award.image ? <img src={award.image} alt={award.name} loading="lazy" /> : award.name}</li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        )}
-
-        {cs.gallery2.length > 0 && <Gallery images={cs.gallery2} />}
+        {sections.map((section, i) => renderSection(section, i))}
 
         {nextCase && (
           <section className="bk-section bk-next">

@@ -9,7 +9,8 @@
     "deploy": "sanity deploy",
     "import": "sanity exec scripts/import.ts --with-user-token",
     "import:force": "FORCE=1 sanity exec scripts/import.ts --with-user-token",
-    "import:pages": "PAGES_ONLY=1 sanity exec scripts/import.ts --with-user-token"
+    "import:pages": "PAGES_ONLY=1 sanity exec scripts/import.ts --with-user-token",
+    "import:sections": "SECTIONS_ONLY=1 sanity exec scripts/import.ts --with-user-token"
   },
   "dependencies": {
     "@sanity/color": "^3.0.9",

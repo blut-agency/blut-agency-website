@@ -2,8 +2,13 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 /*
   One case (/project/<slug>). The tabs follow the case page from top to
-  bottom: the card on the Cases list, the banner facts, the story chapters,
-  then pictures, sound and video.
+  bottom: the card on the Cases list, the banner facts, then the page's
+  sections (the case builder: chapters, quote, videos, pictures, loop, audio
+  and awards in any order).
+
+  The old fixed fields (three chapters, quote, galleries, players, videos)
+  stay in the data but are hidden: a case without sections still shows them
+  in the old order, and the import builds each case's sections from them.
 
   Videos and audio live in blut's own media folder (Nextcloud, GDPR), so the
   fields hold a file path like /media/hyundai-film.mp4, not an upload.
@@ -11,7 +16,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const MEDIA = "A file in blut's media folder, e.g. /media/hyundai-film.mp4";
 
-const mediaPath = (name: string, title: string, group = "media", description = MEDIA) =>
+const mediaPath = (name: string, title: string, group = "page", description = MEDIA) =>
   defineField({
     name,
     title,
@@ -30,7 +35,8 @@ const player = (name: string, title: string) =>
     name,
     title,
     type: "object",
-    group: "media",
+    group: "page",
+    hidden: true,
     options: { collapsible: true, collapsed: true },
     fields: [
       defineField({ name: "title", type: "text", rows: 2 }),
@@ -44,7 +50,8 @@ const pictures = (name: string, title: string) =>
     name,
     title,
     type: "array",
-    group: "media",
+    group: "page",
+    hidden: true,
     of: [defineArrayMember({ type: "image" })],
     options: { layout: "grid" },
   });
@@ -56,8 +63,7 @@ export const caseStudy = defineType({
   groups: [
     { name: "card", title: "Card", default: true },
     { name: "facts", title: "Facts" },
-    { name: "story", title: "Story" },
-    { name: "media", title: "Pictures, sound, video" },
+    { name: "page", title: "Page sections" },
     { name: "look", title: "Look" },
   ],
   orderings: [{ title: "Position", name: "position", by: [{ field: "position", direction: "asc" }] }],
@@ -113,36 +119,46 @@ export const caseStudy = defineType({
     nameList("collaborators", "Collaborators", "Agencies and partners.", "facts"),
     defineField({ name: "awards", type: "array", group: "facts", of: [defineArrayMember({ type: "reference", to: [{ type: "award" }] })] }),
 
-    // Story: the three chapters and the quote.
-    defineField({ name: "introText", title: "Chapter 1: the brief", type: "richText", group: "story" }),
-    defineField({ name: "quote", type: "text", rows: 3, group: "story" }),
-    defineField({ name: "quoteName", title: "Quote by", type: "string", group: "story" }),
-    defineField({ name: "quoteImage", title: "Quote photo", type: "image", group: "story" }),
-    defineField({ name: "textAfterGallery", title: "Chapter 2: the making", type: "richText", group: "story" }),
-    defineField({ name: "textAfterAudioPlayer", title: "Chapter 3: the result", type: "richText", group: "story" }),
+    // Page: the case builder.
+    defineField({
+      name: "sections",
+      title: "Page sections",
+      description: "The case page between the banner and “Next case”. Add, remove and drag sections to change the page.",
+      type: "array",
+      group: "page",
+      of: ["caseChapter", "caseQuote", "caseVideos", "caseGallery", "caseLoop", "caseAudio", "caseAwards"].map((type) => defineArrayMember({ type })),
+    }),
+
+    // Old fixed fields: hidden, kept for cases without sections.
+    defineField({ name: "introText", hidden: true, title: "Chapter 1: the brief", type: "richText", group: "page" }),
+    defineField({ name: "quote", hidden: true, type: "text", rows: 3, group: "page" }),
+    defineField({ name: "quoteName", hidden: true, title: "Quote by", type: "string", group: "page" }),
+    defineField({ name: "quoteImage", hidden: true, title: "Quote photo", type: "image", group: "page" }),
+    defineField({ name: "textAfterGallery", hidden: true, title: "Chapter 2: the making", type: "richText", group: "page" }),
+    defineField({ name: "textAfterAudioPlayer", hidden: true, title: "Chapter 3: the result", type: "richText", group: "page" }),
     defineField({
       name: "aiDraftCopy",
       title: "Text is a placeholder",
       description: "Marks the text with an asterisk until the team writes the real copy.",
       type: "boolean",
-      group: "story",
+      group: "page",
       initialValue: false,
     }),
-    defineField({ name: "nextCaseStudy", title: "Next case", type: "reference", to: [{ type: "caseStudy" }], group: "story" }),
+    defineField({ name: "nextCaseStudy", title: "Next case", type: "reference", to: [{ type: "caseStudy" }], group: "page" }),
 
-    // Pictures, sound and video, in page order.
-    defineField({ name: "videoUnderQuote", title: "Video under the quote", type: "videoFile", group: "media" }),
+    defineField({ name: "videoUnderQuote", hidden: true, title: "Video under the quote", type: "videoFile", group: "page" }),
     pictures("gallery1", "Picture strip 1"),
     mediaPath("loopUrl", "Short loop", "media", "Short silent video, e.g. /media/hyundai-loop.mp4"),
-    defineField({ name: "gifVideoHashtags", title: "Short loop hashtags", type: "string", group: "media" }),
+    defineField({ name: "gifVideoHashtags", hidden: true, title: "Short loop hashtags", type: "string", group: "page" }),
     player("audioPlayer1", "Audio player 1"),
     player("audioPlayer2", "Audio player 2"),
     defineField({
       name: "videoFiles",
+      hidden: true,
       title: "Videos",
       description: "The films near the end of the page, in this order.",
       type: "array",
-      group: "media",
+      group: "page",
       of: [defineArrayMember({ type: "videoFile" })],
     }),
     pictures("gallery2", "Picture strip 2"),
