@@ -24,7 +24,9 @@ The new blut website.
 - Colours follow Elliot's styleguide v2.1.
 - Every page has its own banner, tile and band colours. The Home tiles match their pages.
 - Each case picks its colour from its photo.
-- Portraits on About and in the contact blocks open a small panel to send or copy the email address.
+- About: a click on a portrait opens an email to that person.
+- Contact blocks: a portrait opens a small panel to send or copy the email address.
+- Strategy: the intro is the large left-hand text, like on Production and Post.
 - Films and audio now play from blut's own storage instead of Vimeo.
 - Home: featured cases now lead with Hyundai.
 - Home: the Devil's Advocate hover clip plays the Devil's Advocate film.
