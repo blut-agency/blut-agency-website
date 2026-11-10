@@ -13,7 +13,8 @@ import VideoLightbox from "@/components/VideoLightbox";
   nothing that identifies the visitor), so it doesn't come back. The flag is
   stored only on that action, never on display (privacy policy, section 4).
   Links with ?from=linkedin skip it for that visit and store nothing: people
-  coming from the LinkedIn post have just seen the video.
+  coming from the LinkedIn post have just seen the video. Links with
+  ?recap=1 always show it, even to visitors who closed it before.
 */
 
 const RECAP = {
@@ -27,6 +28,8 @@ const RECAP = {
 
 const SEEN_KEY = "blut-welcome-seen";
 const SKIP_PARAM = { name: "from", value: "linkedin" };
+/** Shows the card on every visit, even after it was closed (for sharing). */
+const SHOW_PARAM = { name: "recap", value: "1" };
 const DELAY_MS = 2000;
 
 function readSeen() {
@@ -54,7 +57,8 @@ export default function WelcomeRecap() {
     const params = new URLSearchParams(window.location.search);
     // LinkedIn visitors skip it on this visit only; nothing is stored.
     if (params.get(SKIP_PARAM.name) === SKIP_PARAM.value) return;
-    if (readSeen()) return;
+    const forced = params.get(SHOW_PARAM.name) === SHOW_PARAM.value;
+    if (!forced && readSeen()) return;
     const timer = window.setTimeout(() => setVisible(true), DELAY_MS);
     return () => window.clearTimeout(timer);
   }, []);
