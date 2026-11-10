@@ -2588,11 +2588,6 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   content: none !important;
 }
 
-/* Strategy: the intro line above the sales video. */
-.bk-strategy-intro {
-  margin-bottom: var(--lp-stack);
-}
-
 /* Imprint and privacy policy: space between sections (replaces the empty
    paragraphs the Webflow copy used as spacers). */
 .rich-text-custom.legal-text h1 { margin-bottom: 48px; }
