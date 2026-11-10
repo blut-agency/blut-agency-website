@@ -65,8 +65,8 @@ export const caseStudy = defineType({
     // Card: what the Cases list and Home show.
     defineField({
       name: "internalName",
-      title: "Client – project",
-      description: "e.g. Hyundai – Are You In. Used in the studio and in search results.",
+      title: "Name in the studio",
+      description: "Client – project, e.g. Hyundai – Are You In. Only shown here in the studio, not on the site.",
       type: "string",
       group: "card",
       validation: (r) => r.required(),
