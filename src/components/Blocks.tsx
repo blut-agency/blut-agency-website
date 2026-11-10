@@ -5,6 +5,8 @@ import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import Drawer from "@/components/Drawer";
 import RevealText from "@/components/RevealText";
 import { ContactPortrait } from "@/components/MailPopup";
+import { DEFAULT_TEAM_COLOR, TEAM_COLORS, getTeam } from "@/lib/team";
+import { getSite } from "@/lib/site";
 
 /*
   The page building blocks from Figma "Work v02", shared by every page in the
@@ -169,19 +171,23 @@ export function Lead({
   );
 }
 
-const PEOPLE = {
-  karl: { name: "Karl Jawara", role: "Head of Strategy", file: "Karl", mail: "karl.jawara@blut.agency", page: "/team/karl-jawara", background: "#7a3bff", line: "#02b7fd", pattern: 0 },
-  michael: { name: "Michael Robb", role: "Head of Audio Production", file: "Michael", mail: "michael.robb@blut.agency", page: "/team/michael-robb", background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)", pattern: 3 },
-  // Address follows the team's first.last pattern; not yet confirmed by Elliot.
-  elliot: { name: "Elliot Blunck", role: "Head of Video & Social Content", file: "Elliot", mail: "elliot.blunck@blut.agency", page: "", background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)", pattern: 2 },
-} as const;
+const SITE = getSite();
+const CONTACT_HEADING = SITE.contactHeading.split("\n").filter(Boolean);
+
+/** Contact people by key ("michael", "karl", "elliot"), from team.json (Sanity). */
+const PEOPLE = Object.fromEntries(
+  getTeam().map((m, i) => [
+    m.key,
+    { name: m.name, role: m.role, file: m.file, mail: m.email, page: m.page ? `/team/${m.page.slug}` : "", ...(TEAM_COLORS[m.key] ?? DEFAULT_TEAM_COLOR), pattern: i },
+  ]),
+);
 
 /** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); two people sit under the heading in the last two thirds; without a person, the general address beside a pattern square in the page's colours. */
 export function ContactBlock({
   person,
   pattern = { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
 }: {
-  person?: keyof typeof PEOPLE | (keyof typeof PEOPLE)[];
+  person?: string | string[];
   pattern?: { background: string; line: string };
 }) {
   if (!person) {
@@ -189,8 +195,9 @@ export function ContactBlock({
       <section className="bk-section is-dark bk-contact">
         <div className="lp-wrap bk-contact-grid">
           <div className="bk-contact-heading">
-            <p className="lp-heading">Sound good?</p>
-            <p className="lp-heading">Get in touch!</p>
+            {CONTACT_HEADING.map((line) => (
+              <p key={line} className="lp-heading">{line}</p>
+            ))}
           </div>
           <div className="bk-contact-person">
             <div className="bk-contact-photo" aria-hidden="true" style={{ background: pattern.background }}>
@@ -199,21 +206,22 @@ export function ContactBlock({
               </div>
             </div>
             <div>
-              <p className="lp-copy bk-contact-name">contact@<wbr />blut.agency</p>
-              <CtaLink href="mailto:contact@blut.agency" label="Mail" />
+              <p className="lp-copy bk-contact-name">{SITE.contactEmail.split("@")[0]}@<wbr />{SITE.contactEmail.split("@")[1]}</p>
+              <CtaLink href={`mailto:${SITE.contactEmail}`} label={SITE.mailLabel} />
             </div>
           </div>
         </div>
       </section>
     );
   }
-  const people = [person].flat().map((key) => PEOPLE[key]);
+  const people = [person].flat().map((key) => PEOPLE[key]).filter(Boolean);
   return (
     <section className="bk-section is-dark bk-contact">
       <div className={`lp-wrap bk-contact-grid${people.length > 1 ? " is-pair" : ""}`}>
         <div className="bk-contact-heading">
-          <p className="lp-heading">Sound good?</p>
-          <p className="lp-heading">Get in touch!</p>
+          {CONTACT_HEADING.map((line) => (
+            <p key={line} className="lp-heading">{line}</p>
+          ))}
         </div>
         {people.map((p) => (
           <div key={p.name} className="bk-contact-person">
@@ -229,7 +237,7 @@ export function ContactBlock({
               {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
               <p className="lp-copy bk-contact-name">{p.name}</p>
               <p className="lp-copy bk-contact-role">{p.role}</p>
-              <CtaLink href={`mailto:${p.mail}`} label="Mail" />
+              <CtaLink href={`mailto:${p.mail}`} label={SITE.mailLabel} />
             </div>
           </div>
         ))}

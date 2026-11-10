@@ -112,6 +112,13 @@ export interface AboutPage {
   seo: Seo;
 }
 
+export interface LegalPage {
+  /** The page's text as HTML. */
+  body: string;
+  seo: Seo;
+}
+
+
 interface Pages {
   homePage: HomePage;
   productionPage: FilmsPage;
@@ -119,6 +126,8 @@ interface Pages {
   strategyPage: StrategyPage;
   casesPage: CasesPage;
   aboutPage: AboutPage;
+  imprintPage: LegalPage;
+  privacyPage: LegalPage;
 }
 
 const content = pages as unknown as Pages;
