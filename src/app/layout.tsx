@@ -4,6 +4,7 @@ import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
 import CenterHover from "@/components/CenterHover";
 import MotionLayer from "@/components/MotionLayer";
+import WelcomeRecap from "@/components/WelcomeRecap";
 import "./globals.css";
 import "./landing.css";
 import "./highlight.css";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CenterHover />
         <MotionLayer />
         {children}
+        <WelcomeRecap />
         <noscript>
           <style>{`.main-wrapper { opacity: 1 !important; }`}</style>
         </noscript>
