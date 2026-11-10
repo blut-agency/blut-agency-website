@@ -38,6 +38,8 @@ export interface CaseStudy {
   whatWeDidHtml: string;
   collaboratorsHtml: string;
   color: CaseStudyColor | null;
+  /** The colour is picked from the photo before each build (scripts/case-colours.mjs), not by hand. */
+  colorFromPhoto?: boolean;
   useVisual: boolean[];
   visualizationJson: string;
   quoteImage: string;

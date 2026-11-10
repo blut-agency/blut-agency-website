@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/sanity-sync.mjs && next build",
+    "build": "node scripts/sanity-sync.mjs && node scripts/case-colours.mjs && next build",
     "sanity:sync": "node scripts/sanity-sync.mjs",
+    "case-colours": "node scripts/case-colours.mjs",
     "start": "next start",
     "lint": "eslint"
   },

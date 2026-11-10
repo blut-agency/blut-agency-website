@@ -164,6 +164,15 @@ export const caseStudy = defineType({
     pictures("gallery2", "Picture strip 2"),
 
     // Look: colours and the animated sound visual.
+    defineField({
+      name: "colorFromPhoto",
+      title: "Pick the colour from the card photo",
+      description:
+        "On: each time the site is built, the case gets the colour theme closest to its card photo. Off: it keeps the colour theme below. A grey photo also keeps the colour theme below.",
+      type: "boolean",
+      group: "look",
+      initialValue: true,
+    }),
     defineField({ name: "color", title: "Colour theme", type: "reference", to: [{ type: "colorTheme" }], group: "look" }),
     defineField({
       name: "visual",
