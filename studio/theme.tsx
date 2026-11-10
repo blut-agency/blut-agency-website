@@ -1,42 +1,21 @@
-import { buildLegacyTheme } from "sanity";
+import { studioTheme, type RootTheme } from "@sanity/ui";
 
 /*
-  The studio in blut's look: the site's font (PP Agrandir), black and white,
-  blut red for main buttons, blut blue for focus and links. Light retheme only:
-  Sanity's layout stays as it is.
+  Sanity's own default colours, unchanged, so states read clearly.
+  Only the font is swapped for the site's font (PP Agrandir).
 */
 
-const BLUT = {
-  black: "#000000",
-  white: "#ffffff",
-  red: "#fe0000",
-  blue: "#6183ff",
-  yellow: "#e7f639",
-  grey: "#a3a3a3",
-};
+const BLUT_FONT = "'PP Agrandir', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
 
-export const blutTheme = buildLegacyTheme({
-  "--black": BLUT.black,
-  "--white": BLUT.white,
-  "--gray": BLUT.grey,
-  "--gray-base": BLUT.grey,
-  "--component-bg": BLUT.white,
-  "--component-text-color": BLUT.black,
-  "--brand-primary": BLUT.red,
-  "--default-button-color": BLUT.grey,
-  "--default-button-primary-color": BLUT.red,
-  "--default-button-success-color": BLUT.blue,
-  "--default-button-warning-color": BLUT.yellow,
-  "--default-button-danger-color": BLUT.red,
-  "--state-info-color": BLUT.blue,
-  "--state-success-color": BLUT.blue,
-  "--state-warning-color": BLUT.yellow,
-  "--state-danger-color": BLUT.red,
-  "--main-navigation-color": BLUT.black,
-  "--main-navigation-color--inverted": BLUT.white,
-  "--focus-color": BLUT.blue,
-  "--font-family-base": "'PP Agrandir', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif",
-});
+export const blutTheme: RootTheme = {
+  ...studioTheme,
+  fonts: {
+    ...studioTheme.fonts,
+    heading: { ...studioTheme.fonts.heading, family: BLUT_FONT },
+    label: { ...studioTheme.fonts.label, family: BLUT_FONT },
+    text: { ...studioTheme.fonts.text, family: BLUT_FONT },
+  },
+};
 
 /** Loads the site's font from the studio's own files (static/fonts), nothing from outside. */
 export function BlutFonts() {
