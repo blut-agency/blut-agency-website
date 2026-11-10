@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getCaseStudies } from "@/lib/content";
 import { PEOPLE } from "@/content/people";
 
-const SITE = "https://www.blut.agency";
+import { SITE } from "@/lib/siteUrl";
 
 /** /sitemap.xml: every page, so search engines find the team and case pages too. */
 export default function sitemap(): MetadataRoute.Sitemap {
