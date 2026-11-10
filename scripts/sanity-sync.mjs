@@ -183,6 +183,8 @@ const caseStudies = data.cases.map((c) => {
     whatWeDidHtml: list(c.whatWeDid),
     collaboratorsHtml: list(c.collaborators),
     color: c.color ?? null,
+    // The site picks this case's colour from its photo (scripts/case-colours.mjs).
+    colorFromPhoto: c.colorFromPhoto === true,
     useVisual: [1, 2, 3, 4].map((n) => n === (c.visual ?? 1)),
     visualizationJson: c.visualizationJson ?? "",
     quoteImage: picture(c.quoteImage),

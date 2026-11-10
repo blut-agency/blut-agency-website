@@ -317,6 +317,7 @@ async function main() {
       slug: { _type: "slug", current: c.slug },
       position: c.position,
       showOnHomepage: c.showOnHomepage,
+      colorFromPhoto: c.colorFromPhoto === true,
       teaserClient: c.teaserClient ?? "",
       teaserCampaign: c.teaserCampaign ?? "",
       thumbnail: await image(c.thumbnail as string),
