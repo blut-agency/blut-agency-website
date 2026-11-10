@@ -5,19 +5,22 @@ import { defineArrayMember, defineField, defineType } from "sanity";
   bottom: the card on the Cases list, the banner facts, the story chapters,
   then pictures, sound and video.
 
-  Videos and audio stay files that blut hosts itself (GDPR), so the fields
-  hold a path on the site or a Vimeo number, not an upload.
+  Videos and audio live in blut's own media folder (Nextcloud, GDPR), so the
+  fields hold a file path like /media/hyundai-film.mp4, not an upload.
 */
 
-const vimeoId = (name: string, title: string) =>
+export const MEDIA = "A file in blut's media folder, e.g. /media/hyundai-film.mp4";
+
+const mediaPath = (name: string, title: string, group = "media", description = MEDIA) =>
   defineField({
     name,
     title,
     type: "string",
-    group: "media",
-    description: "The number at the end of the Vimeo link, e.g. 1090760210.",
-    validation: (r) => r.regex(/^\d+$/, { name: "Vimeo number" }),
+    group,
+    description,
+    validation: (r) => r.regex(/^(\/|https:\/\/)/, { name: "file path starting with /media/" }),
   });
+
 
 const nameList = (name: string, title: string, description: string, group: string) =>
   defineField({ name, title, description, type: "array", group, of: [defineArrayMember({ type: "string" })], options: { layout: "tags" } });
@@ -32,8 +35,7 @@ const player = (name: string, title: string) =>
     fields: [
       defineField({ name: "title", type: "text", rows: 2 }),
       defineField({ name: "subline", type: "string" }),
-      defineField({ name: "url", title: "Audio file path", type: "string", description: "e.g. /audio/cases/postbank-podcast-intro.mp3" }),
-      defineField({ name: "vimeoId", title: "Or a Vimeo number", type: "string" }),
+      defineField({ name: "url", title: "Audio file", type: "string", description: "e.g. /media/hyundai-audio.m4a" }),
     ],
   });
 
@@ -97,14 +99,7 @@ export const caseStudy = defineType({
       group: "card",
       description: "Where the crop centres, e.g. 50% 10% keeps the top. Leave empty for the centre.",
     }),
-    defineField({
-      name: "previewUrl",
-      title: "Card: hover loop (video file path)",
-      type: "string",
-      group: "card",
-      description: "Short silent loop that plays on hover, e.g. /videos/previews/vw-beats.mp4",
-    }),
-    defineField({ name: "previewVimeoId", title: "Card: hover loop (or a Vimeo number)", type: "string", group: "card" }),
+    mediaPath("previewUrl", "Card: hover loop", "card", "Short silent video that plays on hover, e.g. /media/hyundai-loop.mp4"),
     defineField({ name: "showOnHomepage", title: "Show on Home", type: "boolean", group: "card", initialValue: false, hidden: true }),
 
     // Facts: the banner lists. "What we did" also drives the filter pills.
@@ -136,31 +131,19 @@ export const caseStudy = defineType({
     defineField({ name: "nextCaseStudy", title: "Next case", type: "reference", to: [{ type: "caseStudy" }], group: "story" }),
 
     // Pictures, sound and video, in page order.
-    vimeoId("videoUnderQuoteVimeoId", "Video under the quote (Vimeo number)"),
+    defineField({ name: "videoUnderQuote", title: "Video under the quote", type: "videoFile", group: "media" }),
     pictures("gallery1", "Picture strip 1"),
-    vimeoId("gifVideoVimeoId", "Short loop (Vimeo number)"),
+    mediaPath("loopUrl", "Short loop", "media", "Short silent video, e.g. /media/hyundai-loop.mp4"),
     defineField({ name: "gifVideoHashtags", title: "Short loop hashtags", type: "string", group: "media" }),
     player("audioPlayer1", "Audio player 1"),
     player("audioPlayer2", "Audio player 2"),
-    vimeoId("video1VimeoId", "Video 1 (Vimeo number)"),
-    vimeoId("video2VimeoId", "Video 2 (Vimeo number)"),
-    vimeoId("video3VimeoId", "Video 3 (Vimeo number)"),
     defineField({
       name: "videoFiles",
-      title: "Video files",
-      description: "Videos hosted on the site, shown after the Vimeo ones.",
+      title: "Videos",
+      description: "The films near the end of the page, in this order.",
       type: "array",
       group: "media",
-      of: [
-        defineArrayMember({
-          type: "object",
-          fields: [
-            defineField({ name: "url", title: "Video file path", type: "string", description: "e.g. /videos/cases/postbank-soundlogo.mp4", validation: (r) => r.required() }),
-            defineField({ name: "poster", title: "Still image path", type: "string" }),
-          ],
-          preview: { select: { title: "url" } },
-        }),
-      ],
+      of: [defineArrayMember({ type: "videoFile" })],
     }),
     pictures("gallery2", "Picture strip 2"),
 

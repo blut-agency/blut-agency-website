@@ -17,7 +17,8 @@ const client = getCliClient({ apiVersion: "2025-01-01" });
 const SITE = path.resolve(process.cwd(), "..");
 const force = process.argv.includes("--force");
 
-type Media = { vimeoId?: string; url?: string; title?: string; subline?: string };
+type Media = { url?: string; title?: string; subline?: string };
+type Video = { url: string; poster?: string };
 type Case = Record<string, unknown> & {
   slug: string;
   color: { slug: string } | null;
@@ -27,7 +28,8 @@ type Case = Record<string, unknown> & {
   gallery2: string[];
   audioPlayer1: Media;
   audioPlayer2: Media;
-  videoFiles?: { url: string; poster: string }[];
+  videoFiles?: Video[];
+  videoUnderQuote?: Video;
 };
 type Cms = {
   caseStudies: Case[];
@@ -136,12 +138,13 @@ async function blocks(html: unknown) {
   return out;
 }
 
+const video = (v: Video) => ({ _type: "videoFile", url: v.url, poster: v.poster ?? "" });
+
 const player = (m: Media) => ({
   _type: "object",
   title: m?.title ?? "",
   subline: m?.subline ?? "",
   url: m?.url ?? "",
-  vimeoId: m?.vimeoId ?? "",
 });
 
 async function main() {
@@ -185,7 +188,6 @@ async function main() {
       thumbnail: await image(c.thumbnail as string),
       thumbnailPosition: c.thumbnailPosition ?? "",
       previewUrl: c.previewUrl ?? "",
-      previewVimeoId: c.previewVimeoId ?? "",
       clients: list(c.clientListHtml),
       whatWeDid: list(c.whatWeDidHtml),
       collaborators: list(c.collaboratorsHtml),
@@ -198,16 +200,13 @@ async function main() {
       textAfterAudioPlayer: await blocks(c.textAfterAudioPlayerHtml),
       aiDraftCopy: Boolean(c.aiDraftCopy),
       nextCaseStudy: c.nextCaseStudySlug ? ref1(`case-${c.nextCaseStudySlug}`) : undefined,
-      videoUnderQuoteVimeoId: c.videoUnderQuoteVimeoId ?? "",
+      videoUnderQuote: c.videoUnderQuote ? video(c.videoUnderQuote) : undefined,
       gallery1: await images(c.gallery1),
-      gifVideoVimeoId: c.gifVideoVimeoId ?? "",
+      loopUrl: c.loopUrl ?? "",
       gifVideoHashtags: c.gifVideoHashtags ?? "",
       audioPlayer1: player(c.audioPlayer1),
       audioPlayer2: player(c.audioPlayer2),
-      video1VimeoId: c.video1VimeoId ?? "",
-      video2VimeoId: c.video2VimeoId ?? "",
-      video3VimeoId: c.video3VimeoId ?? "",
-      videoFiles: (c.videoFiles ?? []).map((v) => ({ _type: "object", _key: key(), url: v.url, poster: v.poster ?? "" })),
+      videoFiles: (c.videoFiles ?? []).map((v) => ({ ...video(v), _key: key() })),
       gallery2: await images(c.gallery2),
       color: c.color ? ref1(`color-${c.color.slug}`) : undefined,
       visual: visual >= 0 ? visual + 1 : 1,

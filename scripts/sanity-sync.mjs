@@ -133,7 +133,7 @@ function html(blocks) {
 }
 
 const media = (m) => {
-  const out = { vimeoId: m?.vimeoId ?? "", title: m?.title ?? "", subline: m?.subline ?? "" };
+  const out = { title: m?.title ?? "", subline: m?.subline ?? "" };
   if (m?.url) out.url = m.url;
   return out;
 };
@@ -163,18 +163,13 @@ const caseStudies = data.cases.map((c) => {
     quoteImage: picture(c.quoteImage),
     quote: c.quote ?? "",
     quoteName: c.quoteName ?? "",
-    videoUnderQuoteVimeoId: c.videoUnderQuoteVimeoId ?? "",
     introTextHtml: html(c.introText),
     gallery1: (c.gallery1 ?? []).map(picture).filter(Boolean),
     textAfterGalleryHtml: html(c.textAfterGallery),
-    gifVideoVimeoId: c.gifVideoVimeoId ?? "",
     gifVideoHashtags: c.gifVideoHashtags ?? "",
     audioPlayer1: media(c.audioPlayer1),
     audioPlayer2: media(c.audioPlayer2),
     textAfterAudioPlayerHtml: html(c.textAfterAudioPlayer),
-    video1VimeoId: c.video1VimeoId ?? "",
-    video2VimeoId: c.video2VimeoId ?? "",
-    video3VimeoId: c.video3VimeoId ?? "",
     gallery2: (c.gallery2 ?? []).map(picture).filter(Boolean),
     awards: (c.awards ?? []).filter(Boolean).map((a) => ({ name: a.name, slug: a.slug, image: picture(a.image) })),
     nextCaseStudySlug: c.nextCaseStudySlug ?? "",
@@ -185,7 +180,8 @@ const caseStudies = data.cases.map((c) => {
   if (c.videoFiles?.length) out.videoFiles = c.videoFiles.map((v) => ({ url: v.url, poster: v.poster ?? "" }));
   if (c.aiDraftCopy) out.aiDraftCopy = true;
   if (c.previewUrl) out.previewUrl = c.previewUrl;
-  if (c.previewVimeoId) out.previewVimeoId = c.previewVimeoId;
+  if (c.videoUnderQuote?.url) out.videoUnderQuote = { url: c.videoUnderQuote.url, poster: c.videoUnderQuote.poster ?? "" };
+  if (c.loopUrl) out.loopUrl = c.loopUrl;
   if (c.thumbnailPosition) out.thumbnailPosition = c.thumbnailPosition;
   return out;
 });
