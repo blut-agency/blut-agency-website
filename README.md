@@ -1,44 +1,60 @@
-# blut-agency-website
+<p align="center">
+  <a href="https://www.blut.agency"><img src=".github/assets/social-preview.jpg" alt="blut – music strategies with measurable impact" width="100%"></a>
+</p>
 
-blut.agency website — migrated from Webflow to a standalone Next.js codebase, deployed on Vercel.
+<p align="center">
+  <a href="https://www.blut.agency"><b>blut.agency</b></a> · <a href="CHANGELOG.md">Changelog</a>
+</p>
 
-## Stack
+# blut
 
-- [Next.js](https://nextjs.org) (App Router, TypeScript)
-- Styling: the original Webflow-exported CSS (`public/css/`), linked globally — not Tailwind
-- Deployed on [Vercel](https://vercel.com)
+blut is a music-led creative agency from Hamburg, Berlin and Munich. We craft sonic identities and music strategies. We combine music production with data-driven performance measurement to boost brand impact.
 
-## Getting Started
+This repository holds the blut website.
 
-```bash
-npm install
-npm run dev
-```
+## The site
 
-Open [http://localhost:3000](http://localhost:3000) to view the site.
+<table>
+  <tr>
+    <td width="50%"><b>Home</b><br><img src=".github/assets/home-desk.jpg" alt="Home page"></td>
+    <td width="50%"><b>Production</b><br><img src=".github/assets/production-desk.jpg" alt="Production page"></td>
+  </tr>
+  <tr>
+    <td><b>Strategy</b><br><img src=".github/assets/strategy-desk.jpg" alt="Strategy page"></td>
+    <td><b>Post</b><br><img src=".github/assets/post-desk.jpg" alt="Post page"></td>
+  </tr>
+  <tr>
+    <td><b>Cases</b><br><img src=".github/assets/cases-desk.jpg" alt="Cases page"></td>
+    <td><b>Case study: Hyundai, Are You In?</b><br><img src=".github/assets/case-desk.jpg" alt="Hyundai case study page"></td>
+  </tr>
+  <tr>
+    <td><b>About</b><br><img src=".github/assets/about-desk.jpg" alt="About page"></td>
+    <td></td>
+  </tr>
+</table>
 
-## Project structure
+## On phones
 
-- `src/app` — routes and pages (App Router)
-- `src/components` — shared UI components (`Header`, `Footer`)
-- `src/content/cms-content.json` — case studies, locations, colors, and awards data exported from the old Webflow CMS
-- `src/lib/content.ts` — typed accessors over `cms-content.json`
-- `public/css`, `public/js`, `public/fonts` — the Webflow-generated stylesheets, interaction/animation scripts, and font, carried over as-is for visual fidelity
-- `public/images` — site imagery exported from Webflow
+<table>
+  <tr>
+    <td width="25%"><img src=".github/assets/home-phone.jpg" alt="Home page on a phone"></td>
+    <td width="25%"><img src=".github/assets/production-phone.jpg" alt="Production page on a phone"></td>
+    <td width="25%"><img src=".github/assets/cases-phone.jpg" alt="Cases page on a phone"></td>
+    <td width="25%"><img src=".github/assets/case-phone.jpg" alt="Case study page on a phone"></td>
+  </tr>
+</table>
 
-## Content
+## Pages
 
-Case study, office location, color-theme, and award data lives in `src/content/cms-content.json`, generated from a Webflow CMS export. To update content, edit that file directly (or re-export from Webflow and regenerate it) — there is no live CMS connection anymore.
+| Page | What it shows |
+| --- | --- |
+| [Home](https://www.blut.agency) | What blut does, and the featured cases |
+| [Production](https://www.blut.agency/production) | Music and sound for campaigns |
+| [Strategy](https://www.blut.agency/strategy) | Sonic strategy and performance measurement |
+| [Post](https://www.blut.agency/post) | Sound design, mixing and video post |
+| [Cases](https://www.blut.agency/case-studies) | Every case, with filters by service |
+| [About](https://www.blut.agency/about) | The team |
 
-## Notes on the migration
+## History
 
-This site was ported from a Webflow export rather than rebuilt from scratch, to preserve the original design pixel-for-pixel. Practical implications:
-
-- Global interactions (sticky nav, accordions, audio/video players, marquees, page-transition fades) come from `public/js/embeds.js`, consolidated from the per-page `<script>` embeds in the original export.
-- GSAP, jQuery, and the Vimeo Player API are loaded from their original CDNs in `src/app/layout.tsx`.
-- Case study media (images, quote photos, award logos) still points at Webflow's asset CDN (`cdn.prod.website-files.com`). Consider migrating these to `public/` or another asset host if the Webflow account is ever decommissioned.
-- A handful of draft/internal pages from the export (`home-copy`, `analyze`, `visuals`, `styleguide`, and the standalone `detail_awards/color/home-sound/location` CMS templates) were intentionally not ported, as they weren't linked from the live site's navigation.
-
-## Deployment
-
-The site deploys to Vercel. Pushes to `main` deploy to production; other branches get preview deployments.
+Every release is listed in the [changelog](CHANGELOG.md). Earlier design versions are kept as `archive/…` tags.

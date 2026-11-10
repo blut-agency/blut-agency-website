@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Vendored third-party assets from the Webflow export, not our source.
     "public/**",
+    // The Sanity Studio is its own app with its own packages.
+    "studio/**",
   ]),
 ]);
 

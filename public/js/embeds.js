@@ -38,14 +38,57 @@ function __onReady(fn) {
 
 
 (function(){
-  // --- 1) Vimeo-Player UI ---
-  window._VimeoPlayers = {};
+  // --- 1) Player UI ---
+  window._players = {};
+  // <video>/<audio> files behind one promise-based surface.
+  function mediaPlayer(el) {
+    const ev = { play: 'play', pause: 'pause', seeked: 'seeked', error: 'error' };
+    return {
+      ready: () => Promise.resolve(),
+      play: () => el.play(),
+      pause: () => Promise.resolve(el.pause()),
+      getPaused: () => Promise.resolve(el.paused),
+      getCurrentTime: () => Promise.resolve(el.currentTime),
+      setCurrentTime: t => { el.currentTime = t; return Promise.resolve(t); },
+      getDuration: () => isFinite(el.duration) && el.duration > 0
+        ? Promise.resolve(el.duration)
+        : new Promise(res => el.addEventListener('loadedmetadata', () => res(el.duration), { once: true })),
+      on: (name, fn) => {
+        if (name === 'timeupdate') {
+          el.addEventListener('timeupdate', () => fn({ seconds: el.currentTime, duration: el.duration || 1 }));
+        } else if (ev[name]) {
+          el.addEventListener(ev[name], fn);
+        }
+      },
+    };
+  }
+  // Hide a playing video's controls (.is-idle, globals.css) 2.5s after the
+  // last mouse move; pause, a mouse move or a tap brings them back. On touch,
+  // the tap that wakes them doesn't also pause the video.
+  function idleControls(stage, player) {
+    let playing = false, timer, pointer = 'mouse';
+    const wake = () => {
+      stage.classList.remove('is-idle');
+      clearTimeout(timer);
+      if (playing) timer = setTimeout(() => stage.classList.add('is-idle'), 2500);
+    };
+    player.on('play', () => { playing = true; wake(); });
+    player.on('pause', () => { playing = false; wake(); });
+    stage.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') wake(); });
+    stage.addEventListener('pointerdown', e => { pointer = e.pointerType; }, true);
+    stage.addEventListener('click', e => {
+      if (pointer === 'mouse' || !stage.classList.contains('is-idle')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      wake();
+    }, true);
+  }
   document.querySelectorAll('[data-player-file]').forEach(container => {
     const slug = container.getAttribute('data-player-file');
     const iframe = document.getElementById(slug);
-    if (!iframe || !window.Vimeo) return;
-    const player = new Vimeo.Player(iframe);
-    window._VimeoPlayers[slug] = player;
+    if (!iframe) return;
+    const player = mediaPlayer(iframe);
+    window._players[slug] = player;
     // Finde den play-button-big direkt über data-player-target
     const bigPlay = document.querySelector(`[data-player-target="${slug}"][data-player="play-button-big"]`);
     const playText = bigPlay ? bigPlay.querySelector('[data-player="play-text"]') : null;
@@ -57,11 +100,14 @@ function __onReady(fn) {
     const durEl = container.querySelector('[data-player="duration"]');
     const spinner = container.querySelector('.player-loading-spinner');
     if (bigPlay && playBtn) playBtn.style.display = 'none';
+    // Video players: the control bar fades out while playing (Nic, 3 Nov).
+    const stage = bigPlay && container.closest('.project-video-controls, .bk-spot-controls') ? bigPlay.parentElement : null;
+    if (stage) idleControls(stage, player);
     if (pauseBtn) pauseBtn.style.display = 'none';
     if (spinner) spinner.style.display = 'none';
     player.ready().then(() => {
       player.on('play', () => {
-        Object.entries(window._VimeoPlayers).forEach(([other,p])=>{
+        Object.entries(window._players).forEach(([other,p])=>{
           if (other!==slug && p.pause) p.pause();
         });
         if (spinner) spinner.style.display = 'none';
@@ -72,18 +118,18 @@ function __onReady(fn) {
           player.getPaused().then(paused => {
             if (paused) {
               player.play().catch(e => {
-                console.warn('Vimeo play error', e);
+                console.warn('Player play error', e);
                 if (spinner) spinner.style.display = 'none';
               });
               if (playText) playText.style.display = 'none';
-              if (pauseBtn) pauseBtn.style.display = '';
+              if (pauseBtn) pauseBtn.style.display = 'block';
             } else {
               player.pause();
               if (playText) playText.style.display = '';
               if (spinner) spinner.style.display = 'none';
             }
           }).catch(e => {
-            console.warn('Vimeo getPaused error', e);
+            console.warn('Player getPaused error', e);
             if (spinner) spinner.style.display = 'none';
           });
         });
@@ -92,7 +138,7 @@ function __onReady(fn) {
         playBtn.addEventListener('click', () => {
           if (spinner) spinner.style.display = 'block';
           player.play().catch(e => {
-            console.warn('Vimeo play error', e);
+            console.warn('Player play error', e);
             if (spinner) spinner.style.display = 'none';
           });
         });
@@ -110,13 +156,13 @@ function __onReady(fn) {
           player.getDuration().then(dur =>
             player.setCurrentTime(pct*dur).then(() => {
               player.play().catch(e => {
-                console.warn('Vimeo play error after seek', e);
+                console.warn('Player play error after seek', e);
               });
             }).catch(e => {
-              console.warn('Vimeo setCurrentTime error', e);
+              console.warn('Player setCurrentTime error', e);
             })
           ).catch(e => {
-            console.warn('Vimeo getDuration error', e);
+            console.warn('Player getDuration error', e);
           });
         });
       }
@@ -137,7 +183,7 @@ function __onReady(fn) {
       });
       player.on('play', () => {
         if (playBtn) playBtn.style.display = 'none';
-        if (pauseBtn) pauseBtn.style.display = '';
+        if (pauseBtn) pauseBtn.style.display = 'block';
         if (playText) playText.style.display = 'none';
         if (spinner) spinner.style.display = 'none';
       });
@@ -148,10 +194,10 @@ function __onReady(fn) {
         if (spinner) spinner.style.display = 'none';
       });
       player.on('error', e => {
-        console.warn('Vimeo player error', e);
+        console.warn('Player player error', e);
         if (spinner) spinner.style.display = 'none';
       });
-    }).catch(e => console.warn('Vimeo ready error', e));
+    }).catch(e => console.warn('Player ready error', e));
   });
   // --- 2) JSON-basierte Visualisierung (SOFORT START + Player-Sync) ---
   document.querySelectorAll('[data-visual-form]').forEach(form => {
@@ -174,7 +220,7 @@ function __onReady(fn) {
     const svgHigh = form.querySelectorAll('[data-visual-sound="high"]');
     const player = (() => {
       const ps = form.getAttribute('data-visual-player') || '';
-      return ps.split(',').map(s => s.trim()).map(s => window._VimeoPlayers[s]).find(p => p) || null;
+      return ps.split(',').map(s => s.trim()).map(s => window._players[s]).find(p => p) || null;
     })();
     let rafId;
     let isPlayerSync = false;
@@ -220,7 +266,7 @@ function __onReady(fn) {
           isPlayerSync = true;
           player.getCurrentTime().then(drawLoop);
         });
-      }).catch(e => console.warn('Vimeo player ready error', e));
+      }).catch(e => console.warn('Player player ready error', e));
     }
   });
   // --- 3) GSAP-Morphing & Form-Animation ---
@@ -266,7 +312,7 @@ function __onReady(fn) {
       });
       if (startOnPlay && masterTl){
         const pSlug = div.getAttribute('data-visual-player');
-        const p = pSlug ? window._VimeoPlayers[pSlug] : null;
+        const p = pSlug ? window._players[pSlug] : null;
         if (p){
           p.on('play', ()=>masterTl.play());
           p.on('pause', ()=>masterTl.pause());
@@ -279,86 +325,12 @@ function __onReady(fn) {
 })();
 
 
-gsap.registerPlugin(MorphSVGPlugin);
+if (typeof gsap !== "undefined" && typeof MorphSVGPlugin !== "undefined") gsap.registerPlugin(MorphSVGPlugin);
 
 
-  // Funktion für die Fade-In-Animation
-  function fadeInMainWrapper() {
-    const mainWrapper = document.querySelector(".main-wrapper");
-    if (!mainWrapper) return;
-    if (typeof gsap !== "undefined") {
-      // Setze opacity auf 0 (falls nicht bereits durch CSS gesetzt)
-      gsap.set(mainWrapper, { opacity: 0 });
-      // Führe GSAP Fade-In-Animation aus
-      gsap.fromTo(
-        mainWrapper,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            mainWrapper.classList.add("is-visible"); // Sicherstellen, dass die Klasse bleibt
-          }
-        }
-      );
-    } else {
-      // Fallback: Setze is-visible direkt, wenn GSAP nicht verfügbar ist
-      mainWrapper.classList.add("is-visible");
-    }
-  }
-  // Beim Laden der Seite
-  window.addEventListener("pageshow", (event) => {
-    // Führe Fade-In aus, wenn nicht aus dem bfcache geladen
-    if (!event.persisted) {
-      fadeInMainWrapper();
-    } else {
-      // Für bfcache: Stelle sicher, dass die Seite sichtbar ist
-      const mainWrapper = document.querySelector(".main-wrapper");
-      if (mainWrapper && typeof gsap !== "undefined") {
-        gsap.set(mainWrapper, { opacity: 1 });
-        mainWrapper.classList.add("is-visible");
-      } else if (mainWrapper) {
-        mainWrapper.classList.add("is-visible");
-      }
-    }
-  });
-  // Click-Handler für Links
-  __onReady(() => {
-    const links = document.querySelectorAll("a");
-    links.forEach(link => {
-      const href = link.getAttribute("href");
-      const isTransitionLink = link.hasAttribute("data-page-transition") && link.getAttribute("data-page-transition") === "link";
-      const noTransition = link.hasAttribute("data-no-transition") && link.getAttribute("data-no-transition") === "true";
-      if (
-        href &&
-        !noTransition &&
-        !link.classList.contains("no-transition") &&
-        !href.startsWith("#") &&
-        href !== window.location.pathname &&
-        (isTransitionLink || href.startsWith("/") || new URL(href, window.location.origin).hostname === window.location.hostname)
-      ) {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          if (typeof gsap !== "undefined") {
-            gsap.to(".main-wrapper", {
-              opacity: 0,
-              duration: 0.5,
-              onComplete: () => {
-                window.location.href = href;
-              }
-            });
-          } else {
-            window.location.href = href; // Fallback ohne GSAP
-          }
-        });
-      }
-    });
-  });
-  // Popstate-Event für Zurück-Button
-  window.addEventListener("popstate", () => {
-    fadeInMainWrapper();
-  });
+  // The page fade-in/out lives in globals.css and src/components/PageTransition.tsx.
+  // The Webflow version faded .main-wrapper with inline GSAP opacity here too,
+  // which could override the CSS and leave the page blank, so it was removed.
 
 
 

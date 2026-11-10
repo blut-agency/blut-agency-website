@@ -13,9 +13,16 @@ export interface CaseStudyColor {
 }
 
 export interface CaseStudyMedia {
-  vimeoId: string;
+  /** Audio file. */
+  url?: string;
   title: string;
   subline: string;
+}
+
+/** Video file with its poster still. */
+export interface CaseStudyVideoFile {
+  url: string;
+  poster: string;
 }
 
 export interface CaseStudy {
@@ -33,28 +40,36 @@ export interface CaseStudy {
   quoteImage: string;
   quote: string;
   quoteName: string;
-  videoUnderQuoteVimeoId: string;
+  videoUnderQuote?: CaseStudyVideoFile;
   introTextHtml: string;
   gallery1: string[];
   textAfterGalleryHtml: string;
-  gifVideoVimeoId: string;
+  /** Short silent loop on the case page. */
+  loopUrl?: string;
   gifVideoHashtags: string;
   audioPlayer1: CaseStudyMedia;
   audioPlayer2: CaseStudyMedia;
   textAfterAudioPlayerHtml: string;
-  video1VimeoId: string;
-  video2VimeoId: string;
-  video3VimeoId: string;
+  videoFiles?: CaseStudyVideoFile[];
+  /** The page's copy is AI-written placeholder text: shown in red with a note. */
+  aiDraftCopy?: boolean;
+  /** Short silent hover loop on the case's card. */
+  previewUrl?: string;
   gallery2: string[];
   awards: CaseStudyAward[];
   nextCaseStudySlug: string;
+  /** Cases index card: client line, campaign line and thumbnail photo. */
+  teaserClient: string;
+  teaserCampaign: string;
+  thumbnail: string;
+  /** The thumbnail's focus point (CSS object-position) where the centre crop cuts a face. */
+  thumbnailPosition?: string;
 }
 
 export interface Location {
   name: string;
   slug: string;
   contentHtml: string;
-  vimeoId: string;
   visualizationJson: string;
 }
 
@@ -72,8 +87,14 @@ export interface Award {
 }
 
 export interface HomeSound {
-  vimeoId: string;
+  url: string;
   visualizationJson: string;
+}
+
+/** The case pinned on /case-studies and the featured cases on Home, in order. */
+export interface CasesSettings {
+  pinned: string;
+  featured: string[];
 }
 
 interface CmsContent {
@@ -82,8 +103,14 @@ interface CmsContent {
   colors: Color[];
   awards: Award[];
   homeSound: HomeSound | null;
+  casesSettings: CasesSettings;
 }
 
+/*
+  The content comes from Sanity: scripts/sanity-sync.mjs writes it into
+  cms-content.json before each build. The JSON in the repo is the last synced
+  copy, so the site also builds without Sanity.
+*/
 const content = cms as unknown as CmsContent;
 
 export function getCaseStudies(): CaseStudy[] {
@@ -112,4 +139,8 @@ export function getAwards(): Award[] {
 
 export function getHomeSound(): HomeSound | null {
   return content.homeSound;
+}
+
+export function getCasesSettings(): CasesSettings {
+  return content.casesSettings;
 }
