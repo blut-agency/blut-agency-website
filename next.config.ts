@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/media/:file*", destination: `${MEDIA_URL}/:file*`, permanent: false },
+      // The editing studio (Sanity), so the team only needs to remember /admin.
+      { source: "/admin", destination: "https://blut-agency.sanity.studio", permanent: false },
+      { source: "/admin/:path*", destination: "https://blut-agency.sanity.studio/:path*", permanent: false },
       // Case study details live at /project/<slug> to match the Webflow site.
       // This catches the /case-studies/<slug> paths used earlier in the port.
       {
