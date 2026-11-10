@@ -9,10 +9,11 @@ import VideoLightbox from "@/components/VideoLightbox";
   at the bottom right with a silent loop of the recap, "It's been a minute".
   "Watch" opens the full recap with sound in the video lightbox.
 
-  It shows once per browser. Closing it or watching the recap stores a flag
-  in localStorage (no cookie, nothing that identifies the visitor). Links
-  with ?from=linkedin skip it and store the flag too, because people coming
-  from the LinkedIn post have already seen the video.
+  Closing it or watching the recap stores a flag in localStorage (no cookie,
+  nothing that identifies the visitor), so it doesn't come back. The flag is
+  stored only on that action, never on display (privacy policy, section 4).
+  Links with ?from=linkedin skip it for that visit and store nothing: people
+  coming from the LinkedIn post have just seen the video.
 */
 
 const RECAP = {
@@ -51,10 +52,8 @@ export default function WelcomeRecap() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get(SKIP_PARAM.name) === SKIP_PARAM.value) {
-      storeSeen();
-      return;
-    }
+    // LinkedIn visitors skip it on this visit only; nothing is stored.
+    if (params.get(SKIP_PARAM.name) === SKIP_PARAM.value) return;
     if (readSeen()) return;
     const timer = window.setTimeout(() => setVisible(true), DELAY_MS);
     return () => window.clearTimeout(timer);
