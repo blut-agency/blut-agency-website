@@ -20,7 +20,7 @@ export const metadata: Metadata = pageMetadata(page.seo, "/post", { url: "/image
 */
 
 // Every spot's hover takes the banner's colours, not one picked from its photo (Elliot, Nov 2026).
-const POST_THEME = themeFromColors({ slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" });
+const POST_THEME = themeFromColors({ slug: "yellow-blue", main: "#6183ff", secondary: "#dfe5ac" });
 
 // Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
 const QUESTION = page.intro.question;
@@ -35,7 +35,7 @@ export default async function PostPage() {
         heading={heroHeading(page.hero)}
         lineAiDraft={page.hero.placeholder}
         line={page.hero.line}
-        background="var(--_color---accent-color-2)"
+        background="#dfe5ac"
         lineColor="var(--_color---accent-color-1)"
         dark
       />
@@ -74,7 +74,7 @@ export default async function PostPage() {
       </section>
 
       <ContactBlock person={["michael", "elliot"]} />
-      <LandingFooter band={{ background: "var(--_color---accent-color-2)", line: "var(--_color---accent-color-1)", light: true }} />
+      <LandingFooter band={{ background: "#dfe5ac", line: "var(--_color---accent-color-1)", light: true }} />
     </div>
   );
 }

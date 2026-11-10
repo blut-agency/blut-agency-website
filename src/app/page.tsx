@@ -28,7 +28,7 @@ export const metadata: Metadata = pageMetadata(page.seo, "/");
 const OFFER_STYLE: Record<OfferName, { href: string; color: { slug: string; main: string; secondary: string } }> = {
   Strategy: { href: "/strategy", color: { slug: "blue-red", main: "#fe0000", secondary: "#6183ff" } },
   Production: { href: "/production", color: { slug: "blue-violet", main: "#02b7fd", secondary: "#7a3bff" } },
-  Post: { href: "/post", color: { slug: "yellow-blue", main: "#6183ff", secondary: "#e7f639" } },
+  Post: { href: "/post", color: { slug: "yellow-blue", main: "#6183ff", secondary: "#dfe5ac" } },
 };
 
 /** The offer tiles: words and photos from Sanity (pages.json), link and colours from OFFER_STYLE. */
@@ -201,7 +201,7 @@ export default async function HomePage() {
       </div>
     </section>
 
-    <LandingFooter band={{ background: "#ff0b0b", line: "var(--_color---accent-color-1)" }} />
+    <LandingFooter band={{ background: "#fe0000", line: "var(--_color---accent-color-1)" }} />
   </div>
     </>
   );

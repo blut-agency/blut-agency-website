@@ -44,7 +44,7 @@ export type Person = {
 /** The team page banners' colours (pages from team.json, Sanity). */
 const HERO: Record<string, { background: string; lineColor: string; dark?: boolean }> = {
   michael: { background: "#7a3bff", lineColor: "#02b7fd" },
-  karl: { background: "#e7f639", lineColor: "#82685b", dark: true },
+  karl: { background: "#e7f639", lineColor: "#977e72", dark: true },
 };
 
 export const PEOPLE: Person[] = getTeam().flatMap((m) => {

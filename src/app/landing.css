@@ -493,7 +493,7 @@
 
 .lp-band.is-brown-yellow {
   --lp-band-bg: #e7f639;
-  --lp-band-line: #82685b;
+  --lp-band-line: #977e72;
 }
 
 .lp-band.is-blue-violet {
@@ -502,8 +502,8 @@
 }
 
 .lp-band.is-red-pink {
-  --lp-band-bg: #edd4eb;
-  --lp-band-line: #871631;
+  --lp-band-bg: #e5d2e5;
+  --lp-band-line: #c66274;
 }
 
 /* Two soft diagonal strokes in the theme's line colour, drifting slowly. */

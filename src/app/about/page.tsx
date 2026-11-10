@@ -25,8 +25,8 @@ export default function AboutPage() {
         line={page.hero.line || undefined}
         lineAiDraft={page.hero.placeholder}
         small
-        background="#edd4eb"
-        lineColor="#871631"
+        background="#e5d2e5"
+        lineColor="#c66274"
         dark
       />
       <Header variant="start-top" />
@@ -37,7 +37,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <LandingFooter band={{ background: "#edd4eb", line: "#871631", light: true }} />
+      <LandingFooter band={{ background: "#e5d2e5", line: "#c66274", light: true }} />
     </div>
   );
 }
