@@ -18,68 +18,52 @@ export default function ImprintPage() {
                 data-wf--spacer--variant="xxl"
                 className="spacer-component w-variant-f176b2ee-826a-f858-3f7a-82a98e21da6b"
               />
-              <div className="rich-text-custom w-richtext">
+              <div className="rich-text-custom w-richtext legal-text">
                 <h1>Imprint</h1>
-                <p>‍</p>
-                <h4>Angaben gemäß § 5 TMG</h4>
+                <h4>Angaben gemäß § 5 DDG</h4>
                 <p>
                   BLUT GmbH
                   <br />
-                  Poolstrasse 42
+                  Poolstraße 42
                   <br />
                   20355 Hamburg
-                  <br />
-                  Handelsregister: HRB 138213 <br />
-                  Registergericht: Amtsgericht Hamburg
                 </p>
-                <p>‍</p>
-                <h4>Vertreten durch:</h4>
+                <h4>Vertreten durch</h4>
                 <p>Timo Blunck</p>
-                <p>‍</p>
                 <h4>Kontakt</h4>
-                <p>Telefon: </p>
-                <p>Timo Blunck: ‭+49 151 58884464‬</p>
-                <p>Michael Robb: +49 177 6233941</p>
                 <p>
-                  ‍
+                  Timo Blunck: +49 151 58884464
+                  <br />
+                  Michael Robb: +49 177 6233941
                   <br />
                   E-Mail: <a href="mailto:contact@blut.agency">contact@blut.agency</a>
                 </p>
-                <p>‍</p>
-                <h4>Umsatzsteuer-ID</h4>
-                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:{"\u00a0\u2028"}DE301604095</p>
-                <p>‍</p>
-                <h4>Redaktionell verantwortlich</h4>
+                <h4>Registereintrag</h4>
                 <p>
-                  Timo Blunck{"\u2028"}
+                  Registergericht: Amtsgericht Hamburg
                   <br />
-                  Poolstrasse 42
+                  Registernummer: HRB 138213
+                </p>
+                <h4>Umsatzsteuer-ID</h4>
+                <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: DE301604095</p>
+                <h4>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h4>
+                <p>
+                  Timo Blunck
+                  <br />
+                  Poolstraße 42
                   <br />
                   20355 Hamburg
                 </p>
-                <p>‍</p>
+                <h4>Verbraucherstreitbeilegung</h4>
+                <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
                 <h4>Konzept &amp; Design</h4>
                 <p>
                   <a href="http://gudbergnerger.com" target="_blank" rel="noopener noreferrer">
                     GUDBERG{"\u00a0"}NERGER
                   </a>
                 </p>
-                <p>‍</p>
-                <h4>EU-Streitschlichtung</h4>
-                <p>
-                  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{"\u00a0\u2028"}
-                  https://ec.europa.eu/consumers/odr/.{"\u2028"}
-                  Unsere E-Mail-Adresse finden Sie oben im Impressum.
-                </p>
-                <p>‍</p>
-                <h4>Verbraucherstreitbeilegung/­Universalschlichtungsstelle</h4>
-                <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-                <p>‍</p>
-                <p>
-                  Quelle:
-                  <br />
-                  https://www.e-recht24.de/impressum-generator.html
-                </p>
+                <h4>Webdesign</h4>
+                <p>Nicolas Blunck</p>
               </div>
               <div
                 data-wf--spacer--variant="xxl"

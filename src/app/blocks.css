@@ -2592,3 +2592,12 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 .bk-strategy-intro {
   margin-bottom: var(--lp-stack);
 }
+
+/* Imprint and privacy policy: space between sections (replaces the empty
+   paragraphs the Webflow copy used as spacers). */
+.rich-text-custom.legal-text h1 { margin-bottom: 48px; }
+.rich-text-custom.legal-text h2 { margin-top: 64px; }
+.rich-text-custom.legal-text h3 { margin-top: 48px; }
+.rich-text-custom.legal-text h4 { margin-top: 32px; }
+.rich-text-custom.legal-text h1 + h2,
+.rich-text-custom.legal-text h1 + h4 { margin-top: 0; }
