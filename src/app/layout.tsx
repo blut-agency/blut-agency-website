@@ -20,10 +20,6 @@ export const metadata: Metadata = {
       "blut is a music-led creative agency crafting unique sonic identities and strategies. We combine music production with data-driven performance measurement to boost brand impact.",
     path: "/",
   }),
-  icons: {
-    icon: "/images/favicon.png",
-    apple: "/images/webclip.png",
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

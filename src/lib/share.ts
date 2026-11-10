@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-/** The default link preview: the red blut wordmark (1800×945). */
-export const SHARE_IMAGE = { url: "/images/open-graph-image-3.png", width: 1800, height: 945, alt: "blut – colorful audio" };
+/** The default link preview: the blut wordmark on the red homepage banner (1200×630). */
+export const SHARE_IMAGE = { url: "/images/share/blut-share.jpg", width: 1200, height: 630, alt: "blut – music strategies with measurable impact" };
 
 /**
  * Link previews (LinkedIn, WhatsApp, Slack, X…) for a page: Open Graph and
