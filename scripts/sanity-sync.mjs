@@ -222,7 +222,7 @@ const findAssets = (v) => {
     Object.values(v).forEach(findAssets);
   }
 };
-findAssets([data.pages, data.team]);
+findAssets([data.pages, data.team, data.cases.map((c) => c.sections)]);
 const assets = assetIds.size
   ? Object.fromEntries(
       (await query(`*[_type == "sanity.imageAsset" && _id in ${JSON.stringify([...assetIds])}]{ "url": url, "name": originalFilename, "id": _id, "size": size }`)).map((a) => [a.id, a]),
@@ -242,6 +242,11 @@ function plain(v) {
   for (const [k, val] of Object.entries(v)) if (!k.startsWith("_")) out[k] = plain(val);
   return out;
 }
+
+// The case builder's sections, in page order, each with its type.
+data.cases.forEach((c, i) => {
+  if (Array.isArray(c.sections)) caseStudies[i].sections = c.sections.map((s) => ({ type: s._type, ...plain(s) }));
+});
 
 const pagesJson = JSON.parse(fs.readFileSync(PAGES_FILE, "utf8"));
 let siteJson = JSON.parse(fs.readFileSync(SITE_FILE, "utf8"));

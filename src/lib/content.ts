@@ -1,4 +1,5 @@
 import cms from "@/content/cms-content.json";
+import type { CaseSection } from "./caseSections";
 
 export interface CaseStudyAward {
   name: string;
@@ -23,6 +24,8 @@ export interface CaseStudyMedia {
 export interface CaseStudyVideoFile {
   url: string;
   poster: string;
+  /** Name for screen readers and the lightbox. */
+  label?: string;
 }
 
 export interface CaseStudy {
@@ -51,6 +54,8 @@ export interface CaseStudy {
   audioPlayer2: CaseStudyMedia;
   textAfterAudioPlayerHtml: string;
   videoFiles?: CaseStudyVideoFile[];
+  /** The case builder's section list (studio). Without it the page uses the fields above in the old order. */
+  sections?: CaseSection[];
   /** The page's copy is AI-written placeholder text: shown in red with a note. */
   aiDraftCopy?: boolean;
   /** Short silent hover loop on the case's card. */

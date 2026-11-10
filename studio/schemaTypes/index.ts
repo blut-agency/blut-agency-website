@@ -1,5 +1,6 @@
 import { award } from "./award";
 import { caseStudy } from "./caseStudy";
+import { CASE_SECTION_TYPES } from "./caseSections";
 import { casesSettings } from "./casesSettings";
 import { colorTheme } from "./colorTheme";
 import { legalText } from "./legalText";
@@ -27,6 +28,7 @@ export const PAGE_TYPES = [
 export const schemaTypes = [
   ...PAGE_TYPES,
   caseStudy,
+  ...CASE_SECTION_TYPES,
   casesSettings,
   colorTheme,
   award,

@@ -1,19 +1,35 @@
-import { studioTheme, type RootTheme } from "@sanity/ui";
+import { color } from "@sanity/color";
+import { buildTheme, type RootTheme } from "@sanity/ui/theme";
 
 /*
-  Sanity's own default colours, unchanged, so states read clearly.
-  Only the font is swapped for the site's font (PP Agrandir).
+  Sanity's own colours, kept simple. Two changes only:
+  - the greys are neutral (no blue tint), and dark mode sits on pure black;
+  - the font is the site's font (PP Agrandir).
 */
 
 const BLUT_FONT = "'PP Agrandir', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
 
+/** Same lightness as Sanity's grey, without the blue tint. */
+function neutral(hex: string): string {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const v = Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b).toString(16).padStart(2, "0");
+  return `#${v}${v}${v}`;
+}
+
+const gray = Object.fromEntries(
+  Object.entries(color.gray).map(([key, tint]) => [key, { ...tint, hex: neutral(tint.hex) }]),
+) as typeof color.gray;
+gray[950] = { ...gray[950], hex: "#000000" };
+
+const base = buildTheme({ palette: { ...color, black: { ...color.black, hex: "#000000" }, gray } });
+
 export const blutTheme: RootTheme = {
-  ...studioTheme,
+  ...base,
   fonts: {
-    ...studioTheme.fonts,
-    heading: { ...studioTheme.fonts.heading, family: BLUT_FONT },
-    label: { ...studioTheme.fonts.label, family: BLUT_FONT },
-    text: { ...studioTheme.fonts.text, family: BLUT_FONT },
+    ...base.fonts,
+    heading: { ...base.fonts.heading, family: BLUT_FONT },
+    label: { ...base.fonts.label, family: BLUT_FONT },
+    text: { ...base.fonts.text, family: BLUT_FONT },
   },
 };
 
