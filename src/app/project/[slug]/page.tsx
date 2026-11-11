@@ -106,8 +106,7 @@ function Chapter({
       <div className="lp-wrap bk-lab-chapter">
         <div className="bk-lab-chapter-head">
           <RevealText as="h2" className="lp-heading" text={stage} />
-          {/* AI copy: the asterisk goes into the text, so it stays on the last word's line. */}
-          {heading && <RevealText as="p" className="bk-lab-chapter-line" text={aiDraft ? `${heading}*` : heading} after={stage} />}
+          {heading && <RevealText as="p" className="bk-lab-chapter-line" text={heading} after={stage} />}
         </div>
         <div className="bk-lab-chapter-body">
           <div className="bk-lab-prose" dangerouslySetInnerHTML={{ __html: body ?? "" }} />
