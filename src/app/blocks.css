@@ -1702,18 +1702,16 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   }
 }
 
-/* Home stage: the logo across two thirds from the very top; under it the
-   sound control, and in the last third the intro line, its foot level with
-   the sound control's (Nic, 31 Oct). One grid for the stage (its two rows'
-   wrappers step aside); it is as tall as these need. */
+/* Home stage (mock, Nic 11 Nov): the full "blut" wordmark fills the
+   banner below the nav, as wide and as tall as it can go with its shape
+   kept, from the left. The sound control sits in the bottom right corner.
+   The banner is as tall as the other page banners (512px, 384px on phones). */
 .lp-page .lp-stage .home-stage-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: var(--lp-gap);
-  align-items: end;
-  height: auto;
+  position: relative;
+  display: block;
+  height: 512px;
   min-height: 0;
-  padding-block: 24px var(--lp-pad);
+  padding: calc(var(--_project---nav-height) + 16px) 0 var(--lp-pad);
 }
 
 .lp-page .lp-stage :is(.home-stage-top, .home-stage-bottom) {
@@ -1722,13 +1720,14 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 
 .lp-page .lp-stage .full-width-logo {
   position: relative;
-  grid-column: 1 / span 2;
-  grid-row: 1;
-  aspect-ratio: 58 / 20;
-  margin: 0 0 var(--lp-stack);
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  margin: 0;
   padding-block: 0;
 }
 
+/* The SVG keeps its shape ("meet") and sits top left (xMinYMin). */
 .lp-page .lp-stage .full-width-logo svg.logo-svg {
   position: absolute;
   inset: 0;
@@ -1737,13 +1736,12 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 }
 
 .lp-page .lp-stage .audioplayer-controls {
-  grid-column: 1;
-  grid-row: 2;
+  position: absolute;
+  right: 0;
+  bottom: var(--lp-pad);
 }
 
 .lp-stage-line {
-  grid-column: 3;
-  grid-row: 1 / span 2;
   margin: 0;
   color: var(--_color---copy-bright);
   font-size: var(--lp-copy);
@@ -1753,25 +1751,7 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--lp-pad);
-    padding-top: 16px;
-  }
-
-  /* Clear of the menu button in the top right corner. */
-  .lp-page .lp-stage .full-width-logo {
-    grid-column: 1;
-    width: calc(100% - 64px);
-    margin-bottom: 0;
-  }
-
-  .lp-stage-line {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .lp-page .lp-stage .audioplayer-controls {
-    grid-row: 3;
+    height: 384px;
   }
 }
 
