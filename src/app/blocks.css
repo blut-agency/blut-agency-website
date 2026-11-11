@@ -1749,9 +1749,10 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   letter-spacing: -0.01em;
 }
 
-/* Phones and small tablets (the burger menu widths): the logo sits in the
-   bottom left corner of the 384px banner. The words make way for a round
-   sound button in the top left corner (Nic, 11 Nov). */
+/* Phones and small tablets (the burger menu widths): the banner hugs the
+   logo, 16px below the nav row, so the intro text moves up and the recap
+   card no longer covers it. The words make way for a speaker icon in the
+   top left corner (Nic, 11 Nov). */
 .lp-stage .sound-icon {
   display: none;
 }
@@ -1760,9 +1761,7 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   .lp-page .lp-stage .home-stage-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    height: 384px;
-    padding-top: 0;
+    height: auto;
   }
 
   .lp-page .lp-stage .full-width-logo {
