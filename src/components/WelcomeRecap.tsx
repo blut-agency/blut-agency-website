@@ -31,8 +31,6 @@ const SKIP_PARAM = { name: "from", value: "linkedin" };
 /** Shows the card on every visit, even after it was closed (for sharing). */
 const SHOW_PARAM = { name: "recap", value: "1" };
 const DELAY_MS = 2000;
-/** The phone layout (same breakpoint as the burger menu). */
-const PHONE_QUERY = "(max-width: 767px)";
 
 function readSeen() {
   try {
@@ -61,25 +59,8 @@ export default function WelcomeRecap() {
     if (params.get(SKIP_PARAM.name) === SKIP_PARAM.value) return;
     const forced = params.get(SHOW_PARAM.name) === SHOW_PARAM.value;
     if (!forced && readSeen()) return;
-    // Phones: the card would cover the intro text, so it waits until the
-    // visitor has scrolled a full screen down, past the intro (Nic, 11 Nov).
-    const phone = window.matchMedia(PHONE_QUERY);
-    const scrolledPast = () => window.scrollY >= window.innerHeight;
-    let ready = false;
-    const show = () => {
-      if (!ready || (phone.matches && !scrolledPast())) return;
-      setVisible(true);
-      window.removeEventListener("scroll", show);
-    };
-    const timer = window.setTimeout(() => {
-      ready = true;
-      show();
-    }, DELAY_MS);
-    window.addEventListener("scroll", show, { passive: true });
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("scroll", show);
-    };
+    const timer = window.setTimeout(() => setVisible(true), DELAY_MS);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const dismiss = useCallback(() => {
