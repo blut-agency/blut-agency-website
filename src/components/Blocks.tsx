@@ -73,7 +73,7 @@ export function PageHero({
   line,
   form,
   background = "var(--_color---accent-color-3)",
-  lineColor = "var(--_color---accent-color-1)",
+  lineColor = "var(--_color---accent-color-4)",
   dark = false,
   variant = 3,
   speed = 10,
@@ -185,7 +185,7 @@ const PEOPLE = Object.fromEntries(
 /** Black closing block: "Sound good? Get in touch!" across two thirds, the person to contact in the last third (Figma 235:1469); two people sit under the heading in the last two thirds; without a person, the general address beside a pattern square in the page's colours. */
 export function ContactBlock({
   person,
-  pattern = { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
+  pattern = { background: "#fe0000", line: "#a88dc4" },
 }: {
   person?: string | string[];
   pattern?: { background: string; line: string };

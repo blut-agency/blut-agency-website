@@ -32,8 +32,8 @@ export default async function StrategyPage() {
         heading={heroHeading(page.hero)}
         lineAiDraft={page.hero.placeholder}
         line={page.hero.line}
-        background="var(--_color---accent-color-1)"
-        lineColor="var(--_color---accent-color-3)"
+        background="#e7f639"
+        lineColor="#977e72"
         dark
       />
       <Header variant="start-top" />
@@ -84,7 +84,7 @@ export default async function StrategyPage() {
       </section>
 
       <ContactBlock person="karl" />
-      <LandingFooter band={{ background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)", light: true }} />
+      <LandingFooter band={{ background: "#e7f639", line: "#977e72", light: true }} />
     </div>
   );
 }

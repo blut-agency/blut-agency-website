@@ -478,8 +478,8 @@ figure {
 
 .button {
   padding: var(--spacing--sm);
-  background-color: var(--_color---accent-color-1);
-  color: var(--_color---copy-dark);
+  background-color: var(--_color---copy-dark);
+  color: var(--_color---copy-bright);
   text-align: center;
   letter-spacing: .02rem;
   background-image: linear-gradient(90deg, #8baffe 30%, #799aff);
@@ -515,7 +515,7 @@ figure {
 }
 
 .button.is-secondary {
-  border: 2px solid var(--_color---accent-color-1);
+  border: 2px solid var(--_color---copy-dark);
   background-color: var(--_color---transparent);
   color: var(--_color---copy-dark);
   background-image: none;
@@ -951,7 +951,7 @@ figure {
   padding-right: var(--container--page-padding);
   padding-bottom: var(--_project---nav-height);
   padding-left: var(--container--page-padding);
-  background-color: #ff0b0b;
+  background-color: #fe0000;
   position: relative;
 }
 
@@ -1633,7 +1633,7 @@ figure {
   width: 100%;
   max-width: 86rem;
   height: 100%;
-  color: var(--_color---accent-color-1);
+  color: var(--_color---accent-color-4);
   font-size: var(--_project---blur-full-width);
   margin-left: auto;
   margin-right: auto;
@@ -1726,7 +1726,7 @@ figure {
   padding: var(--spacing--sm);
   aspect-ratio: 1;
   background-color: var(--_color---accent-color-3);
-  color: var(--_color---accent-color-1);
+  color: var(--_color---accent-color-4);
   justify-content: flex-start;
   align-items: flex-end;
   display: flex;
@@ -2022,7 +2022,7 @@ figure {
 .home-stage-visual-wrapper {
   width: 100%;
   height: 100%;
-  color: var(--_color---accent-color-1);
+  color: var(--_color---accent-color-4);
   font-size: var(--_project---blur-full-width);
   flex-flow: column;
   justify-content: space-between;
@@ -2145,7 +2145,7 @@ figure {
   background-color: var(--_color---accent-color-3);
   width: 100%;
   height: 100%;
-  color: var(--_color---accent-color-1);
+  color: var(--_color---accent-color-4);
   font-size: var(--_project---blur-half-width);
   flex-flow: column;
   justify-content: space-between;
@@ -2216,7 +2216,7 @@ figure {
   background-color: var(--_color---accent-color-3);
   width: 100%;
   height: 100%;
-  color: var(--_color---accent-color-1);
+  color: var(--_color---accent-color-4);
   position: absolute;
   inset: 0%;
 }
