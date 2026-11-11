@@ -72,10 +72,10 @@ export default async function HomePage() {
                           <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" opacity="0.2"></circle>
                           <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>` }} /></div>
-                    </div><button data-player="play-button" className="play-toggle">
-                      <div className="play-toggle-text heading-style-h3"><span className="sound-label-pointer">{page.soundLabel}</span><span className="sound-label-touch">{page.soundLabelTouch ?? page.soundLabel}</span></div>
-                    </button><button data-player="pause-button" className="play-toggle is-pause-button">
-                      <div className="play-toggle-text heading-style-h3">{page.pauseLabel}</div>
+                    </div><button data-player="play-button" className="play-toggle" aria-label={page.soundLabel}>
+                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.soundLabel}</span><svg className="sound-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" strokeLinejoin="round" /><path d="M16 9l6 6M22 9l-6 6" /></svg></div>
+                    </button><button data-player="pause-button" className="play-toggle is-pause-button" aria-label={page.pauseLabel}>
+                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.pauseLabel}</span><svg className="sound-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3z" strokeLinejoin="round" /><path d="M16 8.5a5 5 0 0 1 0 7M19 5.5a9 9 0 0 1 0 13" /></svg></div>
                     </button>
                   </div>
                 </div>

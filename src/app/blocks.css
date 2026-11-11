@@ -1749,14 +1749,21 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   letter-spacing: -0.01em;
 }
 
-/* Phones: the screen is taller than wide, so the width limits the logo.
-   The banner shrinks to hug it, and the sound control sits right under it,
-   on the right, so the logo never floats in empty space. */
+/* Phones and small tablets (the burger menu widths): the logo sits in the
+   bottom left corner of the 384px banner. The words make way for a small
+   speaker icon at the top, left of the burger: crossed out while silent,
+   with sound waves while it plays (Nic, 11 Nov). */
+.lp-stage .sound-icon {
+  display: none;
+}
+
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
     display: flex;
     flex-direction: column;
-    height: auto;
+    justify-content: flex-end;
+    height: 384px;
+    padding-top: 0;
   }
 
   .lp-page .lp-stage .full-width-logo {
@@ -1764,26 +1771,41 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
     aspect-ratio: 58 / 20;
   }
 
+  /* Level with the burger lines, 16px to their left. */
   .lp-page .lp-stage .audioplayer-controls {
-    position: static;
-    align-self: flex-end;
-    margin-top: 24px;
+    position: absolute;
+    z-index: 1000;
+    top: 8px;
+    right: 40px;
+    bottom: auto;
   }
-}
 
-/* "Click for sound" with a mouse, "Tap for sound" on phones and touch
-   screens (Nic, 11 Nov). */
-.lp-stage .sound-label-touch {
-  display: none;
-}
+  .lp-stage .play-toggle-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-right: -12px;
+  }
 
-@media (hover: none), (max-width: 767px) {
-  .lp-stage .sound-label-pointer {
+  .lp-stage .sound-label {
     display: none;
   }
 
-  .lp-stage .sound-label-touch {
-    display: inline;
+  /* The clear nav lies on top of the stage: let taps through to the
+     speaker icon; the nav's own logo and burger still take them. */
+  .lp-page .header.is-over-stage,
+  .lp-page .header.is-over-stage :is(.navbar, .navbar-inner) {
+    pointer-events: none;
+  }
+
+  .lp-page .header.is-over-stage :is(a, button) {
+    pointer-events: auto;
+  }
+
+  .lp-stage .sound-icon {
+    display: block;
   }
 }
 
