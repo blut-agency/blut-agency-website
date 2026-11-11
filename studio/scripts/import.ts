@@ -49,6 +49,9 @@ let keyCount = 0;
 const key = () => `k${(keyCount++).toString(36)}`;
 const ref = (id: string) => ({ _type: "reference", _ref: id, _key: key() });
 const ref1 = (id: string) => ({ _type: "reference", _ref: id });
+/** Cases the site hides (published: false) come in as drafts only: unpublished in Sanity. */
+const hidden = new Set(cms.caseStudies.filter((c) => c.published === false).map((c) => c.slug));
+const caseRef = (slug: string) => ({ ...ref1(`case-${slug}`), ...(hidden.has(slug) ? { _weak: true } : {}) });
 
 // Pictures: upload each site file once; the same path reuses the same asset.
 const uploaded = new Map<string, string>();
@@ -310,16 +313,16 @@ async function main() {
   }
 
   for (const c of cms.caseStudies) {
-    console.log(`  ${c.internalName}`);
+    console.log(`  ${c.internalName}${hidden.has(c.slug) ? " (draft, not on the site)" : ""}`);
     const visual = c.useVisual.indexOf(true);
+    if (hidden.has(c.slug)) tx.delete(`case-${c.slug}`);
     tx.createOrReplace({
-      _id: `case-${c.slug}`,
+      _id: hidden.has(c.slug) ? `drafts.case-${c.slug}` : `case-${c.slug}`,
       _type: "caseStudy",
       internalName: c.internalName,
       title: c.title,
       slug: { _type: "slug", current: c.slug },
       position: c.position,
-      published: c.published !== false,
       showOnHomepage: c.showOnHomepage,
       colorFromPhoto: c.colorFromPhoto === true,
       teaserClient: c.teaserClient ?? "",
@@ -338,7 +341,7 @@ async function main() {
       textAfterGallery: await blocks(c.textAfterGalleryHtml),
       textAfterAudioPlayer: await blocks(c.textAfterAudioPlayerHtml),
       aiDraftCopy: Boolean(c.aiDraftCopy),
-      nextCaseStudy: c.nextCaseStudySlug ? ref1(`case-${c.nextCaseStudySlug}`) : undefined,
+      nextCaseStudy: c.nextCaseStudySlug ? caseRef(c.nextCaseStudySlug as string) : undefined,
       videoUnderQuote: c.videoUnderQuote ? video(c.videoUnderQuote) : undefined,
       gallery1: await images(c.gallery1),
       loopUrl: c.loopUrl ?? "",

@@ -10,6 +10,9 @@ import { defineArrayMember, defineField, defineType } from "sanity";
   stay in the data but are hidden: a case without sections still shows them
   in the old order, and the import builds each case's sections from them.
 
+  Only published cases reach the site: Unpublish takes a case off the site
+  and keeps it here as a draft.
+
   Videos and audio live in blut's own media folder (Nextcloud, GDPR), so the
   fields hold a file path like /media/hyundai-film.mp4, not an upload.
 */
@@ -96,14 +99,6 @@ export const caseStudy = defineType({
       group: "card",
       validation: (r) => r.required().integer().min(1),
     }),
-    defineField({
-      name: "published",
-      title: "Show on the site",
-      description: "Off: the case stays here but the site leaves it out, also from the lists and the “Next case” links.",
-      type: "boolean",
-      group: "card",
-      initialValue: true,
-    }),
     defineField({ name: "teaserClient", title: "Card: client line", type: "string", group: "card" }),
     defineField({ name: "teaserCampaign", title: "Card: campaign line", type: "string", group: "card" }),
     defineField({ name: "thumbnail", title: "Card: photo", type: "image", group: "card" }),
@@ -154,7 +149,16 @@ export const caseStudy = defineType({
       group: "page",
       initialValue: false,
     }),
-    defineField({ name: "nextCaseStudy", title: "Next case", type: "reference", to: [{ type: "caseStudy" }], group: "page" }),
+    defineField({
+      name: "nextCaseStudy",
+      title: "Next case",
+      description: "If this case is not published, the site shows the next published case in the list instead.",
+      type: "reference",
+      to: [{ type: "caseStudy" }],
+      // Weak: it may point to a case that is not published yet.
+      weak: true,
+      group: "page",
+    }),
 
     defineField({ name: "videoUnderQuote", hidden: true, title: "Video under the quote", type: "videoFile", group: "page" }),
     pictures("gallery1", "Picture strip 1"),
@@ -203,11 +207,7 @@ export const caseStudy = defineType({
     }),
   ],
   preview: {
-    select: { title: "internalName", media: "thumbnail", position: "position", published: "published" },
-    prepare: ({ title, media, position, published }) => ({
-      title: `${position ?? "–"}. ${title ?? "New case"}`,
-      subtitle: published === false ? "Hidden from the site" : undefined,
-      media,
-    }),
+    select: { title: "internalName", media: "thumbnail", position: "position" },
+    prepare: ({ title, media, position }) => ({ title: `${position ?? "–"}. ${title ?? "New case"}`, media }),
   },
 });

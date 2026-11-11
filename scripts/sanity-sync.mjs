@@ -179,8 +179,6 @@ const caseStudies = data.cases.map((c) => {
     internalName: c.internalName ?? "",
     title: c.title ?? "",
     position: c.position ?? 99,
-    // Cases switched off in the studio stay in the JSON but not on the site.
-    ...(c.published === false ? { published: false } : {}),
     showOnHomepage: featured.includes(c.slug),
     clientListHtml: list(c.clients),
     whatWeDidHtml: list(c.whatWeDid),
@@ -248,6 +246,12 @@ function plain(v) {
   for (const [k, val] of Object.entries(v)) if (!k.startsWith("_")) out[k] = plain(val);
   return out;
 }
+
+// "Next case" pointing to a case that is not published: the next published case in the list.
+const slugs = caseStudies.map((c) => c.slug);
+caseStudies.forEach((c, i) => {
+  if (!slugs.includes(c.nextCaseStudySlug) || c.nextCaseStudySlug === c.slug) c.nextCaseStudySlug = slugs.length > 1 ? slugs[(i + 1) % slugs.length] : "";
+});
 
 // The case builder's sections, in page order, each with its type.
 data.cases.forEach((c, i) => {
