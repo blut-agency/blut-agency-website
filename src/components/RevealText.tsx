@@ -96,7 +96,7 @@ export default function RevealText({
       <span className="sr-only">{label}</span>
       {lines.map((line, lineIndex) => {
         const words = line ? line.split(/\s+/) : [];
-        // Each line is its own block, so line balancing (globals.css) evens
+        // Each line is its own block, so line balancing (LineBalance) evens
         // out every line group on its own and never leaves a lone word before
         // a deliberate break. An empty line keeps one line's height.
         return (

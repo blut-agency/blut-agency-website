@@ -4,6 +4,7 @@ import { SITE } from "@/lib/siteUrl";
 import Script from "next/script";
 import PageTransition from "@/components/PageTransition";
 import CenterHover from "@/components/CenterHover";
+import LineBalance from "@/components/LineBalance";
 import MotionLayer from "@/components/MotionLayer";
 import WelcomeRecap from "@/components/WelcomeRecap";
 import "./globals.css";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <PageTransition />
         <CenterHover />
+        <LineBalance />
         <MotionLayer />
         {children}
         <WelcomeRecap />
