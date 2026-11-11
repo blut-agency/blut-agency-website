@@ -990,7 +990,7 @@
   aspect-ratio: 1;
   padding: 0;
   border: 0;
-  background: #b4b1a9;
+  background: #eee;
   cursor: pointer;
   overflow: hidden;
 }
@@ -1513,7 +1513,7 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   --bk-btn-hover-bg: var(--_color---copy-bright);
   --bk-btn-hover-fg: var(--_color---copy-dark);
   --bk-btn-hover-line: var(--_color---copy-bright);
-  --bk-btn-pressed-bg: #b4b1a9;
+  --bk-btn-pressed-bg: #dcdcdc;
 }
 
 .bk-btn.is-sm {
@@ -1565,9 +1565,9 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 }
 
 .bk-btn:is(:disabled, .is-disabled) {
-  --bk-btn-bg: #b4b1a9;
+  --bk-btn-bg: #dcdcdc;
   --bk-btn-fg: var(--lp-muted);
-  --bk-btn-line: #b4b1a9;
+  --bk-btn-line: #dcdcdc;
   cursor: not-allowed;
 }
 
