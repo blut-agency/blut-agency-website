@@ -3,7 +3,7 @@
 
   The page sits on a 1280px column split into three columns with 48px gaps.
   The feature photos run from the screen edge across two of those columns,
-  and the copy sits in a grey (light) or #212121 (dark) panel in the third.
+  and the copy sits in a Concrete (light) or Grey 800 (dark) panel in the third.
   Logo bands run edge to edge between the parts.
 
   Everything is scoped to .lp-page so the other pages are unchanged. Nothing
@@ -30,8 +30,9 @@
   --lp-copy: 32px;
   --lp-client: 48px;
   --lp-text: 16px;
-  --lp-panel-light: #f5f5f5;
-  --lp-panel-dark: #212121;
+  /* Brand grounds only (styleguide v2.1): Concrete on white, Grey 800 on black. */
+  --lp-panel-light: #b4b1a9;
+  --lp-panel-dark: #343434;
   --lp-text-secondary: #424242;
   --lp-muted: #a3a3a3;
   --lp-band: 64px;
@@ -119,7 +120,7 @@
   line-height: 1.1;
 }
 
-/* ---------- Panels: grey on white, #212121 on black ---------- */
+/* ---------- Panels: Concrete on white, Grey 800 on black ---------- */
 .lp-panel {
   display: flex;
   flex-direction: column;
@@ -367,7 +368,7 @@
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #111;
+  background: #343434;
 }
 
 .lp-case-media img {
@@ -435,7 +436,7 @@
 
 .lp-case-tags li {
   padding: 8px 16px;
-  border: 1px solid #eee;
+  border: 1px solid #c0bfbe;
   border-radius: 999px;
   font-size: 16px;
   line-height: 1.1;

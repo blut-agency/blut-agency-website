@@ -38,12 +38,13 @@ export interface TeamMember {
 
 /** Each person's colours (banner and pattern). Someone new gets the default. */
 export const TEAM_COLORS: Record<string, { background: string; line: string; dark?: boolean }> = {
-  karl: { background: "#7a3bff", line: "#02b7fd" },
-  timo: { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" },
-  elliot: { background: "#dfe5ac", line: "var(--_color---accent-color-1)" },
-  michael: { background: "var(--_color---accent-color-1)", line: "var(--_color---accent-color-3)" },
+// Styleguide v2.1 pairs only (ground + its own line colour).
+  karl: { background: "#e7f639", line: "#977e72", dark: true }, // 05 Lime + Light brown
+  timo: { background: "#fe0000", line: "#a88dc4" }, // 01 Red + Lavender
+  elliot: { background: "#dfe5ac", line: "#6183ff", dark: true }, // 03 Pale yellow + Blue
+  michael: { background: "#7a3bff", line: "#02b7fd" }, // 02 Violet + Cyan
 };
-export const DEFAULT_TEAM_COLOR = { background: "var(--_color---accent-color-3)", line: "var(--_color---accent-color-1)" };
+export const DEFAULT_TEAM_COLOR = { background: "#fe0000", line: "#a88dc4" };
 
 const members = (team as unknown as { members: TeamMember[] }).members;
 

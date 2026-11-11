@@ -200,8 +200,9 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
   const nextCase = getCaseStudyBySlug(cs.nextCaseStudySlug);
   const theme = cs.color ? themeFromColors(cs.color) : null;
   const nextTheme = nextCase?.color ? themeFromColors(nextCase.color) : null;
-  // The quote sits on the main colour: dark text on a light one, white on a dark one.
-  const quoteOnDark = cs.color ? !themeFromColors({ ...cs.color, secondary: cs.color.main })?.lightBackground : false;
+  // The quote sits on the case's ground colour (its styleguide pair's background;
+  // a line colour is never a ground): dark text on a light one, white on a dark one.
+  const quoteOnDark = theme ? !theme.lightBackground : false;
   const facts = [
     { label: "Client", items: listItems(cs.clientListHtml) },
     { label: "What we did", items: listItems(cs.whatWeDidHtml) },
@@ -232,7 +233,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
       case "caseQuote":
         if (!section.quote) return null;
         return (
-          <section key={i} className="bk-section bk-lab-quote-section" style={cs.color ? { backgroundColor: cs.color.main } : undefined}>
+          <section key={i} className="bk-section bk-lab-quote-section" style={cs.color ? { backgroundColor: cs.color.secondary } : undefined}>
             <figure className={`lp-wrap bk-lab-quote${quoteOnDark ? " is-on-dark" : ""}`}>
               {section.photo && (
                 <div className="bk-lab-quote-photo">
@@ -326,8 +327,8 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
         <PageHero
           form={cs.slug}
           heading={cs.title}
-          background={cs.color?.secondary ?? "var(--_color---accent-color-2)"}
-          lineColor={cs.color?.main ?? "var(--_color---accent-color-1)"}
+          background={cs.color?.secondary ?? "#e7f639"}
+          lineColor={cs.color?.main ?? "#977e72"}
           dark={theme?.lightBackground ?? true}
           variant={visualVariant(cs.useVisual)}
           speed={stageSpeed(cs.slug)}
@@ -362,8 +363,8 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
         <ContactBlock pattern={cs.color ? { background: cs.color.secondary, line: cs.color.main } : undefined} />
         <LandingFooter
           band={{
-            background: cs.color?.secondary ?? "var(--_color---accent-color-2)",
-            line: cs.color?.main ?? "var(--_color---accent-color-1)",
+            background: cs.color?.secondary ?? "#e7f639",
+            line: cs.color?.main ?? "#977e72",
             light: theme?.lightBackground ?? true,
           }}
         />

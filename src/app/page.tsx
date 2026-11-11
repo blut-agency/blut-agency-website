@@ -26,7 +26,7 @@ export const metadata: Metadata = pageMetadata(page.seo, "/");
 
 /** Each offer's link and hover colours (its page banner, as hex so the text colour can be worked out). */
 const OFFER_STYLE: Record<OfferName, { href: string; color: { slug: string; main: string; secondary: string } }> = {
-  Strategy: { href: "/strategy", color: { slug: "blue-red", main: "#fe0000", secondary: "#6183ff" } },
+  Strategy: { href: "/strategy", color: { slug: "brown-yellow", main: "#977e72", secondary: "#e7f639" } },
   Production: { href: "/production", color: { slug: "blue-violet", main: "#02b7fd", secondary: "#7a3bff" } },
   Post: { href: "/post", color: { slug: "yellow-blue", main: "#6183ff", secondary: "#dfe5ac" } },
 };
@@ -202,7 +202,7 @@ export default async function HomePage() {
       </div>
     </section>
 
-    <LandingFooter band={{ background: "#fe0000", line: "var(--_color---accent-color-1)" }} />
+    <LandingFooter band={{ background: "#fe0000", line: "#a88dc4" }} />
   </div>
     </>
   );
