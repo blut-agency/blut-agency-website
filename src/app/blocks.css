@@ -115,9 +115,9 @@
 
 .bk-lead-heading {
   grid-column: 1 / span 2;
-  /* Fill each line as in Figma; balancing would break "Sometimes the
-     artist…" after the first word. */
-  text-wrap: wrap;
+  /* Full lines as in Figma, but no lone last word. Balancing would break
+     "Sometimes the artist…" after the first word. */
+  text-wrap: pretty;
 }
 
 .bk-lead-text {
@@ -607,7 +607,8 @@
   font-size: 48px;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  text-wrap: wrap;
+  /* Two elements read as one heading: full lines, no lone last word. */
+  text-wrap: pretty;
 }
 
 .bk-service-line {

@@ -88,9 +88,13 @@ export default function WelcomeRecap() {
           <video src={RECAP.teaser} poster={RECAP.poster} autoPlay muted loop playsInline aria-hidden="true" />
         </button>
         <div className="bk-welcome-body">
-          <p className="bk-welcome-title">It&rsquo;s been a minute.</p>
-          <p className="bk-welcome-copy">Here&rsquo;s what we&rsquo;ve been up to.</p>
-          <Button size="sm" icon="play" iconFirst onDark onClick={watch}>
+          {/* One two-tone text at one size and line height (Nic, 11 Nov). */}
+          <p className="bk-welcome-text">
+            <span className="bk-welcome-title">It&rsquo;s been a minute.</span>{" "}
+            <span className="bk-welcome-copy">Here&rsquo;s what we&rsquo;ve been up to.</span>
+          </p>
+          {/* The pill play button of the site's videos. */}
+          <Button shape="pill" icon="play" iconFirst onDark onClick={watch}>
             Watch
           </Button>
         </div>

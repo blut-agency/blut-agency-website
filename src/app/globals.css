@@ -71,6 +71,11 @@ html {
   white-space: nowrap;
 }
 
+/* One block per deliberate line, each balanced on its own. */
+.reveal-line {
+  display: block;
+}
+
 .w-mod-js .reveal-text[data-reveal="hidden"] .reveal-letter {
   opacity: 0;
 }
@@ -300,20 +305,25 @@ html {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 24px;
   padding: 24px;
 }
 
-.bk-welcome-title {
+/* Title and copy: one text, one size, one line height; the copy a step
+   greyer. Each starts its own line and is balanced on its own. */
+.bk-welcome-text {
   margin: 0;
   font-size: 24px;
-  line-height: 1.2;
+  line-height: 1.25;
+}
+
+.bk-welcome-title,
+.bk-welcome-copy {
+  display: block;
+  text-wrap: balance;
 }
 
 .bk-welcome-copy {
-  margin: 0 0 16px;
-  font-size: 16px;
-  line-height: 1.4;
   color: var(--_color---copy-grey);
 }
 
@@ -359,16 +369,11 @@ html {
   }
 
   .bk-welcome-body {
-    gap: 4px;
+    gap: 16px;
     padding: 16px 48px 16px 16px;
   }
 
-  .bk-welcome-title {
-    font-size: 16px;
-  }
-
-  .bk-welcome-copy {
-    margin-bottom: 8px;
+  .bk-welcome-text {
     font-size: 16px;
   }
 }
@@ -378,4 +383,18 @@ html {
   .bk-welcome.is-leaving {
     animation-duration: 0.01s;
   }
+}
+
+/*
+  Line balancing (Nic, 11 Nov: "no jagged texts"). Headings share their words
+  evenly across their lines; running text keeps full lines but never leaves a
+  lone word on the last one (Safari also evens out the lines above it). No
+  automatic hyphenation: the copy mixes English and German names.
+*/
+:where(h1, h2, h3, h4, h5, h6, blockquote, figcaption) {
+  text-wrap: balance;
+}
+
+:where(p, li, dd, dt, label, summary) {
+  text-wrap: pretty;
 }
