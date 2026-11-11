@@ -20,14 +20,15 @@ export const seo = defineType({
   ],
 });
 
-/** A "Text is a placeholder" switch: the site marks the text with an asterisk. */
+/** The old "Text is a placeholder" switch: hidden since the site stopped marking placeholder text (11 Nov 2026). Kept so old data stays valid. */
 export const placeholder = (name = "placeholder", group?: string) =>
   defineField({
     name,
     title: "Text is a placeholder",
-    description: "Marks the text with an asterisk until the team writes the real copy.",
+    description: "No longer shown on the site.",
     type: "boolean",
     initialValue: false,
+    hidden: true,
     group,
   });
 

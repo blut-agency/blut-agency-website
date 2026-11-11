@@ -76,7 +76,7 @@ export default async function CaseStudiesPage() {
       </section>
 
       {/* The general address, not a person (Elliot, 31 Oct). */}
-      <ContactBlock pattern={{ background: "#ed7034", line: "#c0bfbe" }} />
+      <ContactBlock person={page.contacts} pattern={{ background: "#ed7034", line: "#c0bfbe" }} />
       <LandingFooter band={{ background: "#ed7034", line: "#c0bfbe", light: true }} />
     </div>
   );

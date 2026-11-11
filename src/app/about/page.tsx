@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       <section className="bk-section">
         <div className="lp-wrap">
-          <TeamGrid intro={page.teamIntro} />
+          <TeamGrid heading={page.teamHeading} intro={page.teamIntro} />
         </div>
       </section>
 

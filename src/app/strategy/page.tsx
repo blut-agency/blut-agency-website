@@ -83,7 +83,7 @@ export default async function StrategyPage() {
         </Lead>
       </section>
 
-      <ContactBlock person="karl" />
+      <ContactBlock person={page.contacts} />
       <LandingFooter band={{ background: "#e7f639", line: "#977e72", light: true }} />
     </div>
   );

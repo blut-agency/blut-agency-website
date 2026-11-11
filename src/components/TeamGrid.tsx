@@ -38,7 +38,7 @@ let shuffled: typeof PEOPLE | null = null;
 const shuffledPeople = () => (shuffled ??= shuffle(PEOPLE));
 const subscribeNever = () => () => {};
 
-export default function TeamGrid({ intro }: { intro: string }) {
+export default function TeamGrid({ heading, intro }: { heading: string; intro: string }) {
   const [active, setActive] = useState<number | null>(null);
   // The server renders the fixed order; the browser switches to this visit's shuffle.
   const people = useSyncExternalStore(subscribeNever, shuffledPeople, () => PEOPLE);
@@ -63,7 +63,7 @@ export default function TeamGrid({ intro }: { intro: string }) {
           className={`bk-team-text${person ? "" : " is-shown"}`}
           aria-hidden={!!person}
         >
-          <RevealText as="h1" className="lp-heading" text="We are blut." />
+          <RevealText as="h1" className="lp-heading" text={heading} />
           <p className="bk-team-intro">{intro}</p>
         </div>
         <div

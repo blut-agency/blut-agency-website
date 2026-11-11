@@ -4,6 +4,9 @@ import HoverClip from "@/components/HoverClip";
 import { CtaLink } from "@/components/Blocks";
 import type { CaseStudy } from "@/lib/content";
 import type { ImageTheme } from "@/lib/imageTheme";
+import { getSite } from "@/lib/site";
+
+const LABELS = getSite().labels;
 
 /** The items of a CMS rich-text list, as plain text, without "coming soon" placeholders. */
 export function listItems(html: string): string[] {
@@ -59,7 +62,7 @@ export default function CaseCard({ cs, theme, formPrefix }: { cs: CaseStudy; the
             ))}
           </ul>
         )}
-        <CtaLink href={href} label="Read more" />
+        <CtaLink href={href} label={LABELS.readMore} />
       </div>
       <Link href={href} className="lp-cover" aria-hidden="true" tabIndex={-1} />
     </article>

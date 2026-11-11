@@ -3,6 +3,9 @@
 import { useCallback, useRef, useState } from "react";
 import Button from "@/components/Button";
 import VideoLightbox from "@/components/VideoLightbox";
+import { getSite } from "@/lib/site";
+
+const LABELS = getSite().labels;
 
 /**
  * A case page video in the Production spot layout: the paused video as its
@@ -45,7 +48,7 @@ export default function CaseVideo({
           onClick={() => setOpen(true)}
           aria-label={`Play video: ${label}`}
         >
-          Play video
+          {LABELS.playVideo}
         </Button>
       </div>
       <VideoLightbox open={open} onClose={close} title={label} videoUrl={videoUrl} poster={poster} accent={accent} />

@@ -50,5 +50,33 @@
       "label": "LinkedIn",
       "href": "https://www.linkedin.com/company/blut-gmbh/"
     }
-  ]
+  ],
+  "welcome": {
+    "title": "It’s been a minute.",
+    "text": "Here’s what we’ve been up to.",
+    "button": "Watch",
+    "video": "/media/blut-recap-web.mp4",
+    "teaser": "/media/blut-recap-teaser.mp4",
+    "poster": "/images/welcome/blut-recap-poster.jpg",
+    "videoTitle": "blut recap"
+  },
+  "labels": {
+    "readMore": "Read more",
+    "playVideo": "Play video",
+    "seeCase": "See case",
+    "filterAll": "All",
+    "caseClient": "Client",
+    "caseWhatWeDid": "What we did",
+    "caseCollaborators": "Collaborators",
+    "caseChapterLink": {
+      "label": "Want to know more about how we work?",
+      "href": "/strategy"
+    },
+    "nextCase": "Next case study:"
+  },
+  "notFound": {
+    "heading": "404 page not found",
+    "text": "The page appears to have been moved or deleted.",
+    "button": "To Homepage"
+  }
 }

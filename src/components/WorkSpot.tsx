@@ -7,6 +7,9 @@ import HoverClip from "@/components/HoverClip";
 import { CtaLink } from "@/components/Blocks";
 import Button from "@/components/Button";
 import type { ImageTheme } from "@/lib/imageTheme";
+import { getSite } from "@/lib/site";
+
+const LABELS = getSite().labels;
 
 export type WorkSpotData = {
   client: string;
@@ -93,7 +96,7 @@ export default function WorkSpot({
           onClick={play}
           aria-label={`Play video: ${spot.client}`}
         >
-          Play video
+          {LABELS.playVideo}
         </Button>
       </div>
       <div className={`bk-spot-body hl-panel${theme?.lightBackground ? " is-light-highlight" : ""}`}>
@@ -113,7 +116,7 @@ export default function WorkSpot({
         <p className="bk-spot-text">{spot.text}</p>
         {spot.caseSlug && (
           <div className="bk-spot-case">
-            <CtaLink href={`/project/${spot.caseSlug}`} label="See case" />
+            <CtaLink href={`/project/${spot.caseSlug}`} label={LABELS.seeCase} />
           </div>
         )}
         {cover}

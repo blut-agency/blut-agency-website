@@ -7,7 +7,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 */
 
 const strings = (name: string, title: string, description?: string) =>
-  defineField({ name, title, description, type: "array", group: "page", of: [defineArrayMember({ type: "text", rows: 3 })] });
+  defineField({ name, title, description, type: "array", of: [defineArrayMember({ type: "text", rows: 3 })] });
 
 export const teamMember = defineType({
   name: "teamMember",

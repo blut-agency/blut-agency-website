@@ -16,13 +16,14 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const MEDIA = "A file in blut's media folder, e.g. /media/hyundai-film.mp4";
 
-const mediaPath = (name: string, title: string, group = "page", description = MEDIA) =>
+const mediaPath = (name: string, title: string, group = "page", description = MEDIA, hidden = false) =>
   defineField({
     name,
     title,
     type: "string",
     group,
     description,
+    hidden,
     validation: (r) => r.regex(/^(\/|https:\/\/)/, { name: "file path starting with /media/" }),
   });
 
@@ -95,6 +96,14 @@ export const caseStudy = defineType({
       group: "card",
       validation: (r) => r.required().integer().min(1),
     }),
+    defineField({
+      name: "published",
+      title: "Show on the site",
+      description: "Off: the case stays here but the site leaves it out, also from the lists and the “Next case” links.",
+      type: "boolean",
+      group: "card",
+      initialValue: true,
+    }),
     defineField({ name: "teaserClient", title: "Card: client line", type: "string", group: "card" }),
     defineField({ name: "teaserCampaign", title: "Card: campaign line", type: "string", group: "card" }),
     defineField({ name: "thumbnail", title: "Card: photo", type: "image", group: "card" }),
@@ -139,8 +148,9 @@ export const caseStudy = defineType({
     defineField({
       name: "aiDraftCopy",
       title: "Text is a placeholder",
-      description: "Marks the text with an asterisk until the team writes the real copy.",
+      description: "No longer shown on the site.",
       type: "boolean",
+      hidden: true,
       group: "page",
       initialValue: false,
     }),
@@ -148,7 +158,7 @@ export const caseStudy = defineType({
 
     defineField({ name: "videoUnderQuote", hidden: true, title: "Video under the quote", type: "videoFile", group: "page" }),
     pictures("gallery1", "Picture strip 1"),
-    mediaPath("loopUrl", "Short loop", "media", "Short silent video, e.g. /media/hyundai-loop.mp4"),
+    mediaPath("loopUrl", "Short loop", "page", "Short silent video, e.g. /media/hyundai-loop.mp4", true),
     defineField({ name: "gifVideoHashtags", hidden: true, title: "Short loop hashtags", type: "string", group: "page" }),
     player("audioPlayer1", "Audio player 1"),
     player("audioPlayer2", "Audio player 2"),
@@ -193,7 +203,11 @@ export const caseStudy = defineType({
     }),
   ],
   preview: {
-    select: { title: "internalName", media: "thumbnail", position: "position" },
-    prepare: ({ title, media, position }) => ({ title: `${position ?? "–"}. ${title ?? "New case"}`, media }),
+    select: { title: "internalName", media: "thumbnail", position: "position", published: "published" },
+    prepare: ({ title, media, position, published }) => ({
+      title: `${position ?? "–"}. ${title ?? "New case"}`,
+      subtitle: published === false ? "Hidden from the site" : undefined,
+      media,
+    }),
   },
 });

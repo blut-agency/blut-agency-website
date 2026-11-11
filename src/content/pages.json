@@ -155,6 +155,9 @@
         "href": "/strategy"
       }
     },
+    "contacts": [
+      "michael"
+    ],
     "seo": {
       "title": "Production – A 360° Approach to Sonic Storytelling | blut",
       "shareTitle": "Production – A 360° Approach to Sonic Storytelling",
@@ -223,6 +226,10 @@
         "href": "/case-studies"
       }
     },
+    "contacts": [
+      "michael",
+      "elliot"
+    ],
     "seo": {
       "title": "Post-Production – Sound Design, Mixing and Video Post | blut",
       "shareTitle": "Post-Production",
@@ -322,6 +329,9 @@
         "href": "/case-studies"
       }
     },
+    "contacts": [
+      "karl"
+    ],
     "seo": {
       "title": "Strategy – Find out what your sound is really saying | blut",
       "shareTitle": "Strategy – Find out what your sound is really saying",
@@ -343,6 +353,7 @@
         "href": "/strategy"
       }
     },
+    "contacts": [],
     "seo": {
       "title": "Case Studies | blut",
       "shareTitle": "Case Studies",
@@ -356,6 +367,7 @@
       "line": "",
       "placeholder": false
     },
+    "teamHeading": "We are blut.",
     "teamIntro": "A next generation creative agency for the modern era. We believe there’s a better way to integrate music into brand communication.",
     "seo": {
       "title": "About Us – Meet the Team Behind blut’s Sonic Vision",

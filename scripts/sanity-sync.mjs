@@ -49,7 +49,8 @@ const QUERY = `{
   "settings": *[_id == "casesSettings"][0]{ "pinned": pinnedCase->slug.current, "featured": featuredCases[]->slug.current },
   "pages": *[_id in ${JSON.stringify(PAGE_IDS)}],
   "team": *[_type == "teamMember"] | order(coalesce(sortOrder, 999) asc, name asc),
-  "caseSlugs": *[_type == "caseStudy"]{ _id, "slug": slug.current }
+  "caseSlugs": *[_type == "caseStudy"]{ _id, "slug": slug.current },
+  "teamKeys": *[_type == "teamMember"]{ _id, key }
 }`;
 
 async function query(q = QUERY) {
@@ -178,6 +179,8 @@ const caseStudies = data.cases.map((c) => {
     internalName: c.internalName ?? "",
     title: c.title ?? "",
     position: c.position ?? 99,
+    // Cases switched off in the studio stay in the JSON but not on the site.
+    ...(c.published === false ? { published: false } : {}),
     showOnHomepage: featured.includes(c.slug),
     clientListHtml: list(c.clients),
     whatWeDidHtml: list(c.whatWeDid),
@@ -231,14 +234,15 @@ const assets = assetIds.size
     )
   : {};
 const caseSlug = Object.fromEntries(data.caseSlugs.map((c) => [c._id, c.slug]));
+const teamKey = Object.fromEntries(data.teamKeys.map((m) => [m._id, m.key]));
 const isText = (v) => Array.isArray(v) && v.length > 0 && v.every((b) => b?._type === "block" || b?._type === "image") && v.some((b) => b._type === "block");
 
-/** A Sanity value → the site's JSON: pictures become paths, text blocks HTML, case links slugs. */
+/** A Sanity value → the site's JSON: pictures become paths, text blocks HTML, case links slugs, people their code names. */
 function plain(v) {
   if (Array.isArray(v)) return isText(v) ? html(v.map((b) => (b._type === "image" ? { ...b, ...assets[b.asset?._ref] } : b))) : v.map(plain);
   if (!v || typeof v !== "object") return v;
   if (v._type === "image") return v.asset?._ref ? picture(assets[v.asset._ref]) : "";
-  if (v._type === "reference") return caseSlug[v._ref] ?? "";
+  if (v._type === "reference") return caseSlug[v._ref] ?? teamKey[v._ref] ?? "";
   if (v._type === "slug") return v.current;
   const out = {};
   for (const [k, val] of Object.entries(v)) if (!k.startsWith("_")) out[k] = plain(val);

@@ -18,7 +18,7 @@ export const caseChapter = defineType({
     defineField({
       name: "stage",
       title: "Stage name",
-      description: "The big heading, e.g. The brief. An asterisk (*) marks placeholder text.",
+      description: "The big heading, e.g. The brief.",
       type: "string",
     }),
     defineField({ name: "line", title: "Question line", description: "The line under the stage name.", type: "string" }),
@@ -26,7 +26,7 @@ export const caseChapter = defineType({
     defineField({
       name: "cta",
       title: "Show the “how we work” link",
-      description: "Adds “Want to know more about how we work?” under the text.",
+      description: "Adds the link set under Shared texts → Small words (now “Want to know more about how we work?”).",
       type: "boolean",
       initialValue: false,
     }),
