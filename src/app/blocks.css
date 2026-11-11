@@ -1717,13 +1717,29 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   letter-spacing: -0.01em;
 }
 
-/* Phones and small tablets (the burger menu widths): the banner hugs the
-   logo, 16px below the nav row, so the intro text moves up and the recap
-   card no longer covers it. The words make way for a speaker icon in the
-   top left corner (Nic, 11 Nov). */
-.lp-stage .sound-icon {
+/* The sound toggle is a speaker icon at every width: a speaker with sound
+   waves turns the sound on; while it plays, a speaker with an X turns it
+   off. Desktop keeps the spot where "Click for sound" was (Nic, 11 Nov). */
+.lp-stage .play-toggle-text {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 48px;
+  height: 48px;
+}
+
+.lp-stage .sound-label {
   display: none;
 }
+
+.lp-stage .sound-icon {
+  display: block;
+}
+
+/* Phones and small tablets (the burger menu widths): the banner hugs the
+   logo, 16px below the nav row, so the intro text moves up and the recap
+   card no longer covers it. The speaker icon sits in the top left corner
+   (Nic, 11 Nov). */
 
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
@@ -1738,8 +1754,7 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   }
 
   /* Top left, where the small nav logo would be (hidden over the stage),
-     level with the burger. A speaker with sound waves turns the sound on;
-     while it plays, a speaker with an X turns it off (Nic, 11 Nov). */
+     level with the burger (Nic, 11 Nov). */
   .lp-page .lp-stage .audioplayer-controls {
     position: absolute;
     z-index: 1000;
@@ -1752,14 +1767,7 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   }
 
   .lp-stage .play-toggle-text {
-    display: flex;
-    align-items: center;
-    width: 48px;
-    height: 48px;
-  }
-
-  .lp-stage .sound-label {
-    display: none;
+    justify-content: flex-start;
   }
 
   /* The clear nav lies on top of the stage: let taps through to the
@@ -1771,10 +1779,6 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 
   .lp-page .header.is-over-stage :is(a, button) {
     pointer-events: auto;
-  }
-
-  .lp-stage .sound-icon {
-    display: block;
   }
 }
 

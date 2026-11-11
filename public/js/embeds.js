@@ -40,6 +40,16 @@ function __onReady(fn) {
 (function(){
   // --- 1) Player UI ---
   window._players = {};
+  // A video with sound stops the Home banner sound, wherever it plays:
+  // lightbox, recap, case or spot players (Nic, 11 Nov). Muted loops
+  // (hover clips, the recap teaser) leave it running. Media play events
+  // don't bubble, so this listens in the capture phase.
+  document.addEventListener('play', e => {
+    const v = e.target;
+    if (!(v instanceof HTMLVideoElement) || v.muted) return;
+    const sound = document.getElementById('home-stage-sound');
+    if (sound && !sound.paused) sound.pause();
+  }, true);
   // <video>/<audio> files behind one promise-based surface.
   function mediaPlayer(el) {
     const ev = { play: 'play', pause: 'pause', seeked: 'seeked', error: 'error' };
