@@ -1928,8 +1928,8 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 }
 
 /* No clearfix box after the copy: it would shift the last line against the
-   arrow. (The AI-draft asterisk, globals.css, still shows.) */
-.bk-offer-copy:not(.ai-draft)::after {
+   arrow. */
+.bk-offer-copy::after {
   content: none;
 }
 
@@ -2585,12 +2585,6 @@ a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 .reveal-text .reveal-letter {
   padding: 0.3em 0.15em;
   margin: -0.3em -0.15em;
-}
-
-/* A chapter question carries its own AI asterisk (project page), so the
-   added one would double it. */
-.ai-draft .bk-lab-chapter-line::after {
-  content: none !important;
 }
 
 /* Imprint and privacy policy: space between sections (replaces the empty

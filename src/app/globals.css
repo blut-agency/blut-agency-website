@@ -230,26 +230,10 @@ html {
   display: none;
 }
 
-/* AI-generated placeholder copy: a plain asterisk after each piece of it
-   (Nic, 30 Oct), no red and no warning box. The text carries the `ai-draft`
-   class itself, or sits inside an element that does. The AiDraftNote boxes
-   stay in the markup but are hidden. */
+/* AI placeholder copy no longer gets an asterisk (Nic, 11 Nov: the team
+   approved all texts). The AiDraftNote boxes stay hidden. */
 .ai-draft-note {
   display: none !important;
-}
-
-.ai-draft:is(h1, h2, h3, h4, p, li, span)::after,
-.ai-draft :is(h1, h2, h3, h4, p, li)::after {
-  content: "*";
-  /* inline, against the Webflow clearfix that makes ::after a table */
-  display: inline !important;
-  clear: none;
-}
-
-/* Revealed headlines: hidden with the letters until the reveal starts. */
-.w-mod-js .ai-draft .reveal-text[data-reveal="hidden"]::after,
-.w-mod-js .reveal-text.ai-draft[data-reveal="hidden"]::after {
-  opacity: 0;
 }
 
 /* Read out, not shown. */

@@ -80,7 +80,7 @@ export interface AwardsSection {
 export type CaseSection = ChapterSection | QuoteSection | VideosSection | GallerySection | LoopSection | AudioSection | AwardsSection;
 
 /** The placeholder stage names (asterisk: AI-written, to be replaced). */
-export const STAGES = ["The brief*", "The making*", "The result*"];
+export const STAGES = ["The brief", "The making", "The result"];
 
 /** An old text field's first h2 becomes the chapter's line, the rest its body. */
 export function splitChapter(html: string): { line: string; body: string } {
