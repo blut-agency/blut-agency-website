@@ -3,7 +3,7 @@
 
   The page sits on a 1280px column split into three columns with 48px gaps.
   The feature photos run from the screen edge across two of those columns,
-  and the copy sits in a Concrete (light) or Grey 800 (dark) panel in the third.
+  and the copy sits in an off-white (light) or Grey 800 (dark) panel in the third.
   Logo bands run edge to edge between the parts.
 
   Everything is scoped to .lp-page so the other pages are unchanged. Nothing
@@ -30,8 +30,9 @@
   --lp-copy: 32px;
   --lp-client: 48px;
   --lp-text: 16px;
-  /* Brand grounds only (styleguide v2.1): Concrete on white, Grey 800 on black. */
-  --lp-panel-light: #b4b1a9;
+  /* Grey 800 on black (styleguide v2.1). The light panel keeps the old off-white:
+     the brand book has no near-white, and Nic prefers it to Concrete (11 Nov 2026). */
+  --lp-panel-light: #f5f5f5;
   --lp-panel-dark: #343434;
   --lp-text-secondary: #424242;
   --lp-muted: #a3a3a3;
@@ -120,7 +121,7 @@
   line-height: 1.1;
 }
 
-/* ---------- Panels: Concrete on white, Grey 800 on black ---------- */
+/* ---------- Panels: off-white on white, Grey 800 on black ---------- */
 .lp-panel {
   display: flex;
   flex-direction: column;
