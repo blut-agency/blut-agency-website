@@ -354,10 +354,11 @@ html {
 /* Phones: one compact row, the loop small on the left, so the card covers
    little of the screen. The X sits on the dark side, top right. */
 @media screen and (max-width: 767px) {
+  /* 12px from the screen edges: half the 24px page padding (Nic, 11 Nov). */
   .bk-welcome {
-    right: 16px;
-    bottom: 16px;
-    left: 16px;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
     display: grid;
     grid-template-columns: 128px minmax(0, 1fr);
     width: auto;

@@ -1702,18 +1702,16 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   }
 }
 
-/* Home stage: the logo across two thirds from the very top; under it the
-   sound control, and in the last third the intro line, its foot level with
-   the sound control's (Nic, 31 Oct). One grid for the stage (its two rows'
-   wrappers step aside); it is as tall as these need. */
+/* Home stage (mock, Nic 11 Nov): the full "blut" wordmark fills the
+   banner below the nav, as wide and as tall as it can go with its shape
+   kept, from the left. The sound control sits in the bottom right corner.
+   The banner is as tall as the other page banners (512px); phones below. */
 .lp-page .lp-stage .home-stage-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: var(--lp-gap);
-  align-items: end;
-  height: auto;
+  position: relative;
+  display: block;
+  height: 512px;
   min-height: 0;
-  padding-block: 24px var(--lp-pad);
+  padding: calc(var(--_project---nav-height) + 16px) 0 var(--lp-pad);
 }
 
 .lp-page .lp-stage :is(.home-stage-top, .home-stage-bottom) {
@@ -1722,13 +1720,14 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 
 .lp-page .lp-stage .full-width-logo {
   position: relative;
-  grid-column: 1 / span 2;
-  grid-row: 1;
-  aspect-ratio: 58 / 20;
-  margin: 0 0 var(--lp-stack);
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  margin: 0;
   padding-block: 0;
 }
 
+/* The SVG keeps its shape ("meet") and sits top left (xMinYMin). */
 .lp-page .lp-stage .full-width-logo svg.logo-svg {
   position: absolute;
   inset: 0;
@@ -1737,13 +1736,12 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 }
 
 .lp-page .lp-stage .audioplayer-controls {
-  grid-column: 1;
-  grid-row: 2;
+  position: absolute;
+  right: 0;
+  bottom: var(--lp-pad);
 }
 
 .lp-stage-line {
-  grid-column: 3;
-  grid-row: 1 / span 2;
   margin: 0;
   color: var(--_color---copy-bright);
   font-size: var(--lp-copy);
@@ -1751,27 +1749,64 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   letter-spacing: -0.01em;
 }
 
+/* Phones and small tablets (the burger menu widths): the banner hugs the
+   logo, 16px below the nav row, so the intro text moves up and the recap
+   card no longer covers it. The words make way for a speaker icon in the
+   top left corner (Nic, 11 Nov). */
+.lp-stage .sound-icon {
+  display: none;
+}
+
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--lp-pad);
-    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
   }
 
-  /* Clear of the menu button in the top right corner. */
   .lp-page .lp-stage .full-width-logo {
-    grid-column: 1;
-    width: calc(100% - 64px);
-    margin-bottom: 0;
+    height: auto;
+    aspect-ratio: 58 / 20;
   }
 
-  .lp-stage-line {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
+  /* Top left, where the small nav logo would be (hidden over the stage),
+     level with the burger. A speaker with sound waves turns the sound on;
+     while it plays, a speaker with an X turns it off (Nic, 11 Nov). */
   .lp-page .lp-stage .audioplayer-controls {
-    grid-row: 3;
+    position: absolute;
+    z-index: 1000;
+    /* The burger's 48px box starts 10px down (the nav's padding), so the
+       same 48px box here at 10px puts both centres 34px from the top. */
+    top: 10px;
+    left: 0;
+    right: auto;
+    bottom: auto;
+  }
+
+  .lp-stage .play-toggle-text {
+    display: flex;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+  }
+
+  .lp-stage .sound-label {
+    display: none;
+  }
+
+  /* The clear nav lies on top of the stage: let taps through to the
+     speaker icon; the nav's own logo and burger still take them. */
+  .lp-page .header.is-over-stage,
+  .lp-page .header.is-over-stage :is(.navbar, .navbar-inner) {
+    pointer-events: none;
+  }
+
+  .lp-page .header.is-over-stage :is(a, button) {
+    pointer-events: auto;
+  }
+
+  .lp-stage .sound-icon {
+    display: block;
   }
 }
 
