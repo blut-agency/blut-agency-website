@@ -13,7 +13,9 @@
   case's last colour, so the build never breaks over a picture.
 
   The theme that covers most of the photo's colour wins: see
-  rankThemesForImage in src/lib/colorMatch.mjs. A grey photo, or one where no
+  rankThemesForImage in src/lib/colorMatch.mjs. A theme no other case has yet
+  wins over a repeat when it scores nearly as well (SPREAD), so the cases mix
+  the styleguide pairs. A grey photo, or one where no
   theme covers at least a tenth of the colour, keeps the case's last colour.
 */
 import fs from "node:fs";
@@ -26,6 +28,8 @@ const JSON_FILE = path.join(ROOT, "src/content/cms-content.json");
 const content = JSON.parse(fs.readFileSync(JSON_FILE, "utf8"));
 /** Below this share of the photo's colour, a theme is no real match. */
 const MIN_SCORE = 0.1;
+/** A theme no other case uses yet wins if it scores at least this share of the best one. */
+const SPREAD = 0.75;
 
 async function readImage(src) {
   if (!/^https?:\/\//.test(src)) return path.join(ROOT, "public", src);
@@ -36,6 +40,9 @@ async function readImage(src) {
 
 let changed = 0;
 const rows = [];
+// Themes already on a case: hand-picked ones first, then each pick in turn,
+// so the case list mixes the styleguide pairs instead of repeating one.
+const used = new Set(content.caseStudies.filter((cs) => !cs.colorFromPhoto && cs.color).map((cs) => cs.color.slug));
 for (const cs of content.caseStudies) {
   if (!cs.colorFromPhoto) {
     rows.push([cs.slug, "hand-picked", cs.color?.slug ?? "none"]);
@@ -52,12 +59,16 @@ for (const cs of content.caseStudies) {
     rows.push([cs.slug, `photo unreadable (${err.message})`, cs.color?.slug ?? "none"]);
     continue;
   }
-  const [first, second] = ranking;
+  const top = ranking[0];
+  const fresh = ranking.find((r) => !used.has(r.theme.slug) && r.score >= MIN_SCORE && top && r.score >= top.score * SPREAD);
+  const first = fresh ?? top;
+  const second = ranking.find((r) => r !== first);
   if (!first || first.score < MIN_SCORE) {
     rows.push([cs.slug, first ? "no theme fits the photo, kept" : "grey photo, kept", cs.color?.slug ?? "none"]);
     continue;
   }
   const best = first.theme;
+  used.add(best.slug);
   const color = { main: best.main, secondary: best.secondary, slug: best.slug };
   if (JSON.stringify(color) !== JSON.stringify(cs.color)) changed++;
   cs.color = color;

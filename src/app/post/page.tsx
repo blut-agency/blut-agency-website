@@ -5,7 +5,7 @@ import LandingFooter from "@/components/LandingFooter";
 import { ContactBlock, CtaLink, Lead, PageHero } from "@/components/Blocks";
 import RevealText from "@/components/RevealText";
 import WorkSpot from "@/components/WorkSpot";
-import { themeFromColors } from "@/lib/imageTheme";
+import { themesForImages } from "@/lib/imageTheme";
 
 const page = getPage("postPage");
 const ITEMS = page.spots.map(({ layout, ...spot }) => ({ layout, spot }));
@@ -19,14 +19,14 @@ export const metadata: Metadata = pageMetadata(page.seo, "/post", { url: "/image
   Michael (audio) and Elliot (video post) are the contacts.
 */
 
-// Every spot's hover takes the banner's colours, not one picked from its photo (Elliot, Nov 2026).
-const POST_THEME = themeFromColors({ slug: "yellow-blue", main: "#6183ff", secondary: "#dfe5ac" });
 
 // Call and response, as on Production. AI-written placeholder copy (Oct 2026): replace before launch.
 const QUESTION = page.intro.question;
 const ANSWER = page.intro.answer;
 
 export default async function PostPage() {
+  // Each spot gets its own styleguide pair, matched to its photo, as on Production (Elliot, 11 Nov 2026).
+  const themes = await themesForImages(ITEMS.map((item) => item.spot.image));
 
   return (
     <div className="main-wrapper lp-page bk-page">
@@ -36,7 +36,7 @@ export default async function PostPage() {
         lineAiDraft={page.hero.placeholder}
         line={page.hero.line}
         background="#dfe5ac"
-        lineColor="var(--_color---accent-color-1)"
+        lineColor="#6183ff"
         dark
       />
       <Header variant="start-top" />
@@ -52,7 +52,7 @@ export default async function PostPage() {
             <li key={item.spot.client}>
               <WorkSpot
                 spot={item.spot}
-                theme={POST_THEME}
+                theme={themes[i]}
                 variant={item.layout === "wide" ? "wide" : "row"}
                 flipped={item.layout === "row-flipped"}
                 formId={`post-${i}`}
@@ -74,7 +74,7 @@ export default async function PostPage() {
       </section>
 
       <ContactBlock person={["michael", "elliot"]} />
-      <LandingFooter band={{ background: "#dfe5ac", line: "var(--_color---accent-color-1)", light: true }} />
+      <LandingFooter band={{ background: "#dfe5ac", line: "#6183ff", light: true }} />
     </div>
   );
 }

@@ -168,14 +168,13 @@
       "title": "All Purpose Sound",
       "position": 4,
       "showOnHomepage": false,
-      "colorFromPhoto": true,
       "clientListHtml": "<ul><li>Postbank</li></ul>",
       "whatWeDidHtml": "<ul><li>Sonic Strategy</li><li>Sonic Branding</li></ul>",
       "collaboratorsHtml": "",
       "color": {
-        "main": "#6183ff",
-        "secondary": "#e7f639",
-        "slug": "sky-chartreuse"
+        "main": "#f2c230",
+        "secondary": "#b4b1a9",
+        "slug": "concrete-yellow"
       },
       "useVisual": [
         true,
@@ -227,14 +226,13 @@
       "title": "Reinventing a Classic",
       "position": 5,
       "showOnHomepage": false,
-      "colorFromPhoto": true,
       "clientListHtml": "<ul><li>Géramont</li></ul>",
       "whatWeDidHtml": "<ul><li>Sonic Branding</li><li>Content Production</li></ul>",
       "collaboratorsHtml": "",
       "color": {
-        "main": "#6183ff",
-        "secondary": "#fe0000",
-        "slug": "blue-red"
+        "main": "#2f6f73",
+        "secondary": "#6e5254",
+        "slug": "mauve-teal"
       },
       "useVisual": [
         true,
@@ -289,9 +287,9 @@
       "whatWeDidHtml": "<ul id=\"\"><li id=\"\">Sonic Strategy</li><li id=\"\">Artist Partnership</li></ul>",
       "collaboratorsHtml": "<ul id=\"\"><li id=\"\">WDR</li></ul>",
       "color": {
-        "main": "#c66274",
-        "secondary": "#e5d2e5",
-        "slug": "red-pink"
+        "main": "#02b7fd",
+        "secondary": "#7a3bff",
+        "slug": "blue-violet"
       },
       "useVisual": [
         true,
@@ -350,9 +348,9 @@
       "whatWeDidHtml": "<ul><li>Content Production</li><li>Artist Partnership</li></ul>",
       "collaboratorsHtml": "<ul><li>Grabarz &amp; Partner / doity</li></ul>",
       "color": {
-        "main": "#6183ff",
+        "main": "#a88dc4",
         "secondary": "#fe0000",
-        "slug": "blue-red"
+        "slug": "red-sky"
       },
       "useVisual": [
         false,
@@ -521,64 +519,52 @@
   ],
   "colors": [
     {
-      "name": "Blue + Lime",
-      "slug": "blue-lime",
-      "main": "#6183ff",
-      "secondary": "#dfe5ac"
+      "name": "01 Red + Lavender",
+      "slug": "red-sky",
+      "main": "#a88dc4",
+      "secondary": "#fe0000"
     },
     {
-      "name": "Blue + Purple",
-      "slug": "blue-purple",
-      "main": "#02b7fd",
-      "secondary": "#7a3bff"
-    },
-    {
-      "name": "Brown + Yellow ",
-      "slug": "brown-yellow",
-      "main": "#977e72",
-      "secondary": "#e7f639"
-    },
-    {
-      "name": "Grey + Black",
-      "slug": "grey-black",
-      "main": "black",
-      "secondary": "#343434"
-    },
-    {
-      "name": "Grey + Purple ",
-      "slug": "purple",
-      "main": "#343434",
-      "secondary": "#7a3bff"
-    },
-    {
-      "name": "Orange + Grey",
-      "slug": "orange-grey",
-      "main": "#c0bfbe",
-      "secondary": "#ed7034"
-    },
-    {
-      "name": "Red + Pink",
-      "slug": "red-pink",
-      "main": "#c66274",
-      "secondary": "#e5d2e5"
-    },
-    {
-      "name": "Blue + Violet",
+      "name": "02 Violet + Cyan",
       "slug": "blue-violet",
       "main": "#02b7fd",
       "secondary": "#7a3bff"
     },
     {
-      "name": "Sky + Chartreuse",
-      "slug": "sky-chartreuse",
+      "name": "03 Yellow + Blue",
+      "slug": "blue-lime",
       "main": "#6183ff",
+      "secondary": "#dfe5ac"
+    },
+    {
+      "name": "05 Lime + Light brown",
+      "slug": "brown-yellow",
+      "main": "#977e72",
       "secondary": "#e7f639"
     },
     {
-      "name": "Red + Sky",
-      "slug": "red-sky",
-      "main": "#fe0000",
-      "secondary": "#a88dc4"
+      "name": "06 Orange + Cream",
+      "slug": "orange-grey",
+      "main": "#c0bfbe",
+      "secondary": "#ed7034"
+    },
+    {
+      "name": "07 Lilac + Rose",
+      "slug": "red-pink",
+      "main": "#c66274",
+      "secondary": "#e5d2e5"
+    },
+    {
+      "name": "08 Brown mauve + Teal",
+      "slug": "mauve-teal",
+      "main": "#2f6f73",
+      "secondary": "#6e5254"
+    },
+    {
+      "name": "09 Concrete + Hi-vis yellow",
+      "slug": "concrete-yellow",
+      "main": "#f2c230",
+      "secondary": "#b4b1a9"
     }
   ],
   "awards": [
