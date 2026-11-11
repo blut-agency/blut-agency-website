@@ -8,7 +8,7 @@ import LandingFooter from "@/components/LandingFooter";
 import CaseCard, { listItems } from "@/components/CaseCard";
 import { ContactBlock, CtaLink, PageHero } from "@/components/Blocks";
 import { themeFromColors } from "@/lib/imageTheme";
-import { getCaseStudies, getCaseStudyBySlug, type CaseStudy, type CaseStudyVideoFile } from "@/lib/content";
+import { getCaseStudies, getCaseStudyBySlug, getNextCaseStudy, type CaseStudy, type CaseStudyVideoFile } from "@/lib/content";
 import CaseStudyVisual, { visualVariant } from "@/components/CaseStudyVisual";
 import { PlayerSpinnerButtons } from "@/components/MediaFrame";
 import RevealText from "@/components/RevealText";
@@ -197,7 +197,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
   const cs = getCaseStudyBySlug(slug);
   if (!cs) notFound();
 
-  const nextCase = getCaseStudyBySlug(cs.nextCaseStudySlug);
+  const nextCase = getNextCaseStudy(cs);
   const theme = cs.color ? themeFromColors(cs.color) : null;
   const nextTheme = nextCase?.color ? themeFromColors(nextCase.color) : null;
   // The quote sits on the case's ground colour (its styleguide pair's background;

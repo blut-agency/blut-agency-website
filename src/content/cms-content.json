@@ -120,6 +120,7 @@
     },
     {
       "slug": "feel-the-vibe",
+      "published": false,
       "internalName": "Feel the Vibe (placeholder)",
       "title": "Feel the Vibe",
       "position": 3,
@@ -164,6 +165,7 @@
     },
     {
       "slug": "all-purpose-sound",
+      "published": false,
       "internalName": "All Purpose Sound (AI draft copy)",
       "title": "All Purpose Sound",
       "position": 4,
@@ -222,6 +224,7 @@
     },
     {
       "slug": "reinventing-a-classic",
+      "published": false,
       "internalName": "Reinventing a Classic (AI draft copy)",
       "title": "Reinventing a Classic",
       "position": 5,

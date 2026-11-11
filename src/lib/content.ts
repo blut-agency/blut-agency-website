@@ -34,6 +34,8 @@ export interface CaseStudy {
   title: string;
   position: number;
   showOnHomepage: boolean;
+  /** False hides the case everywhere: no page, no card, no "next case" link. */
+  published?: boolean;
   clientListHtml: string;
   whatWeDidHtml: string;
   collaboratorsHtml: string;
@@ -120,16 +122,31 @@ interface CmsContent {
 */
 const content = cms as unknown as CmsContent;
 
+/** Only published cases reach the site. Unpublished ones stay in the JSON. */
+const published = content.caseStudies.filter((c) => c.published !== false);
+
 export function getCaseStudies(): CaseStudy[] {
-  return content.caseStudies;
+  return published;
 }
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
-  return content.caseStudies.find((c) => c.slug === slug);
+  return published.find((c) => c.slug === slug);
+}
+
+/** The next published case after this one: follows the "next case" chain past unpublished cases. */
+export function getNextCaseStudy(cs: CaseStudy): CaseStudy | undefined {
+  let slug = cs.nextCaseStudySlug;
+  for (let i = 0; i < content.caseStudies.length; i++) {
+    const next = content.caseStudies.find((c) => c.slug === slug);
+    if (!next || next.slug === cs.slug) return undefined;
+    if (next.published !== false) return next;
+    slug = next.nextCaseStudySlug;
+  }
+  return undefined;
 }
 
 export function getHomepageCaseStudies(): CaseStudy[] {
-  return content.caseStudies.filter((c) => c.showOnHomepage);
+  return published.filter((c) => c.showOnHomepage);
 }
 
 export function getLocations(): Location[] {
