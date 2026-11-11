@@ -1750,9 +1750,8 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 }
 
 /* Phones and small tablets (the burger menu widths): the logo sits in the
-   bottom left corner of the 384px banner. The words make way for a small
-   speaker icon at the top, left of the burger: crossed out while silent,
-   with sound waves while it plays (Nic, 11 Nov). */
+   bottom left corner of the 384px banner. The words make way for a round
+   sound button in the top left corner (Nic, 11 Nov). */
 .lp-stage .sound-icon {
   display: none;
 }
@@ -1771,22 +1770,25 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
     aspect-ratio: 58 / 20;
   }
 
-  /* Level with the burger lines, 16px to their left. */
+  /* Top left, where the small nav logo would be (hidden over the stage),
+     level with the burger. A ring with a speaker and sound waves invites a
+     tap; while it plays, a filled ring with pause bars (Nic, 11 Nov). */
   .lp-page .lp-stage .audioplayer-controls {
     position: absolute;
     z-index: 1000;
-    top: 8px;
-    right: 40px;
+    /* The burger's 48px box starts 10px down (the nav's padding), so the
+       same 48px box here at 10px puts both centres 34px from the top. */
+    top: 10px;
+    left: 0;
+    right: auto;
     bottom: auto;
   }
 
   .lp-stage .play-toggle-text {
     display: flex;
     align-items: center;
-    justify-content: center;
     width: 48px;
     height: 48px;
-    margin-right: -12px;
   }
 
   .lp-stage .sound-label {
