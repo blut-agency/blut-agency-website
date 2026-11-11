@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import CaseStudyVisual, { patternAt } from "@/components/CaseStudyVisual";
 import Drawer from "@/components/Drawer";
 import RevealText from "@/components/RevealText";
-import { ContactPortrait } from "@/components/MailPopup";
 import { DEFAULT_TEAM_COLOR, TEAM_COLORS, getTeam } from "@/lib/team";
 import { getSite } from "@/lib/site";
 
@@ -225,14 +224,14 @@ export function ContactBlock({
         </div>
         {people.map((p) => (
           <div key={p.name} className="bk-contact-person">
-            {/* The portrait opens the mail panel; on hover it swaps to their cut-out and pattern, as on About. */}
-            <ContactPortrait name={p.name} mail={p.mail}>
+            {/* A tap on the portrait opens the mail app; on hover it swaps to their cut-out and pattern, as on About. */}
+            <a href={`mailto:${p.mail}`} className="bk-contact-photo bk-team-face" aria-label={`Email ${p.name}`}>
               <span className="bk-team-visual" aria-hidden="true" style={{ backgroundColor: p.background, color: p.line }}>
                 <CaseStudyVisual slug={`contact-${p.file.toLowerCase()}`} {...patternAt(p.pattern)} />
               </span>
               <img className="bk-team-photo" src={`/images/team/${p.file}.webp`} alt="" loading="lazy" />
               <img className="bk-team-cutout" src={`/images/team/${p.file}-cutout.webp`} alt="" loading="lazy" />
-            </ContactPortrait>
+            </a>
             <div>
               {/* Name not linked for now: the team pages are being rethought (Nic, Oct 2026). */}
               <p className="lp-copy bk-contact-name">{p.name}</p>

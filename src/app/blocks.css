@@ -938,40 +938,8 @@
   visibility: hidden;
 }
 
-/* Mail panel under a portrait (MailPopup): address, Send email, Copy. */
-.bk-team-grid > li,
-.bk-mail-anchor {
+.bk-team-grid > li {
   position: relative;
-}
-
-.bk-mail-anchor {
-  flex: none;
-}
-
-.bk-mail {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  z-index: 5;
-  width: max-content;
-  max-width: calc(100vw - 32px);
-  gap: 16px;
-  padding: 16px;
-}
-
-.bk-section.is-dark .bk-mail {
-  background: var(--lp-panel-dark);
-  color: var(--_color---copy-bright);
-}
-
-.bk-mail-address {
-  margin: 0;
-  font-size: 16px;
-}
-
-.bk-mail-actions {
-  display: flex;
-  gap: 8px;
 }
 
 .bk-team-grid {
@@ -1013,25 +981,25 @@
 }
 
 .bk-team-face.is-active .bk-team-photo,
-button.bk-contact-photo.bk-team-face:focus-visible .bk-team-photo {
+a.bk-contact-photo.bk-team-face:focus-visible .bk-team-photo {
   opacity: 0;
 }
 
 .bk-team-face.is-active .bk-team-cutout,
 .bk-team-face.is-active .bk-team-visual,
-button.bk-contact-photo.bk-team-face:focus-visible .bk-team-cutout,
-button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
+a.bk-contact-photo.bk-team-face:focus-visible .bk-team-cutout,
+a.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   opacity: 1;
 }
 
 /* The contact block's portraits have no script: plain hover. */
 @media (hover: hover) and (pointer: fine) {
-  button.bk-contact-photo.bk-team-face:hover .bk-team-photo {
+  a.bk-contact-photo.bk-team-face:hover .bk-team-photo {
     opacity: 0;
   }
 
-  button.bk-contact-photo.bk-team-face:hover .bk-team-cutout,
-  button.bk-contact-photo.bk-team-face:hover .bk-team-visual {
+  a.bk-contact-photo.bk-team-face:hover .bk-team-cutout,
+  a.bk-contact-photo.bk-team-face:hover .bk-team-visual {
     opacity: 1;
   }
 }

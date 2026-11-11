@@ -41,16 +41,24 @@ function balance(el: HTMLElement) {
   el.style.maxWidth = "";
   el.style.marginInline = "";
   if (!isBalanceable(el)) return;
+  const style = getComputedStyle(el);
   const height = el.offsetHeight;
   const full = el.clientWidth;
-  const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
-  if (!full || !lineHeight || height < lineHeight * 1.5 || height > lineHeight * MAX_LINES) return;
+  const lineHeight = parseFloat(style.lineHeight);
+  // Count lines from the text's own height: a padded label (a client chip)
+  // is taller than its one line of text.
+  const textHeight =
+    height -
+    parseFloat(style.paddingTop) - parseFloat(style.paddingBottom) -
+    parseFloat(style.borderTopWidth) - parseFloat(style.borderBottomWidth);
+  if (!full || !lineHeight || textHeight < lineHeight * 1.5 || textHeight > lineHeight * MAX_LINES) return;
   let lo = 0;
   let hi = full;
   while (hi - lo > 1) {
     const mid = Math.floor((lo + hi) / 2);
     el.style.maxWidth = `${mid}px`;
-    if (el.offsetHeight > height) lo = mid;
+    // Too narrow once it adds a line, or once a long word sticks out of the box.
+    if (el.offsetHeight > height || el.scrollWidth > el.clientWidth) lo = mid;
     else hi = mid;
   }
   if (hi >= full) {
@@ -59,7 +67,7 @@ function balance(el: HTMLElement) {
   }
   el.style.maxWidth = `${hi}px`;
   // Centred or right-aligned text stays where it was.
-  const align = getComputedStyle(el).textAlign;
+  const align = style.textAlign;
   if (align === "center") el.style.marginInline = "auto";
   else if (align === "right" || align === "end") el.style.marginLeft = "auto";
 }
