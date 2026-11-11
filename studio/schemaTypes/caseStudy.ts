@@ -10,19 +10,23 @@ import { defineArrayMember, defineField, defineType } from "sanity";
   stay in the data but are hidden: a case without sections still shows them
   in the old order, and the import builds each case's sections from them.
 
+  Only published cases reach the site: Unpublish takes a case off the site
+  and keeps it here as a draft.
+
   Videos and audio live in blut's own media folder (Nextcloud, GDPR), so the
   fields hold a file path like /media/hyundai-film.mp4, not an upload.
 */
 
 export const MEDIA = "A file in blut's media folder, e.g. /media/hyundai-film.mp4";
 
-const mediaPath = (name: string, title: string, group = "page", description = MEDIA) =>
+const mediaPath = (name: string, title: string, group = "page", description = MEDIA, hidden = false) =>
   defineField({
     name,
     title,
     type: "string",
     group,
     description,
+    hidden,
     validation: (r) => r.regex(/^(\/|https:\/\/)/, { name: "file path starting with /media/" }),
   });
 
@@ -139,16 +143,26 @@ export const caseStudy = defineType({
     defineField({
       name: "aiDraftCopy",
       title: "Text is a placeholder",
-      description: "Marks the text with an asterisk until the team writes the real copy.",
+      description: "No longer shown on the site.",
       type: "boolean",
+      hidden: true,
       group: "page",
       initialValue: false,
     }),
-    defineField({ name: "nextCaseStudy", title: "Next case", type: "reference", to: [{ type: "caseStudy" }], group: "page" }),
+    defineField({
+      name: "nextCaseStudy",
+      title: "Next case",
+      description: "If this case is not published, the site shows the next published case in the list instead.",
+      type: "reference",
+      to: [{ type: "caseStudy" }],
+      // Weak: it may point to a case that is not published yet.
+      weak: true,
+      group: "page",
+    }),
 
     defineField({ name: "videoUnderQuote", hidden: true, title: "Video under the quote", type: "videoFile", group: "page" }),
     pictures("gallery1", "Picture strip 1"),
-    mediaPath("loopUrl", "Short loop", "media", "Short silent video, e.g. /media/hyundai-loop.mp4"),
+    mediaPath("loopUrl", "Short loop", "page", "Short silent video, e.g. /media/hyundai-loop.mp4", true),
     defineField({ name: "gifVideoHashtags", hidden: true, title: "Short loop hashtags", type: "string", group: "page" }),
     player("audioPlayer1", "Audio player 1"),
     player("audioPlayer2", "Audio player 2"),

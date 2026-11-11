@@ -73,7 +73,7 @@ export default async function PostPage() {
         </Lead>
       </section>
 
-      <ContactBlock person={["michael", "elliot"]} />
+      <ContactBlock person={page.contacts} />
       <LandingFooter band={{ background: "#dfe5ac", line: "#6183ff", light: true }} />
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore, type ReactNode } from "react";
+import { getSite } from "@/lib/site";
 
 /*
   Filter buttons for /case-studies: All, the offers, then one per service on
@@ -40,7 +41,7 @@ export default function CaseFilter({ options, children }: { options: Option[]; c
   const param = useSyncExternalStore(subscribe, readParam, () => null);
   const active = options.some((o) => o.slug === param) ? param : null;
   const [fading, setFading] = useState(false);
-  const all: { slug: string | null; label: string }[] = [{ slug: null, label: "All" }, ...options];
+  const all: { slug: string | null; label: string }[] = [{ slug: null, label: getSite().labels.filterAll }, ...options];
 
   function pick(slug: string | null) {
     if (slug === active) return;

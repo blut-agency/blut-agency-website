@@ -370,7 +370,7 @@ export default async function ComponentSheetPage() {
 
         <Label name="TeamGrid" used="About" />
         <div className="lp-wrap">
-          <TeamGrid intro="A next generation creative agency for the modern era." />
+          <TeamGrid heading="We are blut." intro="A next generation creative agency for the modern era." />
         </div>
       </section>
 

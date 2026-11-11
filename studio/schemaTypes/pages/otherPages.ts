@@ -14,6 +14,16 @@ const groups = (main: string) => [
   { name: "end", title: "End of page" },
   { name: "seo", title: "Search" },
 ];
+/** The people in the black contact block near the end of the page. */
+const contactsField = defineField({
+  name: "contacts",
+  title: "Contact people",
+  description: "Shown in the black “Sound good? Get in touch!” block. Leave empty to show the general email.",
+  type: "array",
+  group: "end",
+  of: [defineArrayMember({ type: "reference", to: [{ type: "teamMember" }] })],
+  validation: (r) => r.max(2).unique(),
+});
 const spots = defineField({
   name: "spots",
   title: "Films",
@@ -28,7 +38,7 @@ export const productionPage = defineType({
   title: "Production",
   type: "document",
   groups: groups("Films"),
-  fields: [heroField, defineField({ name: "intro", title: "Question and answer", type: "callResponse", group: "main" }), spots, leadField, seoField],
+  fields: [heroField, defineField({ name: "intro", title: "Question and answer", type: "callResponse", group: "main" }), spots, leadField, contactsField, seoField],
   preview: { prepare: () => ({ title: "Production" }) },
 });
 
@@ -37,7 +47,7 @@ export const postPage = defineType({
   title: "Post",
   type: "document",
   groups: groups("Films"),
-  fields: [heroField, defineField({ name: "intro", title: "Question and answer", type: "callResponse", group: "main" }), spots, leadField, seoField],
+  fields: [heroField, defineField({ name: "intro", title: "Question and answer", type: "callResponse", group: "main" }), spots, leadField, contactsField, seoField],
   preview: { prepare: () => ({ title: "Post" }) },
 });
 
@@ -52,6 +62,7 @@ export const strategyPage = defineType({
     defineField({ name: "film", title: "Film", type: "workSpot", group: "main" }),
     defineField({ name: "services", title: "Services", type: "array", group: "main", of: [defineArrayMember({ type: "service" })] }),
     leadField,
+    contactsField,
     seoField,
   ],
   preview: { prepare: () => ({ title: "Strategy" }) },
@@ -62,11 +73,7 @@ export const casesPage = defineType({
   title: "Case Studies",
   type: "document",
   groups: groups("Cases"),
-  fields: [
-    heroField,
-    leadField,
-    seoField,
-  ],
+  fields: [heroField, leadField, contactsField, seoField],
   preview: { prepare: () => ({ title: "Case Studies" }) },
 });
 
@@ -77,6 +84,7 @@ export const aboutPage = defineType({
   groups: groups("Team"),
   fields: [
     heroField,
+    defineField({ name: "teamHeading", title: "Heading above the team", type: "string", group: "main" }),
     defineField({ name: "teamIntro", title: "Text above the team", type: "text", rows: 3, group: "main", description: "The team itself is under Team." }),
     seoField,
   ],

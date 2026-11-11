@@ -14,6 +14,7 @@ import { PlayerSpinnerButtons } from "@/components/MediaFrame";
 import RevealText from "@/components/RevealText";
 import { caseSections, type CaseSection } from "@/lib/caseSections";
 import CaseVideo from "@/components/CaseVideo";
+import { getSite } from "@/lib/site";
 
 /*
   Case page (the editorial layout tested on /case-lab, Oct 2026): the case's
@@ -40,6 +41,9 @@ const AUDIO_SPEED: Record<string, number> = {
   "volkswagen-bringing-it-all-back-home": 7,
   "invention-is-instrumental": 17,
 };
+/** Shared words: fact labels, the chapter link, "Next case study:" (Sanity: Shared texts). */
+const LABELS = getSite().labels;
+
 const stageSpeed = (slug: string) => STAGE_SPEED[slug] ?? 10;
 const audioSpeed = (slug: string) => AUDIO_SPEED[slug] ?? 8;
 
@@ -203,9 +207,9 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
   // a line colour is never a ground): dark text on a light one, white on a dark one.
   const quoteOnDark = theme ? !theme.lightBackground : false;
   const facts = [
-    { label: "Client", items: listItems(cs.clientListHtml) },
-    { label: "What we did", items: listItems(cs.whatWeDidHtml) },
-    { label: "Collaborators", items: listItems(cs.collaboratorsHtml ?? "") },
+    { label: LABELS.caseClient, items: listItems(cs.clientListHtml) },
+    { label: LABELS.caseWhatWeDid, items: listItems(cs.whatWeDidHtml) },
+    { label: LABELS.caseCollaborators, items: listItems(cs.collaboratorsHtml ?? "") },
   ].filter((f) => f.items.length > 0);
   // The play pill takes the case's colour on hover, as a spot's does on Production.
   const playAccent = theme
@@ -226,7 +230,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
         if (!section.line && !section.body && !section.stage) return null;
         return (
           <Chapter key={i} stage={section.stage} heading={section.line} body={section.body} aiDraft={cs.aiDraftCopy} note={cs.aiDraftCopy && i === firstChapter}>
-            {section.cta && <CtaLink href="/strategy" label="Want to know more about how we work?" />}
+            {section.cta && <CtaLink href={LABELS.caseChapterLink.href} label={LABELS.caseChapterLink.label} />}
           </Chapter>
         );
       case "caseQuote":
@@ -353,7 +357,7 @@ export default async function CaseStudyDetailPage({ params }: { params: Promise<
         {nextCase && (
           <section className="bk-section bk-next">
             <div className="lp-wrap bk-next-grid">
-              <h2 className="lp-heading">Next case study:</h2>
+              <h2 className="lp-heading">{LABELS.nextCase}</h2>
               <CaseCard cs={nextCase} theme={nextTheme} formPrefix="next" />
             </div>
           </section>

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import VideoLightbox from "@/components/VideoLightbox";
+import { getSite } from "@/lib/site";
 
 /*
   First-visit welcome (call with Elliot, 10 Nov 2026): a small card slides in
@@ -17,14 +18,8 @@ import VideoLightbox from "@/components/VideoLightbox";
   ?recap=1 always show it, even to visitors who closed it before.
 */
 
-const RECAP = {
-  title: "blut recap",
-  /** Full recap, web version (H.264, about 30 MB). */
-  video: "/media/blut-recap-web.mp4",
-  /** Silent loop for the card (a few seconds, small). */
-  teaser: "/media/blut-recap-teaser.mp4",
-  poster: "/images/welcome/blut-recap-poster.jpg",
-};
+/** Words and files from Sanity (Shared texts → Welcome card) via site.json: the full recap (web H.264), the card's silent loop and the still. */
+const RECAP = getSite().welcome;
 
 const SEEN_KEY = "blut-welcome-seen";
 const SKIP_PARAM = { name: "from", value: "linkedin" };
@@ -90,12 +85,12 @@ export default function WelcomeRecap() {
         <div className="bk-welcome-body">
           {/* One two-tone text at one size and line height (Nic, 11 Nov). */}
           <p className="bk-welcome-text">
-            <span className="bk-welcome-title">It&rsquo;s been a minute.</span>{" "}
-            <span className="bk-welcome-copy">Here&rsquo;s what we&rsquo;ve been up to.</span>
+            <span className="bk-welcome-title">{RECAP.title}</span>{" "}
+            <span className="bk-welcome-copy">{RECAP.text}</span>
           </p>
           {/* The pill play button of the site's videos. */}
           <Button shape="pill" icon="play" iconFirst onDark onClick={watch}>
-            Watch
+            {RECAP.button}
           </Button>
         </div>
         <button type="button" className="bk-burger is-open bk-welcome-close" aria-label="Close" onClick={dismiss}>
@@ -103,7 +98,7 @@ export default function WelcomeRecap() {
           <span />
         </button>
       </aside>
-      <VideoLightbox open={watching} onClose={closeVideo} title={RECAP.title} videoUrl={RECAP.video} poster={RECAP.poster} />
+      <VideoLightbox open={watching} onClose={closeVideo} title="blut recap" videoUrl={RECAP.video} poster={RECAP.poster} />
     </>
   );
 }

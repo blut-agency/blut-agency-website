@@ -49,6 +49,9 @@ let keyCount = 0;
 const key = () => `k${(keyCount++).toString(36)}`;
 const ref = (id: string) => ({ _type: "reference", _ref: id, _key: key() });
 const ref1 = (id: string) => ({ _type: "reference", _ref: id });
+/** Cases the site hides (published: false) come in as drafts only: unpublished in Sanity. */
+const hidden = new Set(cms.caseStudies.filter((c) => c.published === false).map((c) => c.slug));
+const caseRef = (slug: string) => ({ ...ref1(`case-${slug}`), ...(hidden.has(slug) ? { _weak: true } : {}) });
 
 // Pictures: upload each site file once; the same path reuses the same asset.
 const uploaded = new Map<string, string>();
@@ -209,8 +212,8 @@ async function toSanity(value: unknown, def: Def): Promise<unknown> {
     case "image":
       return image(String(value));
     case "reference":
-      // References in the JSON are case slugs.
-      return ref1(`case-${value}`);
+      // References in the JSON are case slugs or team member code names.
+      return ref1(def.to?.[0]?.type === "teamMember" ? `team-${value}` : `case-${value}`);
     case "object":
     case "document": {
       const out: Record<string, unknown> = {};
@@ -302,15 +305,19 @@ async function main() {
   colors.forEach((c, i) => {
     tx.createOrReplace({ _id: `color-${c.slug}`, _type: "colorTheme", sortOrder: i, name: c.name, slug: { _type: "slug", current: c.slug }, main: c.main, secondary: c.secondary, photoMatch: c.photoMatch ?? true });
   });
+  // Colour themes from an older list stay (a case may still use one) but drop to the end and out of the photo match.
+  const oldColors: string[] = await client.fetch(`*[_type == "colorTheme" && !(_id in $ids) && !(_id in path("drafts.**"))]._id`, { ids: colors.map((c) => `color-${c.slug}`) });
+  oldColors.forEach((id, i) => tx.patch(id, { set: { photoMatch: false, sortOrder: 100 + i } }));
   for (const [i, a] of cms.awards.entries()) {
     tx.createOrReplace({ _id: `award-${a.slug}`, _type: "award", sortOrder: i, name: a.name, slug: { _type: "slug", current: a.slug }, image: await image(a.image) });
   }
 
   for (const c of cms.caseStudies) {
-    console.log(`  ${c.internalName}`);
+    console.log(`  ${c.internalName}${hidden.has(c.slug) ? " (draft, not on the site)" : ""}`);
     const visual = c.useVisual.indexOf(true);
+    if (hidden.has(c.slug)) tx.delete(`case-${c.slug}`);
     tx.createOrReplace({
-      _id: `case-${c.slug}`,
+      _id: hidden.has(c.slug) ? `drafts.case-${c.slug}` : `case-${c.slug}`,
       _type: "caseStudy",
       internalName: c.internalName,
       title: c.title,
@@ -334,7 +341,7 @@ async function main() {
       textAfterGallery: await blocks(c.textAfterGalleryHtml),
       textAfterAudioPlayer: await blocks(c.textAfterAudioPlayerHtml),
       aiDraftCopy: Boolean(c.aiDraftCopy),
-      nextCaseStudy: c.nextCaseStudySlug ? ref1(`case-${c.nextCaseStudySlug}`) : undefined,
+      nextCaseStudy: c.nextCaseStudySlug ? caseRef(c.nextCaseStudySlug as string) : undefined,
       videoUnderQuote: c.videoUnderQuote ? video(c.videoUnderQuote) : undefined,
       gallery1: await images(c.gallery1),
       loopUrl: c.loopUrl ?? "",

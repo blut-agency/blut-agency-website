@@ -83,11 +83,15 @@ export interface Service {
   link?: Cta;
 }
 
+/** Code names of the team members in the page's contact block (team.json "key"); empty shows the general email. */
+export type Contacts = string[];
+
 export interface FilmsPage {
   hero: Hero;
   intro: CallResponse;
   spots: Spot[];
   lead: LeadBox;
+  contacts: Contacts;
   seo: Seo;
 }
 
@@ -97,17 +101,20 @@ export interface StrategyPage {
   film: Spot;
   services: Service[];
   lead: LeadBox;
+  contacts: Contacts;
   seo: Seo;
 }
 
 export interface CasesPage {
   hero: Hero;
   lead: LeadBox;
+  contacts: Contacts;
   seo: Seo;
 }
 
 export interface AboutPage {
   hero: Hero;
+  teamHeading: string;
   teamIntro: string;
   seo: Seo;
 }

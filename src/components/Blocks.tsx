@@ -189,7 +189,9 @@ export function ContactBlock({
   person?: string | string[];
   pattern?: { background: string; line: string };
 }) {
-  if (!person) {
+  // Code names from the page (Sanity: Contact people); none shows the general email.
+  const keys = [person ?? []].flat();
+  if (!keys.length) {
     return (
       <section className="bk-section is-dark bk-contact">
         <div className="lp-wrap bk-contact-grid">
@@ -213,7 +215,7 @@ export function ContactBlock({
       </section>
     );
   }
-  const people = [person].flat().map((key) => PEOPLE[key]).filter(Boolean);
+  const people = keys.map((key) => PEOPLE[key]).filter(Boolean);
   return (
     <section className="bk-section is-dark bk-contact">
       <div className={`lp-wrap bk-contact-grid${people.length > 1 ? " is-pair" : ""}`}>

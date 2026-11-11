@@ -20,14 +20,15 @@ export const seo = defineType({
   ],
 });
 
-/** A "Text is a placeholder" switch: the site marks the text with an asterisk. */
+/** The old "Text is a placeholder" switch: hidden since the site stopped marking placeholder text (11 Nov 2026). Kept so old data stays valid. */
 export const placeholder = (name = "placeholder", group?: string) =>
   defineField({
     name,
     title: "Text is a placeholder",
-    description: "Marks the text with an asterisk until the team writes the real copy.",
+    description: "No longer shown on the site.",
     type: "boolean",
     initialValue: false,
+    hidden: true,
     group,
   });
 
@@ -86,7 +87,8 @@ export const workSpot = defineType({
   type: "object",
   fields: [
     defineField({ name: "client", title: "Client", type: "string", validation: (r) => r.required() }),
-    defineField({ name: "title", title: "Title", type: "string", description: "Optional. Wide films show no title." }),
+    // Not shown on the site today: no film has a card title.
+    defineField({ name: "title", title: "Title", type: "string", hidden: true }),
     defineField({ name: "text", title: "Text", type: "text", rows: 4 }),
     defineField({
       name: "layout",
@@ -106,7 +108,8 @@ export const workSpot = defineType({
     defineField({ name: "image", title: "Still", type: "image" }),
     defineField({ name: "videoUrl", title: "Video file", type: "string", description: "Plays when someone clicks the still, e.g. /media/samsung-nina-chuba.mp4" }),
     defineField({ name: "preview", title: "Hover loop", type: "string", description: "Short silent video over the still on hover." }),
-    defineField({ name: "caseSlug", title: "Case", type: "reference", to: [{ type: "caseStudy" }], description: "Optional. Adds a link to the case." }),
+    // Not shown on the site today: no film links to a case.
+    defineField({ name: "caseSlug", title: "Case", type: "reference", to: [{ type: "caseStudy" }], hidden: true }),
   ],
   preview: { select: { title: "client", subtitle: "layout", media: "image" } },
 });

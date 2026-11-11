@@ -49,7 +49,8 @@ const QUERY = `{
   "settings": *[_id == "casesSettings"][0]{ "pinned": pinnedCase->slug.current, "featured": featuredCases[]->slug.current },
   "pages": *[_id in ${JSON.stringify(PAGE_IDS)}],
   "team": *[_type == "teamMember"] | order(coalesce(sortOrder, 999) asc, name asc),
-  "caseSlugs": *[_type == "caseStudy"]{ _id, "slug": slug.current }
+  "caseSlugs": *[_type == "caseStudy"]{ _id, "slug": slug.current },
+  "teamKeys": *[_type == "teamMember"]{ _id, key }
 }`;
 
 async function query(q = QUERY) {
@@ -231,19 +232,26 @@ const assets = assetIds.size
     )
   : {};
 const caseSlug = Object.fromEntries(data.caseSlugs.map((c) => [c._id, c.slug]));
+const teamKey = Object.fromEntries(data.teamKeys.map((m) => [m._id, m.key]));
 const isText = (v) => Array.isArray(v) && v.length > 0 && v.every((b) => b?._type === "block" || b?._type === "image") && v.some((b) => b._type === "block");
 
-/** A Sanity value → the site's JSON: pictures become paths, text blocks HTML, case links slugs. */
+/** A Sanity value → the site's JSON: pictures become paths, text blocks HTML, case links slugs, people their code names. */
 function plain(v) {
   if (Array.isArray(v)) return isText(v) ? html(v.map((b) => (b._type === "image" ? { ...b, ...assets[b.asset?._ref] } : b))) : v.map(plain);
   if (!v || typeof v !== "object") return v;
   if (v._type === "image") return v.asset?._ref ? picture(assets[v.asset._ref]) : "";
-  if (v._type === "reference") return caseSlug[v._ref] ?? "";
+  if (v._type === "reference") return caseSlug[v._ref] ?? teamKey[v._ref] ?? "";
   if (v._type === "slug") return v.current;
   const out = {};
   for (const [k, val] of Object.entries(v)) if (!k.startsWith("_")) out[k] = plain(val);
   return out;
 }
+
+// "Next case" pointing to a case that is not published: the next published case in the list.
+const slugs = caseStudies.map((c) => c.slug);
+caseStudies.forEach((c, i) => {
+  if (!slugs.includes(c.nextCaseStudySlug) || c.nextCaseStudySlug === c.slug) c.nextCaseStudySlug = slugs.length > 1 ? slugs[(i + 1) % slugs.length] : "";
+});
 
 // The case builder's sections, in page order, each with its type.
 data.cases.forEach((c, i) => {

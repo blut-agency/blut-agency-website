@@ -73,7 +73,7 @@ export default async function ProductionPage() {
         </Lead>
       </section>
 
-      <ContactBlock person="michael" />
+      <ContactBlock person={page.contacts} />
       <LandingFooter band={{ background: "#7a3bff", line: "#02b7fd" }} />
     </div>
   );

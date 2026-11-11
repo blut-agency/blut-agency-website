@@ -2,6 +2,10 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import LandingFooter from "@/components/LandingFooter";
 import RevealText from "@/components/RevealText";
+import { getSite } from "@/lib/site";
+
+/** Words from Sanity (Shared texts → Page not found) via site.json. */
+const TEXT = getSite().notFound;
 
 export default function NotFound() {
   return (
@@ -15,12 +19,12 @@ export default function NotFound() {
             className="icon-1x1-large"
           />
           <div className="spacer-sm-start" />
-          <RevealText className="heading-style-h1" text="404 page not found" />
+          <RevealText className="heading-style-h1" text={TEXT.heading} />
           <div className="spacer-md-start spacer-md-end">
-            <p className="copy-medium">The page appears to have been moved or deleted.</p>
+            <p className="copy-medium">{TEXT.text}</p>
           </div>
           <Link href="/" className="button w-button">
-            To Homepage
+            {TEXT.button}
           </Link>
         </div>
       </div>
