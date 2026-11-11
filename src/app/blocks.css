@@ -1771,8 +1771,8 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   }
 
   /* Top left, where the small nav logo would be (hidden over the stage),
-     level with the burger. A ring with a speaker and sound waves invites a
-     tap; while it plays, a filled ring with pause bars (Nic, 11 Nov). */
+     level with the burger. A speaker with sound waves turns the sound on;
+     while it plays, a speaker with an X turns it off (Nic, 11 Nov). */
   .lp-page .lp-stage .audioplayer-controls {
     position: absolute;
     z-index: 1000;

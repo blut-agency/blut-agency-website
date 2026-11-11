@@ -73,9 +73,9 @@ export default async function HomePage() {
                           <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>` }} /></div>
                     </div><button data-player="play-button" className="play-toggle" aria-label={page.soundLabel}>
-                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.soundLabel}</span><svg className="sound-icon" viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="20" cy="20" r="19.25" /><path d="M11 17h3l5-4v14l-5-4h-3z" fill="currentColor" stroke="none" /><path d="M23 16.5a5 5 0 0 1 0 7M26 13.5a9 9 0 0 1 0 13" strokeLinecap="round" /></svg></div>
+                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.soundLabel}</span><svg className="sound-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M1 8.5h4.5L11 4v16l-5.5-4.5H1z" strokeLinejoin="round" /><path d="M15 8.5a5 5 0 0 1 0 7M18.5 5a10 10 0 0 1 0 14" /></svg></div>
                     </button><button data-player="pause-button" className="play-toggle is-pause-button" aria-label={page.pauseLabel}>
-                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.pauseLabel}</span><svg className="sound-icon" viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="20" cy="20" r="19.25" fill="currentColor" /><path d="M16 13v14M24 13v14" stroke="var(--_color---accent-color-3)" strokeWidth="3" /></svg></div>
+                      <div className="play-toggle-text heading-style-h3"><span className="sound-label">{page.pauseLabel}</span><svg className="sound-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M1 8.5h4.5L11 4v16l-5.5-4.5H1z" strokeLinejoin="round" /><path d="M15 9l6 6M21 9l-6 6" /></svg></div>
                     </button>
                   </div>
                 </div>
