@@ -17,7 +17,7 @@ const LETTER_EASING = "cubic-bezier(0.2, 0.7, 0.2, 1)";
  * between words, and the heading keeps its full text as its accessible name.
  *
  * Pass an array for headlines with deliberate line breaks; an empty string
- * adds a blank line (two <br>s in a row).
+ * adds a blank line.
  *
  * Letters start hidden from the first paint, but only with JavaScript on
  * (globals.css); without it, or with reduced motion, the text simply shows.
@@ -96,9 +96,12 @@ export default function RevealText({
       <span className="sr-only">{label}</span>
       {lines.map((line, lineIndex) => {
         const words = line ? line.split(/\s+/) : [];
+        // Each line is its own block, so line balancing (globals.css) evens
+        // out every line group on its own and never leaves a lone word before
+        // a deliberate break. An empty line keeps one line's height.
         return (
-          <Fragment key={lineIndex}>
-            {lineIndex > 0 && <br />}
+          <span key={lineIndex} className="reveal-line">
+            {words.length === 0 && <br />}
             {words.map((word, w) => (
               <span key={w}>
                 {/* After a hyphen the word may break ("Post-Production"): each word box is nowrap. */}
@@ -117,7 +120,7 @@ export default function RevealText({
                 {w < words.length - 1 ? " " : null}
               </span>
             ))}
-          </Fragment>
+          </span>
         );
       })}
     </Tag>
