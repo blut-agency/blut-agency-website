@@ -19,12 +19,11 @@ export interface SiteSettings {
   footerLegal: Cta[];
   footerSocial: Cta[];
   /** The first-visit card (WelcomeRecap). */
-  welcome: { title: string; text: string; button: string; video: string; teaser: string; poster: string; videoTitle: string };
+  welcome: { title: string; text: string; button: string; video: string; teaser: string; poster: string };
   /** Words the site repeats in many places. */
   labels: {
     readMore: string;
     playVideo: string;
-    seeCase: string;
     filterAll: string;
     caseClient: string;
     caseWhatWeDid: string;

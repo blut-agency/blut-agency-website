@@ -7,17 +7,17 @@ export const homePage = defineType({
   title: "Home",
   type: "document",
   groups: [
-    { name: "stage", title: "Top", default: true },
-    { name: "offers", title: "What we do" },
+    { name: "offers", title: "What we do", default: true },
     { name: "cases", title: "Featured cases" },
     { name: "why", title: "Why blut" },
     { name: "seo", title: "Search" },
   ],
   fields: [
-    defineField({ name: "stageLine", title: "Line under the logo", type: "string", group: "stage" }),
-    placeholder("stageLinePlaceholder", "stage"),
-    defineField({ name: "soundLabel", title: "Sound button", type: "string", group: "stage", description: "e.g. Click for sound" }),
-    defineField({ name: "pauseLabel", title: "Pause button", type: "string", group: "stage" }),
+    // Not shown on the site any more: no line beside the logo (Timo, 10 Nov) and the sound button is a speaker icon (11 Nov).
+    defineField({ name: "stageLine", title: "Line under the logo", type: "string", group: "offers", hidden: true }),
+    placeholder("stageLinePlaceholder", "offers"),
+    defineField({ name: "soundLabel", title: "Sound button", type: "string", group: "offers", hidden: true }),
+    defineField({ name: "pauseLabel", title: "Pause button", type: "string", group: "offers", hidden: true }),
 
     defineField({ name: "offersHeading", title: "Heading", type: "string", group: "offers" }),
     defineField({ name: "offersText", title: "Text beside the heading", type: "text", rows: 3, group: "offers" }),
@@ -43,7 +43,8 @@ export const homePage = defineType({
             }),
             defineField({ name: "text", title: "Text", type: "text", rows: 3 }),
             placeholder(),
-            defineField({ name: "linkLabel", title: "Link words for screen readers", type: "string", description: "The tile only shows an arrow. Screen readers read these words." }),
+            // The tile only shows an arrow; its screen reader words live in the site's code.
+            defineField({ name: "linkLabel", title: "Link words for screen readers", type: "string", hidden: true }),
             defineField({ name: "image", title: "Photo", type: "image" }),
             defineField({ name: "alt", title: "Photo description", type: "string", description: "For screen readers, e.g. Nina Chuba in the Samsung spot." }),
             defineField({ name: "preview", title: "Hover loop", type: "string", description: "Short silent video over the photo on hover, e.g. /media/crazy-wolf-preview.mp4" }),

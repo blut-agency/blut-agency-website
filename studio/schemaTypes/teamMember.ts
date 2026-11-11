@@ -23,7 +23,7 @@ export const teamMember = defineType({
     defineField({ name: "firstName", title: "First name", type: "string", group: "person", description: "Used in links like “Write to Michael”." }),
     defineField({ name: "role", type: "string", group: "person" }),
     defineField({ name: "email", type: "string", group: "person", validation: (r) => r.email() }),
-    defineField({ name: "phone", type: "string", group: "person" }),
+    defineField({ name: "phone", type: "string", group: "person", description: "Not shown on the site. Only Google reads it on the person's own page." }),
     defineField({ name: "showOnAbout", title: "Show on About", type: "boolean", group: "person", initialValue: true }),
     defineField({ name: "key", title: "Code name", type: "string", group: "person", readOnly: true, description: "Set once. Pages use it to pick their contact person." }),
     defineField({ name: "file", title: "Photo file name", type: "string", group: "person", readOnly: true, description: "The portrait files on the site. Ask Nic to add new photos." }),
@@ -33,13 +33,14 @@ export const teamMember = defineType({
       title: "Own page",
       type: "object",
       group: "page",
-      description: "Leave empty for people without a page of their own.",
+      description: "Pages at /team/<address>. Google finds them; the menu and About don't link to them. Leave empty for people without a page.",
       options: { collapsible: true },
       fields: [
         defineField({ name: "slug", title: "Web address", type: "string", description: "The part after /team/, e.g. michael-robb." }),
         defineField({ name: "heroLine", title: "Line in the banner", type: "text", rows: 2 }),
         strings("intro", "Intro paragraphs"),
-        strings("bio", "Bio paragraphs", "In the person's own words. Leave empty until they send it."),
+        // Empty for everyone, so nothing shows; it appears under the intro once filled.
+        defineField({ ...strings("bio", "Bio paragraphs"), hidden: true }),
         defineField({
           name: "expertise",
           title: "Expertise",

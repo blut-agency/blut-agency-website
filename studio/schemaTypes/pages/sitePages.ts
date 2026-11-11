@@ -45,7 +45,6 @@ export const siteSettings = defineType({
         defineField({ name: "video", title: "Film", type: "string", description: "Plays with sound in the video player, e.g. /media/blut-recap-web.mp4" }),
         defineField({ name: "teaser", title: "Card loop", type: "string", description: "Short silent loop in the card." }),
         defineField({ name: "poster", title: "Still", type: "string", description: "Shown until the video loads, e.g. /images/welcome/blut-recap-poster.jpg" }),
-        defineField({ name: "videoTitle", title: "Film name for screen readers", type: "string" }),
       ],
     }),
 
@@ -58,7 +57,6 @@ export const siteSettings = defineType({
       fields: [
         word("readMore", "Case card link", "Under each case card, e.g. Read more."),
         word("playVideo", "Play button", "On every film still."),
-        word("seeCase", "Film: case link", "Under a film that has a case."),
         word("filterAll", "Cases filter: first button"),
         word("caseClient", "Case banner: client"),
         word("caseWhatWeDid", "Case banner: what we did"),

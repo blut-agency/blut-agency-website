@@ -116,7 +116,7 @@ export default function WorkSpot({
         <p className="bk-spot-text">{spot.text}</p>
         {spot.caseSlug && (
           <div className="bk-spot-case">
-            <CtaLink href={`/project/${spot.caseSlug}`} label={LABELS.seeCase} />
+            <CtaLink href={`/project/${spot.caseSlug}`} label="See case" />
           </div>
         )}
         {cover}

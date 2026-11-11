@@ -98,7 +98,7 @@ export default function WelcomeRecap() {
           <span />
         </button>
       </aside>
-      <VideoLightbox open={watching} onClose={closeVideo} title={RECAP.videoTitle} videoUrl={RECAP.video} poster={RECAP.poster} />
+      <VideoLightbox open={watching} onClose={closeVideo} title="blut recap" videoUrl={RECAP.video} poster={RECAP.poster} />
     </>
   );
 }
