@@ -73,7 +73,7 @@ export default async function HomePage() {
                           <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>` }} /></div>
                     </div><button data-player="play-button" className="play-toggle">
-                      <div className="play-toggle-text heading-style-h3">{page.soundLabel}</div>
+                      <div className="play-toggle-text heading-style-h3"><span className="sound-label-pointer">{page.soundLabel}</span><span className="sound-label-touch">{page.soundLabelTouch ?? page.soundLabel}</span></div>
                     </button><button data-player="pause-button" className="play-toggle is-pause-button">
                       <div className="play-toggle-text heading-style-h3">{page.pauseLabel}</div>
                     </button>

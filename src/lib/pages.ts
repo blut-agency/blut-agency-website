@@ -31,6 +31,8 @@ export interface HomePage {
   stageLine: string;
   stageLinePlaceholder?: boolean;
   soundLabel: string;
+  /** The sound label on touch screens and phones ("Tap for sound"). */
+  soundLabelTouch?: string;
   pauseLabel: string;
   offersHeading: string;
   offersText: string;

@@ -1705,7 +1705,7 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
 /* Home stage (mock, Nic 11 Nov): the full "blut" wordmark fills the
    banner below the nav, as wide and as tall as it can go with its shape
    kept, from the left. The sound control sits in the bottom right corner.
-   The banner is as tall as the other page banners (512px, 384px on phones). */
+   The banner is as tall as the other page banners (512px); phones below. */
 .lp-page .lp-stage .home-stage-wrapper {
   position: relative;
   display: block;
@@ -1749,9 +1749,41 @@ button.bk-contact-photo.bk-team-face:focus-visible .bk-team-visual {
   letter-spacing: -0.01em;
 }
 
+/* Phones: the screen is taller than wide, so the width limits the logo.
+   The banner shrinks to hug it, and the sound control sits right under it,
+   on the right, so the logo never floats in empty space. */
 @media screen and (max-width: 767px) {
   .lp-page .lp-stage .home-stage-wrapper {
-    height: 384px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .lp-page .lp-stage .full-width-logo {
+    height: auto;
+    aspect-ratio: 58 / 20;
+  }
+
+  .lp-page .lp-stage .audioplayer-controls {
+    position: static;
+    align-self: flex-end;
+    margin-top: 24px;
+  }
+}
+
+/* "Click for sound" with a mouse, "Tap for sound" on phones and touch
+   screens (Nic, 11 Nov). */
+.lp-stage .sound-label-touch {
+  display: none;
+}
+
+@media (hover: none), (max-width: 767px) {
+  .lp-stage .sound-label-pointer {
+    display: none;
+  }
+
+  .lp-stage .sound-label-touch {
+    display: inline;
   }
 }
 
